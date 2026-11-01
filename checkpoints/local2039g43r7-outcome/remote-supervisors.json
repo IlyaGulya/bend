@@ -1,0 +1,131 @@
+[
+  {
+    "nonce": "39847b2fbe4dbe6da29bd65c06614f97538e56e69e07e106",
+    "jobSha256": "f0aed72a6b7c0b677411da7fa4edbb28c0cba58ae9350b1ec04f488536231750",
+    "job": "admission",
+    "snapshotSha256": "f4021a6577bf028949f31b6f70197c5902ee95679f2a4a8eb57d3b03e2800181",
+    "planSha256": "c1751625b9145a3a186d9288d35db5ef2270fddb9510b5f05d429c1e5d0203c1",
+    "status": "PASS",
+    "reaped": true,
+    "pin": {
+      "physical": "4613c60b990a84a1d3484370a8bb68887aa6b616ef55f96ff8802a1107f7a84b",
+      "platform": "darwin",
+      "arch": "arm64",
+      "release": "25.5.0",
+      "cpu": "Apple M3 Pro",
+      "memoryBytes": 38654705664,
+      "tools": {
+        "bun": "/private/tmp/bend-g43-b276ca3a9c897fbf51b6df71/tools/bun",
+        "node": "/private/tmp/bend-g43-b276ca3a9c897fbf51b6df71/tools/node",
+        "clang": "/usr/bin/clang",
+        "llvmBin": "/opt/homebrew/Cellar/llvm@21/21.1.8_1/bin"
+      },
+      "pins": {
+        "bun": {
+          "path": "/private/tmp/bend-g43-b276ca3a9c897fbf51b6df71/tools/bun",
+          "sha256": "28c7dd0a06916aba284d570ef44a2d70e9c538eaf2ba58dfe0910525563b3f79"
+        },
+        "node": {
+          "path": "/private/tmp/bend-g43-b276ca3a9c897fbf51b6df71/tools/node",
+          "sha256": "ead5889f15f4e17b37f941c7d9e92b624396786bd74d8155ef470f6381f032c5"
+        },
+        "clang": {
+          "path": "/usr/bin/clang",
+          "sha256": "179301dcb41ea78accc3fa0048a7e6f6710d891945a751a34addd622020c1818"
+        },
+        "opt": {
+          "path": "/opt/homebrew/Cellar/llvm@21/21.1.8_1/bin/opt",
+          "sha256": "f0c47819a5c4bccebc4fde8494977ec0bb223e2d47a62c376372942445708e14"
+        },
+        "split": {
+          "path": "/opt/homebrew/Cellar/llvm@21/21.1.8_1/bin/llvm-split",
+          "sha256": "548df9b6333fe8a7a9931962a4ca87d89d2c5a13ba48909dd77c8b8984cdab57"
+        }
+      },
+      "environment": {}
+    },
+    "value": {
+      "consumer": {
+        "receipt": {
+          "path": "/tmp/bend-g24-39847b2fbe4dbe6da29bd65c06614f97538e56e69e07e106/execution/repository/checkpoints/.g24-39847b2fbe4dbe6da29bd65c06614f97538e56e69e07e106/admission/receipt.json",
+          "sha256": "2e9c3153e3807fb8d941a699f88ccc5d445103917893831a372cddd04337bbb3"
+        },
+        "status": "NATIVE_DATATYPE_AND_EXECUTABLE_ADMISSION_PASS",
+        "rows": 12,
+        "counts": {
+          "inputs": 5,
+          "rows": 12
+        }
+      },
+      "execution": {
+        "repository": "/tmp/bend-g24-39847b2fbe4dbe6da29bd65c06614f97538e56e69e07e106/execution/repository",
+        "out": "/tmp/bend-g24-39847b2fbe4dbe6da29bd65c06614f97538e56e69e07e106/execution/repository/checkpoints/.g24-39847b2fbe4dbe6da29bd65c06614f97538e56e69e07e106",
+        "sourceMapping": "byte-identical declared repository files; producer provenance unchanged"
+      }
+    }
+  },
+  {
+    "nonce": "7bf7e38703cd0d4eabae2c7eff93c46f81b01010a8f77ee5",
+    "jobSha256": "61b9780a7e3f0ac818cad8c1633579dd8e6d223fe70dbcd1100d454998e350fa",
+    "job": "host",
+    "snapshotSha256": "f4021a6577bf028949f31b6f70197c5902ee95679f2a4a8eb57d3b03e2800181",
+    "planSha256": "c1751625b9145a3a186d9288d35db5ef2270fddb9510b5f05d429c1e5d0203c1",
+    "status": "PASS",
+    "reaped": true,
+    "pin": {
+      "physical": "4613c60b990a84a1d3484370a8bb68887aa6b616ef55f96ff8802a1107f7a84b",
+      "platform": "darwin",
+      "arch": "arm64",
+      "release": "25.5.0",
+      "cpu": "Apple M3 Pro",
+      "memoryBytes": 38654705664,
+      "tools": {
+        "bun": "/private/tmp/bend-g43-b276ca3a9c897fbf51b6df71/tools/bun",
+        "node": "/private/tmp/bend-g43-b276ca3a9c897fbf51b6df71/tools/node",
+        "clang": "/usr/bin/clang",
+        "llvmBin": "/opt/homebrew/Cellar/llvm@21/21.1.8_1/bin"
+      },
+      "pins": {
+        "bun": {
+          "path": "/private/tmp/bend-g43-b276ca3a9c897fbf51b6df71/tools/bun",
+          "sha256": "28c7dd0a06916aba284d570ef44a2d70e9c538eaf2ba58dfe0910525563b3f79"
+        },
+        "node": {
+          "path": "/private/tmp/bend-g43-b276ca3a9c897fbf51b6df71/tools/node",
+          "sha256": "ead5889f15f4e17b37f941c7d9e92b624396786bd74d8155ef470f6381f032c5"
+        },
+        "clang": {
+          "path": "/usr/bin/clang",
+          "sha256": "179301dcb41ea78accc3fa0048a7e6f6710d891945a751a34addd622020c1818"
+        },
+        "opt": {
+          "path": "/opt/homebrew/Cellar/llvm@21/21.1.8_1/bin/opt",
+          "sha256": "f0c47819a5c4bccebc4fde8494977ec0bb223e2d47a62c376372942445708e14"
+        },
+        "split": {
+          "path": "/opt/homebrew/Cellar/llvm@21/21.1.8_1/bin/llvm-split",
+          "sha256": "548df9b6333fe8a7a9931962a4ca87d89d2c5a13ba48909dd77c8b8984cdab57"
+        }
+      },
+      "environment": {}
+    },
+    "value": {
+      "consumer": {
+        "receipt": {
+          "path": "/tmp/bend-g24-7bf7e38703cd0d4eabae2c7eff93c46f81b01010a8f77ee5/execution/repository/checkpoints/.g24-7bf7e38703cd0d4eabae2c7eff93c46f81b01010a8f77ee5/host/receipt.json",
+          "sha256": "c77af076fe38115dd56e5ef9bf0809ca9583942c5d6c35bf79c224a28ee666d4"
+        },
+        "status": "ACTUAL_ALIAS_AND_HOST_EXPORT_CONSUMERS_PASS",
+        "rows": 5,
+        "counts": {
+          "consumers": 5
+        }
+      },
+      "execution": {
+        "repository": "/tmp/bend-g24-7bf7e38703cd0d4eabae2c7eff93c46f81b01010a8f77ee5/execution/repository",
+        "out": "/tmp/bend-g24-7bf7e38703cd0d4eabae2c7eff93c46f81b01010a8f77ee5/execution/repository/checkpoints/.g24-7bf7e38703cd0d4eabae2c7eff93c46f81b01010a8f77ee5",
+        "sourceMapping": "byte-identical declared repository files; producer provenance unchanged"
+      }
+    }
+  }
+]

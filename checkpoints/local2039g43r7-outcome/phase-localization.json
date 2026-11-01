@@ -1,0 +1,418 @@
+{
+  "scope": "Instrumented full original scheduler fixture through genuine stage-one image; no source algorithm or producer substitution; not performance or acceptance evidence",
+  "guard": {
+    "status": "FAIL",
+    "reason": "deadline_exceeded",
+    "commandExitCode": -1,
+    "commandSignal": 15,
+    "peakRssBytes": 2386165760,
+    "peakFootprintBytes": 2610920688,
+    "elapsedMs": 600182,
+    "timeoutMs": 600000,
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 1,
+    "command": [
+      "/bin/sh",
+      "-c",
+      "out=$1; err=$2; shift 2; exec \"$@\" >\"$out\" 2>\"$err\"",
+      "sh",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r7/scheduler-phase/emit.stdout",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r7/scheduler-phase/emit.stderr",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "--experimental-strip-types",
+      "/Users/ilyagulya/Projects/My/bend/evals/candidate_consumer_worker.mjs",
+      "/Users/ilyagulya/Projects/My/bend/evals/candidate_host.ts",
+      "--candidate=/private/tmp/bend-g24-441d5b510714905ce0d2efb62fe2d88b5d1fe465160fa6a8/snapshot/artifacts/image",
+      "--parser=/private/tmp/bend-g24-441d5b510714905ce0d2efb62fe2d88b5d1fe465160fa6a8/snapshot/artifacts/image",
+      "--stage-profile=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r7/scheduler-phase/stages",
+      "--stage-progress",
+      "/private/tmp/bend-g24-441d5b510714905ce0d2efb62fe2d88b5d1fe465160fa6a8/execution/repository/evals/scheduler_chunk_smoke.bend",
+      "-o",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r7/scheduler-phase/scheduler_chunk_smoke.c",
+      "--base",
+      "/private/tmp/bend-g24-441d5b510714905ce0d2efb62fe2d88b5d1fe465160fa6a8/execution/repository/bend2/base.bend",
+      "--runtime-c",
+      "/private/tmp/bend-g24-441d5b510714905ce0d2efb62fe2d88b5d1fe465160fa6a8/execution/repository/bend2/selfhost/c_runtime.c"
+    ],
+    "label": "scheduler_chunk_smoke:diagnostic-emit",
+    "exitCode": 1,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793516294605-bd15e925b3de35ff.json",
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592
+  },
+  "originalInputPins": [
+    {
+      "path": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "sha256": "ead5889f15f4e17b37f941c7d9e92b624396786bd74d8155ef470f6381f032c5"
+    },
+    {
+      "path": "/private/tmp/bend-g24-441d5b510714905ce0d2efb62fe2d88b5d1fe465160fa6a8/snapshot/artifacts/image",
+      "sha256": "85aff9e534c18b4a1d6acac5f3237571dabc58f2c1a75a7ea2040f1c477ab60e"
+    },
+    {
+      "path": "/private/tmp/bend-g24-441d5b510714905ce0d2efb62fe2d88b5d1fe465160fa6a8/execution/repository/evals/scheduler_chunk_smoke.bend",
+      "sha256": "21986a939adccc86c6580c446242be9feb95703c6eeb820ef939d961f2247140"
+    },
+    {
+      "path": "/private/tmp/bend-g24-441d5b510714905ce0d2efb62fe2d88b5d1fe465160fa6a8/execution/repository/checkpoints/checker_core_steps_v1.bend",
+      "sha256": "e4c1197d63129394551d5643ef2934be84af82eaeacfa3da1e4e660c6ff603a4"
+    }
+  ],
+  "observedSourcePins": [
+    {
+      "path": "/private/tmp/bend-g24-441d5b510714905ce0d2efb62fe2d88b5d1fe465160fa6a8/execution/repository/bend2/base.bend",
+      "sha256": "21baec76caf1a6cfd4a544340b291f7bb55bf30cc841f9f5f29e3b12a1a4d614"
+    },
+    {
+      "path": "/private/tmp/bend-g24-441d5b510714905ce0d2efb62fe2d88b5d1fe465160fa6a8/execution/repository/bend2/selfhost/c_runtime.c",
+      "sha256": "6935fa83c1b20b7f8982f04ad54c4e4dae0b9b0ea66fd00f32d169a1d03ac2bf"
+    },
+    {
+      "path": "/private/tmp/bend-g24-441d5b510714905ce0d2efb62fe2d88b5d1fe465160fa6a8/execution/repository/bend2/selfhost/checker_ir.bend",
+      "sha256": "41db13db11d63102d3ea5c8ca14916e5f688685bba96c332abcb7a3533f1f17b"
+    },
+    {
+      "path": "/Users/ilyagulya/Projects/My/bend/evals/scheduler_emit_diagnostic.ts",
+      "sha256": "70f145ff67557c23441b9679cd6ee225924468331dbeea4afb1b47085c1fbeb8"
+    },
+    {
+      "path": "/Users/ilyagulya/Projects/My/bend/evals/candidate_consumer_worker.mjs",
+      "sha256": "6bc1b639d83a96c49060dda8b562a078d5603e1e2fecac58ad8977758a507819"
+    },
+    {
+      "path": "/Users/ilyagulya/Projects/My/bend/evals/candidate_host.ts",
+      "sha256": "3ab4f809f7dccbe7f4ed04a53bc335025742d1a5bc6c3c098156acd8274535b0"
+    },
+    {
+      "path": "/Users/ilyagulya/Projects/My/bend/evals/checker_core_step_runtime.mjs",
+      "sha256": "00cd400ac0452a3681bf6491db08be51f9ae3a33ff2baf88654a9763eb5073ed"
+    },
+    {
+      "path": "/Users/ilyagulya/Projects/My/bend/evals/compiler_stage_profile.mjs",
+      "sha256": "979dbef8895010b452c75a4b4bbc9fb24e0a75dba5d5ac8a743b67f427c47640"
+    },
+    {
+      "path": "/Users/ilyagulya/Projects/My/bend/evals/compiler_profile.mjs",
+      "sha256": "b8b3dddf5a95777532fd73bda601d6bc610859d78371b7fbc593e4e93ec734c1"
+    },
+    {
+      "path": "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+      "sha256": "e72f2b81970be76734df918e35b1a4289d0fb194039e5ca20e9785e5ac0ee015"
+    },
+    {
+      "path": "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate_native.c",
+      "sha256": "1ff233edacdbf13c6ffd4a8bf38cbf153629e8c76be4860deec8a5b591d3fa8b"
+    }
+  ],
+  "topLevelPhases": [
+    {
+      "type": "begin",
+      "id": 1,
+      "parentId": null,
+      "name": "startup-import",
+      "at": "2026-11-01T06:58:14.833Z",
+      "details": {
+        "candidatePath": "/private/tmp/bend-g24-441d5b510714905ce0d2efb62fe2d88b5d1fe465160fa6a8/snapshot/artifacts/image",
+        "parserPath": "/private/tmp/bend-g24-441d5b510714905ce0d2efb62fe2d88b5d1fe465160fa6a8/snapshot/artifacts/image"
+      }
+    },
+    {
+      "type": "end",
+      "id": 1,
+      "parentId": null,
+      "name": "startup-import",
+      "status": "completed",
+      "wallMs": 958.8559170000001,
+      "cpu": {
+        "kind": "process-boundary-delta",
+        "scope": "process.cpuUsage: every thread in this process, including worker threads; child processes have separate rusage and are excluded; not exclusive to this span and overlapping for nested spans",
+        "userMs": 874.0900000000001,
+        "systemMs": 95.59800000000001,
+        "thread": {
+          "status": "available",
+          "scope": "process.threadCpuUsage: the collector thread only; excludes worker threads and runtime helper threads",
+          "userMs": 854.463,
+          "systemMs": 86.676
+        },
+        "otherThreads": {
+          "status": "available",
+          "scope": "arithmetic difference of the process-wide delta and this-thread delta; covers worker threads and runtime helper threads; a measurement gap, never an attribution to them",
+          "userMs": 19.62700000000018,
+          "systemMs": 8.922000000000011
+        }
+      },
+      "at": "2026-11-01T06:58:15.792Z",
+      "details": {
+        "candidatePath": "/private/tmp/bend-g24-441d5b510714905ce0d2efb62fe2d88b5d1fe465160fa6a8/snapshot/artifacts/image",
+        "parserPath": "/private/tmp/bend-g24-441d5b510714905ce0d2efb62fe2d88b5d1fe465160fa6a8/snapshot/artifacts/image",
+        "target": "c",
+        "library": false,
+        "parserModule": "separate"
+      }
+    },
+    {
+      "type": "begin",
+      "id": 2,
+      "parentId": null,
+      "name": "parse-import-fuel",
+      "at": "2026-11-01T06:58:15.793Z",
+      "details": {
+        "input": "/private/tmp/bend-g24-441d5b510714905ce0d2efb62fe2d88b5d1fe465160fa6a8/execution/repository/evals/scheduler_chunk_smoke.bend",
+        "target": "c"
+      }
+    },
+    {
+      "type": "end",
+      "id": 2,
+      "parentId": null,
+      "name": "parse-import-fuel",
+      "status": "completed",
+      "wallMs": 6151.940417,
+      "cpu": {
+        "kind": "process-boundary-delta",
+        "scope": "process.cpuUsage: every thread in this process, including worker threads; child processes have separate rusage and are excluded; not exclusive to this span and overlapping for nested spans",
+        "userMs": 8095.423999999999,
+        "systemMs": 531.2180000000001,
+        "thread": {
+          "status": "available",
+          "scope": "process.threadCpuUsage: the collector thread only; excludes worker threads and runtime helper threads",
+          "userMs": 4881.861,
+          "systemMs": 349.60699999999997
+        },
+        "otherThreads": {
+          "status": "available",
+          "scope": "arithmetic difference of the process-wide delta and this-thread delta; covers worker threads and runtime helper threads; a measurement gap, never an attribution to them",
+          "userMs": 3213.562999999999,
+          "systemMs": 181.6110000000001
+        }
+      },
+      "at": "2026-11-01T06:58:21.944Z",
+      "details": {
+        "input": "/private/tmp/bend-g24-441d5b510714905ce0d2efb62fe2d88b5d1fe465160fa6a8/execution/repository/evals/scheduler_chunk_smoke.bend",
+        "target": "c",
+        "modules": 11,
+        "foreignFiles": 58
+      }
+    },
+    {
+      "type": "begin",
+      "id": 36,
+      "parentId": null,
+      "name": "template-expand",
+      "at": "2026-11-01T06:58:21.946Z",
+      "details": {
+        "inputModules": 11
+      }
+    },
+    {
+      "type": "end",
+      "id": 36,
+      "parentId": null,
+      "name": "template-expand",
+      "status": "completed",
+      "wallMs": 5454.959540999999,
+      "cpu": {
+        "kind": "process-boundary-delta",
+        "scope": "process.cpuUsage: every thread in this process, including worker threads; child processes have separate rusage and are excluded; not exclusive to this span and overlapping for nested spans",
+        "userMs": 5286.185000000001,
+        "systemMs": 930.3260000000001,
+        "thread": {
+          "status": "available",
+          "scope": "process.threadCpuUsage: the collector thread only; excludes worker threads and runtime helper threads",
+          "userMs": 4493.687000000001,
+          "systemMs": 896.942
+        },
+        "otherThreads": {
+          "status": "available",
+          "scope": "arithmetic difference of the process-wide delta and this-thread delta; covers worker threads and runtime helper threads; a measurement gap, never an attribution to them",
+          "userMs": 792.4980000000005,
+          "systemMs": 33.38400000000013
+        }
+      },
+      "at": "2026-11-01T06:58:27.401Z",
+      "details": {
+        "inputModules": 11,
+        "result": "ExpandSuccess"
+      }
+    },
+    {
+      "type": "begin",
+      "id": 37,
+      "parentId": null,
+      "name": "check-signature-body",
+      "at": "2026-11-01T06:58:27.413Z",
+      "details": {
+        "inputModules": 11
+      }
+    },
+    {
+      "type": "end",
+      "id": 37,
+      "parentId": null,
+      "name": "check-signature-body",
+      "status": "completed",
+      "wallMs": 111034.090791,
+      "cpu": {
+        "kind": "process-boundary-delta",
+        "scope": "process.cpuUsage: every thread in this process, including worker threads; child processes have separate rusage and are excluded; not exclusive to this span and overlapping for nested spans",
+        "userMs": 113072.431,
+        "systemMs": 7411.622,
+        "thread": {
+          "status": "available",
+          "scope": "process.threadCpuUsage: the collector thread only; excludes worker threads and runtime helper threads",
+          "userMs": 101350.26299999999,
+          "systemMs": 6898.887
+        },
+        "otherThreads": {
+          "status": "available",
+          "scope": "arithmetic difference of the process-wide delta and this-thread delta; covers worker threads and runtime helper threads; a measurement gap, never an attribution to them",
+          "userMs": 11722.168000000005,
+          "systemMs": 512.7350000000006
+        }
+      },
+      "at": "2026-11-01T07:00:18.446Z",
+      "details": {
+        "inputModules": 11,
+        "result": "CheckSuccess"
+      }
+    },
+    {
+      "type": "begin",
+      "id": 38,
+      "parentId": null,
+      "name": "emit",
+      "at": "2026-11-01T07:00:18.453Z",
+      "details": {
+        "target": "c",
+        "library": false,
+        "exports": null
+      }
+    }
+  ],
+  "parserTotals": {
+    "modules": 11,
+    "fuelConstructionMs": 1361.413501,
+    "compiledParserMs": 4758.756542
+  },
+  "lastObservedBoundaries": [
+    {
+      "type": "observation",
+      "id": 601,
+      "spanId": 38,
+      "at": "2026-11-01T07:08:10.483Z",
+      "elapsedMs": 595658.556916,
+      "kind": "typed-step-progress",
+      "name": "emit",
+      "scope": "latest observed host-visible bounded-step boundary",
+      "units": "host-step-calls",
+      "unitsByField": null,
+      "value": 33719121,
+      "values": null,
+      "source": "checker_core_step_runtime.mjs",
+      "details": {
+        "protocol": "Emitter",
+        "nativeChunkQuantum": 64,
+        "progressShape": "Pending",
+        "request": "emitter_steps_v1.EmitterRequest_cps_provider_7_nf_all",
+        "runNamespace": "emitter_steps_v1",
+        "granularity": "first boundary then at most once per second; not a substage duration, live-process claim, or continuous sample"
+      }
+    },
+    {
+      "type": "observation",
+      "id": 602,
+      "spanId": 38,
+      "at": "2026-11-01T07:08:11.483Z",
+      "elapsedMs": 596658.5626249999,
+      "kind": "typed-step-progress",
+      "name": "emit",
+      "scope": "latest observed host-visible bounded-step boundary",
+      "units": "host-step-calls",
+      "unitsByField": null,
+      "value": 33791304,
+      "values": null,
+      "source": "checker_core_step_runtime.mjs",
+      "details": {
+        "protocol": "Emitter",
+        "nativeChunkQuantum": 64,
+        "progressShape": "Pending",
+        "request": "emitter_steps_v1.EmitterRequest_cps_provider_7_nf_descriptor_step",
+        "runNamespace": "emitter_steps_v1",
+        "granularity": "first boundary then at most once per second; not a substage duration, live-process claim, or continuous sample"
+      }
+    },
+    {
+      "type": "observation",
+      "id": 603,
+      "spanId": 38,
+      "at": "2026-11-01T07:08:12.483Z",
+      "elapsedMs": 597658.570458,
+      "kind": "typed-step-progress",
+      "name": "emit",
+      "scope": "latest observed host-visible bounded-step boundary",
+      "units": "host-step-calls",
+      "unitsByField": null,
+      "value": 33860246,
+      "values": null,
+      "source": "checker_core_step_runtime.mjs",
+      "details": {
+        "protocol": "Emitter",
+        "nativeChunkQuantum": 64,
+        "progressShape": "Pending",
+        "request": "emitter_steps_v1.EmitterRequest_cps_provider_3_reach_arms",
+        "runNamespace": "emitter_steps_v1",
+        "granularity": "first boundary then at most once per second; not a substage duration, live-process claim, or continuous sample"
+      }
+    },
+    {
+      "type": "observation",
+      "id": 604,
+      "spanId": 38,
+      "at": "2026-11-01T07:08:13.483Z",
+      "elapsedMs": 598658.574791,
+      "kind": "typed-step-progress",
+      "name": "emit",
+      "scope": "latest observed host-visible bounded-step boundary",
+      "units": "host-step-calls",
+      "unitsByField": null,
+      "value": 33931372,
+      "values": null,
+      "source": "checker_core_step_runtime.mjs",
+      "details": {
+        "protocol": "Emitter",
+        "nativeChunkQuantum": 64,
+        "progressShape": "Direct",
+        "request": null,
+        "runNamespace": "emitter_steps_v1",
+        "granularity": "first boundary then at most once per second; not a substage duration, live-process claim, or continuous sample"
+      }
+    },
+    {
+      "type": "observation",
+      "id": 605,
+      "spanId": 38,
+      "at": "2026-11-01T07:08:14.483Z",
+      "elapsedMs": 599658.5869999999,
+      "kind": "typed-step-progress",
+      "name": "emit",
+      "scope": "latest observed host-visible bounded-step boundary",
+      "units": "host-step-calls",
+      "unitsByField": null,
+      "value": 34005165,
+      "values": null,
+      "source": "checker_core_step_runtime.mjs",
+      "details": {
+        "protocol": "Emitter",
+        "nativeChunkQuantum": 64,
+        "progressShape": "Pending",
+        "request": "emitter_steps_v1.EmitterRequest_cps_provider_7_nf_all",
+        "runNamespace": "emitter_steps_v1",
+        "granularity": "first boundary then at most once per second; not a substage duration, live-process claim, or continuous sample"
+      }
+    }
+  ],
+  "localization": "startup/parse/expand/check complete; emit remains open after~476 seconds. Latest hoststep34005165; raw NF/descriptor/reach requests observed. This is continued boundary progression, not proof of deadlock or exclusive substage CPU share.",
+  "rawProfilesCommitted": false,
+  "profileDirectory": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r7/scheduler-phase/stages/profile-22270-thread-1-om0P4g"
+}

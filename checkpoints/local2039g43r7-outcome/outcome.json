@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 1,
+  "version": "G43DIST_R7",
+  "sourceCommit": "24b3b5e8",
+  "cancelSourceCommit": "f8383fb3",
+  "status": "EMITTER_DEADLINE_LOCALIZED_REMOTE_CONSUMERS_AND_NATIVE_CANCELLATION_PASS",
+  "fullCorrectnessPassed": false,
+  "compilerAccepted": false,
+  "performanceAccepted": false,
+  "tests": {
+    "text": "bun test v1.4.3 (c6da4a4d3)\n\n 12 pass\n 0 fail\nRan 12 tests across 1 file. [276.00ms]\n",
+    "details": {
+      "wallTimeNoticeEmitted": false,
+      "timeoutSeconds": 180,
+      "wallTimeMs": 339.74137502908707
+    }
+  },
+  "commands": {
+    "phase": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "/Users/ilyagulya/Projects/My/bend/evals/scheduler_emit_diagnostic.ts",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "/tmp/bend-g24-441d5b510714905ce0d2efb62fe2d88b5d1fe465160fa6a8/snapshot/artifacts/image",
+      "/tmp/bend-g24-441d5b510714905ce0d2efb62fe2d88b5d1fe465160fa6a8/execution/repository",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r7/scheduler-phase"
+    ],
+    "remoteConsumers": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g43r7-source/remaining-ssh-consumers.mjs",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r7/remote-config.json"
+    ],
+    "nativeCancellation": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g43r7-source/cancel-running-remote-native.mjs",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r7/cancel-driver-config.json",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r7/cancel-running-native.json"
+    ]
+  },
+  "originalLimits": {
+    "rssMiB": 8192,
+    "footprintMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000
+  },
+  "phaseOutcome": {
+    "acceptanceEvidence": false,
+    "endedAt": "2026-11-01T07:08:14.800Z",
+    "status": "FAIL",
+    "reason": "deadline_exceeded",
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "exitCode": 1,
+    "stdout": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r7/scheduler-phase/emit.stdout",
+    "stderr": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r7/scheduler-phase/emit.stderr",
+    "stageDirectory": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r7/scheduler-phase/stages"
+  },
+  "actualRemoteConsumers": {
+    "admission": {
+      "status": "NATIVE_DATATYPE_AND_EXECUTABLE_ADMISSION_PASS",
+      "rows": 12,
+      "counts": {
+        "inputs": 5,
+        "rows": 12
+      },
+      "receipt": {
+        "path": "/tmp/bend-g24-39847b2fbe4dbe6da29bd65c06614f97538e56e69e07e106/execution/repository/checkpoints/.g24-39847b2fbe4dbe6da29bd65c06614f97538e56e69e07e106/admission/receipt.json",
+        "sha256": "2e9c3153e3807fb8d941a699f88ccc5d445103917893831a372cddd04337bbb3"
+      }
+    },
+    "host": {
+      "status": "ACTUAL_ALIAS_AND_HOST_EXPORT_CONSUMERS_PASS",
+      "rows": 5,
+      "counts": {
+        "consumers": 5
+      },
+      "receipt": {
+        "path": "/tmp/bend-g24-7bf7e38703cd0d4eabae2c7eff93c46f81b01010a8f77ee5/execution/repository/checkpoints/.g24-7bf7e38703cd0d4eabae2c7eff93c46f81b01010a8f77ee5/host/receipt.json",
+        "sha256": "c77af076fe38115dd56e5ef9bf0809ca9583942c5d6c35bf79c224a28ee666d4"
+      }
+    }
+  },
+  "allRemoteSupervisorsReaped": true,
+  "nativeCancellation": {
+    "status": "PASS",
+    "observedNative": {
+      "pid": 41046,
+      "ppid": 40998,
+      "identity": "Sun Nov  1 12:02:48 2026 /private/tmp/bend-g24-0022b1abe5bad53ec95395077537beac92330558b68ee2e0/snapshot/artifacts/binary",
+      "name": "/private/tmp/bend-g24-0022b1abe5bad53ec95395077537beac92330558b68ee2e0/snapshot/artifacts/binary"
+    },
+    "observedNonce": "0022b1abe5bad53ec95395077537beac92330558b68ee2e0",
+    "coordinatorExit": {
+      "code": 1,
+      "signal": null
+    },
+    "nativeStillPresent": false,
+    "sameNonceSupervisorStatus": "FAIL",
+    "sameNonceSupervisorReaped": true,
+    "legacyLabelCorrection": "Harness cancelReason says full-root from an earlier planned smoke. Actual observed process is the genuine native compiler executing the native-consumer c_backend_link compilation, not the complete frozen compiler throughput workload. Do not infer a full-root workload from that label."
+  },
+  "bbAppStoppedOrPaused": false,
+  "systemToolsReplaced": false,
+  "processNameIdleHeuristic": false,
+  "remaining": [
+    "Repair or characterize actual NF/descriptor/reach C-emission cost without changing fixture/limits",
+    "Complete both backend matrices",
+    "Exercise both original six-row performance lanes and final complete qualification"
+  ],
+  "generatedImagesAstTransportsBulkLogsAndProfilesCommitted": false
+}

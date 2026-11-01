@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 1,
+  "status": "PASS",
+  "diagnosticOnly": true,
+  "qualificationAccepted": false,
+  "command": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g43r6-source/native-ssh-diagnostic.mjs",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r7/cancel-native-config.json"
+  ],
+  "cwd": "/Users/ilyagulya/Projects/My/bend",
+  "originalGuardianUnchanged": true,
+  "started": 1793516554740,
+  "observedNative": {
+    "pid": 41046,
+    "ppid": 40998,
+    "identity": "Sun Nov  1 12:02:48 2026 /private/tmp/bend-g24-0022b1abe5bad53ec95395077537beac92330558b68ee2e0/snapshot/artifacts/binary",
+    "name": "/private/tmp/bend-g24-0022b1abe5bad53ec95395077537beac92330558b68ee2e0/snapshot/artifacts/binary"
+  },
+  "observedNonce": "0022b1abe5bad53ec95395077537beac92330558b68ee2e0",
+  "cancelReason": "actual owned full-root native sample observed running",
+  "exit": {
+    "code": 1,
+    "signal": null
+  },
+  "cancelledAt": 1793516569370,
+  "results": [
+    {
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g43r7-ssh-cancel/result-0022b1abe5bad53ec95395077537beac92330558b68ee2e0.json",
+      "value": {
+        "nonce": "0022b1abe5bad53ec95395077537beac92330558b68ee2e0",
+        "jobSha256": "efdb29445f56b7dd2224642d7508e32304c28416547359ed8c142977bcd81aec",
+        "job": "native",
+        "snapshotSha256": "f4021a6577bf028949f31b6f70197c5902ee95679f2a4a8eb57d3b03e2800181",
+        "planSha256": "c1751625b9145a3a186d9288d35db5ef2270fddb9510b5f05d429c1e5d0203c1",
+        "status": "FAIL",
+        "reaped": true,
+        "pin": {
+          "physical": "4613c60b990a84a1d3484370a8bb68887aa6b616ef55f96ff8802a1107f7a84b",
+          "platform": "darwin",
+          "arch": "arm64",
+          "release": "25.5.0",
+          "cpu": "Apple M3 Pro",
+          "memoryBytes": 38654705664,
+          "tools": {
+            "bun": "/private/tmp/bend-g43-b276ca3a9c897fbf51b6df71/tools/bun",
+            "node": "/private/tmp/bend-g43-b276ca3a9c897fbf51b6df71/tools/node",
+            "clang": "/usr/bin/clang",
+            "llvmBin": "/opt/homebrew/Cellar/llvm@21/21.1.8_1/bin"
+          },
+          "pins": {
+            "bun": {
+              "path": "/private/tmp/bend-g43-b276ca3a9c897fbf51b6df71/tools/bun",
+              "sha256": "28c7dd0a06916aba284d570ef44a2d70e9c538eaf2ba58dfe0910525563b3f79"
+            },
+            "node": {
+              "path": "/private/tmp/bend-g43-b276ca3a9c897fbf51b6df71/tools/node",
+              "sha256": "ead5889f15f4e17b37f941c7d9e92b624396786bd74d8155ef470f6381f032c5"
+            },
+            "clang": {
+              "path": "/usr/bin/clang",
+              "sha256": "179301dcb41ea78accc3fa0048a7e6f6710d891945a751a34addd622020c1818"
+            },
+            "opt": {
+              "path": "/opt/homebrew/Cellar/llvm@21/21.1.8_1/bin/opt",
+              "sha256": "f0c47819a5c4bccebc4fde8494977ec0bb223e2d47a62c376372942445708e14"
+            },
+            "split": {
+              "path": "/opt/homebrew/Cellar/llvm@21/21.1.8_1/bin/llvm-split",
+              "sha256": "548df9b6333fe8a7a9931962a4ca87d89d2c5a13ba48909dd77c8b8984cdab57"
+            }
+          },
+          "environment": {}
+        },
+        "error": "Error: cancelled or coordinator lease expired\n    at need (/private/tmp/bend-g24-0022b1abe5bad53ec95395077537beac92330558b68ee2e0/snapshot/repository/evals/g24_distributed.mjs:83:45)\n    at supervise (/private/tmp/bend-g24-0022b1abe5bad53ec95395077537beac92330558b68ee2e0/snapshot/repository/evals/g24_distributed.mjs:438:5)\n    at processTicksAndRejections (native:7:39)"
+      }
+    }
+  ],
+  "nativeStillPresent": false,
+  "finished": 1793516571381
+}
