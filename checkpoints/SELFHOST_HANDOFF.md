@@ -6,6 +6,18 @@
 
 ### G43: текущий opt-in scheduler упёрся в dedicated-host prerequisite
 
+После предложения пользователя проверен **`ssh misakaindrive`** без
+host-key bypass и без upload: Mac M3 Pro, 36 GiB RAM, macOS 26.5.1,
+LLVM21.1.8 установлен. Native image minOS26.0 подходит по header, но на
+хосте ещё не исполнялся. Системные Bun1.2.5 / Node26 не accepted pins;
+нужны isolated Bun1.4.3 / Node23 без system replacement.
+На misaka также четыре Node процесса bb-app host-daemon/plugin/watcher.
+Они почти idle в одном ps snapshot, но strict policy всё равно отказывает.
+Пока ничего не остановлено/установлено/отправлено. Нужен явный выбор
+пользователя по временной недоступности bb-app; затем потребуется direct
+SSH alias transport (текущий plan SSH поддерживает только cluster node).
+Probe: `../evals/receipts/producer2039g43_misaka_probe.json`.
+
 Последний source checkpoint — **`2d5d7601`**. Код нового
 `--distributed-plan` реализован, но **не qualified и не accepted**.
 Default serial, original 8/8-GiB / poll10ms / timeout600s per-step guardian

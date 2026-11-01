@@ -8,6 +8,16 @@ This index does not replace a receipt.
 
 ## G43: opt-in scheduler implemented; completion requires a dedicated idle host
 
+The user subsequently supplied `misakaindrive`: normal authenticated SSH
+works to an M3 Pro / 36-GiB Mac with macOS 26.5.1 and LLVM21.1.8.
+Its OS meets the accepted native image's minOS26.0 header; the image has not
+been executed there. Accepted Bun/Node need private installation rather than
+system replacement. Four existing bb-app Node services still prevent the
+current dedicated-host policy. No service has been stopped or project data
+uploaded; user approval of that availability tradeoff remains required.
+Direct alias transport is not yet implemented in the cluster-node-only plan.
+`evals/receipts/producer2039g43_misaka_probe.json`.
+
 Current source is `2d5d7601`, with explicit `--distributed-plan=PATH`.
 The default stays serial. Snapshots use an explicit closed source/input
 inventory, original producer authority, OS-side code/tool authentication,

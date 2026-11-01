@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "status": "SSH_HOST_REACHABLE_PENDING_DEDICATION_DECISION",
+  "sourceCheckpoint": "0ae3c4c1",
+  "userProvidedTarget": "misakaindrive",
+  "ssh": {
+    "batchMode": true,
+    "connectTimeoutSeconds": 8,
+    "hostKeyPolicyBypassed": false,
+    "projectSnapshotUploaded": false,
+    "hostModified": false
+  },
+  "probeCommand": [
+    "/usr/bin/ssh",
+    "-o",
+    "BatchMode=yes",
+    "-o",
+    "ConnectTimeout=8",
+    "misakaindrive",
+    "printf 'BUN_VERSION='; /opt/homebrew/bin/bun --version\nprintf 'NODE_VERSION='; /opt/homebrew/bin/node --version\nprintf 'CLANG_VERSION='; /usr/bin/clang --version\nprintf 'LLVM21_INSTALLED='; HOMEBREW_NO_AUTO_UPDATE=1 /opt/homebrew/bin/brew list --versions llvm@21\nprintf 'MEMORY_CPU='; /usr/sbin/sysctl -n hw.memsize hw.logicalcpu machdep.cpu.brand_string\nprintf 'OS_VERSION='; /usr/bin/sw_vers -productVersion\n/opt/homebrew/bin/bun -e 'import {spawnSync} from \"node:child_process\"; import {realpathSync} from \"node:fs\"; const r=spawnSync(\"/bin/ps\",[\"-axo\",\"pid=,ppid=,comm=\"],{encoding:\"utf8\"}); if(r.status!==0) throw Error(r.stderr); const rows=r.stdout.split(\"\\n\").map(line=>{const m=line.trim().match(/^(\\d+)\\s+(\\d+)\\s+(.+)$/);return m&&{pid:+m[1],ppid:+m[2],name:m[3]};}).filter(p=>p&&/(?:^|\\/)(?:bun|node|clang(?:\\+\\+)?|cc1|opt|llvm-split|llc|gcc|cc|native)(?:$|\\s)/.test(p.name)&&p.pid!==process.pid); console.log(JSON.stringify({runtimeCandidates:rows,bun:realpathSync(process.execPath),node:realpathSync(\"/opt/homebrew/bin/node\")}));'\n"
+  ],
+  "probeResult": {
+    "text": "BUN_VERSION=1.2.5\nNODE_VERSION=v26.3.0\nCLANG_VERSION=Apple clang version 21.0.0 (clang-2100.1.1.101)\nTarget: arm64-apple-darwin25.5.0\nThread model: posix\nInstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin\nLLVM21_INSTALLED=llvm@21 21.1.8_1\nMEMORY_CPU=38654705664\n12\nApple M3 Pro\nOS_VERSION=26.5.1\n{\"runtimeCandidates\":[{\"pid\":28916,\"ppid\":91740,\"name\":\"/opt/homebrew/Cellar/node/26.3.0/bin/node\"},{\"pid\":91739,\"ppid\":1,\"name\":\"/opt/homebrew/bin/node\"},{\"pid\":91740,\"ppid\":91739,\"name\":\"/opt/homebrew/Cellar/node/26.3.0/bin/node\"},{\"pid\":91772,\"ppid\":91740,\"name\":\"/opt/homebrew/Cellar/node/26.3.0/bin/node\"}],\"bun\":\"/opt/homebrew/Cellar/bun/1.2.5/bin/bun\",\"node\":\"/opt/homebrew/Cellar/node/26.3.0/bin/node\"}\n\n\nWall time: 1.74 seconds",
+    "details": {
+      "wallTimeNoticeEmitted": true,
+      "timeoutSeconds": 60,
+      "wallTimeMs": 1740.8112499713898
+    }
+  },
+  "serviceInspection": {
+    "text": "[{\"pid\":28916,\"script\":\"/Users/ilyagulya/.bb-machines/bb.tail3cf09a.ts.net/npm/lib/node_modules/bb-app/host-daemon/dist/bb-plugin-host-worker.mjs\"},{\"pid\":91739,\"script\":\"not a file entrypoint (arguments omitted)\"},{\"pid\":91740,\"script\":\"/Users/ilyagulya/.bb-machines/bb.tail3cf09a.ts.net/npm/lib/node_modules/bb-app/host-daemon/dist/daemon-bundle.mjs\"},{\"pid\":91772,\"script\":\"/Users/ilyagulya/.bb-machines/bb.tail3cf09a.ts.net/npm/lib/node_modules/bb-app/host-daemon/dist/bb-parcel-watcher-child.mjs\"}]\n",
+    "details": {
+      "wallTimeNoticeEmitted": false,
+      "timeoutSeconds": 30,
+      "wallTimeMs": 755.9964579939842
+    }
+  },
+  "processInspection": {
+    "text": "28916 91740   0.0    22:51:13 /opt/homebrew/Cellar/node/26.3.0/bin/node\n91739     1   0.0 01-16:10:17 /opt/homebrew/bin/node\n91740 91739   0.2 01-16:10:17 /opt/homebrew/Cellar/node/26.3.0/bin/node\n91772 91740   0.0 01-16:10:16 /opt/homebrew/Cellar/node/26.3.0/bin/node\np28916\nfcwd\nn/\np91739\nfcwd\nn/\np91740\nfcwd\nn/\np91772\nfcwd\nn/\n/opt/homebrew/opt/llvm@21\n",
+    "details": {
+      "wallTimeNoticeEmitted": false,
+      "timeoutSeconds": 30,
+      "wallTimeMs": 567.1548339724541
+    }
+  },
+  "observed": {
+    "platform": "darwin",
+    "arch": "arm64",
+    "release": "25.5.0",
+    "osVersion": "26.5.1",
+    "cpu": "Apple M3 Pro",
+    "memoryBytes": 38654705664,
+    "logicalCpuCount": 12,
+    "installedBun": "1.2.5",
+    "installedNode": "26.3.0",
+    "installedAppleClang": "21.0.0 (clang-2100.1.1.101)",
+    "installedLlvm21": "21.1.8_1",
+    "llvmBin": "/opt/homebrew/opt/llvm@21/bin",
+    "otherNodePids": [
+      28916,
+      91739,
+      91740,
+      91772
+    ],
+    "service": "bb-app host-daemon / plugin host worker / parcel watcher"
+  },
+  "acceptedNativeHeader": {
+    "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/native",
+    "platform": "MACOS",
+    "minos": "26.0",
+    "sdk": "27.0",
+    "command": [
+      "/usr/bin/vtool",
+      "-show-build",
+      "checkpoints/local2039g24r12/native"
+    ],
+    "nativeActuallyExecutedOnRemote": false
+  },
+  "requiredBeforeCompletion": [
+    "User decision about bb-app availability or another dedicated host",
+    "Private isolated accepted Bun1.4.3/Node23.11.0; no system replacement",
+    "Explicit direct-SSH target support or equivalent authorized coordinator placement; current plan supports cluster-node SSH only",
+    "Actual idle host pin, all consumers, running-native cancellation, both complete performance lanes, final fresh qualification"
+  ],
+  "unrelatedProcessesStopped": false,
+  "idleCheckWeakened": false,
+  "compilerAccepted": false,
+  "performanceAccepted": false
+}
