@@ -26,7 +26,7 @@ import {
  runTemplateSteps,runCheckerSteps,runLibraryEmitterSteps,runEmitterSteps,
  runCEmitterSteps,runCLibraryEmitterSteps,
 } from './checker_core_step_runtime.mjs';
-import {createStageProfile,createStepAttribution,stageParentDeclaration} from './compiler_stage_profile.mjs';
+import {createStageProfile,createStepAttribution,stageParentDeclaration,loadStageManifests} from './compiler_stage_profile.mjs';
 
 const ROOT=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 
@@ -74,7 +74,7 @@ function args_parse(){
     (name==='--stage-manifest'?manifests:receipts).push(resolve(value));
     continue;
    }
-   if(!['--candidate','--candidate-build','--parser','--base','--exports','--runtime-c','--source-tag','--stage-profile','--checked-out','--sources-out'].includes(name)||value===undefined||values.has(name))fail('unknown or duplicate option '+arg);
+   if(!['--candidate','--candidate-build','--parser','--base','--exports','--runtime-c','--source-tag','--stage-profile','--checked-out','--sources-out','--work-census','--work-census-binding','--work-census-ms'].includes(name)||value===undefined||values.has(name))fail('unknown or duplicate option '+arg);
    values.set(name,value);
    continue;
   }
@@ -85,6 +85,10 @@ function args_parse(){
  if(values.has('--source-tag')){const sourceTag=values.get('--source-tag')!;if(!sourceTag||/[\r\n\t]/.test(sourceTag))fail('--source-tag needs one nominal constructor tag');}
  if(!values.has('-o'))fail('required -o <output>');
  if(flags.has('--stage-progress')&&!values.has('--stage-profile'))fail('--stage-progress needs --stage-profile=DIR');
+ if(values.has('--work-census')&&(!values.has('--stage-profile')||!values.has('--work-census-binding')||manifests.length===0))fail('--work-census needs --stage-profile, --work-census-binding and --stage-manifest');
+ if((values.has('--work-census-binding')||values.has('--work-census-ms'))&&!values.has('--work-census'))fail('work census options need --work-census');
+ const workCensusMs=Number(values.get('--work-census-ms')??80000);
+ if(!Number.isSafeInteger(workCensusMs)||workCensusMs<1||workCensusMs>120000)fail('--work-census-ms must be 1..120000');
  const output=values.get('-o')!;
  return {candidate:resolve(values.get('--candidate')!),parser:values.has('--parser')?resolve(values.get('--parser')!):undefined,
   candidateBuild:values.has('--candidate-build')?resolve(values.get('--candidate-build')!):undefined,
@@ -95,6 +99,9 @@ function args_parse(){
   stageProfile:values.has('--stage-profile')?resolve(values.get('--stage-profile')!):undefined,
   checkedOut:values.has('--checked-out')?resolve(values.get('--checked-out')!):undefined,
   sourcesOut:values.has('--sources-out')?resolve(values.get('--sources-out')!):undefined,
+  workCensus:values.has('--work-census')?resolve(values.get('--work-census')!):undefined,
+  workCensusBinding:values.has('--work-census-binding')?resolve(values.get('--work-census-binding')!):undefined,
+  workCensusMs,
   stageManifests:manifests,stageReceipts:receipts,stageProgress:flags.has('--stage-progress')};
 }
 
@@ -192,12 +199,14 @@ const namespace_of=(parent:string,path:string):string=>
 const files:unknown[]=[];
 const modules:unknown[]=[];
 const seen=new Set<string>();
+const moduleScopes=o.workCensus===undefined?undefined:new Map<string,string>();
 const inputFile=realpathSync(o.input);
 let rootModule:Record<string,unknown>|undefined;
 function visit(file:string,scope:string){
  const at=realpathSync(file);
  if(seen.has(at))return;
  seen.add(at);
+ moduleScopes?.set(at,scope);
  const fileSpan=o.stageProgress?stage?.span('parse-file',{file:at,summary:false}):undefined;
  const module=parse(at,readFileSync(at,'utf8'));
  if(fileSpan!==undefined)stage!.end(fileSpan,'completed',{file:at});
@@ -229,20 +238,57 @@ stage?.record({kind:'phase-exact-counters',scope:'candidate host',name:'parse-im
  source:'candidate_host.ts',details:{phase:'parse-import-fuel',
   note:'one eager parser feedback chain per parsed module; fuelCells is the exact constructed cell count, not semantic fuel consumed'}});
 const bag=sourceFiles(files,sourceTag);
+let workCensus:any,demandCapture:any,workCpu:any,workCensusSaved=false,workObserverWallMs=0;
+let isWorkCensusStop:(error:unknown)=>boolean=()=>false;
+function saveWorkCensus(error?:unknown){
+ if(workCensus===undefined||workCensusSaved)return;
+ const intentional=isWorkCensusStop(error);
+ writeFileSync(o.workCensus!,JSON.stringify({schemaVersion:1,acceptanceEvidence:false,
+  status:intentional?'INTENTIONAL_DIAGNOSTIC_STOP':error===undefined?'COMPLETED':'ERROR',
+  error:error===undefined?null:String(error),workObserverWallMs,cpuProfileDirectory:o.workCensus+'.profiles',
+  observerTimeScope:'measured callback wall, including census analysis; overlaps compiler phase spans',
+  work:workCensus.report(),demand:demandCapture.report()},null,2)+'\n',{flag:'wx'});
+ workCensusSaved=true;
+}
+function workObserver(attributes:any){
+ if(workCensus===undefined)return attributes;
+ return {
+  onStep(step:number,run:unknown){
+   const started=performance.now();
+   try{attributes?.onStep?.(step,run);demandCapture.observeRun(run);workCensus.onStep(step,run);}
+   finally{workObserverWallMs+=performance.now()-started;}
+  },
+  onFinish(value:unknown,steps:number){attributes?.onFinish?.(value,steps);workCensus.onFinish(value,steps);},
+  onError(error:unknown,steps:number){attributes?.onError?.(error,steps);workCensus.onError(error,steps);},
+ };
+}
 
 // One attributed phase: a real span plus exact host-step counters and sampled
 // typed progress. A thrown step error still closes the span failed and records
 // the samples observed before it.
 function attributedPhase(name:string,protocol:string,inputs:Record<string,unknown>,run:(observe:unknown)=>unknown,success:(value:unknown)=>boolean):unknown{
  if(stage===undefined)return run(undefined);
- const attributes=createStepAttribution(name,protocol,stage.manifestTable,stage.profile);
+ // Census owns bounded trace aggregates; do not duplicate every NF bracket
+ // into the general collector's retained per-call span list.
+ const attributes=protocol==='Emitter'&&workCensus!==undefined?undefined:createStepAttribution(name,protocol,stage.manifestTable,stage.profile);
  const token=stage.span(name,inputs);
+ if(protocol==='Emitter')workCpu?.mark('emit',inputs);
  let value:unknown;
- try{value=run(attributes);}
- catch(error){stage.end(token,'failed',{error:String(error)});attributes.record(stage.profile);throw error;}
+ try{value=run(protocol==='Emitter'?workObserver(attributes):attributes);}
+ catch(error){
+  if(protocol==='Emitter')workCpu?.finish(error);
+  stage.end(token,'failed',{error:String(error)});attributes?.record(stage.profile);saveWorkCensus(error);
+  if(isWorkCensusStop(error)){
+   stage.finish('diagnostic-stopped');
+   console.log(JSON.stringify({status:'INTENTIONAL_DIAGNOSTIC_STOP',acceptanceEvidence:false,report:o.workCensus}));
+   process.exit(0);
+  }
+  throw error;
+ }
+ if(protocol==='Emitter')workCpu?.finish();
  const ok=success(value),message=String(objectOf(objectOf(value)?.diagnostic)?.message??objectOf(value)?.message??tag(value));
  stage.end(token,ok?'completed':'failed',{result:tag(value),...(ok?{}:{error:message})});
- attributes.record(stage.profile);
+ attributes?.record(stage.profile);
  return value;
 }
 
@@ -280,6 +326,33 @@ if(target==='c'){
  try{runtime=readFileSync(o.runtimeC,'utf8');}
  catch(error){fail('cannot read C runtime '+o.runtimeC+': '+String(error));}
 }
+if(o.workCensus!==undefined){
+ const [{authenticateCensusBinding},{createWorkCensus,isWorkCensusStop:stopped},{createDemandCapture}]=await Promise.all([
+  import('./compiler_demand_diagnostic.mjs'),import('./compiler_work_census.mjs'),import('./compiler_demand_census.mjs')]);
+ const binding=authenticateCensusBinding(o.workCensusBinding!);
+ if(binding.artifactPath!==realpathSync(o.candidate)||binding.artifactSha256!==fileSha(o.candidate))fail('work census binding belongs to another compiler image');
+ const table=loadStageManifests(o.stageManifests,{artifactSha256:binding.artifactSha256,receipt:binding});
+ const documents=o.stageManifests.map(path=>JSON.parse(readFileSync(path,'utf8')));
+ const traced=documents.filter(document=>document.trace?.programCapture!==undefined);
+ if(traced.length!==1||traced[0].trace.programCapture.birImport!=='../bend2/selfhost/backend_ir.bend')fail('work census needs one authenticated passive BIR.Program carrier');
+ const requestManifests=documents.flatMap(document=>{
+  const output=document.generationConfig?.output;
+  if(typeof output!=='string')return [];
+  const path=resolve(ROOT,output),namespace=moduleScopes?.get(path);
+  if(namespace===undefined)return [];
+  if(document.outputs?.[output]!==fileSha(path))fail('request census manifest differs from the actual imported module');
+  return [{document,namespace}];
+ });
+ workCensus=createWorkCensus({table,maxSteps:1000000000,maxWallMs:o.workCensusMs,sampleEvery:1024});
+ demandCapture=createDemandCapture({manifest:table,programCapture:traced[0].trace.programCapture,
+  birProgramTag:sourceTag.slice(0,-'SourceFile'.length)+'Program',
+  producerIdentity:binding.artifactSha256,inputSha256:fileSha(o.input),
+  analysisOptions:{maxNodes:8000000,maxEdges:4000000,requestManifests}});
+ isWorkCensusStop=stopped;
+ const {createCpuProfiler}=await import('./selfhost_cpu_profile.mjs');
+ workCpu=createCpuProfiler(o.workCensus+'.profiles',{stage:'bounded-emitter-work-census',candidateSha256:binding.artifactSha256,acceptanceEvidence:false});
+ process.on('exit',code=>{if(!workCensusSaved)saveWorkCensus(code===0?undefined:Error('candidate host exited '+code));});
+}
 const emitted=attributedPhase('emit','Emitter',{target,library:o.library,exports:o.library?exports.length:null},
  observe=>target==='c'
   ? o.library
@@ -290,6 +363,7 @@ const emitted=attributedPhase('emit','Emitter',{target,library:o.library,exports
    : runEmitterSteps(candidate,program,bag,observe),
  value=>tag(value)==='EmitSuccess');
 if(tag(emitted)!=='EmitSuccess')fail('emission failed: '+String(objectOf(emitted)?.message??''));
+saveWorkCensus();
 const source=objectOf(emitted)?.source;
 if(typeof source!=='string')fail('emission returned no source');
 const outputSpan=stage?.span('output-write',{output:o.output,bytes:Buffer.byteLength(source)});

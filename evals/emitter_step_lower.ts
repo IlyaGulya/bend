@@ -11,6 +11,7 @@
  * ---
  *   bun evals/emitter_step_lower.ts            ordinary build (unchanged)
  *   bun evals/emitter_step_lower.ts --trace    diagnostic scheduler-boundary build
+ *   bun evals/emitter_step_lower.ts --trace-census  bounded work-census roots
  *
  * `--trace` is opt-in and diagnostic only. It writes its own artifacts
  * (checkpoints/emitter_steps_trace_v1.bend, ..._component_v1.bend,
@@ -28,6 +29,9 @@
  * Shared read-only inputs (dependency, frozen slice/driver/corpus, kernel,
  * parser, base, node/validation policies) keep their single canonical paths in
  * both configs: they are inputs authenticated per manifest by hash, not outputs.
+ * `--trace-census` uses the same authenticated event protocol and pin producer,
+ * but its own five output paths and focused semantic/layout root set. It does
+ * not replace or extend the existing `--trace` root list.
  */
 import {checkerStepConfig, generateNativeSteps} from './checker_core_step_lower.ts';
 import type {StepConfig, StepTraceRoot} from './checker_core_step_lower.ts';
@@ -102,27 +106,52 @@ export const emitterTraceStepConfig: StepConfig = {
   manifest: 'checkpoints/emitter-steps-trace-v1.json',
   trace: {protocolVersion: 1, quantum: 64, maxEventsPerBoundary: 1, roots: emitterTraceRoots},
 };
-async function prepareTracePins() {
+/** Work-census roots deliberately omit per-field rendering/sharing helpers.
+ * Keep the existing entry/lower/catalog/NF/context and C planning/render/SHOW
+ * boundaries, then add the five layout-demand boundaries under investigation.
+ * These are canonical source names, not composition/provider ordinals. */
+const emitterTraceCensusRoots: readonly StepTraceRoot[] = [
+  ...emitterTraceRoots.filter(root => root.site <= 11 || root.site >= 23),
+  {site: 31, stage: 'emit-render-c', source: 'bend2/selfhost/c_backend.bend', canonicalName: 'cid_rows'},
+  {site: 32, stage: 'emit-layouts', source: 'bend2/selfhost/c_backend_layout.bend', canonicalName: 'node_declared'},
+  {site: 33, stage: 'emit-layouts', source: 'bend2/selfhost/c_backend_layout.bend', canonicalName: 'family_reach'},
+  {site: 34, stage: 'emit-layouts', source: 'bend2/selfhost/c_backend_layout.bend', canonicalName: 'reach_arms'},
+  {site: 35, stage: 'emit-layouts', source: 'bend2/selfhost/c_backend_layout.bend', canonicalName: 'reaches'},
+];
+export const emitterTraceCensusStepConfig: StepConfig = {
+  ...emitterTraceStepConfig,
+  owned: 'checkpoints/emitter_trace_census_owned_v1.bend',
+  ownedManifest: 'checkpoints/emitter-trace-census-owned-source-v1.json',
+  output: 'checkpoints/emitter_steps_trace_census_v1.bend',
+  component: 'checkpoints/emitter_steps_trace_census_component_v1.bend',
+  manifest: 'checkpoints/emitter-steps-trace-census-v1.json',
+  trace: {protocolVersion: 1, quantum: 64, maxEventsPerBoundary: 1, roots: emitterTraceCensusRoots,
+    programCapture: {site: 28, argument: 0}},
+};
+async function prepareTracePins(config: StepConfig = emitterTraceStepConfig) {
   // A static import cannot work: checker_core_owned_source.ts imports
   // emitterStepConfig from this module, so it must load after this module has
   // fully evaluated. The specifier is a constant; nothing else is dynamic.
   const {generateDiagnosticEmitterTracePins} = await import('./checker_core_owned_source.ts');
   return generateDiagnosticEmitterTracePins({
-    mode: emitterTraceStepConfig.mode, canonical: emitterTraceStepConfig.canonical,
-    output: emitterTraceStepConfig.owned, ownedManifest: emitterTraceStepConfig.ownedManifest,
+    mode: config.mode, canonical: config.canonical,
+    output: config.owned, ownedManifest: config.ownedManifest,
     baseManifest: emitterStepConfig.ownedManifest,
-    closure: emitterTraceStepConfig.providerClosure!, baseClosure: emitterStepConfig.providerClosure!,
+    closure: config.providerClosure!, baseClosure: emitterStepConfig.providerClosure!,
   });
 }
 if (import.meta.main) {
   const arguments_ = process.argv.slice(2);
-  const unknown = arguments_.filter(argument => argument !== '--trace');
-  if (unknown.length) throw Error('Unknown emitter CLI arguments: ' + unknown.join(' ') + ' (expected no arguments or --trace)');
+  const census = arguments_.includes('--trace-census');
+  const unknown = arguments_.filter(argument => argument !== '--trace' && argument !== '--trace-census');
+  if (unknown.length || (census && arguments_.length !== 1))
+    throw Error('Unknown or conflicting emitter CLI arguments: ' + arguments_.join(' ') + ' (expected no arguments, --trace or --trace-census)');
   if (arguments_.length === 0) {
     await generateNativeSteps(emitterStepConfig);
   } else {
-    const pins = await prepareTracePins();
+    const config = census ? emitterTraceCensusStepConfig : emitterTraceStepConfig;
+    const pins = await prepareTracePins(config);
     console.log(JSON.stringify({traceOwned: pins.owned, traceOwnedManifest: pins.manifest, traceSourceSha256: pins.sourceSha256}));
-    await generateNativeSteps(emitterTraceStepConfig);
+    await generateNativeSteps(config);
   }
 }

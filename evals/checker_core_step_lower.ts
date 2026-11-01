@@ -64,6 +64,8 @@ export type StepEntry = {mode: 'emitter' | 'cemit'; root: string; libraryRoot: s
 export type StepTraceRoot = {site: number; stage: string; source: string; canonicalName: string};
 export type StepTraceConfig = {
   protocolVersion: 1; quantum: 64; maxEventsPerBoundary: 1; roots: readonly StepTraceRoot[];
+  /** Diagnostic-only passive BIR.Program carrier at one marked call boundary. */
+  programCapture?: {site: number; argument: number};
 };
 export type StepConfig = {
   canonical: string; owned: string; dependency: string; ownedManifest: string; ownedDriver?: string;
@@ -108,6 +110,9 @@ const traceEventType = 'EmitterTraceEvent', traceBeginConstructor = 'EmitterTrac
 const traceSiteType = 'EmitterTraceSite', traceUntracedConstructor = 'EmitterTraceUntraced', traceAtConstructor = 'EmitterTraceAt';
 const traceRunConstructor = 'EmitterRunSpan', traceStackConstructor = 'EmitterStackTraced';
 const traceAdvanceFunction = 'emitter_trace_advance';
+const programCapture = paths.trace?.programCapture;
+const traceProgramAtConstructor = 'EmitterTraceProgramAt', tracePayloadType = 'EmitterTracePayload';
+const traceNoProgramConstructor = 'EmitterTraceNoProgram', traceProgramConstructor = 'EmitterTraceProgram';
 const traced = paths.trace !== undefined;
 const entries: readonly StepEntry[] | undefined = paths.entries ?? (paths.mode === 'emitter'
   ? [{mode: 'emitter', root: paths.root, libraryRoot: 'emit_library'}] : undefined);
@@ -553,6 +558,12 @@ if (paths.trace) {
       composedDeclarationSha256: row.composedDeclarationSha256});
   }
   if (!traceRoots.length) throw Error('Scheduler-boundary trace requires at least one authenticated root');
+  if (programCapture) {
+    const root = traceRoots.find(root => root.site === programCapture.site);
+    if (!root || !Number.isInteger(programCapture.argument) || programCapture.argument < 0
+      || !byName.get(root.name)?.parameters[programCapture.argument])
+      throw Error('Program capture must name an existing argument of an authenticated trace root');
+  }
 }
 // Direct values are deliberately limited to non-constructing projections and
 // selectors with a live source argument. Returning a bound value or a nullary
@@ -657,6 +668,8 @@ for (const name of startNames) if (name !== startFunction) {
 // diagnostic collision fails closed rather than renaming the scheduler.
 if (traced) for (const name of [traceEventType, traceBeginConstructor, traceEndConstructor, traceSiteType,
   traceUntracedConstructor, traceAtConstructor, traceRunConstructor, traceStackConstructor, traceAdvanceFunction]) reserve(name);
+if (programCapture) for (const name of [traceProgramAtConstructor, tracePayloadType,
+  traceNoProgramConstructor, traceProgramConstructor]) reserve(name);
 if (traced) for (const name of tracedSites.keys()) if (pureNames.has(name))
   throw Error('Traced scheduler boundary was erased as a pure projection: ' + name);
 const requestName = new Map(definitions.map(def => [def.name, reserve(requestType + '_' + def.name)]));
@@ -711,9 +724,16 @@ type SourceVar = Extract<B.LTerm, {$: 'Var'}>;
 const fusedTailSites: {caller: string; callee: string}[] = [];
 const directCallSites: {caller: string; callee: string}[] = [];
 const tracedPendingSites = new Map<string, number>();
-function traceSiteValue(name: string): B.LTerm {
+function traceSiteValue(name: string, values: B.LTerm[]): B.LTerm {
   const site = tracedSites.get(name);
-  return site === undefined ? ctr(traceUntracedConstructor, []) : ctr(traceAtConstructor, [B.Lit('U32', site)]);
+  if (site === undefined) return ctr(traceUntracedConstructor, []);
+  if (programCapture?.site === site) {
+    const value = values[programCapture.argument];
+    if (!value || value.$ !== 'Var')
+      throw Error('Passive Program capture requires an already-bound variable, not duplicated computation');
+    return ctr(traceProgramAtConstructor, [B.Lit('U32', site), value]);
+  }
+  return ctr(traceAtConstructor, [B.Lit('U32', site)]);
 }
 function delayedProgress(owner: Definition, target: Definition, values: B.LTerm[], resume: B.LTerm): B.LTerm {
   const witness = request(target.name, values);
@@ -731,7 +751,7 @@ function delayedProgress(owner: Definition, target: Definition, values: B.LTerm[
   }
   pendingCount++;
   if (tracedSites.has(target.name)) tracedPendingSites.set(target.name, (tracedPendingSites.get(target.name) ?? 0) + 1);
-  return ctr(pendingType, traced ? [witness, traceSiteValue(target.name), resume] : [witness, resume]);
+  return ctr(pendingType, traced ? [witness, traceSiteValue(target.name, values), resume] : [witness, resume]);
 }
 const singleConstructors = new Set(Object.values(book.tlds)
   .flatMap(tld => tld.$ === 'ADT' && tld.c.length === 1 ? [tld.c[0]!.k] : []));
@@ -2368,7 +2388,8 @@ chunks.push('\ndef ' + resultFunction + '(request: ' + requestType + ') -> ' + r
 for (const group of requestGroups) chunks.push('    case ' + group.constructor + '{inner}: ' + group.result + '(inner)\n');
 const resumeType = '(@box: ' + valueType + '<' + resultFunction + '(request)> -> ' + progressType + '<A>)';
 chunks.push('\ntype ' + valueType + '<-A: Type> is Type:\n  ' + valueType + '{value: A}\n');
-if (traced) chunks.push('\ntype ' + traceSiteType + ' is Data:\n  ' + traceUntracedConstructor + '{}\n  ' + traceAtConstructor + '{site: U32}\n');
+if (traced) chunks.push('\ntype ' + traceSiteType + ' is Data:\n  ' + traceUntracedConstructor + '{}\n  ' + traceAtConstructor + '{site: U32}\n'
+  + (programCapture ? '  ' + traceProgramAtConstructor + '{site: U32, program: BIR.Program}\n\ntype ' + tracePayloadType + ' is Data:\n  ' + traceNoProgramConstructor + '{}\n  ' + traceProgramConstructor + '{program: BIR.Program}\n' : ''));
 chunks.push('\ntype ' + progressType + '<-A: Type> is Type:\n  ' + finishedType + '{box: ' + valueType + '<A>}\n  ' + pendingType + '{request: ' + requestType + (traced ? ', site: ' + traceSiteType : '') + ', resume: ' + resumeType + '}\n  ' + directType + '{-R: Type, -request: ' + requestType + ', arguments: R, invoke: (@arguments: R -> ' + progressType + '<' + resultFunction + '(request)>), resume: ' + resumeType + '}\n  ' + boundType + '{-B: Type, inner: ' + progressType + '<B>, resume: (@box: ' + valueType + '<B> -> ' + progressType + '<A>)}\n\n');
 chunks.push(`
 ${traced ? `type ${traceEventType} is Data:
@@ -2383,7 +2404,7 @@ ${traced ? `type ${traceEventType} is Data:
 type ${runType}<-R: Type> is Type:
   ${runFinishedType}{box: ${valueType}<R>}
   ${runStateType}{-A: Type, progress: ${progressType}<A>, stack: ${stackType}<A, R>}${traced ? `
-  ${traceRunConstructor}{events: List<&2, ${traceEventType}>, next: Bool -> ${runType}<R>}` : ''}
+  ${traceRunConstructor}{events: List<&2, ${traceEventType}>${programCapture ? ', payload: ' + tracePayloadType : ''}, next: Bool -> ${runType}<R>}` : ''}
 
 def ${castBoxFunction}(-A: Type, -R: Type, equation: {A == R : Type}, box: ${valueType}<A>) -> ${valueType}<R>:
   %equation : ${valueType}<_>
@@ -2426,14 +2447,15 @@ for (const group of requestGroups) chunks.push('    case ' + group.constructor +
 chunks.push(`
 ${traced ? `def ${traceAdvanceFunction}(-A: Type, -R: Type, request: ${requestType}, resume: ${resumeType}, stack: ${stackType}<A, R>, site: ${traceSiteType}) -> ${runType}<R>:
   match site:
-    case ${traceAtConstructor}{+site}: ${traceRunConstructor}{[${traceBeginConstructor}{site}], scheduled => ${runStateType}{${resultFunction}(request), ${rawStepFunction}(request), ${traceStackConstructor}{A, site, resume, stack}}}
+    case ${traceAtConstructor}{+site}: ${traceRunConstructor}{[${traceBeginConstructor}{site}]${programCapture ? ', ' + traceNoProgramConstructor + '{}' : ''}, scheduled => ${runStateType}{${resultFunction}(request), ${rawStepFunction}(request), ${traceStackConstructor}{A, site, resume, stack}}}${programCapture ? `
+    case ${traceProgramAtConstructor}{+site, +program}: ${traceRunConstructor}{[${traceBeginConstructor}{site}], ${traceProgramConstructor}{program}, scheduled => ${runStateType}{${resultFunction}(request), ${rawStepFunction}(request), ${traceStackConstructor}{A, site, resume, stack}}}` : ''}
     case ${traceUntracedConstructor}{}: ${runStateType}{${resultFunction}(request), ${rawStepFunction}(request), ${stackMoreType}{A, resume, stack}}
 
 ` : ''}def ${popFunction}(-A: Type, -R: Type, stack: ${stackType}<A, R>, box: ${valueType}<A>) -> ${runType}<R>:
   match stack:
     case ${stackDoneType}{equation}: ${runFinishedType}{${castBoxFunction}(A, R, equation, box)}
     case ${stackMoreType}{B, resume, rest}: ${runStateType}{B, resume(box), rest}${traced ? `
-    case ${traceStackConstructor}{B, site, resume, rest}: ${traceRunConstructor}{[${traceEndConstructor}{site}], scheduled => ${runStateType}{B, resume(box), rest}}` : ''}
+    case ${traceStackConstructor}{B, site, resume, rest}: ${traceRunConstructor}{[${traceEndConstructor}{site}]${programCapture ? ', ' + traceNoProgramConstructor + '{}' : ''}, scheduled => ${runStateType}{B, resume(box), rest}}` : ''}
 
 def ${advanceFunction}(-A: Type, -R: Type, progress: ${progressType}<A>, stack: ${stackType}<A, R>) -> ${runType}<R>:
   match progress:
@@ -2586,6 +2608,9 @@ const manifest = {
     protocolVersion: 1, protocol, runConstructor: traceRunConstructor,
     beginConstructor: traceBeginConstructor, endConstructor: traceEndConstructor,
     maxEventsPerBoundary: 1, quantum: nativeChunkQuantum,
+    ...(programCapture ? {programCapture: {...programCapture, runField: 'payload',
+      constructor: traceProgramConstructor, emptyConstructor: traceNoProgramConstructor,
+      birImport: '../bend2/selfhost/backend_ir.bend'}} : {}),
     roots: traceRoots.map(root => ({
       site: root.site, stage: root.stage, source: root.source, canonicalName: root.canonicalName, name: root.name,
       request: posix.basename(paths.output, '.bend') + '.' + requestName.get(root.name)!,
