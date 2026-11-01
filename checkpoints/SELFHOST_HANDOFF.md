@@ -73,6 +73,8 @@ R10D1 source **`121d977d`**, outcome **`8a04d1d1`**: actual BIR root тепер�
 CheckerRequest, arity0,19 group-wrapper arms; seen path идёт через Arena,
 Scope maps, String, Char/U32, env empty. Диагностика намеренно остановлена
 после observation, не C compile/run PASS.
+Завершённый one-off scheduler diagnostic удалён из main evals после proof;
+точные source/команды/observation сохранены в соответствующих checkpoints и Git.
 Следующий private experiment — conservative program-scoped negative named-ref
 facts только для closed zero-arity/empty-args families; unknowns fail closed,
 positive/maybe/generic cases сохраняют NF/env/fuel/seen. ClosedFamilyFacts
