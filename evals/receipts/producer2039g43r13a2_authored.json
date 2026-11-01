@@ -1,0 +1,127 @@
+{
+  "schemaVersion": 1,
+  "version": "2039g43r13-admission2",
+  "status": "AUTHORED_EXISTING_OWNED_STEP_PREFLIGHT_BEFORE_EXECUTION",
+  "sourceCommit": "af6f7466",
+  "sourceBaseline": "f2e8358a",
+  "beforeTestSourceCommit": "091be91e",
+  "baselineConsumerProof": "checkpoints/local2039g43r13t3-outcome/outcome.json",
+  "baselineProofCheckpoint": "b08d12e0",
+  "sourcePins": [
+    {
+      "file": "bend2/selfhost/c_backend_physical.bend",
+      "source": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/show-nf-e80899cb/bend2/selfhost/c_backend_physical.bend",
+        "sha256": "695ac38e6d4994aedc0c3ee76d4ee1105a331b08df1ee751b1905454daae247e",
+        "bytes": 164876
+      },
+      "frozen": {
+        "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g43r13-source/bend2/selfhost/c_backend_physical.bend",
+        "sha256": "695ac38e6d4994aedc0c3ee76d4ee1105a331b08df1ee751b1905454daae247e",
+        "bytes": 164876
+      }
+    },
+    {
+      "file": "evals/c_target_show_data.bend",
+      "source": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/show-nf-e80899cb/evals/c_target_show_data.bend",
+        "sha256": "69e9de774c75f37ad414007cfa96f234e460657f9a4fbac59a7d4b0aa983a7f3",
+        "bytes": 1034
+      },
+      "frozen": {
+        "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g43r13-source/evals/c_target_show_data.bend",
+        "sha256": "69e9de774c75f37ad414007cfa96f234e460657f9a4fbac59a7d4b0aa983a7f3",
+        "bytes": 1034
+      }
+    }
+  ],
+  "unchangedSemanticSources": [
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/show-nf-e80899cb/bend2/selfhost/c_backend_layout.bend",
+      "sha256": "763dcc07096ff4273dc2354a049316aa622fd7953fd1781973ab88d47f64a43d",
+      "bytes": 52800
+    },
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/show-nf-e80899cb/bend2/selfhost/descriptor_nf.bend",
+      "sha256": "c727bfe0adf97f86dc44960ca2c46fd890f0d8557157ba883af40d738d3e72dd",
+      "bytes": 36323
+    }
+  ],
+  "rejectedG43R12GraphIncluded": false,
+  "decision": "NF one original descriptor/context/empty env/output-level0/fuel1024 once per SHOW data-arm traversal; carry immutable NfVal through existing helpers. Each arm still freshly instantiates field scopes/fuel via arm_fields_value. No global cache, no normalize(normalize())/idempotence assumption, no changes to show_kind, SHOW-key normalization, layouts, native rules or error semantics.",
+  "sourceReferenceSearch": "Bend LSP is unavailable; exact references searched across bend2/evals/tests before helper signature changes. All executable callers are within the edited SHOW chain.",
+  "sourceAdmission": {
+    "pipeline": "Existing physical_step_smoke composeCanonicalCPSSource/normalizeNativeMatchSource/generateNativeSteps, then canonical Bend-loader execution; raw provider book_valid is outside this interface.",
+    "cwd": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/show-nf-e80899cb",
+    "generateArgv": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "evals/heavy_gate.ts",
+      "--memory-mib=8192",
+      "--rss-mib=8192",
+      "--poll-ms=10",
+      "--timeout-ms=600000",
+      "--",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "evals/physical_step_smoke.ts"
+    ],
+    "runArgv": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "evals/heavy_gate.ts",
+      "--memory-mib=8192",
+      "--rss-mib=8192",
+      "--poll-ms=10",
+      "--timeout-ms=600000",
+      "--",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "--preload",
+      "./bend2/main.ts",
+      "evals/physical_step_smoke.ts",
+      "--run=checkpoints/physical_steps_component_v1.bend"
+    ],
+    "runtimeSourcesWillBeFrozenBeforeRun": true,
+    "scope": "Actual owned-step program execution of the changed physical SHOW source. Printed desc/names are observation, not a global correctness proof; genuine-image C/JS and full original gates remain mandatory."
+  },
+  "plannedFullCorrectness": {
+    "cwd": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/show-nf-e80899cb",
+    "argv": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "evals/g24_qualification.mjs",
+      "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "--bun=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--clang=/usr/bin/clang",
+      "--llvm-bin=/opt/homebrew/opt/llvm@21/bin",
+      "--bindings=/Users/ilyagulya/Projects/My/bend/evals/receipts/producer2039g25_r12_bindings.json",
+      "--frozen-repository=/private/tmp/bend2039g22-tiny-inline",
+      "--control-native=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/native",
+      "--control-image=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+      "--phase=correctness",
+      "--cc-partitions=4",
+      "--run-id=2039g43r13",
+      "--distributed-plan=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r6/placement.json",
+      "--out=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/show-nf-e80899cb/checkpoints/local2039g43r13-correctness"
+    ],
+    "out": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/show-nf-e80899cb/checkpoints/local2039g43r13-correctness",
+    "notPreviouslyExecuted": true
+  },
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "perStepTimeoutMs": 600000,
+    "abiExports": 13,
+    "parserFuelCellsPerModule": 8000000,
+    "nativeQuantum": 64
+  },
+  "performancePolicy": "Original12 rows only after complete correctness; mean and median time strictly improve in each lane, both memory medians nonincrease. No tolerance, retries of unchanged failed target, excluded fixture, prior seed/image substitute or receipt rewrite.",
+  "acceptedCompiler": "G24R12 unchanged",
+  "compilerAccepted": false,
+  "nativeSeededFixedpointClaim": false,
+  "fullCorrectnessClaim": false,
+  "performanceClaim": false,
+  "priorInvalidHarnessCheckpoint": "c64ef218"
+}
