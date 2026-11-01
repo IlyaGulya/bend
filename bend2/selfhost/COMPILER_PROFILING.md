@@ -630,7 +630,9 @@ The original full composed CLay step pipeline now also executes, with the same
 fixture and host helper: old private R11 reports one behavioral failure, R12
 reports zero failures/7181 chunks. The canonical loader smoke is real program
 execution, not only unit tests. Only the host-lowering correction is integrated
-in main; native/fixedpoint/C deadline/strict-throughput claims remain pending.
+in main. Subsequent private R12 genuine fixedpoint passes, but full C62 rejects
+the candidate at the original scheduler deadline; strict throughput is not
+authorized. See the complete-attempt evidence below.
 `checkpoints/local2039g43r12l1-unit-outcome/outcome.json`.
 `checkpoints/local2039g43r12-semantic-outcome/outcome.json`.
 
@@ -676,4 +678,35 @@ Bun/Node avoid changing M3 system installs; `/usr/bin/git` bypasses a broken
 Homebrew wrapper. Full C deadlines occurred on both physical Macs. Those facts
 do not establish a defective Mac or prove that bb-app caused the delay.
 `checkpoints/local2039g43r11-outcome/outcome.json`.
+
+### G43R12: actual fixedpoint, original full C deadline still rejects
+
+One actual original correctness attempt from source146ec560, not a sum of
+different versions or paired performance evidence:
+
+| Boundary | Wall seconds | Outcome |
+| --- | ---: | --- |
+| Canonical JS build | 39.190 | PASS; not the native stage1 image |
+| Native build | 244.748 | PASS,12509 checked definitions |
+| Genuine native bootstrap | 528.152 | PASS, exact native-stage1/stage2 bytes |
+| Emitted suites | 255.534 | PASS,95 seed+190 fresh executions |
+| Full remote C62 worker | 1648.074 | FAIL, scheduler emit alone exceeds600s |
+| Complete CLI attempt | 2854.480 | Rejected; later consumers not reached |
+
+Stage1/stage2 are31918288 bytes, SHA256
+`066e40c85d26237f4f6c5b3579938b0df7cb4e6df384d322ee498e2cc4b85d3e`.
+The original scheduler guard fails at600066ms with RSS2707767296 and
+footprint2521147592 bytes; `ownedTreeStopped=true`, remote `reaped=true`.
+The wrapper's generic “dispatch cancelled/transport failed” is not evidence of
+an SSH loss: durable result/worker stderr show ordinary worker exit1 and the
+actual C deadline. Emitted suites are PASS despite the receipt's stale
+last-published failure-step label.
+
+Native check in this run is66.885s wall/65.609s process CPU. The earlier R11
+off-CPU gap is not reproduced under this changed source; causation remains
+unknown. All53 native-execution sources and84 seed-loaded sources are frozen
+as84 unique source files/8057977 bytes; no images, ASTs or bulk logs in Git.
+Separate fresh nonces run only unreached JS67/native33/admission12/host5;
+failed C is not retried and the original FAIL receipt is not rewritten.
+`checkpoints/local2039g43r12-outcome/outcome.json`.
 

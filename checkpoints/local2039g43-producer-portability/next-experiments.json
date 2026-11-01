@@ -11,7 +11,7 @@
   "semanticBoundary": {
     "decision": "G43R12 retains the conservative BIR declaration graph and queries arbitrary-target exclusion only for authoritative zero-arity families with empty actual args at the semantic named-family boundary. Positive/maybe/generic/seen/fuel/native rules remain original.",
     "actualTarget": "Sigma",
-    "implementation": "Private CLay42139224 plus host solver15c22e74: actual identical full composed fixture fails once before and passes0/7181chunks after. Native/fixedpoint/full original qualification is running from checkpoint146ec560; no full correctness or performance result yet."
+    "implementation": "Private CLay42139224 plus host solver15c22e74: real composed fixture1→0/7181chunks; source146ec560 now passes genuine native byte fixedpoint and95+190 fixtures, but original C62 rejects at scheduler emit600066ms with reaped=true. Only unreached consumers run separately; no unchanged C retry, strict12 or promotion."
   },
   "nativeOffCpu": {
     "review": "NativeOffCpu read-only source audit",

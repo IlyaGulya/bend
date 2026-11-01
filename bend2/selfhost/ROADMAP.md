@@ -118,9 +118,12 @@ failures/7181 chunks. A real host-lowering defect uncovered by that fixture is
 also corrected: nested constructor payloads share quantity/type constraints
 before final kind fitting, preserving later explicit weaker quantities.
 The old helper reproduces the error and all50 affected semantic tests pass
-with the correction. Only that host fix is integrated; the Bend graph candidate
-still needs fresh native/fixedpoint/full C62/JS67 and original strict12 rows.
-`checkpoints/local2039g43r12-semantic-outcome/outcome.json`.
+with the correction. Only that host fix is integrated. Private G43R12 now
+completes genuine native-seeded byte fixedpoint and95+190 fixtures, but the
+original C62 still rejects it: scheduler emission exceeds600s, tree reaped.
+Remaining previously unexecuted consumers run separately; no strict12 or
+promotion is authorized by this partial success.
+`checkpoints/local2039g43r12-outcome/outcome.json`.
 
 
 Two independent thorough-task-executor source reviews recommend preserving
@@ -128,7 +131,7 @@ FIR→BIR→target. Publish only already-accepted checker decisions before arena
 rewind; do not move descriptors/layout or context-free normalized-type facts
 into FIR. Keep BIR free of arena/occurrence/scope ownership.
 
-After the current R12 outcome, separate source checkpoints, in order:
+Following rejected R12, separate source experiments, in order:
 1. Request-local NF reuse in SHOW: `show_advance_data/show_data_arms` can use
    one original applied-type value through existing `head_value` and
    `arm_fields_value`. Keep field instantiation scopes, explicit declarations,
