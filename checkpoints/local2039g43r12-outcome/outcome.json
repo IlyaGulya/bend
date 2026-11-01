@@ -1,0 +1,298 @@
+{
+  "schemaVersion": 1,
+  "version": "2039g43r12",
+  "status": "REJECTED_FULL_C_SCHEDULER_DEADLINE_AFTER_GENUINE_FIXEDPOINT",
+  "sourceCommit": "146ec560",
+  "algorithmCommit": "42139224",
+  "hostSolverCommit": "15c22e74",
+  "authorCheckpoint": "5182bc05",
+  "command": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "evals/g24_qualification.mjs",
+    "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+    "--bun=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--clang=/usr/bin/clang",
+    "--llvm-bin=/opt/homebrew/opt/llvm@21/bin",
+    "--bindings=/Users/ilyagulya/Projects/My/bend/evals/receipts/producer2039g25_r12_bindings.json",
+    "--frozen-repository=/private/tmp/bend2039g22-tiny-inline",
+    "--control-native=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/native",
+    "--control-image=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+    "--phase=correctness",
+    "--cc-partitions=4",
+    "--run-id=2039g43r12",
+    "--distributed-plan=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r6/placement.json",
+    "--out=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r12-correctness"
+  ],
+  "cwd": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257",
+  "observedCommandWallSeconds": 2854.48,
+  "steps": [
+    {
+      "label": "checker_core_owned_source.ts",
+      "status": "PASS",
+      "elapsedMs": 4772
+    },
+    {
+      "label": "template_step_lower.ts",
+      "status": "PASS",
+      "elapsedMs": 306
+    },
+    {
+      "label": "checker_core_step_lower.ts",
+      "status": "PASS",
+      "elapsedMs": 2804
+    },
+    {
+      "label": "emitter_step_lower.ts",
+      "status": "PASS",
+      "elapsedMs": 4665
+    },
+    {
+      "label": "parser-source",
+      "status": "PASS",
+      "elapsedMs": 17685
+    },
+    {
+      "label": "parser-public-source",
+      "status": "PASS",
+      "elapsedMs": 3007
+    },
+    {
+      "label": "parser-source-gate",
+      "status": "PASS",
+      "elapsedMs": 12505
+    },
+    {
+      "label": "parser-prepare",
+      "status": "PASS",
+      "elapsedMs": 16418
+    },
+    {
+      "label": "parser-build",
+      "status": "PASS",
+      "elapsedMs": 6663
+    },
+    {
+      "label": "parser-public-native",
+      "status": "PASS",
+      "elapsedMs": 1732
+    },
+    {
+      "label": "parser-native-gate",
+      "status": "PASS",
+      "elapsedMs": 51054
+    },
+    {
+      "label": "parser-accept",
+      "status": "PASS",
+      "elapsedMs": 1249
+    },
+    {
+      "label": "compose",
+      "status": "PASS",
+      "elapsedMs": 340
+    },
+    {
+      "label": "js-build",
+      "status": "PASS",
+      "elapsedMs": 39190
+    },
+    {
+      "label": "native-build",
+      "status": "PASS",
+      "elapsedMs": 244748
+    },
+    {
+      "label": "bootstrap",
+      "status": "PASS",
+      "elapsedMs": 528152
+    },
+    {
+      "label": "emitted-suites",
+      "status": "PASS",
+      "elapsedMs": 255534
+    }
+  ],
+  "tools": {
+    "node": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+    "bun": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "clang": "/usr/bin/clang",
+    "llvmBin": "/opt/homebrew/opt/llvm@21/bin"
+  },
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "perStepTimeoutMs": 600000,
+    "abiExports": 13,
+    "parserFuelCellsPerModule": 8000000,
+    "nativeQuantum": 64
+  },
+  "nativeBuild": {
+    "status": "NATIVE_EXECUTABLE_BUILT_NOT_YET_RUN",
+    "artifactSha256": "5f644a68e4c8e8acae98de0bdc5c13aa07cddb1016f4a4700e62a7a0d961902d",
+    "checkedDefinitions": 12509,
+    "codegenMs": 141276.79758399999,
+    "ccElapsedMs": 97990.733542,
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "peakRssBytes": 5693440000,
+      "peakFootprintBytes": 5436102968,
+      "elapsedMs": 244661,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true
+    }
+  },
+  "bootstrap": {
+    "status": "NATIVE_SEED_BOOTSTRAP_FIXEDPOINT",
+    "seedMode": "native",
+    "passed": true,
+    "fixedpoint": {
+      "criterion": "Exact emitted UTF-8 JS bytes; no normalization or patching",
+      "equal": true,
+      "stageOneSha256": "066e40c85d26237f4f6c5b3579938b0df7cb4e6df384d322ee498e2cc4b85d3e",
+      "stageTwoSha256": "066e40c85d26237f4f6c5b3579938b0df7cb4e6df384d322ee498e2cc4b85d3e"
+    },
+    "stageBytes": 31918288,
+    "nativeSeedFixtures": 95,
+    "nativePhases": [
+      {
+        "phase": "parse",
+        "elapsedMs": 7260.589,
+        "userCpuMs": 6575.633,
+        "systemCpuMs": 91.508,
+        "modules": 18,
+        "sourceBytes": 7915367,
+        "foreignBytes": 78415,
+        "eagerFuelCells": 144000000,
+        "fuelBuildMs": 1227.198
+      },
+      {
+        "phase": "expand",
+        "elapsedMs": 5258.597,
+        "userCpuMs": 4770.324,
+        "systemCpuMs": 20.492,
+        "chunkAdvances": 1073577,
+        "chunkQuantum": 64
+      },
+      {
+        "phase": "check",
+        "elapsedMs": 66884.876,
+        "userCpuMs": 65306.906,
+        "systemCpuMs": 301.904,
+        "chunkAdvances": 10408525,
+        "chunkQuantum": 64
+      },
+      {
+        "phase": "emit",
+        "elapsedMs": 15358.631,
+        "userCpuMs": 14577.413,
+        "systemCpuMs": 179.547,
+        "chunkAdvances": 1290897,
+        "chunkQuantum": 64
+      }
+    ],
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "peakRssBytes": 3050864640,
+      "peakFootprintBytes": 3516495272,
+      "elapsedMs": 528024,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true
+    }
+  },
+  "emittedSuites": {
+    "passed": true,
+    "evidenceCounts": {
+      "existingSeed": 95,
+      "freshStageOne": 95,
+      "freshStageTwo": 95,
+      "freshEmitted": 190,
+      "total": 285
+    },
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "peakRssBytes": 2590228480,
+      "peakFootprintBytes": 2357912304,
+      "elapsedMs": 255341,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true
+    }
+  },
+  "fullCMatrix": {
+    "fixtures": 62,
+    "workerElapsedMs": 1648074,
+    "nonce": "e9328d9c8a10df4f44b0f8db69cc2826f8f6ac317427029c",
+    "workerExit": 1,
+    "supervisorStatus": "FAIL",
+    "reaped": true,
+    "failures": [
+      {
+        "fixture": "scheduler_chunk_smoke",
+        "stage": "emit",
+        "guardian": {
+          "status": "FAIL",
+          "reason": "deadline_exceeded",
+          "elapsedMs": 600066,
+          "timeoutMs": 600000,
+          "peakRssBytes": 2707767296,
+          "peakFootprintBytes": 2521147592,
+          "reportPhase": "complete",
+          "ownedTreeStopped": true
+        }
+      }
+    ],
+    "diagnosis": "Dispatch wrapper says cancelled/transport failed, but durable result and worker.stderr show ordinary worker exit1 and the actual original C scheduler deadline. SSH disconnection is not established.",
+    "rawGuard": "ssh://misakaindrive/private/tmp/bend-g24-e9328d9c8a10df4f44b0f8db69cc2826f8f6ac317427029c/execution/repository/checkpoints/.g24-e9328d9c8a10df4f44b0f8db69cc2826f8f6ac317427029c/matrix-c/scheduler_chunk_smoke.emit.gate.report.json"
+  },
+  "requiredFrozenSourceCorpus": "checkpoints/local2039g43r12-inputs/corpus.json",
+  "remainingOriginalConsumers": "Authored separately; not yet executed at this checkpoint.",
+  "performance": "Not authorized: original full correctness failed. No strict12 or compiler acceptance claim.",
+  "acceptedCompiler": "G24R12 unchanged",
+  "compilerAccepted": false,
+  "fullCorrectness": false,
+  "performanceAccepted": false,
+  "rawEvidence": [
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r12-correctness/receipt.json",
+      "sha256": "969609cb12728d89f8aae9e32e0cb88a9b431153fb01cd9ebf972f20443fdf51",
+      "bytes": 33911
+    },
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r12-correctness/root-native-build.json",
+      "sha256": "7cf219b3f2063817c09306625ff4947241861e1a428b9b5225cdc8994f4d493f",
+      "bytes": 3109239
+    },
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r12-correctness/bootstrap.json",
+      "sha256": "8f47ed7e779ee8e5c5ee98a9e715575e05366fac4bc6f8a6b7645a68438be180",
+      "bytes": 516514
+    },
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r12-correctness/emitted-suites.json",
+      "sha256": "d11be7808622301a6b22411d512d958ed393bdf2015bb9e31f3acdeae5c07dbe",
+      "bytes": 1746967
+    },
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r12-correctness/dispatch-e9328d9c8a10df4f44b0f8db69cc2826f8f6ac317427029c.json",
+      "sha256": "503fa81cd8698f46f82a5896a97389c7d592eb7f907bd34eea580c55e9ca0956",
+      "bytes": 2572
+    },
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r12-correctness/result-e9328d9c8a10df4f44b0f8db69cc2826f8f6ac317427029c.json",
+      "sha256": "77c36dea3cfff79c3070839522aaa78d7940817222ef5368dd7cf8cf6944e87f",
+      "bytes": 2155
+    },
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r12-correctness/transport-e9328d9c8a10df4f44b0f8db69cc2826f8f6ac317427029c.json",
+      "sha256": "4c8c20f1cdd276864a0288c924d5eb6c190539e92c4f7c0708cd0412b572a2b6",
+      "bytes": 81
+    }
+  ]
+}

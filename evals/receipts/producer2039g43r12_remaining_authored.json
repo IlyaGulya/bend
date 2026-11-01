@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "version": "2039g43r12-remaining",
+  "status": "AUTHORED_BEFORE_EXECUTION",
+  "sourceCheckpoint": "146ec560",
+  "sourceOutcome": "REJECTED_FULL_C_SCHEDULER_DEADLINE",
+  "jobs": [
+    "matrix-js",
+    "native",
+    "admission",
+    "host"
+  ],
+  "notRetried": [
+    "matrix-c",
+    "scheduler_chunk_smoke C emit",
+    "full native/bootstrap"
+  ],
+  "snapshotSha256": "3abc196b7f2084cef95f8468c5ad9ecb98d834ffe2aabc0ee6f94fd7f683a059",
+  "nativeStageOneSha256": "066e40c85d26237f4f6c5b3579938b0df7cb4e6df384d322ee498e2cc4b85d3e",
+  "genuineNativeSeededFixedpoint": {
+    "criterion": "Exact emitted UTF-8 JS bytes; no normalization or patching",
+    "equal": true,
+    "stageOneSha256": "066e40c85d26237f4f6c5b3579938b0df7cb4e6df384d322ee498e2cc4b85d3e",
+    "stageTwoSha256": "066e40c85d26237f4f6c5b3579938b0df7cb4e6df384d322ee498e2cc4b85d3e"
+  },
+  "command": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r12-remaining.mjs",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r6/placement.json",
+    "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r12-correctness/consumer-snapshot",
+    "3abc196b7f2084cef95f8468c5ad9ecb98d834ffe2aabc0ee6f94fd7f683a059",
+    "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r12-correctness/snapshot-3abc196b7f2084cef95f8468c5ad9ecb98d834ffe2aabc0ee6f94fd7f683a059.tar.gz",
+    "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r12-correctness/dispatch-e9328d9c8a10df4f44b0f8db69cc2826f8f6ac317427029c.json",
+    "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r12-remaining-63aee352a4fe"
+  ],
+  "script": {
+    "sha256": "81c7155f0f72bcc7a86691640da9a171c8d37b799a7c7010d421799580aca555",
+    "source": "import {readFileSync,writeFileSync,mkdirSync,realpathSync} from 'node:fs';\nimport {dispatch,loadPlan,verifySnapshot} from '/Users/ilyagulya/Projects/My/bend/evals/g24_distributed.mjs';\nconst [planPath,root,sha256,archive,envelopePath,destination]=process.argv.slice(2);\nconst envelope=JSON.parse(readFileSync(envelopePath,'utf8'));\nmkdirSync(destination,{mode:0o700});\nconst out=realpathSync(destination);\nconst context={...envelope.context,repository:envelope.context.candidate.repository,out,distributed:loadPlan(planPath)};\nconst snapshot={path:root,sha256,archive,manifest:verifySnapshot(root,sha256)};\nconst results={},failures=[];let cancelled=false;\nconst cancel=()=>{cancelled=true;context.distributionCancelled=true;};\nfor(const signal of ['SIGINT','SIGTERM','SIGHUP'])process.on(signal,cancel);\nfor(const job of ['matrix-js','native','admission','host']){\n if(cancelled)break;\n console.log(JSON.stringify({job,status:'RUNNING'}));\n try{results[job]=await dispatch(context,snapshot,job);console.log(JSON.stringify({job,status:'PASS',transport:results[job].transport}));}\n catch(error){failures.push({job,error:String(error)});console.error(JSON.stringify({job,status:'FAIL',error:String(error)}));}\n}\nconst report={schemaVersion:1,status:!cancelled&&failures.length===0&&Object.keys(results).length===4?'PASS_REMAINING_ONLY':'FAIL',scope:'Only four original previously unexecuted consumer targets. Original full C62 remains FAIL; qualification receipt is not rewritten and strict12/promotion are not authorized.',sourceCheckpoint:'146ec560',originalRunId:envelope.context.runId,snapshotSha256:sha256,results,failures,cancelled,compilerAccepted:false,fullCorrectnessClaim:false,performanceClaim:false};\nwriteFileSync(out+'/outcome.json',JSON.stringify(report,null,2)+'\\n',{flag:'wx'});\nconsole.log(JSON.stringify({status:report.status,report:out+'/outcome.json'}));\nif(report.status!=='PASS_REMAINING_ONLY')process.exitCode=1;\n"
+  },
+  "out": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r12-remaining-63aee352a4fe",
+  "scope": "New nonces for original targets not reached after full C62 failure; no qualification receipt rewrite, no failed-target retry, no performance/promotion authorization.",
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "perStepTimeoutMs": 600000,
+    "abiExports": 13,
+    "parserFuelCellsPerModule": 8000000,
+    "nativeQuantum": 64
+  }
+}
