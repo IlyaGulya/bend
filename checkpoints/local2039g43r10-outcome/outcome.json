@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "version": "G43R10",
+  "sourceCommit": "6cf47100",
+  "authorCheckpoint": "388bdef6",
+  "status": "FAILED_HARNESS_NO_SEMANTIC_QUALIFICATION",
+  "compilerAccepted": false,
+  "performanceAccepted": false,
+  "algorithmEvaluated": false,
+  "attemptedCommands": {
+    "canonicalLayoutSmoke": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "-e",
+      "import {writeFileSync} from \"node:fs\"; const {runHeavyGate}=await import(\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/evals/heavy_gate.ts\"); const result=await runHeavyGate([\"/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun\", \"--smol\", \"-e\", \"await import(\\\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/bend2/main.ts\\\"); const m=await import(\\\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/evals/clay_layout_smoke.bend\\\"); const result=m.default.main({$:\\\"Nil\\\"}); console.log(JSON.stringify({fixture:\\\"clay_layout_smoke\\\",result},(_key,value)=>typeof value===\\\"bigint\\\"?value.toString():value)); if(result.failures!==0)throw Error(\\\"layout smoke failures: \\\"+String(result.failures));\"],{memoryMiB:8192,rssMiB:8192,pollMs:10,timeoutMs:600000,label:\"G43R10 actual canonical layout smoke\"}); writeFileSync(\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r10/clay-smoke.guard.json\",JSON.stringify(result,null,2),{flag:\"wx\"}); process.exitCode=result.exitCode;"
+    ],
+    "freshFullCorrectness": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "evals/g24_qualification.mjs",
+      "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "--bun=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--clang=/usr/bin/clang",
+      "--llvm-bin=/opt/homebrew/opt/llvm@21/bin",
+      "--bindings=/Users/ilyagulya/Projects/My/bend/evals/receipts/producer2039g25_r12_bindings.json",
+      "--frozen-repository=/private/tmp/bend2039g22-tiny-inline",
+      "--control-native=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/native",
+      "--control-image=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+      "--phase=correctness",
+      "--cc-partitions=4",
+      "--run-id=local2039g43r10",
+      "--distributed-plan=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r6/placement.json",
+      "--fail-fast-performance=true",
+      "--out=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r10-correctness"
+    ]
+  },
+  "directLoaderAttempt": {
+    "guard": {
+      "status": "FAIL",
+      "reason": "command_exit",
+      "commandExitCode": 1,
+      "commandSignal": 0,
+      "peakRssBytes": 72056832,
+      "peakFootprintBytes": 51905136,
+      "elapsedMs": 270,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 1,
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "-e",
+        "await import(\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/bend2/main.ts\"); const m=await import(\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/evals/clay_layout_smoke.bend\"); const result=m.default.main({$:\"Nil\"}); console.log(JSON.stringify({fixture:\"clay_layout_smoke\",result},(_key,value)=>typeof value===\"bigint\"?value.toString():value)); if(result.failures!==0)throw Error(\"layout smoke failures: \"+String(result.failures));"
+      ],
+      "label": "G43R10 actual canonical layout smoke",
+      "exitCode": 1,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793522388311-1e4c809cfa75fb95.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    },
+    "error": "SOME PROOFS FAIL: a parameter or field scrutinee (a match cannot scrutinize a computed value: give it its own def). Unchanged descriptor_nf.native_of, match family_of(key, families).",
+    "interpretation": "Invalid admission recipe: these canonical provider modules require the existing composed CPS/owned-source factoring pipeline, not direct imported Bend loading. No unrelated canonical computed matches were changed."
+  },
+  "canonicalCorrectnessAttempt": {
+    "exitCode": 1,
+    "stage": "CLI validation before producer execution",
+    "error": "--fail-fast-performance requires a phase that measures throughput (all or throughput)",
+    "interpretation": "Invalid command combination authored by parent. No producer/fixedpoint/consumer/matrix evidence was produced; this is not a compiler or traversal rejection."
+  },
+  "next": "Keep the exact isolated semantic source. Use the documented full phase=correctness without the throughput-only flag, then only after genuine correctness PASS run original all12 strict throughput with --fail-fast-performance=true. No policy tolerance, case exclusion, deadline change or fake prior receipt."
+}
