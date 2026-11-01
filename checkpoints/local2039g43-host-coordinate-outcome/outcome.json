@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "c2904f2b",
+  "status": "HOST_COORDINATE_FIXES_PROVEN_NO_COMPILER_PROMOTION",
+  "files": [
+    {
+      "file": "evals/selfhost_bootstrap_gate.ts",
+      "main": {
+        "path": "/Users/ilyagulya/Projects/My/bend/evals/selfhost_bootstrap_gate.ts",
+        "sha256": "1ecdd45629e393953e5f7d1545485fb50238fcdc06b984db274e65f64c0355d7",
+        "bytes": 76323
+      },
+      "actualR10R3Source": {
+        "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/evals/selfhost_bootstrap_gate.ts",
+        "sha256": "1ecdd45629e393953e5f7d1545485fb50238fcdc06b984db274e65f64c0355d7",
+        "bytes": 76323
+      }
+    },
+    {
+      "file": "evals/g24_qualification.mjs",
+      "main": {
+        "path": "/Users/ilyagulya/Projects/My/bend/evals/g24_qualification.mjs",
+        "sha256": "0fd7982ba1a62902251d0c6d31d7ea7ce70132f218381e3e078e08499da83faa",
+        "bytes": 100694
+      },
+      "actualR10R3Source": {
+        "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/evals/g24_qualification.mjs",
+        "sha256": "0fd7982ba1a62902251d0c6d31d7ea7ce70132f218381e3e078e08499da83faa",
+        "bytes": 100694
+      }
+    }
+  ],
+  "smokeProof": "Exact same host source bytes previously executed by the genuine native-seeded f515 fixedpoint,95 original seed fixtures and190 original emitted fixtures in R10R3; transport then reached the actual remote C62 matrix. The separate C-emission deadline remains an unaccepted compiler issue.",
+  "actualSourceOutcome": "checkpoints/local2039g43r10r3-outcome/outcome.json",
+  "safetyTest": {
+    "command": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun test evals/g24_distributed.test.mjs",
+    "cwd": "/Users/ilyagulya/Projects/My/bend",
+    "runtime": "Bun1.4.3 c6da4a4d3",
+    "pass": 12,
+    "fail": 0,
+    "elapsedMs": 292
+  },
+  "unchanged": "Exact identity/hash guards, accepted compiler/backend images, serial default, original strict performance policy, guardian rails and bb-app services."
+}
