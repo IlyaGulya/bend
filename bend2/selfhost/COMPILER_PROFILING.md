@@ -1187,3 +1187,137 @@ host5 и исходный strict12 в обоих native+JS runtime lanes. Без
 compiler не меняется. Exact commands, guards, image/source hashes и scope
 ограничения сохранены в `checkpoints/local2039g45d{1,2,3}-outcome/`.
 
+### G46R1: реальный exact-query memo — semantic probes PASS, cutover REJECTED
+
+**Результат:** исходный полный scheduler не завершил C emission за прежние
+600000ms. G46R1 отклонён, не принят как ускорение. Candidate source —
+`57f4643a`, frozen compiler inputs — `ca64b654`, полный rejected checkpoint —
+`592d5170 / selfhost/g46r1-rejected`. Main canonical NF/layout, generator и host
+возвращены к принятому исходнику коммитом `307dba84`; G24R12 остаётся accepted.
+Исходники, обязательный frozen corpus и regression inputs кандидата сохранены
+в ветке, не в виде patched image. Новый `--memo-queries` CLI остался только там.
+
+#### Что действительно было реализовано
+
+Две независимые implementation slices: pure Bend structural codec/Store и
+dependent typed CPS scheduler integration. Это не host JS Map:
+
+- `descriptor_key.bend` кодировал все Descriptor/DescriptorPattern и полные
+  family/type-function metadata без hash collisions. `semantic_query.bend`
+  сохранял полные Nf/Bool в typed persistent maps; descriptor/env encodings
+  интернировались в IDs. Scope factory вычисляла реальный полный ключ один раз;
+  native scheduler заменял только metadata scope на disjoint local token.
+- Ключ NF сохранял scope/descriptor/env/output level/fuel; reach —
+  scope/descriptor/env/target/ordered seen/fuel. Closure body/capture, arrow/
+  binder levels, quantities, declaration order/duplicates и весь layout Plan
+  участвовали. False и NfFail оставались результатами ровно своего ключа.
+- Один bounded Store жил внутри одного Run. Combined result limit100000,
+  каждый scope/descriptor/env interner limit100000; при capacity результат
+  вычислялся прежним evaluator без вставки, не угадывался.
+- Lookup/save/scope intern сами исполнялись source CPS. Miss return получал
+  latest Store после вложенных запросов; affine continuation передавалось
+  ровно один раз. Никаких host resume calls, closure/getter peeking или unsafe
+  Bend casts. Final Run возвращал только Data Report, не удерживая Store.
+- Public exports13 и quantum64 сохранены. Source Run representation изменилась
+  явно: отдельный protocol `typed-native-stack-v58m`, собственные output paths,
+  memo slot в RunState и report в RunFinished. Это **не** заявление о source
+  constructor ABI compatibility со старым v57t.
+
+Generation PASS7.844s; все35 прежних contract tests PASS,103 assertions.
+Genuine unchanged native producer собрал оба образа с полными parse/expand/
+check/emit, parser8M/module, threads1, без TS compiler image или output patches:
+
+| Native-produced image | Whole producer guard | JS bytes |
+|---|---:|---:|
+| Frozen ordinary baseline | 89.858s | 31758507 |
+| G46R1 memo | 93.609s | 33945054 |
+
+Это стоимость производства разных compiler images, **не throughput comparison**.
+Memo SHA-256:
+`3e10258078cf5d16cba3ba7f727d35408ed42ba3a279cddea8151adcf2cb0a46`.
+
+#### Реальный consumer и полные semantic regressions
+
+Memo image через Node Worker выдал C для `c_target_show_data.bend`; clang
+`-O0` собрал C, executable напечатал правильный ShowReport. C побайтово
+сохранил SHA-256
+`8c9e0eebd03aeaa4036a8556376d9ee2d5a3de9287738a397b126815aaaeb8f5`.
+Native Report: NF586 hits/664 misses, reach60 hits/150 misses,814 result entries,
+254 descriptor/env IDs,3 scopes, disabled0. Это реальные source lookups, не
+observer-derived estimates. Emit guard30.465s, clang1.370s, executable0.014s.
+Скорость малого consumer не объявлена улучшенной.
+
+Отдельные frozen typed Bend probes построили native Pending requests внутри
+source; host продвигал только публичный opaque start/step. Оба probe artifacts
+полностью собраны прежним native producer. **24 NF +15 reach cases**, каждый
+с normal Store и capacity1, дали те же полные Nf tagged values/Bool, что
+неизменённый evaluator. Проверены fuel0/1/default, reducer/cycle errors,
+разные contexts/env, captured closure body/env, binder/arrow levels, quantities,
+target/ordered seen, сохранение False и capacity fallback.
+
+Normal probe: NF10 hits/35 misses, reach4 hits/12 misses, scopes4, disabled0.
+Capacity1: ровно1 result entry,2 descriptor/env IDs,1 scope, disabled65;
+семантические результаты не изменились. Сопоставление constructor namespaces
+в comparison использовало pinned source type declarations, не меняло keys
+или declaration authority.
+
+Probe harness v1 был отдельно отклонён: native checker правильно запретил
+неструктурную рекурсию `finish(run)`. В v2 loop перенесён в trusted host,
+как в production runtime; native termination/fuel не ослаблялись.
+Исполнен JS-runtime lane компилятора и C executable контрольной программы;
+native-runtime compiler lane и fixedpoint этим не доказаны.
+
+#### Исходный scheduler: отрицательный performance result
+
+Никакой замены fixture, checker engine, source closure, IO branch или rows.
+Guard:8192MiB RSS/8192MiB footprint, poll10ms, timeout600000ms.
+**FAIL deadline_exceeded**, elapsed600159ms, peak RSS2423259136B,
+footprint2536932888B, signal15, complete guardian report, owned tree stopped.
+C не был выдан; clang/runtime stages исходного scheduler не запускались.
+Memory cap не был причиной остановки.
+
+Последний checkpoint: startup615.804ms, parse/import/fuel5778.325ms,
+expand5946.415ms, check106387.175ms completed; emit оставался active.
+На elapsed599136ms наблюдалось27350386 host-step calls, quantum64.
+Последний once-per-second Pending sample:
+`descriptor_key.bend:strings_chunks`. Это **не exclusive CPU attribution**,
+не доказательство единственной причины timeout и не live status после kill.
+Final memo report отсутствует: Run не закончен; счётчики малого consumer
+нельзя экстраполировать на этот scheduler.
+
+#### Решение и следующий falsifier
+
+Exact sharing семантически реализован и выдержал boundary probes, но G46R1
+не удовлетворил обязательному consumer gate. Повторы G45 не превращаются
+автоматически в выигрыш: повторная сериализация descriptor/env/seen, source
+lookup/save и дополнительные CPS transitions тоже стоят работы.
+Данных для принятия этого cutover нет; неизменённый failed target не повторялся.
+
+Следующий обоснованный вариант — **construction-time backend-owned handles**:
+descriptor/env/scope IDs должны приходить из владельца при построении, а не
+создаваться повторным tree-to-string обходом на каждом запросе. До нового
+большого rewrite отделить measured key preparation/intern/lookup/save work
+от evaluator work; не выдавать sparse Pending samples за CPU профиль.
+Это не разрешает убрать context/env/fuel/seen, использовать FIR term-handle
+или cached NfFail как отрицательный сертификат другого budget.
+
+Full fixedpoint,95+190, C62/JS67/native33/admission12/host5 и strict12 после
+necessary consumer failure не объявлялись пройденными и не заменялись probes.
+Failed source/input/outcome checkpoints сохранены до rollback. Exact commands,
+runtime/resource receipts, scalar counters и failure boundary —
+`checkpoints/local2039g46r1-outcome/outcome.json`; source restoration smoke
+сохраняется отдельным receipt рядом с ним.
+
+Rollback проверен реальным restored-main host и authenticated ordinary image:
+C emission20.688s, clang1.217s, executable0.015s — все три process guards PASS,
+ShowReport правильный. Raw restoration controller сохранил FAIL у избыточного
+cross-checkout byte-hash assertion: полный diff показал ровно29 absolute
+`effect source` comment paths, все остальные строки C одинаковы. Артефакты не
+правились; assertion не перепинён и не повторён. Это функциональный smoke,
+не byte-fixedpoint proof. Предыдущий auth-only harness failure из неверного
+cwd также сохранён; проверка pins не ослаблялась. Полный raw result и этот
+разбор находятся в `checkpoints/local2039g46r1-outcome/restoration.json`.
+
+Итог: rejected candidate сохранён, production source восстановлен, незавершённых
+stub/alias paths от G46R1 в main не оставлено.
+

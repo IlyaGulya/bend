@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "kind": "REJECTED_RESTORATION_HARNESS_AUTHENTICATION_CONFIG",
+  "sourceRestoreCommit": "307dba84",
+  "diagnostic": "Native stage0 requires the current bend2/bend.ts",
+  "reason": "Authentication helper requires cwd of the frozen native producer repository; restoration controller was launched from main checkout. No source compile/runtime smoke step executed.",
+  "failedCwd": "/Users/ilyagulya/Projects/My/bend",
+  "correctedCwd": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository",
+  "checksWeakened": false,
+  "correction": "Reauthenticate from original frozen producer cwd while all candidate_host/source/base/runtime paths remain absolute and point to restored main checkout."
+}
