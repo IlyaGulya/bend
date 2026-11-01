@@ -78,8 +78,9 @@ async function main(){
  const closure=new Map(workloads.flatMap(work=>[...work.sources,...work.externals]).map(row=>[row.file,row.sha256]));
  const inputPins=[...closure].map(([path,sha256])=>({path,sha256}));
  const runtime=join(repository,'bend2/selfhost/c_runtime.c');
+ const queryMode=Array.isArray(load(values.get('--manifest')).trace?.queryCaptures);
  const observedPins=[node,runtime,values.get('--manifest'),values.get('--request-manifest'),fileURLToPath(import.meta.url),
-  ...['candidate_consumer_worker.mjs','candidate_host.ts','checker_core_step_runtime.mjs','compiler_stage_profile.mjs','compiler_profile.mjs','selfhost_cpu_profile.mjs','compiler_work_census.mjs','compiler_demand_census.mjs','heavy_gate.ts','heavy_gate_native.c'].map(name=>join(here,name))].map(pin);
+  ...['candidate_consumer_worker.mjs','candidate_host.ts','checker_core_step_runtime.mjs','compiler_stage_profile.mjs','compiler_profile.mjs','selfhost_cpu_profile.mjs','compiler_work_census.mjs','compiler_demand_census.mjs',...(queryMode?['compiler_query_census.mjs']:[]),'heavy_gate.ts','heavy_gate_native.c'].map(name=>join(here,name))].map(pin);
  mkdirSync(output);
  const bindingPath=join(output,'image-binding.json'),workPath=join(output,'work-census.json');
  save(bindingPath,binding);
@@ -90,13 +91,13 @@ async function main(){
   fixture,'-o',join(output,'scheduler_chunk_smoke.c'),'--base',join(repository,'bend2/base.bend'),'--runtime-c',runtime];
  const stdout=join(output,'emit.stdout'),stderr=join(output,'emit.stderr');
  const guarded=['/bin/sh','-c','out=$1; err=$2; shift 2; exec "$@" >"$out" 2>"$err"','sh',stdout,stderr,...command];
- save(join(output,'diagnostic.json'),{schemaVersion:1,kind:'compiler-demand-work-census',acceptanceEvidence:false,byteFixedpointClaim:false,startedAt:new Date().toISOString(),command,limits,windowMs,abiExports:13,parserFuelCellsPerModule:8000000,quantum:64,inputPins,observedPins,bindingSha256:hashPath(bindingPath)});
+ save(join(output,'diagnostic.json'),{schemaVersion:1,kind:queryMode?'compiler-semantic-query-census':'compiler-demand-work-census',acceptanceEvidence:false,byteFixedpointClaim:false,startedAt:new Date().toISOString(),command,limits,windowMs,abiExports:13,parserFuelCellsPerModule:8000000,quantum:64,inputPins,observedPins,bindingSha256:hashPath(bindingPath)});
  const guard=await runHeavyGate(guarded,{...limits,label:'original scheduler demand diagnostic'});
  save(join(output,'guard.json'),guard);
  for(const row of [...inputPins,...observedPins])requireThat(hashPath(row.path)===row.sha256,'Diagnostic input changed: '+row.path);
  const report=existsSync(workPath)?load(workPath):null;
  const intentional=report?.status==='INTENTIONAL_DIAGNOSTIC_STOP'&&guard.commandExitCode===0;
- const observed=guard.reportPhase==='complete'&&guard.ownedTreeStopped===true&&report!==null&&(intentional||guard.status==='PASS');
+ const observed=guard.reportPhase==='complete'&&guard.ownedTreeStopped===true&&report!==null&&(!queryMode||report.queries!==undefined)&&(intentional||guard.status==='PASS');
  save(join(output,'outcome.json'),{schemaVersion:1,acceptanceEvidence:false,byteFixedpointClaim:false,status:observed?'DIAGNOSTIC_OBSERVED':'DIAGNOSTIC_FAILED',intentionalStop:intentional,guard,report:workPath,sourceClosureUnchanged:true,endedAt:new Date().toISOString()});
  console.log(JSON.stringify({status:observed?'DIAGNOSTIC_OBSERVED':'DIAGNOSTIC_FAILED',output,guard:guard.status,intentionalStop:intentional,report:workPath}));
  process.exitCode=observed?0:1;

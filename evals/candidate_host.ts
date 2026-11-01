@@ -239,6 +239,7 @@ stage?.record({kind:'phase-exact-counters',scope:'candidate host',name:'parse-im
   note:'one eager parser feedback chain per parsed module; fuelCells is the exact constructed cell count, not semantic fuel consumed'}});
 const bag=sourceFiles(files,sourceTag);
 let workCensus:any,demandCapture:any,workCpu:any,workCensusSaved=false,workObserverWallMs=0;
+let queryCensus:any,queryRunTag:string|undefined,queryCaptures:Map<string,any>|undefined;
 let isWorkCensusStop:(error:unknown)=>boolean=()=>false;
 function saveWorkCensus(error?:unknown){
  if(workCensus===undefined||workCensusSaved)return;
@@ -247,15 +248,26 @@ function saveWorkCensus(error?:unknown){
   status:intentional?'INTENTIONAL_DIAGNOSTIC_STOP':error===undefined?'COMPLETED':'ERROR',
   error:error===undefined?null:String(error),workObserverWallMs,cpuProfileDirectory:o.workCensus+'.profiles',
   observerTimeScope:'measured callback wall, including census analysis; overlaps compiler phase spans',
-  work:workCensus.report(),demand:demandCapture.report()},null,2)+'\n',{flag:'wx'});
+  work:workCensus.report(),demand:demandCapture.report(),
+  ...(queryCensus===undefined?{}:{queries:queryCensus.report()})},null,2)+'\n',{flag:'wx'});
  workCensusSaved=true;
+}
+function observeSemanticQuery(run:any){
+ if(queryCensus===undefined||run?.$!==queryRunTag)return;
+ const capture=queryCaptures!.get(run.payload?.$);
+ if(capture===undefined)return;
+ // Work census already validated this same single-event Span against its
+ // authenticated trace table; match the passive data to that exact Begin.
+ const event=run.events.head;
+ if(event.$!==capture.beginTag||event.site!==capture.site)throw Error('query payload is not on its authenticated Begin boundary');
+ queryCensus.observe(capture.kind,run.payload,capture.provenance);
 }
 function workObserver(attributes:any){
  if(workCensus===undefined)return attributes;
  return {
   onStep(step:number,run:unknown){
    const started=performance.now();
-   try{attributes?.onStep?.(step,run);demandCapture.observeRun(run);workCensus.onStep(step,run);}
+   try{attributes?.onStep?.(step,run);demandCapture.observeRun(run);workCensus.onStep(step,run);observeSemanticQuery(run);}
    finally{workObserverWallMs+=performance.now()-started;}
   },
   onFinish(value:unknown,steps:number){attributes?.onFinish?.(value,steps);workCensus.onFinish(value,steps);},
@@ -348,6 +360,33 @@ if(o.workCensus!==undefined){
   birProgramTag:sourceTag.slice(0,-'SourceFile'.length)+'Program',
   producerIdentity:binding.artifactSha256,inputSha256:fileSha(o.input),
   analysisOptions:{maxNodes:8000000,maxEdges:4000000,requestManifests}});
+ const querySpecs=traced[0].trace.queryCaptures;
+ if(querySpecs!==undefined){
+  const trace=table.traceTables.find((row:any)=>row.status==='verified');
+  if(!trace||typeof trace.namespace!=='string'||!Array.isArray(querySpecs)||querySpecs.length!==2)fail('query census needs one verified native trace and both query schemas');
+  const {createQueryCensus}=await import('./compiler_query_census.mjs');
+  queryCensus=createQueryCensus({immutableData:true,maxNodes:500000,maxQueries:100000,maxBytes:134217728,maxWorkPerQuery:2000000});
+  queryRunTag=trace.constructors.run;queryCaptures=new Map();
+  const kinds=new Set<string>();
+  for(const capture of querySpecs){
+   const fields=capture.kind==='nf'?['context','descriptor','env','level','fuel']
+    :capture.kind==='reach'?['context','descriptor','env','target','seen','fuel']:undefined;
+   const root=trace.roots.find((row:any)=>row.site===capture.site&&row.status==='verified');
+   const source=capture.kind==='nf'?'bend2/selfhost/descriptor_nf.bend':'bend2/selfhost/c_backend_layout.bend';
+   const name=capture.kind==='nf'?'nf':'reaches';
+   if(!fields||kinds.has(capture.kind)||capture.runField!=='payload'||typeof capture.constructor!=='string'
+    ||!root||root.source!==source||root.canonicalName!==name
+    ||!Array.isArray(capture.fields)||capture.fields.length!==fields.length
+    ||capture.fields.some((field:any,index:number)=>field.name!==fields[index]||field.argument!==index))fail('query census source schema drift');
+   kinds.add(capture.kind);
+   const tag=trace.namespace+'.'+capture.constructor;
+   if(queryCaptures.has(tag))fail('duplicate query payload constructor');
+   queryCaptures.set(tag,{kind:capture.kind,site:capture.site,beginTag:trace.constructors.begin,
+    provenance:{artifactSha256:binding.artifactSha256,generationManifestSha256:trace.generationManifestSha256,
+     site:capture.site,source:root.source,canonicalName:root.canonicalName,
+     canonicalDeclarationSha256:root.canonicalDeclarationSha256}});
+  }
+ }
  isWorkCensusStop=stopped;
  const {createCpuProfiler}=await import('./selfhost_cpu_profile.mjs');
  workCpu=createCpuProfiler(o.workCensus+'.profiles',{stage:'bounded-emitter-work-census',candidateSha256:binding.artifactSha256,acceptanceEvidence:false});

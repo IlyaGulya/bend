@@ -12,6 +12,7 @@
  *   bun evals/emitter_step_lower.ts            ordinary build (unchanged)
  *   bun evals/emitter_step_lower.ts --trace    diagnostic scheduler-boundary build
  *   bun evals/emitter_step_lower.ts --trace-census  bounded work-census roots
+ *   bun evals/emitter_step_lower.ts --trace-queries  passive scoped-query census
  *
  * `--trace` is opt-in and diagnostic only. It writes its own artifacts
  * (checkpoints/emitter_steps_trace_v1.bend, ..._component_v1.bend,
@@ -32,6 +33,9 @@
  * `--trace-census` uses the same authenticated event protocol and pin producer,
  * but its own five output paths and focused semantic/layout root set. It does
  * not replace or extend the existing `--trace` root list.
+ * `--trace-queries` retains the census boundaries and Program carrier, adding
+ * passive typed NF/reentry arguments in its own artifacts. It never evaluates
+ * semantic closures or changes the scheduler's Begin/End event protocol.
  */
 import {checkerStepConfig, generateNativeSteps} from './checker_core_step_lower.ts';
 import type {StepConfig, StepTraceRoot} from './checker_core_step_lower.ts';
@@ -128,6 +132,28 @@ export const emitterTraceCensusStepConfig: StepConfig = {
   trace: {protocolVersion: 1, quantum: 64, maxEventsPerBoundary: 1, roots: emitterTraceCensusRoots,
     programCapture: {site: 28, argument: 0}},
 };
+export const emitterTraceQueriesStepConfig: StepConfig = {
+  ...emitterTraceCensusStepConfig,
+  owned: 'checkpoints/emitter_trace_queries_owned_v1.bend',
+  ownedManifest: 'checkpoints/emitter-trace-queries-owned-source-v1.json',
+  output: 'checkpoints/emitter_steps_trace_queries_v1.bend',
+  component: 'checkpoints/emitter_steps_trace_queries_component_v1.bend',
+  manifest: 'checkpoints/emitter-steps-trace-queries-v1.json',
+  trace: {
+    ...emitterTraceCensusStepConfig.trace!,
+    queryCaptures: [
+      {site: 9, kind: 'nf', fields: [
+        {name: 'context', argument: 0}, {name: 'descriptor', argument: 1},
+        {name: 'env', argument: 2}, {name: 'level', argument: 3}, {name: 'fuel', argument: 4},
+      ]},
+      {site: 35, kind: 'reach', fields: [
+        {name: 'context', argument: 0}, {name: 'descriptor', argument: 1},
+        {name: 'env', argument: 2}, {name: 'target', argument: 3},
+        {name: 'seen', argument: 4}, {name: 'fuel', argument: 5},
+      ]},
+    ],
+  },
+};
 async function prepareTracePins(config: StepConfig = emitterTraceStepConfig) {
   // A static import cannot work: checker_core_owned_source.ts imports
   // emitterStepConfig from this module, so it must load after this module has
@@ -143,13 +169,14 @@ async function prepareTracePins(config: StepConfig = emitterTraceStepConfig) {
 if (import.meta.main) {
   const arguments_ = process.argv.slice(2);
   const census = arguments_.includes('--trace-census');
-  const unknown = arguments_.filter(argument => argument !== '--trace' && argument !== '--trace-census');
-  if (unknown.length || (census && arguments_.length !== 1))
-    throw Error('Unknown or conflicting emitter CLI arguments: ' + arguments_.join(' ') + ' (expected no arguments, --trace or --trace-census)');
+  const queries = arguments_.includes('--trace-queries');
+  const unknown = arguments_.filter(argument => argument !== '--trace' && argument !== '--trace-census' && argument !== '--trace-queries');
+  if (unknown.length || ((census || queries) && arguments_.length !== 1))
+    throw Error('Unknown or conflicting emitter CLI arguments: ' + arguments_.join(' ') + ' (expected no arguments, --trace, --trace-census or --trace-queries)');
   if (arguments_.length === 0) {
     await generateNativeSteps(emitterStepConfig);
   } else {
-    const config = census ? emitterTraceCensusStepConfig : emitterTraceStepConfig;
+    const config = queries ? emitterTraceQueriesStepConfig : census ? emitterTraceCensusStepConfig : emitterTraceStepConfig;
     const pins = await prepareTracePins(config);
     console.log(JSON.stringify({traceOwned: pins.owned, traceOwnedManifest: pins.manifest, traceSourceSha256: pins.sourceSha256}));
     await generateNativeSteps(config);

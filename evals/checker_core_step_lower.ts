@@ -62,10 +62,15 @@ export type StepEntry = {mode: 'emitter' | 'cemit'; root: string; libraryRoot: s
  * `source`/`canonicalName` resolve the composed declaration through
  * `canonicalComposition.declarations`, never through a provider index. */
 export type StepTraceRoot = {site: number; stage: string; source: string; canonicalName: string};
+export type StepTraceQueryCapture = {
+  site: number; kind: 'nf' | 'reach'; fields: readonly {name: string; argument: number}[];
+};
 export type StepTraceConfig = {
   protocolVersion: 1; quantum: 64; maxEventsPerBoundary: 1; roots: readonly StepTraceRoot[];
   /** Diagnostic-only passive BIR.Program carrier at one marked call boundary. */
   programCapture?: {site: number; argument: number};
+  /** Passive, source-typed query arguments; never normalize or invoke them. */
+  queryCaptures?: readonly StepTraceQueryCapture[];
 };
 export type StepConfig = {
   canonical: string; owned: string; dependency: string; ownedManifest: string; ownedDriver?: string;
@@ -113,6 +118,8 @@ const traceAdvanceFunction = 'emitter_trace_advance';
 const programCapture = paths.trace?.programCapture;
 const traceProgramAtConstructor = 'EmitterTraceProgramAt', tracePayloadType = 'EmitterTracePayload';
 const traceNoProgramConstructor = 'EmitterTraceNoProgram', traceProgramConstructor = 'EmitterTraceProgram';
+const queryCaptureConfigs = paths.trace?.queryCaptures ?? [];
+const traceHasPayload = programCapture !== undefined || queryCaptureConfigs.length > 0;
 const traced = paths.trace !== undefined;
 const entries: readonly StepEntry[] | undefined = paths.entries ?? (paths.mode === 'emitter'
   ? [{mode: 'emitter', root: paths.root, libraryRoot: 'emit_library'}] : undefined);
@@ -522,6 +529,11 @@ type ResolvedTraceRoot = {site: number; stage: string; source: string; canonical
   canonicalDeclarationSha256: string; composedDeclarationSha256: string};
 const traceRoots: ResolvedTraceRoot[] = [];
 const tracedSites = new Map<string, number>();
+type ResolvedQueryCapture = StepTraceQueryCapture & {
+  name: string; constructor: string; siteConstructor: string; fieldDeclarations: string;
+};
+const queryCaptures: ResolvedQueryCapture[] = [];
+const queryCaptureByName = new Map<string, ResolvedQueryCapture>();
 if (paths.trace) {
   if (paths.mode !== 'emitter' || protocol !== 'Emitter')
     throw Error('Scheduler-boundary trace is an Emitter diagnostic only');
@@ -563,6 +575,47 @@ if (paths.trace) {
     if (!root || !Number.isInteger(programCapture.argument) || programCapture.argument < 0
       || !byName.get(root.name)?.parameters[programCapture.argument])
       throw Error('Program capture must name an existing argument of an authenticated trace root');
+  }
+  const querySchemas = {
+    nf: {source: 'bend2/selfhost/descriptor_nf.bend', canonicalName: 'nf',
+      fields: ['context', 'descriptor', 'env', 'level', 'fuel'], stem: 'Nf'},
+    reach: {source: 'bend2/selfhost/c_backend_layout.bend', canonicalName: 'reaches',
+      fields: ['context', 'descriptor', 'env', 'target', 'seen', 'fuel'], stem: 'Reach'},
+  } as const;
+  const queryKinds = new Set<string>();
+  for (const capture of queryCaptureConfigs) {
+    const schema = querySchemas[capture.kind];
+    const root = traceRoots.find(root => root.site === capture.site);
+    if (!schema || !root || root.source !== schema.source || root.canonicalName !== schema.canonicalName
+      || queryKinds.has(capture.kind) || programCapture?.site === capture.site
+      || capture.fields.length !== schema.fields.length
+      || capture.fields.some((field, index) => field.name !== schema.fields[index] || field.argument !== index))
+      throw Error('Query capture must uniquely name the complete canonical ' + capture.kind + ' argument schema');
+    const target = byName.get(root.name)!;
+    if (target.parameters.length !== capture.fields.length)
+      throw Error('Canonical query capture argument count changed: ' + root.name);
+    const fieldTypes = capture.fields.map(field => {
+      const parameter = target.parameters[field.argument]!;
+      if (parameter[0].$ !== 'Lone' && parameter[0].$ !== 'Many')
+        fail(root.name, 'Query capture requires a runtime source argument: ' + field.name);
+      const type = parameter[3];
+      if (freeBinderIds(type).length)
+        fail(root.name, 'Query capture does not support dependent argument types: ' + field.name, type);
+      const higher = B.term_higher(type);
+      const inferred = B.term_infer(book, {t: higher, n: 0, def: root.name, qs: []}, higher, B.None(), B.ctx_nil(), 0);
+      const kind = B.term_wnf(book, inferred.ty);
+      const quantity = kind.$ === 'Typ' ? B.term_wnf(book, kind.g) : undefined;
+      if (quantity?.$ !== 'Qua' || quantity.q.$ !== 'Many')
+        fail(root.name, 'Passive query capture requires authenticated Data: ' + field.name, type);
+      return type;
+    });
+    const resolved = {...capture, name: root.name,
+      fieldDeclarations: capture.fields.map((field, index) => field.name + ': ' + showTerm(fieldTypes[index]!, [], -1)).join(', '),
+      constructor: 'EmitterTrace' + schema.stem + 'Query',
+      siteConstructor: 'EmitterTrace' + schema.stem + 'QueryAt'};
+    queryKinds.add(capture.kind);
+    queryCaptures.push(resolved);
+    queryCaptureByName.set(root.name, resolved);
   }
 }
 // Direct values are deliberately limited to non-constructing projections and
@@ -668,8 +721,11 @@ for (const name of startNames) if (name !== startFunction) {
 // diagnostic collision fails closed rather than renaming the scheduler.
 if (traced) for (const name of [traceEventType, traceBeginConstructor, traceEndConstructor, traceSiteType,
   traceUntracedConstructor, traceAtConstructor, traceRunConstructor, traceStackConstructor, traceAdvanceFunction]) reserve(name);
-if (programCapture) for (const name of [traceProgramAtConstructor, tracePayloadType,
-  traceNoProgramConstructor, traceProgramConstructor]) reserve(name);
+if (traceHasPayload) for (const name of [tracePayloadType, traceNoProgramConstructor]) reserve(name);
+if (programCapture) for (const name of [traceProgramAtConstructor, traceProgramConstructor]) reserve(name);
+for (const capture of queryCaptures) {
+  reserve(capture.constructor); reserve(capture.siteConstructor);
+}
 if (traced) for (const name of tracedSites.keys()) if (pureNames.has(name))
   throw Error('Traced scheduler boundary was erased as a pure projection: ' + name);
 const requestName = new Map(definitions.map(def => [def.name, reserve(requestType + '_' + def.name)]));
@@ -732,6 +788,16 @@ function traceSiteValue(name: string, values: B.LTerm[]): B.LTerm {
     if (!value || value.$ !== 'Var')
       throw Error('Passive Program capture requires an already-bound variable, not duplicated computation');
     return ctr(traceProgramAtConstructor, [B.Lit('U32', site), value]);
+  }
+  const capture = queryCaptureByName.get(name);
+  if (capture) {
+    const fields = capture.fields.map(field => {
+      const value = values[field.argument];
+      if (!value || value.$ !== 'Var')
+        throw Error('Passive query capture requires a single-evaluation argument binder: ' + field.name);
+      return value;
+    });
+    return ctr(capture.siteConstructor, [B.Lit('U32', site), ...fields]);
   }
   return ctr(traceAtConstructor, [B.Lit('U32', site)]);
 }
@@ -961,17 +1027,22 @@ for (const {def, direct} of [
     return {quantities, domains};
   }
   type Continuation = (value: B.LTerm, scope: Map<number, Binding>) => B.Body;
-  function sequence(terms: B.LTerm[], scope: Map<number, Binding>, quantities: B.Quant[], finish: (values: B.LTerm[], scope: Map<number, Binding>) => B.Body, domains: B.LTerm[] = [], index = 0, values: B.LTerm[] = []): B.Body {
+  function sequence(terms: B.LTerm[], scope: Map<number, Binding>, quantities: B.Quant[], finish: (values: B.LTerm[], scope: Map<number, Binding>) => B.Body, domains: B.LTerm[] = [], captures?: ReadonlySet<number>, index = 0, values: B.LTerm[] = []): B.Body {
     if (index === terms.length) return finish(values, scope);
     const term = terms[index]!;
     return lowerTerm(term, scope, (value, inner) => {
       // Preserve runtime evaluation order before requests. Erased arguments
       // stay as source expressions: they have no runtime evaluation to sequence.
-      if (quantities[index]?.$ !== 'None' && terms.slice(index + 1).some(effectful) && !effectful(term)) {
-        const next = new Map(inner), domain = domains[index] ?? typeOf(term), v = variable(domain, next, quantities[index] ?? B.Lone());
-        return {$: 'Local', q: B.Lone(), k: [{$: 'PVar', k: v.k, i: v.i, q: quantities[index] ?? B.Lone()}], v: [{$: 'Ann', x: value, T: domain}], f: sequence(terms, next, quantities, finish, domains, index + 1, [...values, v])};
+      // A captured expression feeds both request and payload. Bind it once,
+      // at its original argument position, with its authenticated Data type.
+      // Existing variables are shared by the Data-only administrative grader.
+      const capture = captures?.has(index) && value.$ !== 'Var';
+      if (capture || (quantities[index]?.$ !== 'None' && terms.slice(index + 1).some(effectful) && !effectful(term))) {
+        const quantity = capture ? B.Many() : quantities[index] ?? B.Lone();
+        const next = new Map(inner), domain = domains[index] ?? typeOf(term), v = variable(domain, next, quantity);
+        return {$: 'Local', q: B.Lone(), k: [{$: 'PVar', k: v.k, i: v.i, q: quantity}], v: [{$: 'Ann', x: value, T: domain}], f: sequence(terms, next, quantities, finish, domains, captures, index + 1, [...values, v])};
       }
-      return sequence(terms, inner, quantities, finish, domains, index + 1, [...values, value]);
+      return sequence(terms, inner, quantities, finish, domains, captures, index + 1, [...values, value]);
     }, domains[index]);
   }
   function lowerTerm(term: B.LTerm, input: Map<number, Binding>, k: Continuation, expected?: B.LTerm): B.Body {
@@ -1002,6 +1073,7 @@ for (const {def, direct} of [
       const target = byName.get(head.k);
       const telescope = target ? B.term_higher(B.tele_bind(target.parameters, target.result)) : book.tlds[head.k]?.T;
       const {quantities, domains} = telescopeArguments(telescope, args, scope);
+      const capture = target ? queryCaptureByName.get(target.name) : undefined;
       return sequence(args, scope, quantities, (values, inner) => {
         if (!target || pureNames.has(target.name)) return k(app(target ? pureName.get(target.name)! : head.k, values), inner);
         const next = new Map(inner), value = variable(target.result, next, resultQuantity(target.name));
@@ -1011,7 +1083,7 @@ for (const {def, direct} of [
           return tailProgress(stepName.get(target.name)!, values, finishedResult(continuationBody)!);
         }
         return delayedProgress(def, target, values, boxedContinuation(continuationBody, next, value, def.result, def.name));
-      }, domains);
+      }, domains, capture ? new Set(capture.fields.map(field => field.argument)) : undefined);
     }
     if (term.$ === 'Ctr') {
       const declaration = Object.values(book.tlds).find(tld => tld.$ === 'ADT' && tld.c.some(field => field.k === term.k));
@@ -2389,7 +2461,11 @@ for (const group of requestGroups) chunks.push('    case ' + group.constructor +
 const resumeType = '(@box: ' + valueType + '<' + resultFunction + '(request)> -> ' + progressType + '<A>)';
 chunks.push('\ntype ' + valueType + '<-A: Type> is Type:\n  ' + valueType + '{value: A}\n');
 if (traced) chunks.push('\ntype ' + traceSiteType + ' is Data:\n  ' + traceUntracedConstructor + '{}\n  ' + traceAtConstructor + '{site: U32}\n'
-  + (programCapture ? '  ' + traceProgramAtConstructor + '{site: U32, program: BIR.Program}\n\ntype ' + tracePayloadType + ' is Data:\n  ' + traceNoProgramConstructor + '{}\n  ' + traceProgramConstructor + '{program: BIR.Program}\n' : ''));
+  + (programCapture ? '  ' + traceProgramAtConstructor + '{site: U32, program: BIR.Program}\n' : '')
+  + queryCaptures.map(capture => '  ' + capture.siteConstructor + '{site: U32, ' + capture.fieldDeclarations + '}\n').join('')
+  + (traceHasPayload ? '\ntype ' + tracePayloadType + ' is Data:\n  ' + traceNoProgramConstructor + '{}\n'
+    + (programCapture ? '  ' + traceProgramConstructor + '{program: BIR.Program}\n' : '')
+    + queryCaptures.map(capture => '  ' + capture.constructor + '{' + capture.fieldDeclarations + '}\n').join('') : ''));
 chunks.push('\ntype ' + progressType + '<-A: Type> is Type:\n  ' + finishedType + '{box: ' + valueType + '<A>}\n  ' + pendingType + '{request: ' + requestType + (traced ? ', site: ' + traceSiteType : '') + ', resume: ' + resumeType + '}\n  ' + directType + '{-R: Type, -request: ' + requestType + ', arguments: R, invoke: (@arguments: R -> ' + progressType + '<' + resultFunction + '(request)>), resume: ' + resumeType + '}\n  ' + boundType + '{-B: Type, inner: ' + progressType + '<B>, resume: (@box: ' + valueType + '<B> -> ' + progressType + '<A>)}\n\n');
 chunks.push(`
 ${traced ? `type ${traceEventType} is Data:
@@ -2404,7 +2480,7 @@ ${traced ? `type ${traceEventType} is Data:
 type ${runType}<-R: Type> is Type:
   ${runFinishedType}{box: ${valueType}<R>}
   ${runStateType}{-A: Type, progress: ${progressType}<A>, stack: ${stackType}<A, R>}${traced ? `
-  ${traceRunConstructor}{events: List<&2, ${traceEventType}>${programCapture ? ', payload: ' + tracePayloadType : ''}, next: Bool -> ${runType}<R>}` : ''}
+  ${traceRunConstructor}{events: List<&2, ${traceEventType}>${traceHasPayload ? ', payload: ' + tracePayloadType : ''}, next: Bool -> ${runType}<R>}` : ''}
 
 def ${castBoxFunction}(-A: Type, -R: Type, equation: {A == R : Type}, box: ${valueType}<A>) -> ${valueType}<R>:
   %equation : ${valueType}<_>
@@ -2447,15 +2523,16 @@ for (const group of requestGroups) chunks.push('    case ' + group.constructor +
 chunks.push(`
 ${traced ? `def ${traceAdvanceFunction}(-A: Type, -R: Type, request: ${requestType}, resume: ${resumeType}, stack: ${stackType}<A, R>, site: ${traceSiteType}) -> ${runType}<R>:
   match site:
-    case ${traceAtConstructor}{+site}: ${traceRunConstructor}{[${traceBeginConstructor}{site}]${programCapture ? ', ' + traceNoProgramConstructor + '{}' : ''}, scheduled => ${runStateType}{${resultFunction}(request), ${rawStepFunction}(request), ${traceStackConstructor}{A, site, resume, stack}}}${programCapture ? `
-    case ${traceProgramAtConstructor}{+site, +program}: ${traceRunConstructor}{[${traceBeginConstructor}{site}], ${traceProgramConstructor}{program}, scheduled => ${runStateType}{${resultFunction}(request), ${rawStepFunction}(request), ${traceStackConstructor}{A, site, resume, stack}}}` : ''}
+    case ${traceAtConstructor}{+site}: ${traceRunConstructor}{[${traceBeginConstructor}{site}]${traceHasPayload ? ', ' + traceNoProgramConstructor + '{}' : ''}, scheduled => ${runStateType}{${resultFunction}(request), ${rawStepFunction}(request), ${traceStackConstructor}{A, site, resume, stack}}}${programCapture ? `
+    case ${traceProgramAtConstructor}{+site, +program}: ${traceRunConstructor}{[${traceBeginConstructor}{site}], ${traceProgramConstructor}{program}, scheduled => ${runStateType}{${resultFunction}(request), ${rawStepFunction}(request), ${traceStackConstructor}{A, site, resume, stack}}}` : ''}${queryCaptures.map(capture => `
+    case ${capture.siteConstructor}{+site, ${capture.fields.map(field => '+' + field.name).join(', ')}}: ${traceRunConstructor}{[${traceBeginConstructor}{site}], ${capture.constructor}{${capture.fields.map(field => field.name).join(', ')}}, scheduled => ${runStateType}{${resultFunction}(request), ${rawStepFunction}(request), ${traceStackConstructor}{A, site, resume, stack}}}`).join('')}
     case ${traceUntracedConstructor}{}: ${runStateType}{${resultFunction}(request), ${rawStepFunction}(request), ${stackMoreType}{A, resume, stack}}
 
 ` : ''}def ${popFunction}(-A: Type, -R: Type, stack: ${stackType}<A, R>, box: ${valueType}<A>) -> ${runType}<R>:
   match stack:
     case ${stackDoneType}{equation}: ${runFinishedType}{${castBoxFunction}(A, R, equation, box)}
     case ${stackMoreType}{B, resume, rest}: ${runStateType}{B, resume(box), rest}${traced ? `
-    case ${traceStackConstructor}{B, site, resume, rest}: ${traceRunConstructor}{[${traceEndConstructor}{site}]${programCapture ? ', ' + traceNoProgramConstructor + '{}' : ''}, scheduled => ${runStateType}{B, resume(box), rest}}` : ''}
+    case ${traceStackConstructor}{B, site, resume, rest}: ${traceRunConstructor}{[${traceEndConstructor}{site}]${traceHasPayload ? ', ' + traceNoProgramConstructor + '{}' : ''}, scheduled => ${runStateType}{B, resume(box), rest}}` : ''}
 
 def ${advanceFunction}(-A: Type, -R: Type, progress: ${progressType}<A>, stack: ${stackType}<A, R>) -> ${runType}<R>:
   match progress:
@@ -2474,11 +2551,11 @@ def ${chunkFunction}(-R: Type, fuel: Nat, run: ${runType}<R>) -> ${runType}<R>:
     case 1n+rest ${runFinishedType}{box}: ${runFinishedType}{box}
     case 1n+rest ${runStateType}{A, progress, stack}:
       ${chunkFunction}(R, rest, ${advanceFunction}(A, R, progress, stack))${traced ? `
-    case 1n+rest ${traceRunConstructor}{events, ${programCapture ? 'payload, ' : ''}next}: ${traceRunConstructor}{events, ${programCapture ? 'payload, ' : ''}next}` : ''}
+    case 1n+rest ${traceRunConstructor}{events, ${traceHasPayload ? 'payload, ' : ''}next}: ${traceRunConstructor}{events, ${traceHasPayload ? 'payload, ' : ''}next}` : ''}
 
 def ${stepFunction}(-R: Type, run: ${runType}<R>) -> ${runType}<R>:${traced ? `
   match run:
-    case ${traceRunConstructor}{_, ${programCapture ? '_, ' : ''}next}: ${chunkFunction}(R, ${nativeChunkQuantum - 1}n, next(False{}))
+    case ${traceRunConstructor}{_, ${traceHasPayload ? '_, ' : ''}next}: ${chunkFunction}(R, ${nativeChunkQuantum - 1}n, next(False{}))
     case state: ${chunkFunction}(R, ${nativeChunkQuantum}n, state)` : `
   ${chunkFunction}(R, ${nativeChunkQuantum}n, run)`}
 `);
@@ -2611,6 +2688,10 @@ const manifest = {
     ...(programCapture ? {programCapture: {...programCapture, runField: 'payload',
       constructor: traceProgramConstructor, emptyConstructor: traceNoProgramConstructor,
       birImport: '../bend2/selfhost/backend_ir.bend'}} : {}),
+    ...(queryCaptures.length ? {runField: 'payload', queryCaptures: queryCaptures.map(capture => ({
+      site: capture.site, kind: capture.kind, constructor: capture.constructor, runField: 'payload',
+      fields: capture.fields.map(field => ({name: field.name, argument: field.argument})),
+    }))} : {}),
     roots: traceRoots.map(root => ({
       site: root.site, stage: root.stage, source: root.source, canonicalName: root.canonicalName, name: root.name,
       request: posix.basename(paths.output, '.bend') + '.' + requestName.get(root.name)!,
