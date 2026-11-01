@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "version": "G43DIST_R5",
+  "status": "AUTHORED_NOT_EXECUTED",
+  "priorCheckpoint": "7e366d6e",
+  "userCorrection": "Process names are not host load; remove the added blanket idle heuristic, do not stop bb-app.",
+  "change": "Remove idleCheck, its ancestor allowlist and both supervisor calls. Preserve actual owned-process tracking/reaping, cross-version host mutex path, per-step guardian, source/host/tool authentication and unchanged strict performanceDecision. No process whitelist or CPU-threshold replacement.",
+  "source": {
+    "path": "/Users/ilyagulya/Projects/My/bend/evals/g24_distributed.mjs",
+    "sha256": "645978acfc132e2bc2fb63dcc009ad53cc8c68776b223025d92e98f6b59f0efc",
+    "bytes": 30741
+  },
+  "commands": {
+    "tests": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "test",
+      "evals/g24_distributed.test.mjs"
+    ],
+    "realConsumers": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g43r4-source/consumer-diagnostic.mjs",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r5/consumer-config.json"
+    ]
+  },
+  "originalLimits": {
+    "rssMiB": 8192,
+    "footprintMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000
+  },
+  "originalPerformancePolicyChanged": false,
+  "externalWorkClaim": "No automatic proof that arbitrary external jobs are idle; serialize only owned jobs and avoid known competing heavy workloads operationally.",
+  "noUserServicesStopped": true,
+  "actualPreviousFailure": "checkpoints/local2039g43r4-outcome/supervisor.json rejected unrelated runtime names before any consumer execution.",
+  "regressionBoundary": "Same actual source/transfer/supervisor/consumer path, with unchanged real producers and ordinary background services left running."
+}

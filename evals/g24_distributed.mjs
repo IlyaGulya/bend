@@ -36,8 +36,8 @@
  * it does not manufacture a new complete qualification or skip emitted suites.
  *
  * Each host owns one scheduler lease plus the unchanged per-step heavy guardian.
- * A dedicated-host idle check rejects unrelated compiler/runtime processes,
- * including between measurements. No HEAVY_GATE lock/lease overrides are allowed.
+ * Existing processes are not classified by executable name. Host leases serialize
+ * our jobs; the guardian bounds each step. No HEAVY_GATE overrides are allowed.
  * Six rows of a lane stay in one worker/host lease. Native completes/authenticates
  * before JS is dispatched. Correctness jobs serialize on a shared physical host.
  * SSH workers have a 45s renewable lease; lost control cancels, reaps descendants,
@@ -45,11 +45,10 @@
  * No retries of a completed job and no imported receipts. Results are bound to
  * a random job nonce, snapshot/plan digest, physical host and exact tool pins.
  * Host/operator trust remains required: this is SSH authentication, not hardware
- * remote attestation. Remote execution requires configured reachable cluster Macs,
- * accepted runtimes/LLVM, sufficient disk, and dedicated idle measurement hosts.
- * Host reservation is an operational prerequisite: the 1s idle scan detects
- * compiler/runtime contenders, not arbitrary short-lived activity or other users'
- * intentions. It supplements, never replaces, the original exclusive guardian.
+ * remote attestation. Remote execution requires configured reachable hosts,
+ * accepted runtimes/LLVM and sufficient disk. Operators must avoid competing
+ * heavy workloads during measurements; process names do not prove CPU activity
+ * or host idleness. The protocol does not claim to detect arbitrary external work.
  * Transfer uses bounded 4MiB positional chunks through the existing SSH adapter.
  * Keep /tmp/bend-g24-<nonce> evidence until the parent archives it; a poisoned
  * /tmp/bend-g24-dedicated-host.lock requires operator investigation, never unlink
@@ -211,17 +210,6 @@ function descendants(rows, pid) {
   while (changed) { changed = false; for (const p of rows) if (ids.has(p.ppid) && !ids.has(p.pid)) { ids.add(p.pid); changed = true; } }
   return ids;
 }
-function idleCheck(owned, allowedAncestors) {
-  const rows = processes(), allowed = descendants(rows, owned);
-  for (const id of allowedAncestors) allowed.add(id);
-  const busy = rows.filter(p => !allowed.has(p.pid) && /(?:^|\/)(?:bun|node|clang(?:\+\+)?|cc1|opt|llvm-split|llc|gcc|cc|native)(?:$|\s)/.test(p.name));
-  need(busy.length === 0, 'dedicated host has competing build/runtime processes: ' + JSON.stringify(busy));
-}
-function ancestors() {
-  const rows = processes(), ids = []; let pid = process.pid;
-  while (pid > 1 && !ids.includes(pid)) { ids.push(pid); pid = rows.find(p => p.pid === pid)?.ppid ?? 0; }
-  return ids;
-}
 async function transport(plan, host, script, input, timeout = 60000) {
   if (plan.mode === 'ssh') return ssh(host.node, script, input, timeout);
   return new Promise(resolveResult => {
@@ -375,7 +363,6 @@ async function supervise(directory, nonce, jobSha256) {
     status: 'FAIL', reaped: false, pin: null};
   const lock = '/tmp/bend-g24-dedicated-host.lock';
   let release, child, monitor, stopping = false, stoppedAt, reason, known = new Map();
-  const allowed = ancestors();
   const refreshOwned = () => {
     const rows = processes(), owned = child?.pid ? descendants(rows, child.pid) : new Set();
     const live = rows.filter(p => owned.has(p.pid) || known.get(p.pid) === p.identity);
@@ -395,7 +382,6 @@ async function supervise(directory, nonce, jobSha256) {
     result.pin = hostPin(job.pin.tools); need(equal(result.pin, job.pin), 'host/runtime/tool substitution');
     verifySnapshot(resolve(directory, 'snapshot'), job.snapshotSha256);
     release = claimHost(lock, {nonce, directory, pid: process.pid});
-    idleCheck(process.pid, allowed);
     need(!stopping && !existsSync(resolve(directory, 'cancel'))
       && Date.now() - statSync(resolve(directory, 'lease')).mtimeMs <= 45000, 'cancelled/expired before execution');
     need(!existsSync(resolve(directory, 'execution')), 'job already executed');
@@ -414,7 +400,6 @@ async function supervise(directory, nonce, jobSha256) {
       try {
         refreshOwned();
         if (existsSync(resolve(directory, 'cancel')) || Date.now() - statSync(resolve(directory, 'lease')).mtimeMs > 45000) stop('cancelled or coordinator lease expired');
-        idleCheck(process.pid, allowed);
         if (stopping) for (const pid of known.keys()) {
           try { process.kill(pid, Date.now() - stoppedAt > 10000 ? 'SIGKILL' : 'SIGTERM'); } catch {}
         }
