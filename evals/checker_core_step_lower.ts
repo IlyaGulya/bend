@@ -2474,11 +2474,11 @@ def ${chunkFunction}(-R: Type, fuel: Nat, run: ${runType}<R>) -> ${runType}<R>:
     case 1n+rest ${runFinishedType}{box}: ${runFinishedType}{box}
     case 1n+rest ${runStateType}{A, progress, stack}:
       ${chunkFunction}(R, rest, ${advanceFunction}(A, R, progress, stack))${traced ? `
-    case 1n+rest ${traceRunConstructor}{events, next}: ${traceRunConstructor}{events, next}` : ''}
+    case 1n+rest ${traceRunConstructor}{events, ${programCapture ? 'payload, ' : ''}next}: ${traceRunConstructor}{events, ${programCapture ? 'payload, ' : ''}next}` : ''}
 
 def ${stepFunction}(-R: Type, run: ${runType}<R>) -> ${runType}<R>:${traced ? `
   match run:
-    case ${traceRunConstructor}{_, next}: ${chunkFunction}(R, ${nativeChunkQuantum - 1}n, next(False{}))
+    case ${traceRunConstructor}{_, ${programCapture ? '_, ' : ''}next}: ${chunkFunction}(R, ${nativeChunkQuantum - 1}n, next(False{}))
     case state: ${chunkFunction}(R, ${nativeChunkQuantum}n, state)` : `
   ${chunkFunction}(R, ${nativeChunkQuantum}n, run)`}
 `);
