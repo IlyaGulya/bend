@@ -1,0 +1,118 @@
+{
+  "schemaVersion": 1,
+  "version": "G43R11",
+  "status": "AUTHORED_NOT_EXECUTED",
+  "sourceCommit": "b7c49cf0",
+  "baseSourceCommit": "91698b3a",
+  "sourcePins": [
+    {
+      "file": "bend2/selfhost/c_backend_layout.bend",
+      "source": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/bend2/selfhost/c_backend_layout.bend",
+        "sha256": "b70ee23f2d04f06453ac998ab783081e1f2024c7d92537ebf81f0a57ac50f08d",
+        "bytes": 65300
+      },
+      "frozen": {
+        "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g43r11-source/bend2/selfhost/c_backend_layout.bend",
+        "sha256": "b70ee23f2d04f06453ac998ab783081e1f2024c7d92537ebf81f0a57ac50f08d",
+        "bytes": 65300
+      }
+    },
+    {
+      "file": "evals/clay_layout_smoke.bend",
+      "source": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/evals/clay_layout_smoke.bend",
+        "sha256": "6f562be97216c38a6d9ca194ecaa339eb5467b39d70ebb3fef728994d778383c",
+        "bytes": 43237
+      },
+      "frozen": {
+        "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g43r11-source/evals/clay_layout_smoke.bend",
+        "sha256": "6f562be97216c38a6d9ca194ecaa339eb5467b39d70ebb3fef728994d778383c",
+        "bytes": 43237
+      }
+    }
+  ],
+  "decision": "Program-scoped conservative zero-arity/empty-args negative named-dependency facts; no cached NF, positive recursion inference, runtime-name idle check or changed rails. Keep original semantic traversal for maybe/positive/generic/explicit-arms queries.",
+  "sourceArgument": {
+    "independentReview": "ClosedNamesProof",
+    "keyOrigins": [
+      "DescriptorRef",
+      "DescriptorNamedFill",
+      "DescriptorNamedPlus"
+    ],
+    "edges": "All descriptor children and all family fields/type-function bodies, including duplicate-key unions; constructor/pattern keys are not type names. Unknown variants prevent negative proofs. Opaque keys are terminal but their argument keys remain included. First family declaration controls root arity.",
+    "environment": "No applied values at the authoritative arity0 root. Field telescopes add NfMissing(DescriptorNull); substitution, closures and quotation only move names already in reachable source.",
+    "runtimeClaim": false,
+    "formalKernelProofClaim": false
+  },
+  "observedProblem": "checkpoints/local2039g43r10d1-outcome/outcome.json",
+  "priorFailedVersion": "checkpoints/local2039g43r10r3-outcome/outcome.json",
+  "targetedSemanticSmoke": {
+    "schemaVersion": 1,
+    "status": "PLANNED_NOT_EXECUTED_REQUIRES_SOURCE_CHECKPOINT",
+    "cwd": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257",
+    "generate": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "evals/heavy_gate.ts",
+      "--memory-mib=8192",
+      "--rss-mib=8192",
+      "--poll-ms=10",
+      "--timeout-ms=600000",
+      "--",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "evals/clay_layout_step_smoke.ts"
+    ],
+    "run": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "evals/heavy_gate.ts",
+      "--memory-mib=8192",
+      "--rss-mib=8192",
+      "--poll-ms=10",
+      "--timeout-ms=600000",
+      "--",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "--preload",
+      "./bend2/main.ts",
+      "evals/clay_layout_step_smoke.ts",
+      "--run=checkpoints/clay_layout_steps_component_v1.bend"
+    ],
+    "criterion": "Actual ClaySmoke.failures0 through existing composed/normalized/owned step component and canonical Bend module loader. Its reported artifact pin is generated Bend component source, not a genuine selfhost image or byte-fixedpoint claim.",
+    "scope": "Meaningful CLay semantic boundaries are outside the95 inline bootstrap fixtures and must be run explicitly. No direct canonical provider import. This smoke does not replace native build, genuine fixedpoint, C62/JS67 or strict paired rows."
+  },
+  "plannedFullCorrectness": {
+    "cwd": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257",
+    "command": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "evals/g24_qualification.mjs",
+      "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "--bun=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--clang=/usr/bin/clang",
+      "--llvm-bin=/opt/homebrew/opt/llvm@21/bin",
+      "--bindings=/Users/ilyagulya/Projects/My/bend/evals/receipts/producer2039g25_r12_bindings.json",
+      "--frozen-repository=/private/tmp/bend2039g22-tiny-inline",
+      "--control-native=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/native",
+      "--control-image=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g24r12/bootstrap.json.cases/stage-one.js",
+      "--phase=correctness",
+      "--cc-partitions=4",
+      "--run-id=2039g43r11",
+      "--distributed-plan=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r6/placement.json",
+      "--out=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257/checkpoints/local2039g43r11-correctness"
+    ]
+  },
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "perStepTimeoutMs": 600000,
+    "abiExports": 13,
+    "parserFuelCellsPerModule": 8000000,
+    "nativeQuantum": 64,
+    "oneHeavyJobPerPhysicalHost": true
+  },
+  "acceptedCompiler": "G24R12 unchanged; private sources and every generated artifact remain experimental until real full correctness and original strict12 paired rows pass."
+}
