@@ -169,10 +169,14 @@ stage?.end(importSpan!,'completed',{target,library:o.library,parserModule:o.pars
 
 let parsedSources=0,fuelCells=0,sourceBytes=0;
 function parse(file:string,source:string):Record<string,unknown>{
+ const fuelSpan=o.stageProgress?stage?.span('parse-fuel-construct',{file,summary:false}):undefined;
  let fuel:unknown={$:'FeedbackFuelEnd'};
  for(let i=0;i<8000000;i+=1)fuel={$:'FeedbackFuelCell',tail:fuel};
+ if(fuelSpan!==undefined)stage!.end(fuelSpan,'completed',{cells:8000000});
  if(stage!==undefined){parsedSources+=1;fuelCells+=8000000;sourceBytes+=Buffer.byteLength(source);}
+ const parserSpan=o.stageProgress?stage?.span('parse-module-call',{file,summary:false}):undefined;
  const feedback=objectOf(parserModule!.parse_with_fuel(fuel,file,source));
+ if(parserSpan!==undefined)stage!.end(parserSpan,'completed',{feedback:tag(feedback)});
  if(tag(feedback)!=='FeedbackComplete')fail('parser feedback did not complete for '+file);
  const result=objectOf(objectOf(feedback?.value)?.result);
  if(tag(result)!=='ParseSuccess')fail('parser rejected '+file+': '+String(result?.message??tag(result)));

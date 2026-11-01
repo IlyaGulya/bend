@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "version": "G43DIST_R7_PHASE_DIAGNOSTIC",
+  "status": "AUTHORED_NOT_EXECUTED",
+  "priorOutcome": "b6e58bc2",
+  "sourceChanges": {
+    "evals/candidate_host.ts": "3ab4f809f7dccbe7f4ed04a53bc335025742d1a5bc6c3c098156acd8274535b0",
+    "evals/scheduler_emit_diagnostic.ts": "70f145ff67557c23441b9679cd6ee225924468331dbeea4afb1b47085c1fbeb8"
+  },
+  "change": "Four opt-in existing-stage-profile spans distinguish8M fuel construction from compiled parser call. No compiler algorithm, generated checker, fixture, ABI/fuel/quantum or ordinary output change.",
+  "commands": {
+    "fullInputPhaseDiagnostic": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "/Users/ilyagulya/Projects/My/bend/evals/scheduler_emit_diagnostic.ts",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "/tmp/bend-g24-441d5b510714905ce0d2efb62fe2d88b5d1fe465160fa6a8/snapshot/artifacts/image",
+      "/tmp/bend-g24-441d5b510714905ce0d2efb62fe2d88b5d1fe465160fa6a8/execution/repository",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r7/scheduler-phase"
+    ],
+    "remainingRemoteConsumers": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g43r7-source/remaining-ssh-consumers.mjs",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r7/remote-config.json"
+    ],
+    "safetyTests": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "test",
+      "evals/g24_distributed.test.mjs"
+    ]
+  },
+  "limits": {
+    "rssMiB": 8192,
+    "footprintMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000
+  },
+  "nodeWorkerLimits": {
+    "stackSizeMb": 256,
+    "maxOldGenerationSizeMb": 3072
+  },
+  "phaseDiagnosticAcceptanceEvidence": false,
+  "instrumentationOverheadIncluded": true,
+  "remoteBranches": [
+    "admission",
+    "host"
+  ],
+  "differentPhysicalHosts": {
+    "local": "6beb0f3c1e3c440c619b8ee27cfb246ced9ee15b744f9f234edc8e2a5d81736e",
+    "remote": "4613c60b990a84a1d3484370a8bb68887aa6b616ef55f96ff8802a1107f7a84b"
+  },
+  "noCompetingOwnedHeavyJobsPerHost": true,
+  "bbAppStoppedOrPaused": false,
+  "fullQualificationClaim": false,
+  "compilerAccepted": false,
+  "performanceAccepted": false
+}
