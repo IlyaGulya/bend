@@ -634,3 +634,16 @@ in main; native/fixedpoint/C deadline/strict-throughput claims remain pending.
 `checkpoints/local2039g43r12l1-unit-outcome/outcome.json`.
 `checkpoints/local2039g43r12-semantic-outcome/outcome.json`.
 
+### Producer source portability prerequisite exercised (G43R12)
+
+A fresh146ec560 source capsule includes2872 tracked code files plus all14
+protected prerequisites,2884 distinct regular paths, without links or
+conflicting overlaps. Reconstructing it in a fresh real-path repository and
+importing four original Git objects actually passes the production release
+identity helper and all14 prerequisite byte checks. Archives/full manifests
+remain outside Git; only the compact executed-command receipt is checkpointed.
+This is local source/input portability, not a remote producer or compiler
+qualification. Coordinator tree ownership/lease/cancellation/reap proof still
+blocks an ordinary foreground SSH launch.
+`checkpoints/local2039g43-producer-portability/r12-source-capsule-proof.json`.
+

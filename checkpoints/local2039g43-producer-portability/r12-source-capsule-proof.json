@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "status": "SOURCE_BYTES_SEALED_LOCAL_PROVENANCE_PASS_REMOTE_PRODUCER_NOT_AUTHORIZED",
+  "sourceCommit": "146ec560",
+  "parts": [
+    {
+      "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r12-m3/source.tar",
+      "sha256": "799c99dc82bf7199a01dad98862d14ee4bfe3dc3540220b3bb93e479485f8b1f",
+      "bytes": 60928000,
+      "files": 2872
+    },
+    {
+      "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r12-m3/required-inputs.tar",
+      "sha256": "81a5af278e09418c27fce8af51d740863bfa5023e6dd0984a8d5d00d1d216c77",
+      "bytes": 1080320,
+      "files": 14
+    }
+  ],
+  "releaseObjectPack": {
+    "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r11-m3/release-objects-8b06324896c305a834b7ccf0f44d787aef8bcccb.pack",
+    "sha256": "cca5fa5c7d0ee79a4ca4b4d1b298075d26ec19a5a276c7f44e70363cf9c2d6fb",
+    "bytes": 41020,
+    "originalObjects": 4
+  },
+  "regularFiles": 2884,
+  "canonicalMemberDigest": "7cd8e771742967607f89edf9a479d2ddc82a4a78b4fdd154e42a7ec16c99ff63",
+  "requiredInputPaths": [
+    "checkpoints/checker-core-dependency.json",
+    "checkpoints/checker_core_slice.bend",
+    "checkpoints/checker_core_driver.bend",
+    "checkpoints/bootstrap-real-source-corpus.json",
+    "checkpoints/bootstrap-minimized-stage0-oracle.json",
+    "checkpoints/bootstrap-new-minimized-stage0-oracle.json",
+    "checkpoints/bootstrap-natural-expression-fixtures.json",
+    "checkpoints/bootstrap-binder-identity-fixtures.json",
+    "checkpoints/bootstrap-local-pattern-fixtures.json",
+    "checkpoints/bootstrap-signature-fixtures.json",
+    "checkpoints/bootstrap-empty-match-fixtures.json",
+    "checkpoints/bootstrap-newline-expression-fixtures.json",
+    "bend2/selfhost/.parser_definition_body_shape_generated_fuel.bend",
+    "bend2/selfhost/.parser_definition_body_shape_generated_fuel.bend.scorecard.json"
+  ],
+  "producerExecuted": false,
+  "remainingBlocker": "Existing physical-host lock plus nonce/identity-bound coordinator owner, lease/cancel/watchdog and fresh-channel durable reaped proof.",
+  "version": "2039g43r12-source-portability",
+  "packingCommand": "/usr/bin/git archive --format=tar --prefix=repository/ --output=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r12-m3/source.tar 146ec560 bend2 evals tests gates && /usr/bin/tar -cf /var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r12-m3/required-inputs.tar -s ',^,repository/,' -C /private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/direct-witness-09a41257 -- checkpoints/checker-core-dependency.json checkpoints/checker_core_slice.bend checkpoints/checker_core_driver.bend checkpoints/bootstrap-real-source-corpus.json checkpoints/bootstrap-minimized-stage0-oracle.json checkpoints/bootstrap-new-minimized-stage0-oracle.json checkpoints/bootstrap-natural-expression-fixtures.json checkpoints/bootstrap-binder-identity-fixtures.json checkpoints/bootstrap-local-pattern-fixtures.json checkpoints/bootstrap-signature-fixtures.json checkpoints/bootstrap-empty-match-fixtures.json checkpoints/bootstrap-newline-expression-fixtures.json bend2/selfhost/.parser_definition_body_shape_generated_fuel.bend bend2/selfhost/.parser_definition_body_shape_generated_fuel.bend.scorecard.json",
+  "packingWallMs": 558.7885830402374,
+  "extractCommand": "/bin/mkdir -m 700 /private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r12-m3/preflight-9651aa287d75 && /usr/bin/tar -xf /var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r12-m3/source.tar -C /private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r12-m3/preflight-9651aa287d75 && /usr/bin/tar -xf /var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r12-m3/required-inputs.tar -C /private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r12-m3/preflight-9651aa287d75 && /usr/bin/git -c init.templateDir= init -q /private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r12-m3/preflight-9651aa287d75/repository",
+  "actualSmoke": {
+    "argv": [
+      "/usr/bin/env",
+      "PATH=/usr/bin:/bin",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "-e",
+      "import {officialKernelSha256} from \"/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r12-m3/preflight-9651aa287d75/repository/evals/release_identity.ts\";\nimport {createHash} from \"node:crypto\";\nconst root=\"/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r12-m3/preflight-9651aa287d75/repository\";\nconst imported=Bun.spawnSync([\"/usr/bin/git\",\"-C\",root,\"index-pack\",\"--stdin\"],{stdin:new Uint8Array(await Bun.file(\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r11-m3/release-objects-8b06324896c305a834b7ccf0f44d787aef8bcccb.pack\").arrayBuffer()),stdout:\"pipe\",stderr:\"pipe\"});\nif(imported.exitCode!==0)throw new Error(new TextDecoder().decode(imported.stderr));\nconst release=officialKernelSha256(root);\nif(release!==\"22b5915cd7cccd23b6aa28849b23a7f1e3549333cdd0954ab48103ddd0777e9e\")throw new Error(\"official release identity mismatch\");\nconst expected=[{\"path\": \"checkpoints/checker-core-dependency.json\", \"bytes\": 89026, \"sha256\": \"6bea0f7605adc3f2004d6dc0ee4f46e350cf2f9671ddfb66f41cc9127b1d0111\"}, {\"path\": \"checkpoints/checker_core_slice.bend\", \"bytes\": 198881, \"sha256\": \"dfededaa2637240d7e1409488eed11e8ad995da63eb40e8a2ada4adcfe7b1690\"}, {\"path\": \"checkpoints/checker_core_driver.bend\", \"bytes\": 683, \"sha256\": \"25593371e3c4077865f5265e967f3a672ab123b19d672aea85330500f8c46b18\"}, {\"path\": \"checkpoints/bootstrap-real-source-corpus.json\", \"bytes\": 6486, \"sha256\": \"0c86976251badbf22ce010fdd203515ba89120750d626e36e3d96511748831c0\"}, {\"path\": \"checkpoints/bootstrap-minimized-stage0-oracle.json\", \"bytes\": 10553, \"sha256\": \"06f02c56eac202d6ed84bc06cd9aa4ee2796031dfeb2fe7d4eaec80716acdb87\"}, {\"path\": \"checkpoints/bootstrap-new-minimized-stage0-oracle.json\", \"bytes\": 6354, \"sha256\": \"e4fad24c9f69338f75c7b1e82cae6c071ad3e0c9dbfdda830bce03fc5d380f30\"}, {\"path\": \"checkpoints/bootstrap-natural-expression-fixtures.json\", \"bytes\": 294, \"sha256\": \"55ccc136198b1f7db002993045c27e5b83d053f0107649ed363621ab2a0bcf1b\"}, {\"path\": \"checkpoints/bootstrap-binder-identity-fixtures.json\", \"bytes\": 544, \"sha256\": \"222353825f84cc53c3bba4f476d0fa414f26e2def7c90e2e564dc1a116cdd13c\"}, {\"path\": \"checkpoints/bootstrap-local-pattern-fixtures.json\", \"bytes\": 125, \"sha256\": \"e5900f8d7de78e33ca51b8b2edff2498abca3b73fd530fc45ef0284f4f35a447\"}, {\"path\": \"checkpoints/bootstrap-signature-fixtures.json\", \"bytes\": 788, \"sha256\": \"ff019e99e5b812bf79f49d5815d26bfcf72d419f950f566c6ed42e4a25c6ac03\"}, {\"path\": \"checkpoints/bootstrap-empty-match-fixtures.json\", \"bytes\": 255, \"sha256\": \"b4bdbd2dca1f2a14d3f6007f890a1aa2daa243808fcec90ab33057377dbe94aa\"}, {\"path\": \"checkpoints/bootstrap-newline-expression-fixtures.json\", \"bytes\": 271, \"sha256\": \"2d1302bcbdd2be1ea116ea7e0c168b7ca22e89fa5fa39c39fb4198b3e11194fb\"}, {\"path\": \"bend2/selfhost/.parser_definition_body_shape_generated_fuel.bend\", \"bytes\": 506411, \"sha256\": \"822e8460ff94ff3f00695e27f5b4fe4dbd3515ae4d6d5c3b3c5eb7c1867b840e\"}, {\"path\": \"bend2/selfhost/.parser_definition_body_shape_generated_fuel.bend.scorecard.json\", \"bytes\": 247377, \"sha256\": \"d60ac9dab41e5cb0503bb883be7665c5859113c9cd4c435c5c2c883793b062f5\"}];\nfor(const item of expected){const bytes=new Uint8Array(await Bun.file(root+\"/\"+item.path).arrayBuffer());if(bytes.byteLength!==item.bytes||createHash(\"sha256\").update(bytes).digest(\"hex\")!==item.sha256)throw new Error(\"required input byte mismatch: \"+item.path);}\nconsole.log(JSON.stringify({status:\"CAPSULE_RELEASE_IDENTITY_AND_INPUT_BYTES_PASS\",releaseSha256:release,checkedRequiredInputs:expected.length,originalGitObjects:4,producerExecuted:false,ownershipSupervisorStillRequired:true}));"
+    ],
+    "cwd": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g43r12-m3/preflight-9651aa287d75/repository",
+    "result": {
+      "status": "CAPSULE_RELEASE_IDENTITY_AND_INPUT_BYTES_PASS",
+      "releaseSha256": "22b5915cd7cccd23b6aa28849b23a7f1e3549333cdd0954ab48103ddd0777e9e",
+      "checkedRequiredInputs": 14,
+      "originalGitObjects": 4,
+      "producerExecuted": false,
+      "ownershipSupervisorStillRequired": true
+    },
+    "wallMs": 185.98833400011063,
+    "memoryObserved": false
+  },
+  "scope": "Archive integrity/regular canonical paths, all14 protected input bytes and production officialKernelSha256 against4 original Git objects were actually checked locally. Not a remote producer run or native/fixedpoint/correctness/performance proof.",
+  "harnessFailuresBeforeSmoke": [
+    "Archive metadata checker initially failed to allow the ordinary repository/ root directory; corrected before extraction.",
+    "First Bun -e source used unsafe placeholder replacement and failed at parse; corrected markers before any Git import/runtime behavior."
+  ],
+  "compilerAccepted": false,
+  "acceptedCompiler": "G24R12",
+  "nativeSeededFixedpointClaim": false,
+  "fullCorrectnessClaim": false,
+  "performanceClaim": false
+}

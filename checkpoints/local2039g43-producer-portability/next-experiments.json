@@ -1,15 +1,17 @@
 {
   "schemaVersion": 1,
-  "status": "SOURCE_REVIEWED_BOUNDED_EXPERIMENTS_NOT_IMPLEMENTATION_OR_ACCEPTANCE",
+  "status": "BOUNDED_EXPERIMENTS_WITH_ACTUAL_SEMANTIC_AND_SOURCE_PORTABILITY_PROOFS_NO_COMPILER_ACCEPTANCE",
   "basis": [
     "checkpoints/local2039g43r11-outcome/outcome.json",
     "checkpoints/local2039g43r11-local-outcome/outcome.json",
-    "checkpoints/local2039g43r11d2-outcome/outcome.json"
+    "checkpoints/local2039g43r11d2-outcome/outcome.json",
+    "checkpoints/local2039g43r12-semantic-outcome/outcome.json",
+    "checkpoints/local2039g43-producer-portability/r12-source-capsule-proof.json"
   ],
   "semanticBoundary": {
     "decision": "G43R12 retains the conservative BIR declaration graph and queries arbitrary-target exclusion only for authoritative zero-arity families with empty actual args at the semantic named-family boundary. Positive/maybe/generic/seen/fuel/native rules remain original.",
     "actualTarget": "Sigma",
-    "implementation": "R12ReachBoundary is editing the isolated source; R12CutProof independently reviews; no execution or acceptance yet."
+    "implementation": "Private CLay42139224 plus host solver15c22e74: actual identical full composed fixture fails once before and passes0/7181chunks after. Native/fixedpoint/full original qualification is running from checkpoint146ec560; no full correctness or performance result yet."
   },
   "nativeOffCpu": {
     "review": "NativeOffCpu read-only source audit",
@@ -32,11 +34,14 @@
       "evals/g24_qualification.mjs:295-353,424-505,1640-1660",
       "evals/g24_distributed.mjs:373-447"
     ],
-    "actualProof": "checkpoints/local2039g43-producer-portability/release-helper-proof.json",
+    "actualProof": "checkpoints/local2039g43-producer-portability/r12-source-capsule-proof.json",
+    "priorReleaseHelperProof": "checkpoints/local2039g43-producer-portability/release-helper-proof.json",
     "notRemoteExecuted": true,
-    "sourceOnlyArchiveIncomplete": true,
-    "additionalSource": "gates/_lib.ts and original parser baseline Bend source/scorecard",
-    "ignoredPrerequisites": [
+    "sourceInputsSealed": true,
+    "sourceCapsuleRegularFiles": 2884,
+    "requiredInputsActualByteChecks": 14,
+    "additionalSourcesIncluded": "gates plus original parser baseline Bend source/scorecard; duplicate archive entries are byte-identical, no links/special entries.",
+    "protectedCheckpointPrerequisites": [
       "checkpoints/checker-core-dependency.json",
       "checkpoints/checker_core_slice.bend",
       "checkpoints/checker_core_driver.bend",
