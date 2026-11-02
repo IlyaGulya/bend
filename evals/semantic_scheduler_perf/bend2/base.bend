@@ -18,6 +18,22 @@ type Nat is Data:
   Zero{}
   Succ{pred: Nat}
 
+type Maybe<a, -A: Kind(a)> is Kind(a):
+  None{}
+  Some{value: A}
+
+type Result<a, b, -E: Kind(a), -A: Kind(b)> is Kind(a <&> b):
+  Fail{error: E}
+  Done{value: A}
+
+# What a try_ operation answers: Ready{x}, x what its blocking twin answers,
+# or Wait{rest} once ms milliseconds pass first (0: at once), rest what did
+# not happen (the value or the bytes not sent).
+
+type Poll<a, b, -A: Kind(a), -R: Kind(b)> is Kind(a <&> b):
+  Ready{value: A}
+  Wait{rest: R}
+
 type List<a, -A: Kind(a)> is Kind(a):
   Nil{}
   Con{head: A, tail: List<a, A>}
