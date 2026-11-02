@@ -1839,3 +1839,112 @@ Exact commands, runtime, limits, counters and rejected setup attempts:
 `checkpoints/local2039g54-summary.json`; experiment details:
 `checkpoints/local2039g54-usage-measured.json` on the isolated source branch.
 
+### G55: source usage obligations, not typing-environment counts
+
+**G55A rejected before source cutover.** One inference-carried map, including a
+fixed False/True pair in the checking environment, is not the original source
+judgment. A real dependent-local control checks a callee as Zero after SomeTerm
+reduction, while original lexical NoTerm usage still charges its argument and
+rejects the erased outer binder. Local/let/pattern checks also precede body
+errors (let precedes initializer inference); lambda usage follows successful
+body checking, and final definition usage follows termination. No fixed-map
+implementation or speedup is claimed. The complete source controls and rejected
+hypotheses are frozen, with actual first-error spans rather than prose pins.
+
+**G55B implements zero-obligation source summaries without a second graph.**
+The existing source arena bound is0 for unknown, otherwise1+max-free bound.
+`term_usage_map` now uses owner-aware `arena_node_bound` and the existing
+`core_bound_unaffected(encoded, depth)` predicate. A known bound no greater than
+the excluded lexical depth proves empty projected usage for that whole subtree;
+unknown/crossing bounds enter the unchanged original `term_usage_map_open`.
+This certificate comes from original syntax, including every source match row,
+not materialized FIR children. Types, scopes, erasure decisions and the five
+close schedules remain the original source judgments. No inference/IR schema,
+cache, driver, ABI, closure representation or resource-policy cutover.
+
+The69-case public source gate keeps all45 cases and adds24 behavior regressions,
+including parser-created do-lets. All69 passed on the genuine native-produced
+G50 control and canonical G55B image. Accepted cases execute unchanged emitted
+JS; new rejections retain the actual first blamed source file/beg/end. The
+representative eight-module emitter retained1903750B/SHA256
+`1b15bafad32a9847e86bfc4a2e78add5ea62a18ccd593a97e072406937dd3326`.
+
+A first six-process cohort had host-wide wall-time nonstationarity, affecting
+load/parse/expand as well as checking; every sample is retained, not selectively
+dropped. The predeclared reverse-order fresh cohort
+candidate/baseline/baseline/candidate/candidate/baseline was stable:
+
+| Quick corpus median | G50 control | G55B source bound |
+| --- | ---: | ---: |
+| Checker ms | 9941.936 | 9372.094041 |
+| Parse/expand/check pipeline ms | 10880.744208 | 10277.168959 |
+| Public checker chunks | 466660 | 445900 |
+
+This is a promising quick screen, not full-build or product acceptance.
+Separate built-in V8 coverage explains the avoided source work:
+
+| Exact body entries | G50 control | G55B source bound |
+| --- | ---: | ---: |
+| Source usage dispatch | 80424 | 43066 |
+| Usage type queries | 3490 | 2264 |
+| Infer | 49766 | 46610 |
+| Binder usage closes | 3319 | 3319 |
+
+The new entry handles54413 calls, with11347 certified-zero discharges.
+Coverage timing is excluded from throughput; entry counts are not CPU shares or
+an Amdahl ceiling. Generated lowering inlines `arena_node_bound`; its zero body
+entry count is not evidence of zero metadata reads.
+
+After source and frozen generated inputs were committed, the authenticated
+existing G44D1 native seed produced the actual G55B image without an LLVM
+rebuild:31916097B/SHA256
+`49b3501c102e067fbc18b6f04645aecf7c45415fcaa5ec29f447851014622918`,
+guardian95707ms, sampled peak RSS1746829312B/footprint1773488624B.
+An accidentally nested outer guardian was rejected as LOCK_BUSY before native
+execution; the corrected direct call retains the producer's original8GiB RSS
+and footprint,10ms polling and300000ms cap. Both attempts remain explicit.
+
+Full-source throughput and native-candidate consumers are separate evidence;
+quick/canonical proof is not relabelled as native full qualification. The fixed
+full comparison uses the same G50 source closure53 files and actual expected
+G50 output bytes, unchanged8M parser fuel/module,256MiB worker stack, ABI13,
+quantum64 and600000ms per throughput run. Small source fixtures retain2M fuel.
+G24R12 remains accepted; candidate self-fixedpoint, original scheduler/product
+matrices and strict12 promotion are not inferred from any quick result.
+Exact commands, sources, images, CPU/wall and memory:
+`checkpoints/local2039g55-quick-measured.json`,
+`checkpoints/local2039g55-native-produced.json` and
+`checkpoints/local2039g55-baseline-measured.json` on the isolated source branch.
+
+#### Full native-produced comparison: semantic pass, no promotion
+
+The genuine G55B native-produced image also passed all69 source consumers:
+207/207 rows across native G50, canonical G55B and native G55B. The two full
+fresh own-parser/template/checker/emitter runs then consumed identical frozen
+G50 source inputs (53 files). Both actually returned31906405B, SHA256
+`273b0022813e17908020c0ee58fd4e02da4f3dc756ce58e3389093440863c3fe`.
+This is unchanged-target byte parity, not a G55B self-fixedpoint.
+
+| Full-source single pair | G50 control | G55B source bound |
+| --- | ---: | ---: |
+| Checker wall ms | 295568.907958 | 310515.449125 |
+| Whole pipeline wall ms | 336596.9925 | 350754.937792 |
+| Checker public chunks | 10409462 | 10232859 |
+| Sampled peak RSS B | 3145220096 | 2960474112 |
+| Sampled peak footprint B | 3108223792 | 3157441256 |
+
+**G55B not accepted for promotion:** the positive quick screen did not establish
+a full-source wall-time win. This single pair is not a statistically established
+regression: process-wide checker user CPU decreased slightly while wall time
+increased, and host nonstationarity is already recorded. No output mismatch or
+semantic failure was hidden. Source-dispatch/count reductions alone are not
+whole-build acceleration; the mini corpus remains a screen, not acceptance.
+
+Only the24 durable regressions, documentation and compact evidence are
+integrated. The complete source variant and required frozen inputs stay on
+`selfhost/g55-source-usage-fusion`. G24R12 remains accepted. Candidate
+self-fixedpoint, original scheduler/full product matrices and strict12 were not
+run. Exact commands, phases/CPU, limits, memory, both cohorts, source/image
+fingerprints and all failures: `checkpoints/local2039g55-final-measured.json`
+on that branch; main pointer `checkpoints/local2039g55-summary.json`.
+

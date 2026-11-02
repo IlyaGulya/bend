@@ -1,9 +1,10 @@
 {
   "schemaVersion": 1,
   "version": "G55-source-usage-regressions",
-  "status": "SOURCE_FROZEN_69_BEFORE_FULL_GATE",
+  "status": "PASS_69_NATIVE_CONTROL_CANONICAL_AND_NATIVE_CANDIDATE",
   "acceptedCompiler": "G24R12 unchanged",
   "compilerSourceIntegrated": false,
+  "verificationReceipts": ["selfhost/integration:checkpoints/local2039g55-summary.json", "selfhost/g55-source-usage-fusion:checkpoints/local2039g55-final-measured.json"],
   "gate": "evals/checker_core_target_gate.ts",
   "gateSha256": "8c8628ecdbe19e362e945549d94b9de6607faa4dd820dbc281fe59cb3674c106",
   "existingCasesRetained": 45,
