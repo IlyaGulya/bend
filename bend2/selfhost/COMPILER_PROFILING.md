@@ -1665,3 +1665,55 @@ Compiler images, generated step sources, C/binaries and bulk logs remain
 outside Git. G24R12 remains the accepted image; native production, original
 scheduler, byte-fixedpoint and the broader qualification gates were not run.
 
+### G50: combined candidate passes native root bootstrap and95+190
+
+`selfhost/g50-combined` combines only the measured C fragments and directional
+nested-padding correction, without the rejected NF-spine/map/sum experiments.
+The full canonical development image admitted12473 definitions/18 modules.
+Actual C execution passed unchanged small21-line and medium33-line surrogates,
+the40/39/28 regression and all16 fragment edge assertions. The genuine
+native-produced compiler image also emitted byte-identical corrected C and
+passed all three runtime inputs.
+
+Order-balanced comparison against the **corrected padding baseline**, not the
+old invalid-code baseline, retained exact C bytes:
+
+| Source | Corrected baseline pipeline ms | Combined pipeline ms | Reduction |
+| --- | ---: | ---: | ---: |
+| small | 6494.5 | 5590.5 | 13.92% |
+| medium | 11144.5 | 9521.5 | 14.56% |
+
+Pipeline is frontend/check/emit-C, excluding compiler-image generation and
+clang/runtime. This is not a whole-native-build or strict12 speedup claim.
+
+The candidate then passed the supported full native chain, not a relabelled
+canonical TS image: fresh in-worktree parser FULL_75 acceptance; fresh exact-root
+native seed with the explicit LLVM21 split/O1 four-partition policy; native
+stage1, complete semantic AST parity for all18 source modules, all95 seed
+fixtures, and own-parser stage2 with byte-identical output. Both images are
+31906405B, SHA256
+`273b0022813e17908020c0ee58fd4e02da4f3dc756ce58e3389093440863c3fe`.
+The separate existing emitted-image suite then passed all190 fresh fixtures
+(95 per unchanged image). Original8GiB RSS/footprint,10ms polling,
+600000ms gate, parser8M/module, ABI13 and quantum64 remain unchanged.
+
+| Completed operation | Whole guardian ms | Sampled peak footprint B |
+| --- | ---: | ---: |
+| Fresh exact-root native seed build | 271420 | 5222619040 |
+| Canonical full native bootstrap/fixedpoint | 512756 | 3452677072 |
+| Both emitted-image semantic suites | 240605 | 2044691016 |
+
+The source, regression tests, required frozen input corpus and compact exact
+evidence are committed on the isolated branch. No images, AST transports,
+C/binaries or bulk logs enter Git. Caller coordinate failures are retained,
+not rewritten as passes; all successful consumer proofs use canonical
+realpaths and unchanged authentication. Main's bounded pointer is
+`checkpoints/local2039g50-summary.json`; the branch's full compact receipt is
+`checkpoints/local2039g50-final-measured.json`.
+
+**Native compiler-root correctness confirmed, product promotion withheld.**
+Original scheduler/full C62, JS67/native33/admission12/host5 and strict12
+accepted-baseline throughput remain separate gates. Accepted G24R12 is unchanged.
+The own-JS-book run spends88.81% in checking (291167.482ms of327871.230ms);
+that is the observed larger build bottleneck, not fragment assembly.
+
