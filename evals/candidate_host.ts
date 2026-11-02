@@ -12,7 +12,7 @@
 // matching the official CLI where `-o out.mjs` selects a library.
 //
 // usage: bun evals/candidate_host.ts --candidate=PATH [--parser=PATH]
-//   [--candidate-build=CANONICAL_NATIVE_BUILD] [--base=PATH] [--library]
+//   [--candidate-build=CANONICAL_NATIVE_BUILD | --candidate-oracle=FAST_TS_RECEIPT] [--base=PATH] [--library]
 //   [--exports=a,b] <input.bend> -o <output>
 //   Opt-in diagnostic stage report: [--stage-profile=DIR] [--stage-progress]
 //   [--stage-manifest=PATH ...] [--stage-receipt=PATH ...]. Ordinary output and
@@ -74,7 +74,7 @@ function args_parse(){
     (name==='--stage-manifest'?manifests:receipts).push(resolve(value));
     continue;
    }
-   if(!['--candidate','--candidate-build','--parser','--base','--exports','--runtime-c','--source-tag','--stage-profile','--checked-out','--sources-out','--work-census','--work-census-binding','--work-census-ms'].includes(name)||value===undefined||values.has(name))fail('unknown or duplicate option '+arg);
+   if(!['--candidate','--candidate-build','--candidate-oracle','--parser','--base','--exports','--runtime-c','--source-tag','--stage-profile','--checked-out','--sources-out','--work-census','--work-census-binding','--work-census-ms'].includes(name)||value===undefined||values.has(name))fail('unknown or duplicate option '+arg);
    values.set(name,value);
    continue;
   }
@@ -82,6 +82,7 @@ function args_parse(){
  }
  if(positional.length!==1)fail('expected exactly one input .bend file');
  if(!values.has('--candidate'))fail('required --candidate=PATH');
+ if(values.has('--candidate-build')&&values.has('--candidate-oracle'))fail('native build and canonical source-oracle evidence are distinct alternatives');
  if(values.has('--source-tag')){const sourceTag=values.get('--source-tag')!;if(!sourceTag||/[\r\n\t]/.test(sourceTag))fail('--source-tag needs one nominal constructor tag');}
  if(!values.has('-o'))fail('required -o <output>');
  if(flags.has('--stage-progress')&&!values.has('--stage-profile'))fail('--stage-progress needs --stage-profile=DIR');
@@ -92,6 +93,7 @@ function args_parse(){
  const output=values.get('-o')!;
  return {candidate:resolve(values.get('--candidate')!),parser:values.has('--parser')?resolve(values.get('--parser')!):undefined,
   candidateBuild:values.has('--candidate-build')?resolve(values.get('--candidate-build')!):undefined,
+  candidateOracle:values.has('--candidate-oracle')?resolve(values.get('--candidate-oracle')!):undefined,
   base:resolve(values.get('--base')??posix.join(ROOT,'bend2/base.bend')),exports:values.get('--exports')?.split(','),
   library:flags.has('--library')||output.endsWith('.mjs'),input:resolve(positional[0]!),output:resolve(output),
   runtimeC:values.has('--runtime-c')?resolve(values.get('--runtime-c')!):undefined,
@@ -132,6 +134,20 @@ if(o.candidateBuild!==undefined){
  }
  sourceTag=sourceFileTagFromRoot(readFileSync(build.sourcePath,'utf8'),'compiled');
 }
+if(o.candidateOracle!==undefined){
+ const oracle=objectOf(JSON.parse(readFileSync(o.candidateOracle,'utf8')));
+ if(!oracle||oracle.kind!=='selfhost-fast-ts-oracle'||oracle.status!=='FAST_ORACLE_PASS'||
+  oracle.nativeCompiler!==false||oracle.acceptanceEvidence!==false||oracle.byteFixedpointClaim!==false||
+  oracle.checkOnly!==false||typeof oracle.output!=='string'||realpathSync(oracle.output)!==realpathSync(o.candidate)||
+  oracle.outputSha256!==fileSha(o.candidate)||typeof oracle.source!=='string'||
+  typeof oracle.checkedDefinitions!=='number'||oracle.checkedDefinitions<1)
+  fail('candidate-oracle is not this fully checked canonical source image');
+ const pins=objectOf(oracle.loadedInputs);
+ if(!pins||Object.keys(pins).length===0||pins[oracle.source]!==fileSha(oracle.source))
+  fail('candidate-oracle lacks its exact source input');
+ for(const[path,hash]of Object.entries(pins))if(fileSha(path)!==hash)fail('candidate-oracle source input changed: '+path);
+ sourceTag=sourceFileTagFromRoot(readFileSync(oracle.source,'utf8'),'compiled');
+}
 if(o.sourceTag!==undefined&&o.sourceTag!==sourceTag)fail('--source-tag differs from the compiler image carrier ('+sourceTag+')');
 if(o.stageProfile!==undefined){
  const inputPath=realpathSync(o.input),parserPath=realpathSync(o.parser??o.candidate);
@@ -151,7 +167,7 @@ if(o.stageProfile!==undefined){
    candidatePath:realpathSync(o.candidate),candidateSha256:fileSha(o.candidate),
    parserPath,parserSha256:fileSha(parserPath),
    basePath:realpathSync(o.base),baseSha256:fileSha(o.base),
-   sourceFileTag:sourceTag,candidateBuild:o.candidateBuild??null,library:o.library,exports:o.exports??null,outputPath:o.output,
+   sourceFileTag:sourceTag,candidateBuild:o.candidateBuild??null,candidateOracle:o.candidateOracle??null,library:o.library,exports:o.exports??null,outputPath:o.output,
    command:[process.execPath,...process.argv.slice(2)],
    scope:'candidate_host.ts typed-step ABI; source emission only, no external link step'},
  });
