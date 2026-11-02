@@ -7,9 +7,11 @@
  * Existing heavy_gate options may lower the deadline or select resource caps.
  */
 import {createHash} from 'node:crypto';
+import {spawn} from 'node:child_process';
 import {existsSync,mkdirSync,readFileSync,realpathSync,writeFileSync} from 'node:fs';
 import {resolve,join} from 'node:path';
 import {fileURLToPath,pathToFileURL} from 'node:url';
+import {isMainThread} from 'node:worker_threads';
 import {guardHeavyGate} from './heavy_gate.ts';
 import type * as Bend from '../bend2/bend.ts';
 import type * as Comp from '../bend2/comp.ts';
@@ -19,7 +21,7 @@ const values=new Map<string,string>();let checkOnly=false;
 for(const argument of process.argv.slice(2)){
  if(argument==='--check-only'){if(checkOnly)throw Error('duplicate --check-only');checkOnly=true;continue;}
  const at=argument.indexOf('='),key=argument.slice(0,at),value=argument.slice(at+1);
- if(at<0||!['--repository','--source','--out','--exports'].includes(key)||!value||values.has(key))throw Error('Expected unique documented --option=value');
+ if(at<0||!['--repository','--source','--out','--exports','--node'].includes(key)||!value||values.has(key))throw Error('Expected unique documented --option=value');
  values.set(key,value);
 }
 for(const key of ['--source','--out'])if(!values.has(key))throw Error('Missing '+key);
@@ -30,6 +32,17 @@ const directory=resolve(values.get('--out')!);
 if(existsSync(directory))throw Error('Use a fresh output directory: '+directory);
 const exports_=values.has('--exports')?values.get('--exports')!.split(','):undefined;
 if(exports_&&(!exports_.every(Boolean)||new Set(exports_).size!==exports_.length))throw Error('Exports must be nonempty and distinct');
+// JS lowering has deep checked terms: reuse the existing bounded V8 worker,
+// while plain all-body checks stay on the low-startup-cost Bun path.
+if(!checkOnly&&isMainThread){
+ const node=values.get('--node')??(process.versions.bun?undefined:process.execPath);
+ if(!node)throw Error('JS oracle emission needs --node=PATH; --check-only uses the current runtime');
+ const child=spawn(realpathSync(resolve(node)),['--experimental-strip-types',
+  fileURLToPath(new URL('./candidate_consumer_worker.mjs',import.meta.url)),
+  fileURLToPath(import.meta.url),...process.argv.slice(2)],{stdio:'inherit'});
+ const code=await new Promise<number>((done,fail)=>{child.once('error',fail);child.once('close',(value,signal)=>signal?fail(Error('Oracle worker stopped: '+signal)):done(value??1));});
+ process.exit(code);
+}
 mkdirSync(directory,{recursive:true});
 const hash=(path:string)=>createHash('sha256').update(readFileSync(path)).digest('hex');
 const save=(name:string,value:unknown)=>writeFileSync(join(directory,name),JSON.stringify(value,null,2)+'\n',{flag:'wx'});

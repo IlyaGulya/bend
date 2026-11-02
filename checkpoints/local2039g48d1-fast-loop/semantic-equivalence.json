@@ -1,0 +1,66 @@
+{
+  "status": "FAST_ORACLE_NATIVE_PROBE_EQUIVALENT",
+  "acceptanceEvidence": false,
+  "allCases": {
+    "nf": 24,
+    "reach": 15,
+    "capacityPairs": 4
+  },
+  "fullTaggedResultEquality": true,
+  "identityValuesPreserved": true,
+  "allCountersEqual": true,
+  "allHostChunkCountsEqual": true,
+  "onlyNormalization": {
+    "nativeConstructorNamespacePrefixes": [
+      "emitter_steps_identity_probe_v1.",
+      "../bend2/selfhost/backend_ir."
+    ],
+    "authority": "actual frozen probe corpus module namespace rows; no semantic or identity field erased"
+  },
+  "source": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g47r1-m0ir575l/repository/checkpoints/local2039g47r1-query-root.bend",
+  "oracleReceipt": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/fast-g47-probe-node-v1/receipt.json",
+  "oracleGuard": {
+    "command": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "--experimental-strip-types",
+      "/Users/ilyagulya/Projects/My/bend/evals/candidate_consumer_worker.mjs",
+      "/Users/ilyagulya/Projects/My/bend/evals/selfhost_fast.ts",
+      "--repository=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g47r1-m0ir575l/repository",
+      "--source=checkpoints/local2039g47r1-query-root.bend",
+      "--exports=start,step",
+      "--out=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/fast-g47-probe-node-v1"
+    ],
+    "guard": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 2510716928,
+      "peakFootprintBytes": 2648783520,
+      "elapsedMs": 13065,
+      "timeoutMs": 120000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 0,
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--experimental-strip-types",
+        "/Users/ilyagulya/Projects/My/bend/evals/candidate_consumer_worker.mjs",
+        "/Users/ilyagulya/Projects/My/bend/evals/selfhost_fast.ts",
+        "--repository=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g47r1-m0ir575l/repository",
+        "--source=checkpoints/local2039g47r1-query-root.bend",
+        "--exports=start,step",
+        "--out=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/fast-g47-probe-node-v1"
+      ],
+      "label": "Fast source JS oracle in existing bounded Node worker",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793603942030-8a72dd81e59b63da.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    }
+  },
+  "nativeReferenceReceipt": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g47r1-query-native-v3.json",
+  "nativeReferenceGuardMs": 58364,
+  "observedProductionRatio": 4.467202449292001,
+  "limit": "Different oracle implementation/runtime, fresh single-run diagnostic comparison; not native compiler throughput or acceptance"
+}
