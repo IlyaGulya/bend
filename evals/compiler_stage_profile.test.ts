@@ -268,7 +268,7 @@ test('trace decoding rejects an event from another nominal module', () => {
   expect(typedTraceEvents(boundary, trace).status).toBe('invalid');
 });
 
-test('canonical compiled trace tags produce spans only with an image-bound native receipt', async () => {
+test('canonical trace authenticates a declared source root and image; changed source cannot produce spans', async () => {
   const directory = await mkdtemp(join(tmpdir(), 'bend-native-trace-'));
   const hash = (text: string) => createHash('sha256').update(text).digest('hex');
   const source = join(directory, 'catalog.bend'), engine = join(directory, 'emitter_trace.bend');
@@ -276,11 +276,12 @@ test('canonical compiled trace tags produce spans only with an image-bound nativ
   const sourceText = 'def build() -> U32:\n  0\n';
   await writeFile(source, sourceText);
   await writeFile(engine, sourceText);
-  const declaration = {kind: 'def', name: 'build', canonicalName: 'build', source,
+  const sourceKey = 'catalog.bend';
+  const declaration = {kind: 'def', name: 'build', canonicalName: 'build', source: sourceKey,
     canonicalDeclarationSha256: hash(sourceText), composedDeclarationSha256: hash(sourceText)};
   const document = {
     generationConfig: {output: engine}, nativeChunk: {runType: 'EmitterRun', quantum: 64},
-    canonicalComposition: {declarations: [declaration], inputs: {[source]: hash(sourceText)}},
+    canonicalComposition: {declarations: [declaration], inputs: {[sourceKey]: hash(sourceText)}},
     outputs: {[engine]: hash(sourceText)},
     trace: {protocolVersion: 1, protocol: 'Emitter', runConstructor: 'EmitterRunSpan',
       beginConstructor: 'EmitterTraceBegin', endConstructor: 'EmitterTraceEnd',
@@ -289,11 +290,12 @@ test('canonical compiled trace tags produce spans only with an image-bound nativ
   };
   await writeFile(manifestPath, JSON.stringify({...document, generationManifestSha256: hash(JSON.stringify(document))}));
   try {
-    for (const native of [false, true]) {
+    for (const [native, tampered] of [[false, false], [true, false], [true, true]]) {
+      await writeFile(source, tampered ? sourceText + '# changed after generation\n' : sourceText);
       await writeFile(receiptPath, JSON.stringify({artifactSha256: 'c'.repeat(64),
         status: native ? 'JS_GENERATED_NOT_YET_EXECUTED' : 'UNVERIFIED',
         checkedOutputRetention: 'native e', loadedInputs: {[engine]: hash(sourceText)}}));
-      const stage = await createStageProfile({directory: join(directory, String(native)),
+      const stage = await createStageProfile({directory: join(directory, String(native) + '-' + tampered), sourceRoot: directory,
         manifestPaths: [manifestPath], receiptPaths: [receiptPath], artifact: {sha256: 'c'.repeat(64)}});
       const span = stage.span('emit');
       const attributes = createStepAttribution('emit', 'Emitter', stage.manifestTable, stage.profile);
@@ -307,8 +309,8 @@ test('canonical compiled trace tags produce spans only with an image-bound nativ
       stage.finish('completed');
       const report = JSON.parse(await readFile(stage.reportPath, 'utf8'));
       const trace = report.observations.find((row: {kind: string}) => row.kind === 'scheduler-boundary-spans');
-      expect(trace.values.closedSpans).toBe(native ? 1 : 0);
-      expect(trace.values.ignoredEvents).toBe(native ? 0 : 2);
+      expect(trace.values.closedSpans).toBe(native && !tampered ? 1 : 0);
+      expect(trace.values.ignoredEvents).toBe(native && !tampered ? 0 : 2);
     }
   } finally {await rm(directory, {recursive: true, force: true});}
 });

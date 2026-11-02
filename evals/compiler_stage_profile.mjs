@@ -38,6 +38,7 @@
 // bracket pairing cannot be authenticated.
 import {createHash} from 'node:crypto';
 import {readFileSync, realpathSync} from 'node:fs';
+import {resolve} from 'node:path';
 import {isMainThread, threadId} from 'node:worker_threads';
 
 export const STAGE_PROFILE_SCHEMA_VERSION = 1;
@@ -355,7 +356,7 @@ function emptyTraceTable(namespace, status, reasons) {
  * and can never be repaired into a plausible span set.
  */
 function describeTraceBlock(document, context) {
-  const {namespace, protocol, sources, sourceStatus, canonicalSourcePins, declarations, artifactBinding} = context;
+  const {namespace, protocol, sources, sourceStatus, canonicalSourcePins, declarations, artifactBinding, sourceRoot} = context;
   const block = document.trace;
   const table = emptyTraceTable(namespace, 'absent', []);
   // An ordinary manifest is not hashed, not re-serialized and not inspected
@@ -394,7 +395,7 @@ function describeTraceBlock(document, context) {
     const expected = canonicalSourcePins.get(source);
     if (expected === undefined) return 'undeclared-source';
     try {
-      return sha256(readFileSync(source)) === expected ? 'verified' : 'mismatch';
+      return sha256(readFileSync(resolve(sourceRoot, source))) === expected ? 'verified' : 'mismatch';
     } catch {
       return 'missing';
     }
@@ -607,6 +608,7 @@ function bindManifestToReceipt(manifest, receipt, artifactSha256) {
 }
 
 export function loadStageManifests(paths, binding = {}) {
+  const sourceRoot = resolve(binding.sourceRoot ?? '.');
   const requestToGroup = new Map();
   const provenance = [];
   const conflicts = [];
@@ -687,7 +689,7 @@ export function loadStageManifests(paths, binding = {}) {
       let actual = null;
       if (!conflict && expected !== null) {
         try {
-          actual = sha256(readFileSync(source));
+          actual = sha256(readFileSync(resolve(sourceRoot, source)));
           status = actual === expected ? 'verified' : 'mismatch';
         } catch (error) {
           status = 'missing';
@@ -707,7 +709,7 @@ export function loadStageManifests(paths, binding = {}) {
               ? 'manifest canonicalComposition.sources[].canonicalSha256'
               : 'no canonical pin for this declared source'});
     }
-    const traceTable = describeTraceBlock(document, {namespace, protocol, sources, sourceStatus, canonicalSourcePins,
+    const traceTable = describeTraceBlock(document, {namespace, protocol, sources, sourceStatus, canonicalSourcePins, sourceRoot,
       declarations: Array.isArray(document.canonicalComposition?.declarations) ? document.canonicalComposition.declarations : [],
       artifactBinding});
     traceTables.push(traceTable);
@@ -772,7 +774,7 @@ export function loadStageManifests(paths, binding = {}) {
       .sort(([a], [b]) => a.localeCompare(b))
       .map(([name, owners]) => ({name, key, sources: [...owners].sort()}));
     provenance.push({
-      path: realpathSync(path), sha256: sha256(bytes), protocol, namespace,
+      path: realpathSync(path), sha256: sha256(bytes), protocol, namespace, sourceRoot,
       requestConstructors: definitions.length,
       definitionsWithCanonicalSource: uniqueDefinitions.filter(name => typeof ownerOf(name).source === 'string').length,
       definitionOwnerBasis: ownerBasisCounts,
@@ -1695,7 +1697,7 @@ export function nativeTraceObservations(text) {
  * missing declaration is recorded as undeclared rather than as an absence of
  * any parent profile in the system.
  */
-export async function createStageProfile({directory, execution, rawDetail = false, manifestPaths = [], artifact, receiptPaths = [], executingScript, parentProfile, parentThread}) {
+export async function createStageProfile({directory, execution, rawDetail = false, manifestPaths = [], artifact, receiptPaths = [], executingScript, parentProfile, parentThread, sourceRoot}) {
   const {createCompilerProfile, COMPILER_PROFILE_SCHEMA_VERSION} = await import('./compiler_profile.mjs');
   // Imported here, not at module scope: an unprofiled run must not even resolve
   // these modules, and this helper is only called by an opt-in profiling run.
@@ -1703,7 +1705,7 @@ export async function createStageProfile({directory, execution, rawDetail = fals
   const {join, dirname, basename} = await import('node:path');
   const receipts = receiptPaths.map(readReceipt);
   const receipt = receipts.find(candidate => artifact !== undefined && candidate.artifactSha256 === artifact.sha256) ?? receipts[0];
-  const table = loadStageManifests(manifestPaths, {artifactSha256: artifact?.sha256 ?? null, receipt});
+  const table = loadStageManifests(manifestPaths, {artifactSha256: artifact?.sha256 ?? null, receipt, sourceRoot});
   const profileSources = {
     executingScript: pinFile(executingScript,
       'the caller declared no executing script path; the stage helper cannot infer which program imported it'),

@@ -144,7 +144,7 @@ if(o.stageProfile!==undefined){
  stage=await createStageProfile({
   directory:o.stageProfile,rawDetail:o.stageProgress,manifestPaths:o.stageManifests,
   artifact:{path:realpathSync(o.candidate),sha256:fileSha(o.candidate)},receiptPaths:o.stageReceipts,
-  executingScript:fileURLToPath(import.meta.url),
+  executingScript:fileURLToPath(import.meta.url),sourceRoot:ROOT,
   parentProfile,
   execution:{stage:'selfhost-candidate',mode:'typed-step',target,
    sourcePath:inputPath,sourceSha256:fileSha(inputPath),
@@ -343,7 +343,7 @@ if(o.workCensus!==undefined){
   import('./compiler_demand_diagnostic.mjs'),import('./compiler_work_census.mjs'),import('./compiler_demand_census.mjs')]);
  const binding=authenticateCensusBinding(o.workCensusBinding!);
  if(binding.artifactPath!==realpathSync(o.candidate)||binding.artifactSha256!==fileSha(o.candidate))fail('work census binding belongs to another compiler image');
- const table=loadStageManifests(o.stageManifests,{artifactSha256:binding.artifactSha256,receipt:binding});
+ const table=loadStageManifests(o.stageManifests,{artifactSha256:binding.artifactSha256,receipt:binding,sourceRoot:ROOT});
  const documents=o.stageManifests.map(path=>JSON.parse(readFileSync(path,'utf8')));
  const traced=documents.filter(document=>document.trace?.programCapture!==undefined);
  if(traced.length!==1||traced[0].trace.programCapture.birImport!=='../bend2/selfhost/backend_ir.bend')fail('work census needs one authenticated passive BIR.Program carrier');
