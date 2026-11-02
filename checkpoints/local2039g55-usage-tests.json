@@ -1,0 +1,174 @@
+{
+  "schemaVersion": 1,
+  "version": "G55-source-usage-regressions",
+  "status": "SOURCE_FROZEN_BEFORE_FULL_GATE",
+  "acceptedCompiler": "G24R12 unchanged",
+  "compilerSourceIntegrated": false,
+  "gate": "evals/checker_core_target_gate.ts",
+  "gateSha256": "27ad1910b4edd6de02636fcbb7af1b5cc1debe2bf2332162af2dbf5909c391b5",
+  "existingCasesRetained": 45,
+  "newCases": 19,
+  "totalCases": 64,
+  "originalSourceCorpusCommits": [
+    "ced8674c",
+    "5c31e609"
+  ],
+  "newCasesAlreadyExercisedIndividually": true,
+  "exactNewCaseSources": [
+    {
+      "name": "usage-g55-lambda-error-before-usage",
+      "sourceSha256": "c5ec3908c63a1bb51aad9aad4c5aac9ac16f2179a2f8061fa802da97961d449d",
+      "accepted": false,
+      "span": {
+        "beg": 150,
+        "end": 156
+      }
+    },
+    {
+      "name": "usage-g55-lambda-body-mismatch-before-usage",
+      "sourceSha256": "535cee1c3e038df92b6e52fa4045121c29db55e0edcf4dd9521cc342dff330f1",
+      "accepted": false,
+      "span": {
+        "beg": 128,
+        "end": 146
+      }
+    },
+    {
+      "name": "usage-g55-pattern-usage-before-undefined",
+      "sourceSha256": "7cd65139a8be0863e953744a5e99bf5ab6bcb443963922fdac00f1ed1ecb0421",
+      "accepted": false,
+      "span": {
+        "beg": 135,
+        "end": 190
+      }
+    },
+    {
+      "name": "usage-g55-pattern-branch-independent",
+      "sourceSha256": "09d8a8d18cd9c114d44893d29b552a7a40f7cf40a1b01c351e468b712f51e1a8",
+      "accepted": true,
+      "output": "BitOne{}"
+    },
+    {
+      "name": "usage-g55-body-error-before-final-affinity",
+      "sourceSha256": "831dfa0916c85e633c2345b1e2984ffdce42930ec030f271baad899e36326b08",
+      "accepted": false,
+      "span": {
+        "beg": 142,
+        "end": 148
+      }
+    },
+    {
+      "name": "usage-g55-erased-application-argument-plus-live",
+      "sourceSha256": "c44f6b4e4747c724f5dfa45ebabac5ee356832ffe90eab44078dca12c935d982",
+      "accepted": true,
+      "output": "Pair{BitZero{}, BitOne{}}"
+    },
+    {
+      "name": "usage-g55-erased-argument-still-typechecked",
+      "sourceSha256": "1abb3a8933232df603bedef0c3afdef316e44aea50d0a9226974f9a91b521f56",
+      "accepted": false,
+      "span": {
+        "beg": 176,
+        "end": 182
+      }
+    },
+    {
+      "name": "usage-g55-erased-constructor-field-plus-live",
+      "sourceSha256": "8edba55d12aac99c47d9e650a57d03ab2fce37dc76630f8df1d76000cdd4fafa",
+      "accepted": true,
+      "output": "BitOne{}"
+    },
+    {
+      "name": "usage-g55-beta-ignored-argument",
+      "sourceSha256": "dc228ac5775b4e025ebcd4304257e0c37af036e0c197844f73804905ba1523b4",
+      "accepted": false,
+      "span": {
+        "beg": 99,
+        "end": 109
+      }
+    },
+    {
+      "name": "usage-g55-early-local-undefined-after-duplicate-typed-value",
+      "sourceSha256": "bca765608d42c9578e6c97afdfbaa10ade587ca715c23b985020f096d4e81cce",
+      "accepted": false,
+      "span": {
+        "beg": 111,
+        "end": 116
+      }
+    },
+    {
+      "name": "usage-g55-early-local-undefined-before-duplicate-typed-value",
+      "sourceSha256": "976a390ba884b1b6149fa2e12066da4006b1c7e60a9361b91884c6ae2d1d0cd9",
+      "accepted": false,
+      "span": {
+        "beg": 111,
+        "end": 116
+      }
+    },
+    {
+      "name": "usage-g55-early-local-erased-versus-body-error-typed-value",
+      "sourceSha256": "de2aed8efd4309fa6b9819f8d59f9bd3c6ea47875ef6a41915d5c8677f374f35",
+      "accepted": false,
+      "span": {
+        "beg": 111,
+        "end": 117
+      }
+    },
+    {
+      "name": "usage-g55-termination-before-final-duplicate-call",
+      "sourceSha256": "9b03f62336241335ea1c4ceb28834fa91a09860d3378a678392b0ae17b2aad2d",
+      "accepted": false,
+      "span": {
+        "beg": 140,
+        "end": 197
+      }
+    },
+    {
+      "name": "usage-g55-source-lexical-erased-dependent-local-typed-flag",
+      "sourceSha256": "03cc2eada564891eabe6627ee012b442339db4960cd57e6fda4c232fc4c9006f",
+      "accepted": false,
+      "span": {
+        "beg": 337,
+        "end": 343
+      }
+    },
+    {
+      "name": "usage-g55-source-lexical-live-dependent-local-typed-flag",
+      "sourceSha256": "64c3366f87a55a5f4bf14171291a7cb3bb1681f0154c0cf879149fd2a60a9b05",
+      "accepted": true,
+      "output": "BitZero{}"
+    },
+    {
+      "name": "usage-g55-nested-alternative-max",
+      "sourceSha256": "a321c327a19e2351bb4e790983569374af51c591cc7ba44f7d49790e92007a2a",
+      "accepted": true,
+      "output": "BitOne{}"
+    },
+    {
+      "name": "usage-g55-nested-alternative-one-bad-row",
+      "sourceSha256": "d6c4dc0270b16ee97aa6e469836b16d60731e4e81ea95b7a67aec7d0088103e7",
+      "accepted": false,
+      "span": {
+        "beg": 120,
+        "end": 130
+      }
+    },
+    {
+      "name": "usage-g55-local-shadowed-levels",
+      "sourceSha256": "89b42b160e2349b0eff1b21f80f2316b9d360acab4dd6e80ab23069945ca8e55",
+      "accepted": true,
+      "output": "Pair{BitZero{}, BitZero{}}"
+    },
+    {
+      "name": "usage-g55-sequential-local-values-duplicate-outer",
+      "sourceSha256": "03453f7cb51ce8f6d0514df92068f16a11eee91499819571a46848dcda521624",
+      "accepted": false,
+      "span": {
+        "beg": 131,
+        "end": 137
+      }
+    }
+  ],
+  "policy": "Public source behavior only: accepted cases execute actual unchanged emitted JS; negatives pin first blamed source file/beg/end without diagnostic prose. Original45 cases and driver/ABI/limits retained. Unexpected initial hypotheses and invalid constructor initializers are not pinned as passes.",
+  "keySourceConstraint": "Dependent local callee checking with SomeTerm is not original usage with NoTerm; preserve original source obligations, two flags, match refinements and first-error order."
+}
