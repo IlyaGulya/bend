@@ -1,0 +1,255 @@
+{
+  "status": "CONSTRUCTION_IDENTITY_QUERY_PROBES_PASS",
+  "acceptanceEvidence": false,
+  "sourceVersion": "G47R1",
+  "nfCases": 24,
+  "reachCases": 15,
+  "fullSemanticResultEquality": true,
+  "representationRelation": "Erase only registered identity fields and unwrap authenticated NF.Env; all original semantic fields/values retained",
+  "oneExplicitUnownedQuery": true,
+  "freshDistinctScopes": [
+    "3",
+    "5",
+    "6",
+    "7",
+    "8"
+  ],
+  "orderedSeenDistinct": [
+    "46",
+    "47",
+    "54"
+  ],
+  "emptyEnvironmentInterned": true,
+  "observations": {
+    "normal": {
+      "counts": {
+        "nf_hits": "10",
+        "nf_misses": "36",
+        "reach_hits": "4",
+        "reach_misses": "12",
+        "nf_entries": "35",
+        "reach_entries": "12",
+        "interned": "50",
+        "scopes": "5",
+        "disabled": "1",
+        "allocations": "191",
+        "node_hits": "136",
+        "unowned_queries": "1"
+      },
+      "steps": 168,
+      "resultLimit": 100000,
+      "nodeLimit": 500000
+    },
+    "resultCap": {
+      "counts": {
+        "nf_hits": "2",
+        "nf_misses": "48",
+        "reach_hits": "0",
+        "reach_misses": "16",
+        "nf_entries": "1",
+        "reach_entries": "0",
+        "interned": "50",
+        "scopes": "5",
+        "disabled": "63",
+        "allocations": "206",
+        "node_hits": "151",
+        "unowned_queries": "1"
+      },
+      "steps": 185,
+      "resultLimit": 1,
+      "nodeLimit": 500000
+    },
+    "graphCap": {
+      "counts": {
+        "nf_hits": "0",
+        "nf_misses": "50",
+        "reach_hits": "0",
+        "reach_misses": "16",
+        "nf_entries": "0",
+        "reach_entries": "0",
+        "interned": "1",
+        "scopes": "0",
+        "disabled": "267",
+        "allocations": "210",
+        "node_hits": "8",
+        "unowned_queries": "66"
+      },
+      "steps": 177,
+      "resultLimit": 100000,
+      "nodeLimit": 1
+    },
+    "bothCaps": {
+      "counts": {
+        "nf_hits": "0",
+        "nf_misses": "50",
+        "reach_hits": "0",
+        "reach_misses": "16",
+        "nf_entries": "0",
+        "reach_entries": "0",
+        "interned": "1",
+        "scopes": "0",
+        "disabled": "267",
+        "allocations": "210",
+        "node_hits": "8",
+        "unowned_queries": "66"
+      },
+      "steps": 177,
+      "resultLimit": 1,
+      "nodeLimit": 1
+    }
+  },
+  "inputs": {
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g47r1-m0ir575l/query-probes.data.json": "097e2ba788f6f415634c274de4e0038a74d21c0bf6bc9d8657c3da4e44c90900",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g47r1-m0ir575l/repository/checkpoints/emitter-steps-identity-probe-v1.json": "d5436e72a0aba96a450b768e3620764019ced381e0a87fe17186a4dc40b72c29",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g47r1-m0ir575l/repository/checkpoints/local2039g47r1-query-exact.corpus.json": "f39f199f6e91d5ac070b6cdcdb387eb18fd579098a9627b6ef215fcf70f39a4d",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g46r1-opsjri6q/query-probes-v2/baseline.data.json": "7af5b8ac8846960cebc2d1445956750fb93812ed527af28d1579fdbbcbb6525e",
+    "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/emitter-steps-v1.json": "f9b49605b06234d23c2bf9334b30de1fe45c3d4542f6e51aeadd0088f009a3fc",
+    "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g46r1-baseline-query-probe-v2.corpus.json": "180f1fdc9d6add92e8554731e492ff242ea32f4355f91c7bdada72b8e088f6fe"
+  },
+  "nativeProducer": {
+    "report": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g47r1-query-native-v3.json",
+    "reportSha256": "a36a65f7b7045c49307f94eb196ad501e90d240001862d616f0122b9553e5892",
+    "status": "NATIVE_FULL_COMPILE_PASS",
+    "command": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/evals/native_compiler_experiment.ts",
+      "--mode=run",
+      "--corpus=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g47r1-m0ir575l/repository/checkpoints/local2039g47r1-query-exact.corpus.json",
+      "--build=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g44d1-native-build.json",
+      "--report=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g47r1-query-native-v3.json",
+      "--phase=compile",
+      "--threads=1",
+      "--exports=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g47r1-m0ir575l/repository/checkpoints/local2039g47r1-query-exports.json"
+    ],
+    "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g47r1-m0ir575l/repository",
+    "outputSha256": "ecbd240600f1c27885877cd6eb1d282fc99747e5b09bf94825c55423feb77161",
+    "outputBytes": 20107698,
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 1219837952,
+      "peakFootprintBytes": 1154697232,
+      "elapsedMs": 58364,
+      "timeoutMs": 300000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 0,
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/evals/native_compiler_experiment.ts",
+        "--mode=run",
+        "--corpus=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g47r1-m0ir575l/repository/checkpoints/local2039g47r1-query-exact.corpus.json",
+        "--build=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g44d1-native-build.json",
+        "--report=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g47r1-query-native-v3.json",
+        "--phase=compile",
+        "--threads=1",
+        "--exports=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g47r1-m0ir575l/repository/checkpoints/local2039g47r1-query-exports.json",
+        "--internal=run"
+      ],
+      "label": "Native CPU compiler run",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793599866931-1087a4357a480208.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    },
+    "phases": [
+      {
+        "phase": "parse",
+        "elapsedMs": 4348.983,
+        "userCpuMs": 4184.885,
+        "systemCpuMs": 84.345,
+        "modules": 12,
+        "sourceBytes": 5059203,
+        "foreignBytes": 78415,
+        "eagerFuelCells": 96000000,
+        "fuelBuildMs": 655.413
+      },
+      {
+        "phase": "expand",
+        "elapsedMs": 2235.194,
+        "userCpuMs": 2211.991,
+        "systemCpuMs": 8.558,
+        "chunkAdvances": 540080,
+        "chunkQuantum": 64
+      },
+      {
+        "phase": "check",
+        "elapsedMs": 41474.269,
+        "userCpuMs": 40445.938,
+        "systemCpuMs": 179.78,
+        "chunkAdvances": 6831126,
+        "chunkQuantum": 64
+      },
+      {
+        "phase": "emit",
+        "elapsedMs": 9444.494,
+        "userCpuMs": 9285.732,
+        "systemCpuMs": 92.956,
+        "chunkAdvances": 911217,
+        "chunkQuantum": 64
+      }
+    ],
+    "parserFuelCellsPerSource": 8000000,
+    "modules": 12,
+    "actualLibraryExports": [
+      "start",
+      "step"
+    ]
+  },
+  "runtime": {
+    "command": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g47r1-m0ir575l/run-query-probes.mjs",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g47r1-query-native-v3.json.mjs",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g47r1-m0ir575l/query-probes.data.json"
+    ],
+    "guard": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 300498944,
+      "peakFootprintBytes": 235835928,
+      "elapsedMs": 592,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 0,
+      "command": [
+        "/bin/sh",
+        "-c",
+        "out=$1; err=$2; shift 2; exec \"$@\" >\"$out\" 2>\"$err\"",
+        "sh",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g47r1-m0ir575l/query-probes.stdout",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g47r1-m0ir575l/query-probes.stderr",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g47r1-m0ir575l/run-query-probes.mjs",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g47r1-query-native-v3.json.mjs",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g47r1-m0ir575l/query-probes.data.json"
+      ],
+      "label": "G47 actual typed NF/reach identities and four capacities",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793599992495-78dfd9f19e1e81ed.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    }
+  },
+  "comparisonCommand": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g47r1-m0ir575l/compare-query-probes.ts",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g47r1-m0ir575l/query-probes.data.json",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g47r1-m0ir575l/repository/checkpoints/emitter-steps-identity-probe-v1.json",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g47r1-m0ir575l/repository/checkpoints/local2039g47r1-query-exact.corpus.json",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g46r1-opsjri6q/query-probes-v2/baseline.data.json",
+    "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/emitter-steps-v1.json",
+    "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g46r1-baseline-query-probe-v2.corpus.json",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g47r1-m0ir575l/query-probes.outcome.json"
+  ],
+  "hostRunnerSha256": "5587250c4773765ee3e114f4d3345deffc92526b6e7305f95b9ff411fe886112",
+  "comparatorSha256": "a4f456f4c66b3e3446e02f3cfba628ab668a6649b5f8da136b2a1d9d99a16877",
+  "fixedpointAttempted": false
+}

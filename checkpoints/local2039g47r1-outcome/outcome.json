@@ -1,0 +1,507 @@
+{
+  "schemaVersion": 1,
+  "sourceVersion": "G47R1",
+  "status": "REJECTED",
+  "acceptanceEvidence": false,
+  "acceptedCompiler": "G24R12",
+  "acceptedMainCompilerSourcesChanged": false,
+  "reason": "Unchanged original scheduler C emission exceeded unchanged 600000ms necessary consumer deadline",
+  "sourceArchive": {
+    "branch": "selfhost/g47r1-rejected",
+    "worktree": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g47r1-m0ir575l/repository",
+    "sourceCheckpoint": "6cea14ae",
+    "ownedClosureCorrection": "17a1a7cd",
+    "frozenGeneratedInputs": "59c48e63",
+    "exactCorpusCorrection": "7b113d30",
+    "nativeSemanticCheckpoint": "cc7dd127",
+    "fullNativeImageCheckpoint": "862617eb",
+    "cControlCheckpoint": "c5d73e60",
+    "rejectedArchiveCommit": "fa03a39d"
+  },
+  "implementation": {
+    "queryInputsPreserved": [
+      "scope",
+      "descriptor",
+      "env",
+      "level",
+      "fuel",
+      "target",
+      "ordered seen"
+    ],
+    "constructorSchemas": 39,
+    "constructionSites": 104,
+    "nodeKeyHelpers": 37,
+    "protocol": "typed-native-stack-v59i",
+    "memoProtocol": 2,
+    "identitySchema": 1,
+    "publicABIExports": 13,
+    "scopeIdentity": "fresh logical contexts; no metadata equivalence assumption",
+    "nodeIdentity": "immediate scalar/owned-child-ID tuple, never-reused source Store IDs",
+    "queryKey": "fixed arity existing IDs and semantic scalars; no tree/list encoding at lookup",
+    "graphCap": 500000,
+    "combinedResultCap": 100000,
+    "ordinaryFallback": "Missing IDs/graph or result capacity computes original evaluator",
+    "nativeBIROwnerPreserved": true,
+    "fullTreeCodecRemoved": true
+  },
+  "runtime": {
+    "bun": "1.4.3 c6da4a4d3",
+    "consumer": {
+      "name": "node",
+      "versions": {
+        "node": "23.11.0",
+        "acorn": "8.14.1",
+        "ada": "3.2.1",
+        "amaro": "0.4.1",
+        "ares": "1.34.4",
+        "brotli": "1.1.0",
+        "cjs_module_lexer": "2.1.0",
+        "cldr": "46.0",
+        "icu": "76.1",
+        "llhttp": "9.2.1",
+        "modules": "131",
+        "napi": "10",
+        "nbytes": "0.1.1",
+        "ncrypto": "0.0.1",
+        "nghttp2": "1.64.0",
+        "openssl": "3.0.16",
+        "simdjson": "3.12.2",
+        "simdutf": "6.0.3",
+        "sqlite": "3.49.1",
+        "tz": "2025a",
+        "undici": "6.21.2",
+        "unicode": "16.0",
+        "uv": "1.50.0",
+        "uvwasi": "0.0.21",
+        "v8": "12.9.202.28-node.14",
+        "zlib": "1.3.0.1-motley-788cb3c",
+        "zstd": "1.5.6"
+      },
+      "platform": "darwin",
+      "arch": "arm64",
+      "execPath": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "execArgv": [
+        "--experimental-strip-types"
+      ]
+    },
+    "nativeProducerBinarySha256": "e014f6803dddea6580903e54f4b092426b214a4db3af58ccbe15d295fc7fe90c"
+  },
+  "limits": {
+    "rssMiB": 8192,
+    "footprintMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000,
+    "nativeProducerRunTimeoutMs": 300000,
+    "parserFuelPerModule": 8000000,
+    "quantum": 64,
+    "nativeThreads": 1
+  },
+  "exercised": {
+    "sourceGeneration": {
+      "status": "PASS",
+      "elapsedMs": 8097,
+      "definitions": 2671
+    },
+    "typedQueries": {
+      "status": "PASS",
+      "nfCases": 24,
+      "reachCases": 15,
+      "capacityPairs": [
+        [
+          100000,
+          500000
+        ],
+        [
+          1,
+          500000
+        ],
+        [
+          100000,
+          1
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      "fullResultEqualityUnderExplicitMetadataErasure": true,
+      "oneIntentionalUnownedQuery": true,
+      "runtimeGuard": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 300498944,
+        "peakFootprintBytes": 235835928,
+        "elapsedMs": 592,
+        "timeoutMs": 600000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/bin/sh",
+          "-c",
+          "out=$1; err=$2; shift 2; exec \"$@\" >\"$out\" 2>\"$err\"",
+          "sh",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g47r1-m0ir575l/query-probes.stdout",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g47r1-m0ir575l/query-probes.stderr",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g47r1-m0ir575l/run-query-probes.mjs",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g47r1-query-native-v3.json.mjs",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g47r1-m0ir575l/query-probes.data.json"
+        ],
+        "label": "G47 actual typed NF/reach identities and four capacities",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793599992495-78dfd9f19e1e81ed.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      },
+      "observations": {
+        "normal": {
+          "counts": {
+            "nf_hits": "10",
+            "nf_misses": "36",
+            "reach_hits": "4",
+            "reach_misses": "12",
+            "nf_entries": "35",
+            "reach_entries": "12",
+            "interned": "50",
+            "scopes": "5",
+            "disabled": "1",
+            "allocations": "191",
+            "node_hits": "136",
+            "unowned_queries": "1"
+          },
+          "steps": 168,
+          "resultLimit": 100000,
+          "nodeLimit": 500000
+        },
+        "resultCap": {
+          "counts": {
+            "nf_hits": "2",
+            "nf_misses": "48",
+            "reach_hits": "0",
+            "reach_misses": "16",
+            "nf_entries": "1",
+            "reach_entries": "0",
+            "interned": "50",
+            "scopes": "5",
+            "disabled": "63",
+            "allocations": "206",
+            "node_hits": "151",
+            "unowned_queries": "1"
+          },
+          "steps": 185,
+          "resultLimit": 1,
+          "nodeLimit": 500000
+        },
+        "graphCap": {
+          "counts": {
+            "nf_hits": "0",
+            "nf_misses": "50",
+            "reach_hits": "0",
+            "reach_misses": "16",
+            "nf_entries": "0",
+            "reach_entries": "0",
+            "interned": "1",
+            "scopes": "0",
+            "disabled": "267",
+            "allocations": "210",
+            "node_hits": "8",
+            "unowned_queries": "66"
+          },
+          "steps": 177,
+          "resultLimit": 100000,
+          "nodeLimit": 1
+        },
+        "bothCaps": {
+          "counts": {
+            "nf_hits": "0",
+            "nf_misses": "50",
+            "reach_hits": "0",
+            "reach_misses": "16",
+            "nf_entries": "0",
+            "reach_entries": "0",
+            "interned": "1",
+            "scopes": "0",
+            "disabled": "267",
+            "allocations": "210",
+            "node_hits": "8",
+            "unowned_queries": "66"
+          },
+          "steps": 177,
+          "resultLimit": 1,
+          "nodeLimit": 1
+        }
+      },
+      "receipt": "local2039g47r1-query-outcome.json"
+    },
+    "nativeFullCompilerImage": {
+      "status": "NATIVE_FULL_COMPILE_PASS",
+      "sourceCount": 17,
+      "foreignCount": 35,
+      "guard": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 1863532544,
+        "peakFootprintBytes": 1946438296,
+        "elapsedMs": 102401,
+        "timeoutMs": 300000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/evals/native_compiler_experiment.ts",
+          "--mode=run",
+          "--corpus=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g47r1-m0ir575l/repository/checkpoints/local2039g47r1-identity-exact.corpus.json",
+          "--build=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g44d1-native-build.json",
+          "--report=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g47r1-identity-native-v1.json",
+          "--phase=compile",
+          "--threads=1",
+          "--internal=run"
+        ],
+        "label": "Native CPU compiler run",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793600187622-33c01c471e5381f7.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      },
+      "outputBytes": 36066688,
+      "outputSha256": "70510fbfbce975d24d5608b32e945b371a8035727ceafc4e2ab05291f787d41b",
+      "receipt": "local2039g47r1-native-image.json",
+      "notThroughputComparison": true
+    },
+    "realCControl": {
+      "status": "PASS",
+      "fullCByteEquality": true,
+      "CSourceSha256": "8c9e0eebd03aeaa4036a8556376d9ee2d5a3de9287738a397b126815aaaeb8f5",
+      "stdoutCorrect": true,
+      "guards": [
+        {
+          "name": "emit",
+          "status": "PASS",
+          "elapsedMs": 32621,
+          "peakRssBytes": 1728413696,
+          "peakFootprintBytes": 2262047520,
+          "ownedTreeStopped": true
+        },
+        {
+          "name": "clang",
+          "status": "PASS",
+          "elapsedMs": 1555,
+          "peakRssBytes": 150618112,
+          "peakFootprintBytes": 106627768,
+          "ownedTreeStopped": true
+        },
+        {
+          "name": "run",
+          "status": "PASS",
+          "elapsedMs": 14,
+          "peakRssBytes": 147456,
+          "peakFootprintBytes": 327824,
+          "ownedTreeStopped": true
+        }
+      ],
+      "counts": {
+        "nf_hits": "573",
+        "nf_misses": "679",
+        "reach_hits": "60",
+        "reach_misses": "150",
+        "nf_entries": "679",
+        "reach_entries": "150",
+        "interned": "699",
+        "scopes": "5",
+        "disabled": "0",
+        "allocations": "4902",
+        "node_hits": "4198",
+        "unowned_queries": "0"
+      },
+      "receipt": "local2039g47r1-c-preflight.json"
+    },
+    "originalScheduler": {
+      "status": "FAIL",
+      "failedStage": "emit",
+      "guard": {
+        "name": "emit",
+        "status": "FAIL",
+        "reason": "deadline_exceeded",
+        "commandExitCode": -1,
+        "commandSignal": 15,
+        "peakRssBytes": 2470150144,
+        "peakFootprintBytes": 2613680392,
+        "elapsedMs": 600284,
+        "timeoutMs": 600000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 1,
+        "command": [
+          "/bin/sh",
+          "-c",
+          "out=$1; err=$2; shift 2; exec \"$@\" >\"$out\" 2>\"$err\"",
+          "sh",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g47r1-m0ir575l/original/emit.stdout",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g47r1-m0ir575l/original/emit.stderr",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--experimental-strip-types",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g47r1-m0ir575l/repository/evals/candidate_consumer_worker.mjs",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g47r1-m0ir575l/repository/evals/candidate_host.ts",
+          "--candidate=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g47r1-identity-native-v1.json.mjs",
+          "--parser=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g47r1-identity-native-v1.json.mjs",
+          "--stage-profile=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g47r1-m0ir575l/original/stages",
+          "--stage-manifest=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g47r1-m0ir575l/repository/checkpoints/emitter-steps-identity-v1.json",
+          "--stage-manifest=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/checker-core-steps-v1.json",
+          "--stage-receipt=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g47r1-m0ir575l/original/image-binding.json",
+          "--memo-report=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g47r1-m0ir575l/original/memo.json",
+          "--memo-binding=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g47r1-m0ir575l/original/image-binding.json",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/evals/scheduler_chunk_smoke.bend",
+          "-o",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g47r1-m0ir575l/original/scheduler.c",
+          "--base",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/bend2/base.bend",
+          "--runtime-c",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/bend2/selfhost/c_runtime.c"
+        ],
+        "label": "G47 original actual C emit",
+        "exitCode": 1,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793600754247-7337bb2d8c9ad604.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      },
+      "sourceClosureUnchanged": true,
+      "lastCheckpoint": {
+        "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g47r1-m0ir575l/original/stages/profile-36404-thread-1-Y8lqUV/checkpoint.json",
+        "sha256": "c4faf7c3caba209df3b4c585e5c3ecd1ba60fdc3bbbb397e19c0c736286f4946",
+        "elapsedMs": 599124.053834,
+        "persistedStatus": "running at last pre-kill checkpoint; not live status after guardian reap",
+        "completedSpans": [
+          {
+            "name": "startup-import",
+            "status": "completed",
+            "wallMs": 720.1678749999999
+          },
+          {
+            "name": "parse-import-fuel",
+            "status": "completed",
+            "wallMs": 5921.359
+          },
+          {
+            "name": "template-expand",
+            "status": "completed",
+            "wallMs": 5877.8297919999995
+          },
+          {
+            "name": "check-signature-body",
+            "status": "completed",
+            "wallMs": 114262.037584
+          }
+        ],
+        "lastProgress": {
+          "id": 605,
+          "spanId": 5,
+          "at": "2026-11-02T06:35:53.813Z",
+          "elapsedMs": 599124.0159590001,
+          "kind": "typed-step-progress",
+          "name": "emit",
+          "scope": "latest observed host-visible bounded-step boundary",
+          "units": "host-step-calls",
+          "unitsByField": null,
+          "value": 23622487,
+          "values": null,
+          "source": "checker_core_step_runtime.mjs",
+          "details": {
+            "protocol": "Emitter",
+            "nativeChunkQuantum": 64,
+            "progressShape": "Direct",
+            "request": null,
+            "runNamespace": "emitter_steps_identity_v1",
+            "granularity": "first boundary then at most once per second; not a substage duration, live-process claim, or continuous sample"
+          }
+        },
+        "lastObservedPending": {
+          "id": 604,
+          "spanId": 5,
+          "at": "2026-11-02T06:35:52.813Z",
+          "elapsedMs": 598124.0087090001,
+          "kind": "typed-step-progress",
+          "name": "emit",
+          "scope": "latest observed host-visible bounded-step boundary",
+          "units": "host-step-calls",
+          "unitsByField": null,
+          "value": 23569751,
+          "values": null,
+          "source": "checker_core_step_runtime.mjs",
+          "details": {
+            "protocol": "Emitter",
+            "nativeChunkQuantum": 64,
+            "progressShape": "Pending",
+            "request": "emitter_steps_identity_v1.EmitterRequest_cps_provider_12_vals_chunks",
+            "runNamespace": "emitter_steps_identity_v1",
+            "granularity": "first boundary then at most once per second; not a substage duration, live-process claim, or continuous sample"
+          }
+        },
+        "attributionLimit": "At most one observed boundary per second, not exclusive CPU or dominant-work attribution"
+      },
+      "CProduced": false,
+      "clangStarted": false,
+      "runtimeStarted": false,
+      "finalMemoReportProduced": false,
+      "receipt": "local2039g47r1-original-rejected.json"
+    }
+  },
+  "rejectedAttempts": [
+    {
+      "kind": "source ownership audit",
+      "source": "8383c337",
+      "failure": "Native sharing helper s_decl_build bypassed typed construction",
+      "correction": "Compose sharing provider; guard unchanged"
+    },
+    {
+      "kind": "native input containment",
+      "report": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g47r1-query-native-v1.json",
+      "failure": {
+        "phase": "guardian",
+        "diagnostic": "Error: Native workload input escaped the repository: /private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g47r1-m0ir575l/repository/checkpoints/local2039g47r1-query-root.bend"
+      },
+      "correction": "Immutable absolute producer script + candidate workload cwd; no policy changes"
+    },
+    {
+      "kind": "whole workload fuel/module accounting",
+      "report": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g47r1-query-native-v2.json",
+      "failure": {
+        "phase": "emit",
+        "diagnostic": "Error: Missing whole-workload eager-fuel accounting"
+      },
+      "correction": "Exact actual workload corpus from existing workloadRows/corpusFile; unqualified emitted image never used"
+    }
+  ],
+  "reviews": {
+    "source": "No actionable findings; read-only review is not runtime proof",
+    "CPSOwnership": "No findings; read-only review is not runtime proof"
+  },
+  "notExecutedAfterNecessaryFailure": [
+    "candidate native-runtime compiler lane",
+    "stage2 byte-fixedpoint",
+    "95 seed +190 fresh full qualification",
+    "C62/JS67/native33/admission12/host5 full matrices",
+    "strict12 native+JS JS-library throughput"
+  ],
+  "byteFixedpointClaim": false,
+  "speedupClaim": false,
+  "unchangedFailedSchedulerRetried": false,
+  "cleanup": {
+    "throwawayControllersRemoved": true,
+    "frozenBehavioralRunnerAndComparatorRetained": true,
+    "imagesPayloadsBulkLogsOutsideGit": true,
+    "productionRollbackNeeded": false
+  },
+  "nextFalsifier": {
+    "fact": "Env retains a flat List<NfVal>; construction key preparation still walks immediate values, and metadata IDs do not canonicalize raw payload storage",
+    "lastPendingObservation": "semantic_query.vals_chunks at598124.009ms; last599124.016ms sample was Direct",
+    "limit": "Sparse once-per-second observations are not exclusive CPU attribution or dominant-cause proof",
+    "decision": "Measure source-owned construction-key vs lookup/save vs evaluator vs CPS-admin costs before next rewrite; test persistent env/seen spine IDs only against measured construction cost"
+  }
+}

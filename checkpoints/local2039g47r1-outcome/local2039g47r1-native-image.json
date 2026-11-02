@@ -1,0 +1,111 @@
+{
+  "schemaVersion": 1,
+  "sourceVersion": "G47R1",
+  "status": "NATIVE_FULL_COMPILER_IMAGE_PRODUCED_NOT_QUALIFIED",
+  "acceptanceEvidence": false,
+  "sourceCheckpoint": "cc7dd127",
+  "command": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/evals/native_compiler_experiment.ts",
+    "--mode=run",
+    "--corpus=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g47r1-m0ir575l/repository/checkpoints/local2039g47r1-identity-exact.corpus.json",
+    "--build=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g44d1-native-build.json",
+    "--report=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g47r1-identity-native-v1.json",
+    "--phase=compile",
+    "--threads=1"
+  ],
+  "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g47r1-m0ir575l/repository",
+  "nativeReport": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g47r1-identity-native-v1.json",
+  "nativeReportSha256": "496d87121b12a05872cabf4c71e026bf0b5d5c1158ef560fb3e0b5ba77da1faf",
+  "outputSha256": "70510fbfbce975d24d5608b32e945b371a8035727ceafc4e2ab05291f787d41b",
+  "outputBytes": 36066688,
+  "exports": [
+    "parsed_module",
+    "parse_with_fuel",
+    "expand_modules_start",
+    "template_step",
+    "check_expanded_start",
+    "inspect_checked_start",
+    "checker_step",
+    "emit_modules_start",
+    "emit_library_start",
+    "emitter_step",
+    "emit_c_modules_start",
+    "emit_c_library_start",
+    "c_emitter_step"
+  ],
+  "guardian": {
+    "status": "PASS",
+    "reason": "command_exit",
+    "commandExitCode": 0,
+    "commandSignal": 0,
+    "peakRssBytes": 1863532544,
+    "peakFootprintBytes": 1946438296,
+    "elapsedMs": 102401,
+    "timeoutMs": 300000,
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 0,
+    "command": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/evals/native_compiler_experiment.ts",
+      "--mode=run",
+      "--corpus=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g47r1-m0ir575l/repository/checkpoints/local2039g47r1-identity-exact.corpus.json",
+      "--build=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g44d1-native-build.json",
+      "--report=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g47r1-identity-native-v1.json",
+      "--phase=compile",
+      "--threads=1",
+      "--internal=run"
+    ],
+    "label": "Native CPU compiler run",
+    "exitCode": 0,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793600187622-33c01c471e5381f7.json",
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592
+  },
+  "phases": [
+    {
+      "phase": "parse",
+      "elapsedMs": 6814.503,
+      "userCpuMs": 6648.263,
+      "systemCpuMs": 91.839,
+      "modules": 17,
+      "sourceBytes": 9007046,
+      "foreignBytes": 78415,
+      "eagerFuelCells": 136000000,
+      "fuelBuildMs": 813.222
+    },
+    {
+      "phase": "expand",
+      "elapsedMs": 5040.432,
+      "userCpuMs": 4924.6,
+      "systemCpuMs": 25.649,
+      "chunkAdvances": 1164909,
+      "chunkQuantum": 64
+    },
+    {
+      "phase": "check",
+      "elapsedMs": 72659.118,
+      "userCpuMs": 69916.616,
+      "systemCpuMs": 441.046,
+      "chunkAdvances": 11055350,
+      "chunkQuantum": 64
+    },
+    {
+      "phase": "emit",
+      "elapsedMs": 16498.875,
+      "userCpuMs": 15984.709,
+      "systemCpuMs": 253.014,
+      "chunkAdvances": 1491876,
+      "chunkQuantum": 64
+    }
+  ],
+  "sources": 17,
+  "foreigns": 35,
+  "parserFuelPerSource": 8000000,
+  "quantum": 64,
+  "fixedpointAttempted": false,
+  "noThroughputClaim": "Cost of producing different candidate image, not paired qualification lane"
+}

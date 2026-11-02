@@ -1321,3 +1321,132 @@ cwd также сохранён; проверка pins не ослаблялас
 Итог: rejected candidate сохранён, production source восстановлен, незавершённых
 stub/alias paths от G46R1 в main не оставлено.
 
+### G47R1: construction-owned IDs — semantic/C controls PASS, cutover REJECTED
+
+Кандидат находится в отдельном worktree и ветке
+`selfhost/g47r1-rejected`; принятый G24R12 в main не менялся.
+Source checkpoint — `6cea14ae`, исправленный construction-owner closure —
+`17a1a7cd`, frozen generated inputs — `59c48e63`, semantic proof —
+`cc7dd127`, полный native-produced image — `862617eb`, C control —
+`c5d73e60`. Это эксперимент, не новый accepted compiler.
+
+#### Что изменилось относительно отклонённого G46R1
+
+Все 24 `BIR.Descriptor`, 2 `DescriptorPattern` и 9 `NF.NfVal`
+constructors получили служебный `Maybe<Nat>` identity. Semantic environments
+теперь несут `NF.Env`, ordered reach histories — `CLay.Seen`. Изменённые
+env/seen создаются заново; исходные argument/binding lists остаются списками.
+Contexts получают свежий scope при настоящем создании, без сериализации
+families/type-functions/Plan. Эквивалентность разных contexts не предполагается.
+
+Typed CPS сначала вычисляет semantic fields в исходном порядке, затем запускает
+source key/allocation continuation и один раз строит окончательное значение.
+37 node-key helpers читают только scalar fields и уже назначенные child IDs;
+списки непосредственных детей обходятся при construction, не в query lookup.
+NF/reach lookup читает существующие IDs и fixed-arity scalar key, сохраняя
+полные scope/env/level/fuel/target/ordered-seen inputs. Старый recursive
+`descriptor_key.bend` удалён из кандидата.
+
+39 constructor schemas, helper types, owned native BIR declarations,
+construction sites и no-bypass/root-input проверки аутентифицированы.
+Protocol — `typed-native-stack-v59i`, memo v2, quantum64; public ABI13 прежний.
+BIR не переносился в composition: `Program`/`SourceFile` сохраняют владельца.
+Graph cap500000 и combined NF+reach result cap100000 отдельные; IDs монотонны
+и не переиспользуются. Отсутствующий ID или достигнутый cap означает обычное
+вычисление, не выдуманный результат. Store принадлежит одному root Run.
+
+Первый source attempt был отклонён настоящим ownership guard:
+native `c_backend_sharing.s_decl_build` создавал descriptor вне allocation.
+Исправление — включить canonical sharing provider в CPS, не ослабить guard.
+Source generation после исправления PASS:2671 definitions,104 construction
+sites; это статические количества, не execution counts.
+
+#### Native producer и runtime proof
+
+Неизменённый native producer `e014f680…` действительно выпустил compiler image
+из17 source+35 foreign inputs. Parser fuel8M/module, threads1, GPUoff,
+native Run quantum64; guardian8192MiB RSS/footprint, poll10ms, CLI300000ms.
+Whole producer guard102.401s, peak RSS1863532544B/footprint1946438296B;
+это производство другого artifact, **не paired throughput comparison**.
+JS image36066688B, SHA256
+`70510fbfbce975d24d5608b32e945b371a8035727ceafc4e2ab05291f787d41b`.
+
+Две ошибки transport harness сохранены отдельно: неправильный workload cwd
+был остановлен repository-containment guard; клонированный corpus с лишним
+уже composed sharing module был остановлен полным fuel/module accounting.
+Вторая попытка напечатала EmitSuccess, но её image не использовался как PASS.
+Исправлены cwd и exact corpus через существующий `workloadRows/corpusFile`;
+pins, containment, fuel coverage и resource limits не ослаблялись.
+
+Отдельный native-produced typed probe library прошёл все12 source+35 foreign
+inputs за58.364s. Host продвигал только публичные opaque start/step.
+24 NF+15 reach outcomes совпали с неизменённым evaluator во всех четырёх
+парах `(result cap,node cap)`: `(100000,500000)`, `(1,500000)`,
+`(100000,1)`, `(1,1)`. Comparison удаляет только зарегистрированное identity
+metadata и разворачивает `NF.Env`; полные semantic fields, NfFail и Bool
+сохраняются. Проверены разные contexts/env, closures, binder levels,
+fuel0/1/default, quantity, target, ordered seen, errors/False и обе ёмкости.
+Node runtime guard592ms, RSS300498944B/footprint235835928B.
+
+Normal probe: NF10 hits/36 misses, reach4/12,50 nodes,5 scopes,
+191 allocations/136 constructor-key hits. Ровно1 unowned query — намеренно
+внесённый сырой descriptor с None; его обычный результат также совпал.
+Пять contexts различны, включая два с одинаковыми metadata; seen order и
+duplicates не смешались; одинаковые построенные empty env делят node ID.
+При graph cap1 ни один query result не вставлен, полные ответы те же.
+
+#### Настоящий C control
+
+Тот же исходный `c_target_show_data.bend` из неизменённого producer checkout,
+Node Worker и новый native-produced image действительно прошли все стадии:
+
+| Стадия | Single-run guard, s |
+| --- | ---: |
+| Emit C | 32.621 |
+| clang `-O0` | 1.555 |
+| Executable | 0.014 |
+
+Правильный ShowReport; все C bytes сохранили SHA256
+`8c9e0eebd03aeaa4036a8556376d9ee2d5a3de9287738a397b126815aaaeb8f5`.
+NF573 hits/679 misses, reach60/150,699 nodes,5 scopes,
+4902 allocations/4198 node hits, disabled0/unowned_queries0.
+Это доказательство работающего construction-owner path, **не ускорение**.
+Оба независимых read-only reviews не нашли ошибок в своих source/CPS срезах;
+runtime evidence они не заменяют.
+
+#### Исходный scheduler: cutover REJECTED
+
+Один неизменённый original source/import closure, тот же Node Worker,
+8192MiB RSS/footprint, poll10ms, timeout600000ms:
+**FAIL deadline_exceeded**, whole guard600.284s, peak RSS2470150144B,
+footprint2613680392B, signal15, ownedTreeStopped=true. Это не memory-limit
+failure. C не выдан, clang/executable не запускались; final memo Report
+также отсутствует, поскольку Run не закончен. Failed target не повторялся.
+
+Последний pre-kill checkpoint599124.054ms: startup720.168ms,
+parse5921.359ms, expand5877.830ms и check114262.038ms completed; emit active,
+23622487 host-step calls. Последний sampled boundary — Direct; предыдущий
+Pending на598124.009ms — `semantic_query.bend:vals_chunks`.
+Это once-per-second observation, **не exclusive CPU attribution** и не
+доказательство единственной причины timeout; persisted `running` не является
+live status после guardian reap.
+
+Construction IDs реализованы, но нужный consumer gate по-прежнему не пройден.
+Текущий `Env{values:List<NfVal>,identity}` всё ещё обходит immediate value
+list при construction; IDs не превращают raw descriptor payload в физически
+канонический DAG. Следующий falsifier — отдельно измерить construction-key,
+lookup/save, evaluator и CPS-admin work; persistent env/seen spine IDs имеют
+смысл проверять при подтверждённой construction-стоимости. Sparse sample
+сам по себе такой приоритет не доказывает.
+
+Full native-runtime lane, stage2/byte-fixedpoint,95+190,
+C62/JS67/native33/admission12/host5 и strict12 после necessary consumer
+failure не запускались и не объявлены пройденными. Promotion не разрешён.
+
+Полный rejected source и regression inputs — ветка `selfhost/g47r1-rejected`;
+компактный итог — `checkpoints/local2039g47r1-outcome/outcome.json`.
+Exact commands, runtime/limits, source/image hashes, неудачные harness attempts,
+semantic proof и original deadline сохранены. Принятые compiler sources не
+требовали rollback: G47 работал в отдельном worktree. Throwaway controllers
+удалены; executable/JS images, runtime payloads и bulk logs остаются вне Git.
+
