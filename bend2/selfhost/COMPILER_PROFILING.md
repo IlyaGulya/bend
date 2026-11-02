@@ -5,6 +5,24 @@ It is not an acceptance signal, a benchmark, a fixedpoint proof, or a claim
 that every stage is covered. Ordinary runs do not import it and do not write
 profile files.
 
+`evals/selfhost_throughput.mjs` also accepts the existing
+`SELFHOST_CPU_PROFILE_DIR=/absolute/outside-Git` collector opt-in. It profiles
+the actual public typed-Run pipeline, with separate startup, load/parse,
+expansion, checker and emitter windows; no private Run decoding is involved.
+CPU samples belong to the worker isolate, whereas phase process-CPU counters
+include other process threads. Allocation samples are statistical estimates,
+not exact allocated or live bytes. Profiling runs are not throughput results.
+
+G51 exercised this path against G50's frozen complete source and genuine
+native-produced image: 244,594 checker samples over 310,644 sampled ms, with
+1.97% GC samples. Typed scheduler/chunk continuations and borrowed `Map.get`
+tree rebuilding are measured hotspots. The profiled 353,384-ms pipeline
+reproduced the unprofiled output's 31,906,405 bytes and SHA-256
+`273b0022813e17908020c0ee58fd4e02da4f3dc756ce58e3389093440863c3fe`
+under the unchanged 8-GiB RSS/footprint gate. Neither profiling overhead nor
+overlapping inclusive sample totals establish an optimization win.
+`checkpoints/local2039g51-profile-measured.json`.
+
 ## Fast development checks
 
 Do not run parser admission, LLVM and the complete fixture matrices for every
