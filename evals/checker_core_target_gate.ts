@@ -91,6 +91,13 @@ const fixtures=[
  {name:"usage-g55-nested-alternative-one-bad-row",source:usagePair+"def bad(tag: Bit, other: Bit, value: Bit) -> Pair:\n  match tag:\n    case BitZero{}:\n      match other:\n        case BitZero{}: Pair{value, BitZero{}}\n        case BitOne{}: Pair{value, value}\n    case BitOne{}: Pair{value, BitZero{}}\n",accepted:false,failure:{beg:120,end:130}},
  {name:"usage-g55-local-shadowed-levels",source:usagePair+"def identity(x: Bit) -> Bit:\n  x\ndef good(x: Bit) -> Pair:\n  discarded = identity(x)\n  +x = identity(BitZero{})\n  Pair{x, x}\ndef main() -> Pair:\n  good(BitOne{})\n",accepted:true,output:"Pair{BitZero{}, BitZero{}}"},
  {name:"usage-g55-sequential-local-values-duplicate-outer",source:usagePair+"def identity(x: Bit) -> Bit:\n  x\ndef bad(x: Bit) -> Pair:\n  one = identity(x)\n  two = identity(x)\n  Pair{one, two}\n",accepted:false,failure:{beg:131,end:137}},
+ // Typed do assignments exercise TermLet, whose usage check precedes even
+ // initializer inference; this order differs from ordinary source locals.
+ {name:"usage-g55-do-let-affine-single",source:usagePair+"def main() -> Pair:\n  do Pair<>:\n    value : Bit = BitOne{}\n    Pair{value, BitZero{}}\n",accepted:true,output:"Pair{BitOne{}, BitZero{}}"},
+ {name:"usage-g55-do-let-quantity-before-value-error",source:usagePair+"def bad() -> Pair:\n  do Pair<>:\n    value : Bit = absent\n    Pair{value, value}\n",accepted:false,failure:{beg:126,end:170}},
+ {name:"usage-g55-do-let-quantity-before-body-error",source:usagePair+"def bad() -> Pair:\n  do Pair<>:\n    value : Bit = BitOne{}\n    Pair{{value : absent}, value}\n",accepted:false,failure:{beg:126,end:183}},
+ {name:"usage-g55-do-let-value-type-error",source:usagePair+"def bad() -> Pair:\n  do Pair<>:\n    value : Bit = absent\n    Pair{value, BitZero{}}\n",accepted:false,failure:{beg:140,end:146}},
+ {name:"usage-g55-do-let-many",source:usagePair+"def main() -> Pair:\n  do Pair<>:\n    +value : Bit = BitOne{}\n    Pair{value, value}\n",accepted:true,output:"Pair{BitOne{}, BitOne{}}"},
 ];
 const temporary=mkdtempSync(join(tmpdir(),'bend-checker-gate-')),sidecars=report+'.cases';mkdirSync(sidecars,{recursive:true});mkdirSync(dirname(report),{recursive:true});
 const rows:any[]=[];
