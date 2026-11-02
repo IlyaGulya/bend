@@ -39,7 +39,7 @@ if(existsSync(out))throw Error('Use a fresh output directory: '+out);
 const fixture=readFileSync(source,'utf8'),expected=fixture.split('\n').filter(line=>line.startsWith('#|')).map(line=>line.slice(2)).join('\n');
 if(!fixture.split('\n').some(line=>line.startsWith('#|')))throw Error('Representative fixture must declare literal expected stdout');
 const hash=(path:string)=>createHash('sha256').update(readFileSync(path)).digest('hex');
-const pinPaths=[source,node,basePath,...['print.c','print.js'].map(path=>join(repository,'bend2/effs',path)),...(mode==='oracle'
+const pinPaths=[fileURLToPath(import.meta.url),source,node,basePath,...['print.c','print.js'].map(path=>join(repository,'bend2/effs',path)),...(mode==='oracle'
  ?['bend2/main.ts','bend2/bend.ts','bend2/comp.ts'].map(path=>join(repository,path))
  :[image!,host,join(repository,'evals/candidate_consumer_worker.mjs'),join(repository,'bend2/selfhost/c_runtime.c')]),
  ...(mode==='window'?['--binding','--manifest'].map(key=>resolve(values.get(key)!)):[])];
@@ -50,7 +50,7 @@ const rows:any[]=[],commands:{sample:number;stage:string;argv:string[]}[]=[];
 const limits={memoryMiB:8192,rssMiB:8192,pollMs:10,timeoutMs:budgetMs};
 const base={schemaVersion:1,kind:'representative-semantic-scheduler-performance',acceptanceEvidence:false,
  mode,source,image,repository,samples,budgetMs,windowMs:mode==='window'?windowMs:null,limits,pins,expected,
- scope:'Development surrogate only: oracle uses canonical TS, window is censored with observer overhead, complete requires real C/stdout. None replaces original/native bootstrap/fixedpoint/strict12.'};
+ scope:'Development surrogate only: oracle uses canonical TS; emit/window never verify generated-program execution; window includes observer overhead; complete requires real C/stdout. None replaces original/native bootstrap/fixedpoint/strict12.'};
 async function guarded(sample:number,name:string,argv:string[],directory:string){
  commands.push({sample,stage:name,argv});
  const result=await runHeavyGate(['/bin/sh','-c','out=$1; err=$2; shift 2; exec "$@" >"$out" 2>"$err"','sh',join(directory,name+'.stdout'),join(directory,name+'.stderr'),...argv],{...limits,label:'Representative scheduler '+sample+' '+name});
@@ -90,7 +90,7 @@ try{
   }
   const row:any={sample,phases,emit,window,compilationCompleted:true,executionVerified:false,CSourceSha256:hash(c),CBytes:readFileSync(c).length,profile:profilePath};
   rows.push(row);
-  if(mode==='emit'){
+  if(mode==='emit'||mode==='window'){
    save('sample-'+sample+'.json',{...base,status:'RUNNING',completedSamples:rows.length,rows,commands});continue;
   }
   row.clang=await guarded(sample,'clang',['/usr/bin/clang','-std=c11','-O0','-ferror-limit=0','-pthread','-lm','-o',binary,c],directory);
