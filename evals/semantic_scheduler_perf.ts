@@ -2,9 +2,10 @@
 /** Reduced compiler development benchmark; never qualification.
  * oracle: canonical TS frontend/emitter -> real C -> clang -> literal stdout.
  * window: authenticated native-source compiler's bounded, censored NF/layout prefix.
+ * emit: existing source-compiler image -> complete C only; execution explicitly unverified.
  * complete: existing source-compiler image -> complete C -> clang -> literal stdout.
- * --mode=oracle|window|complete --source=FIXTURE.bend --out=FRESH_DIR
- * window/complete: --image=COMPILER.mjs --node=NODE
+ * --mode=oracle|emit|window|complete --source=FIXTURE.bend --out=FRESH_DIR
+ * emit/window/complete: --image=COMPILER.mjs --node=NODE
  * window: --binding=NATIVE_BINDING.json --manifest=TRACE_MANIFEST.json [--window-ms=1000]
  * [--host=HOST.ts] [--repository=REPO] [--base=EXACT_PRELUDE.bend] [--samples=1] [--budget-ms=20000]
  */
@@ -21,7 +22,7 @@ for(const argument of process.argv.slice(2)){
  values.set(key,value);
 }
 const mode=values.get('--mode')??'complete';
-if(!['oracle','window','complete'].includes(mode))throw Error('mode must be oracle, window or complete');
+if(!['oracle','emit','window','complete'].includes(mode))throw Error('mode must be oracle, emit, window or complete');
 for(const key of ['--source','--out',...(mode==='oracle'?[]:['--image','--node']),...(mode==='window'?['--binding','--manifest']:[])])if(!values.has(key))throw Error('Missing '+key);
 if(mode!=='window'&&['--binding','--manifest','--window-ms'].some(key=>values.has(key)))throw Error('Trace options require window mode');
 if(mode==='oracle'&&values.has('--base'))throw Error('Canonical oracle always uses unmodified full Base');
@@ -87,16 +88,22 @@ try{
    phases=profile.spans.filter((span:any)=>span.parentId===null).map((span:any)=>({name:span.name,status:span.status,wallMs:span.wallMs}));
    if(!phases.some((phase:any)=>phase.name==='emit'&&phase.status==='completed'))throw Error('Source emitter phase did not complete');
   }
-  const clang=await guarded(sample,'clang',['/usr/bin/clang','-std=c11','-O0','-ferror-limit=0','-pthread','-lm','-o',binary,c],directory);
-  const run=await guarded(sample,'run',[binary],directory),observed=readFileSync(join(directory,'run.stdout'),'utf8').trimEnd();
+  const row:any={sample,phases,emit,window,compilationCompleted:true,executionVerified:false,CSourceSha256:hash(c),CBytes:readFileSync(c).length,profile:profilePath};
+  rows.push(row);
+  if(mode==='emit'){
+   save('sample-'+sample+'.json',{...base,status:'RUNNING',completedSamples:rows.length,rows,commands});continue;
+  }
+  row.clang=await guarded(sample,'clang',['/usr/bin/clang','-std=c11','-O0','-ferror-limit=0','-pthread','-lm','-o',binary,c],directory);
+  row.run=await guarded(sample,'run',[binary],directory);
+  const observed=readFileSync(join(directory,'run.stdout'),'utf8').trimEnd();row.observed=observed;
   if(observed!==expected)throw Error('Representative executable stdout mismatch');
-  rows.push({sample,phases,emit,clang,run,window,compilationCompleted:true,CSourceSha256:hash(c),CBytes:readFileSync(c).length,observed,profile:profilePath});
+  row.executionVerified=true;
   save('sample-'+sample+'.json',{...base,status:'RUNNING',completedSamples:rows.length,rows,commands});
  }
  for(const [path,digest]of Object.entries(pins))if(hash(path)!==digest)throw Error('Benchmark input changed: '+path);
- const result={...base,status:mode==='window'?'REPRESENTATIVE_WINDOW_OBSERVED':'REPRESENTATIVE_PERF_PASS',rows,commands};save('outcome.json',result);
+ const result={...base,status:mode==='window'?'REPRESENTATIVE_WINDOW_OBSERVED':mode==='emit'?'REPRESENTATIVE_C_EMITTED_EXECUTION_UNVERIFIED':'REPRESENTATIVE_PERF_PASS',rows,commands};save('outcome.json',result);
  console.log(JSON.stringify({status:result.status,acceptanceEvidence:false,mode,source,rows:rows.map(row=>({sample:row.sample,
-  compilationCompleted:row.compilationCompleted,emitWallMs:row.phases?.find((phase:any)=>phase.name==='emit')?.wallMs??null,pipelineWallMs:row.emit.elapsedMs,
+  compilationCompleted:row.compilationCompleted,executionVerified:row.executionVerified??false,emitWallMs:row.phases?.find((phase:any)=>phase.name==='emit')?.wallMs??null,pipelineWallMs:row.emit.elapsedMs,
   windowMs:row.window?.window.elapsedMs,hostBoundaries:row.window?.hostBoundaries.observed,
   clangMs:row.clang?.elapsedMs,runMs:row.run?.elapsedMs,CBytes:row.CBytes})),out}));
 }catch(error){save('outcome.json',{...base,status:'REPRESENTATIVE_PERF_FAIL',rows,commands,error:String(error)});console.error(error);process.exitCode=1;}
