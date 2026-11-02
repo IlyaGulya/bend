@@ -7,7 +7,7 @@
  * --mode=oracle|emit|window|complete --source=FIXTURE.bend --out=FRESH_DIR
  * emit/window/complete: --image=COMPILER.mjs --node=NODE
  * window: --binding=NATIVE_BINDING.json --manifest=TRACE_MANIFEST.json [--window-ms=1000]
- * [--host=HOST.ts] [--repository=REPO] [--base=EXACT_PRELUDE.bend] [--samples=1] [--budget-ms=20000]
+ * [--host=HOST.ts] [--repository=REPO] [--base=EXACT_PRELUDE.bend] [--source-tag=SourceFile] [--samples=1] [--budget-ms=20000]
  */
 import {createHash} from 'node:crypto';
 import {existsSync,mkdirSync,readFileSync,writeFileSync} from 'node:fs';
@@ -18,14 +18,14 @@ import {runHeavyGate} from './heavy_gate.ts';
 const values=new Map<string,string>();
 for(const argument of process.argv.slice(2)){
  const at=argument.indexOf('='),key=argument.slice(0,at),value=argument.slice(at+1);
- if(at<0||!['--mode','--image','--node','--source','--out','--host','--repository','--samples','--budget-ms','--binding','--manifest','--window-ms','--base'].includes(key)||!value||values.has(key))throw Error('Expected unique documented --option=value');
+ if(at<0||!['--mode','--image','--node','--source','--out','--host','--repository','--samples','--budget-ms','--binding','--manifest','--window-ms','--base','--source-tag'].includes(key)||!value||values.has(key))throw Error('Expected unique documented --option=value');
  values.set(key,value);
 }
 const mode=values.get('--mode')??'complete';
 if(!['oracle','emit','window','complete'].includes(mode))throw Error('mode must be oracle, emit, window or complete');
 for(const key of ['--source','--out',...(mode==='oracle'?[]:['--image','--node']),...(mode==='window'?['--binding','--manifest']:[])])if(!values.has(key))throw Error('Missing '+key);
 if(mode!=='window'&&['--binding','--manifest','--window-ms'].some(key=>values.has(key)))throw Error('Trace options require window mode');
-if(mode==='oracle'&&values.has('--base'))throw Error('Canonical oracle always uses unmodified full Base');
+if(mode==='oracle'&&(values.has('--base')||values.has('--source-tag')))throw Error('Canonical oracle always uses unmodified full Base and canonical source loading');
 const repository=resolve(values.get('--repository')??join(dirname(fileURLToPath(import.meta.url)),'..'));
 const image=mode==='oracle'?undefined:resolve(values.get('--image')!),node=mode==='oracle'?process.execPath:resolve(values.get('--node')!);
 const source=resolve(values.get('--source')!),out=resolve(values.get('--out')!);
@@ -65,6 +65,7 @@ try{
   const argv=mode==='oracle'?[node,'--smol',join(repository,'bend2/main.ts'),source,'-o',c]
    :[node,'--experimental-strip-types',join(repository,'evals/candidate_consumer_worker.mjs'),host,
     '--candidate='+image,'--parser='+image,'--stage-profile='+join(directory,'stages'),
+    ...(values.has('--source-tag')?['--source-tag='+values.get('--source-tag')!]:[]),
     ...(mode==='window'?['--stage-manifest='+resolve(values.get('--manifest')!),'--stage-receipt='+resolve(values.get('--binding')!),
      '--work-census='+work,'--work-census-binding='+resolve(values.get('--binding')!),'--work-census-ms='+windowMs]:[]),
     source,'-o',c,'--base',basePath,'--runtime-c',join(repository,'bend2/selfhost/c_runtime.c')];
