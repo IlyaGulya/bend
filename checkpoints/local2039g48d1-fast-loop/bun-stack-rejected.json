@@ -1,0 +1,92 @@
+{
+  "status": "REJECTED_ORACLE_EMISSION_ATTEMPT",
+  "acceptanceEvidence": false,
+  "command": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "/Users/ilyagulya/Projects/My/bend/evals/selfhost_fast.ts",
+    "--repository=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g47r1-m0ir575l/repository",
+    "--source=checkpoints/local2039g47r1-query-root.bend",
+    "--exports=start,step",
+    "--out=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/fast-g47-probe-v1",
+    "--memory-mib=8192",
+    "--rss-mib=8192",
+    "--poll-ms=10",
+    "--timeout-ms=120000"
+  ],
+  "receipt": {
+    "schemaVersion": 1,
+    "kind": "selfhost-fast-ts-oracle",
+    "acceptanceEvidence": false,
+    "nativeCompiler": false,
+    "byteFixedpointClaim": false,
+    "source": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g47r1-m0ir575l/repository/checkpoints/local2039g47r1-query-root.bend",
+    "repository": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g47r1-m0ir575l/repository",
+    "checkOnly": false,
+    "exports": [
+      "start",
+      "step"
+    ],
+    "runtime": {
+      "versions": {
+        "node": "26.3.0",
+        "bun": "1.4.3",
+        "boringssl": "41bf9b59c2ebf277a7aa427e1ecad5cc80dd4d4f",
+        "openssl": "1.1.0",
+        "llhttp": "9.4.2",
+        "libarchive": "27cbc7827172698143e440801fc0ba39ccb4f1f5",
+        "mimalloc": "92ef6587c57b262f6e6abf513f7776a2f8d12aeb",
+        "picohttpparser": "f4d94b48b31e0abae029ebeafcfd9ca0680ede58",
+        "uwebsockets": "c6da4a4d3010e5553438c60f6bd76d981976867c",
+        "webkit": "0c06faadf65bf8e8c8ad3a5a8aca83e1e9ed653f",
+        "zig": "04e7f6ac1e009525bc00934f20199c68f04e0a24",
+        "zlib": "12731092979c6d07f42da27da673a9f6c7b13586",
+        "tinycc": "05f0fafaa3be31e31d7b4b5c17dc60f62c991171",
+        "lolhtml": "725ce499aa9b71e38b7a2d0a9fbb6d7294a4079e",
+        "ares": "c7a3138dcfe3bb0eaaf10c0c24c36dc66dc790ab",
+        "libdeflate": "92e6a0db9fa848d742f9eb286c92afc60f2c3dda",
+        "usockets": "c6da4a4d3010e5553438c60f6bd76d981976867c",
+        "lshpack": "cf0f70dd10b352194c97448eb5d00b4aa484f531",
+        "zstd": "f8745da6ff1ad1e7bab384bd1f9d742439278e99",
+        "v8": "14.6.202.34-node.20",
+        "uv": "1.48.0",
+        "napi": "10",
+        "icu": "78.1",
+        "unicode": "17.0",
+        "sqlite": "3.51.0",
+        "typescript": "7.0.2",
+        "modules": "147"
+      },
+      "executable": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "execArgv": []
+    },
+    "scope": "Fresh TS canonical source check and JS oracle; never substitutes native parsing/checking/emission or final consumer gates",
+    "status": "FAST_ORACLE_FAIL",
+    "checkedDefinitions": 5725,
+    "modules": 12,
+    "timings": {
+      "importMs": 154.803375,
+      "loadMs": 2071.8908330000004,
+      "checkMs": 1062.002375
+    },
+    "wallMs": 5378.71175,
+    "loadedInputs": {
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g47r1-m0ir575l/repository/bend2/bend.ts": "22b5915cd7cccd23b6aa28849b23a7f1e3549333cdd0954ab48103ddd0777e9e",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g47r1-m0ir575l/repository/bend2/comp.ts": "880a9b3b86f273852a39fc664f8c3d7b71e3860b6d365e4321949fc812b6e7cc",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g47r1-m0ir575l/repository/checkpoints/local2039g47r1-query-root.bend": "353734e88842a0c68119c20b6c857f21faba132118665abfb37da1acb2bbdc7a",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g47r1-m0ir575l/repository/bend2/base.bend": "21baec76caf1a6cfd4a544340b291f7bb55bf30cc841f9f5f29e3b12a1a4d614",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g47r1-m0ir575l/repository/checkpoints/emitter_steps_identity_probe_v1.bend": "2fdc19f9f074f9b1ce558e988c4390a33fcafd581cbfb69e1e011c802395b23d",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g47r1-m0ir575l/repository/bend2/selfhost/ast.bend": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g47r1-m0ir575l/repository/bend2/selfhost/checked_frontend.bend": "8287a44c524b001933cdba9d036b44ade13c34e549f5c926fd2cab45894e288e",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g47r1-m0ir575l/repository/bend2/selfhost/checker_arena.bend": "d74873488827c5a8568b1238f05356ef43ec7c8a285ca0e25ab7b052f070ebdf",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g47r1-m0ir575l/repository/bend2/selfhost/scope_lookup.bend": "e75dc874de6026e2104a7545a19f42fd6995aefecbb1d315c6ae3e097697e590",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g47r1-m0ir575l/repository/bend2/selfhost/checker_ir.bend": "41db13db11d63102d3ea5c8ca14916e5f688685bba96c332abcb7a3533f1f17b",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g47r1-m0ir575l/repository/bend2/selfhost/index_lookup.bend": "7b7b45946be711d0ba384e15f6823fded5ff97d6a526a6fb74a0448c13d61f84",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g47r1-m0ir575l/repository/bend2/selfhost/loaded_module.bend": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g47r1-m0ir575l/repository/bend2/selfhost/backend_ir.bend": "8c9de66c234a36b32f2f50c0fddf835d083dd35e6bde0ce88a8b7add6e1c7c88",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g47r1-m0ir575l/repository/bend2/selfhost/path.bend": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8"
+    },
+    "error": "RangeError: Maximum call stack size exceeded."
+  },
+  "decision": "Keep successful fresh all-body source validation. Retry emission only with changed runtime: existing Node worker256MiB stack, not default Bun stack; original failure retained."
+}
