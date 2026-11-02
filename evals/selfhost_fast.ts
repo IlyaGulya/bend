@@ -3,8 +3,9 @@
  * Fresh canonical TS book loading + all-body validation + optional JS library.
  * No serialized ASTs, checked-program replay, body exclusions or output patches.
  * bun --smol evals/selfhost_fast.ts --repository=REPO --source=FILE.bend
- *   --out=FRESH_DIR [--exports=start,step] [--check-only]
- * Existing heavy_gate options may lower the deadline or select resource caps.
+ *   --out=FRESH_DIR [--exports=start,step --node=NODE] [--check-only]
+ * Use --memory-mib=8192 --rss-mib=8192 --poll-ms=10 --timeout-ms=120000
+ * for deep JS production. All-body checks stay on the current runtime.
  */
 import {createHash} from 'node:crypto';
 import {spawn} from 'node:child_process';

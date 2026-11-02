@@ -58,7 +58,7 @@ try{
   const run=await guarded(sample,'run',[binary],directory),observed=readFileSync(join(directory,'run.stdout'),'utf8').trimEnd();
   if(observed!==expected)throw Error('Representative executable stdout mismatch');
   rows.push({sample,phases,emit,clang,run,CSourceSha256:hash(c),CBytes:readFileSync(c).length,observed,profile:emitted.stageProfile});
-  save('progress.json',{...base,status:'RUNNING',completedSamples:rows.length,rows,commands});
+  save('sample-'+sample+'.json',{...base,status:'RUNNING',completedSamples:rows.length,rows,commands});
  }
  for(const [path,digest]of Object.entries(pins))if(hash(path)!==digest)throw Error('Benchmark input changed: '+path);
  const result={...base,status:'REPRESENTATIVE_PERF_PASS',rows,commands};save('outcome.json',result);
