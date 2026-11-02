@@ -1,0 +1,434 @@
+{
+  "schemaVersion": 1,
+  "status": "FAST_REAL_SOURCE_CHECK_PASS_NOT_COMPILER_ACCEPTANCE",
+  "version": "G51-fast-iteration",
+  "sourceCheckpoint": "be52214d",
+  "corpusCheckpoint": "e083b6b4",
+  "corpus": {
+    "schemaVersion": 1,
+    "directory": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g50-combined-jb80lebe/repository",
+    "root": "checkpoints/template_steps_component_v1.bend",
+    "officialCommit": "d1a2fd48",
+    "files": [
+      {
+        "path": "bend2/base.bend",
+        "sha256": "21baec76caf1a6cfd4a544340b291f7bb55bf30cc841f9f5f29e3b12a1a4d614"
+      },
+      {
+        "path": "bend2/effs/args.js",
+        "sha256": "4fa9772d438257793425d4f9516e1411ce58455fdaec402ab836e6a6cf8a7a82"
+      },
+      {
+        "path": "bend2/effs/audio_close.js",
+        "sha256": "c700e2fc0eda1f9a67afd317184999d9283912817aaec00637af41b135b84c62"
+      },
+      {
+        "path": "bend2/effs/audio_open.js",
+        "sha256": "ed792cb29df28497c60fb6bfcebaa72d9f4bb0a9d8b22063567aa40ac4803fc9"
+      },
+      {
+        "path": "bend2/effs/audio_write.js",
+        "sha256": "ca3731d6da39355c0b924007dfe4f3ea25ed1a9d7b06b7bf19cacf49fdcc0de6"
+      },
+      {
+        "path": "bend2/effs/chan.js",
+        "sha256": "c8e4f3cdaea81cfd35dc22e07c29a86b8f08272d284bf3506dd5148dff8d168f"
+      },
+      {
+        "path": "bend2/effs/file_close.js",
+        "sha256": "2b83f900113776ab875fa3afd29f31000a191fe48645abe78b1d7b34cb12a7fe"
+      },
+      {
+        "path": "bend2/effs/file_open.js",
+        "sha256": "e6cbf6455aeae0768f1e8e7cabbafb8d0999eb27660cbaa23885757322b8c694"
+      },
+      {
+        "path": "bend2/effs/file_read.js",
+        "sha256": "7aa8a95a0b02f3c8db1167da5a936958a90c64e7df3e327ba5c66766d5e57da7"
+      },
+      {
+        "path": "bend2/effs/file_size.js",
+        "sha256": "508a931334016f725f0446d9c63f91d7e9de79b9fb347d0e148777dba834ef0b"
+      },
+      {
+        "path": "bend2/effs/file_write.js",
+        "sha256": "fbb706714fe6724e12658ad638d8b7aa2228f6297791bf74bd4894af361776f0"
+      },
+      {
+        "path": "bend2/effs/get_env.js",
+        "sha256": "4bbb377d73898055bd06b498bef605e81bc2a0885e7ac664bc77591fd7e3dfa4"
+      },
+      {
+        "path": "bend2/effs/listener_close.js",
+        "sha256": "1b87fb43c373b1a8a54b5afaf0cf8e3ec2f8d39bdfde131e49527caa19ac0cb8"
+      },
+      {
+        "path": "bend2/effs/now.js",
+        "sha256": "f41624aba3f07d56b671f41691b5cb833b4d018266668f5f48329290fc41b2d9"
+      },
+      {
+        "path": "bend2/effs/print.js",
+        "sha256": "814ceba4efbaa291b7b6a9ff29aa20e3a23c06eb4fa165c69ee0bd22878adaa9"
+      },
+      {
+        "path": "bend2/effs/print_err.js",
+        "sha256": "a7a00612edfe98af1a351e8f7b912af4ee33f4bb888c36f119f7712d72a9394e"
+      },
+      {
+        "path": "bend2/effs/process_run.js",
+        "sha256": "26868538280a1df9570ed2fba234d2a329f1e1d9e86c6fe9353de417adaee729"
+      },
+      {
+        "path": "bend2/effs/random_u32.js",
+        "sha256": "ab0b37cb6055ad08573d1263aa380c339c3fe7417530cfa63264629dce7744c2"
+      },
+      {
+        "path": "bend2/effs/sleep.js",
+        "sha256": "6711ccd804dcaede381da9ff0283b4640feb440e1d413381101f22bfed65a934"
+      },
+      {
+        "path": "bend2/effs/socket_close.js",
+        "sha256": "dc4bf1fa95692c91528d4eb855506dde8dfc9164a90de2c43cd1bd6916e0c380"
+      },
+      {
+        "path": "bend2/effs/spawn.js",
+        "sha256": "8a14c7a7a5ff80b049f0659f9e58d43bf0f3b1a6724d35a199c3f864b3242e4b"
+      },
+      {
+        "path": "bend2/effs/tcp_accept.js",
+        "sha256": "26406cce42c497994e597a7a032629fab65f43ec14f06ee69aace2b353afe28d"
+      },
+      {
+        "path": "bend2/effs/tcp_connect.js",
+        "sha256": "c51c4b55ffbc4a520f01082a1307498801a17e5123bdffbd01077fb42730f1cb"
+      },
+      {
+        "path": "bend2/effs/tcp_listen.js",
+        "sha256": "0da4cfafaa24ba5e17d9fda5e6a5b207b2b36031b2c888944f67b85842d76399"
+      },
+      {
+        "path": "bend2/effs/tcp_recv.js",
+        "sha256": "e8c54490445cb71a4328c07be8c40a49cee3e643cbf74f42dc73d31ab95890d7"
+      },
+      {
+        "path": "bend2/effs/tcp_send.js",
+        "sha256": "350bc6ac8f957d6a154cc9437b4ad871bd11ec65babbbd7c3b0d2c77590ec5c6"
+      },
+      {
+        "path": "bend2/effs/thread_count.js",
+        "sha256": "f4ef6d8ded95fe3114e50b7d2b6eb873e693419b85150f681b4a54a5043c2de9"
+      },
+      {
+        "path": "bend2/effs/udp_bind.js",
+        "sha256": "e3afae5bf246184e76703efbcf41cb35bf5289e746cc40dc0300eef98753dfb5"
+      },
+      {
+        "path": "bend2/effs/udp_recv_from.js",
+        "sha256": "66435d23dd12f30aa47bf618c925a42250920768d5ae28c7c52c35d4e04fa5ad"
+      },
+      {
+        "path": "bend2/effs/udp_send_to.js",
+        "sha256": "40c835c4d73eb15d089a41b425968d04931d02820cb901aadb8eb3dd4905f247"
+      },
+      {
+        "path": "bend2/effs/window_close.js",
+        "sha256": "be4ef11e9ac57c59aa4aee847f15ece18034ca9fe1c4a68c6e0b0d7bbd7c3590"
+      },
+      {
+        "path": "bend2/effs/window_frame.js",
+        "sha256": "78baa53aa46e02165c0c94da68d1f6362386ebcfb97dbb36fffb82792a03d34f"
+      },
+      {
+        "path": "bend2/effs/window_grab.js",
+        "sha256": "55cfc1925114f2d1f177137fad24d6252fe28707d26a1aae18a98ad97060a668"
+      },
+      {
+        "path": "bend2/effs/window_open.js",
+        "sha256": "cd716864b8dfb27ca955c8aa58643c7d693ce76eb56472bd8255ff7ac0656e8d"
+      },
+      {
+        "path": "bend2/effs/window_set_title.js",
+        "sha256": "eee0bf26b7f381f8800364e22e8c735e47dd6db3f58e23ff3dda8478a8411513"
+      },
+      {
+        "path": "bend2/effs/write.js",
+        "sha256": "e3495066a5d8c53fe1c46cfd2bb32577e3bd7dcae9797808801599073504dacb"
+      },
+      {
+        "path": "bend2/selfhost/ast.bend",
+        "sha256": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83"
+      },
+      {
+        "path": "bend2/selfhost/core.bend",
+        "sha256": "33823e56b9c70306970ccb0e3b5fb3b995806d3a1907dd97d45c5c9634d13511"
+      },
+      {
+        "path": "bend2/selfhost/loaded_module.bend",
+        "sha256": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e"
+      },
+      {
+        "path": "bend2/selfhost/path.bend",
+        "sha256": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8"
+      },
+      {
+        "path": "bend2/selfhost/sha256.bend",
+        "sha256": "2fe6b6fc50c90db1b4730a384724bc989398b0ce41752cc510aa2478a3e845d6"
+      },
+      {
+        "path": "checkpoints/template_steps_component_v1.bend",
+        "sha256": "86c9e3b009a91b233a314d76ddd65d83ecd66e620231e63121ba625c853b3e39"
+      },
+      {
+        "path": "checkpoints/template_steps_v1.bend",
+        "sha256": "b9f4d860de0c58a274e1f23e90558191e23d7ac0de18d1fd452914160b9a5ae5"
+      }
+    ],
+    "scope": "Frozen actual template compiler component source, not full-root acceptance; 8 Bend modules and unchanged declared JS alternatives; fresh own parsing/checking in every sample."
+  },
+  "command": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g51-checker-3juqew7r/repository-profile/evals/selfhost_throughput.mjs",
+    "js",
+    "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g51-checker-3juqew7r/mini-baseline-check-request.json",
+    "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g51-checker-3juqew7r/mini-baseline-check.json"
+  ],
+  "request": {
+    "schemaVersion": 1,
+    "repository": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g50-combined-jb80lebe/repository",
+    "root": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g50-combined-jb80lebe/repository/checkpoints/template_steps_component_v1.bend",
+    "image": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g50-combined-jb80lebe/fast-image/oracle.mjs",
+    "node": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+    "exports": [
+      "parsed_module",
+      "parse_with_fuel",
+      "expand_modules_start",
+      "template_step",
+      "check_expanded_start",
+      "inspect_checked_start",
+      "checker_step",
+      "emit_modules_start",
+      "emit_library_start",
+      "emitter_step",
+      "emit_c_modules_start",
+      "emit_c_library_start",
+      "c_emitter_step"
+    ],
+    "pins": {
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g51-checker-3juqew7r/repository-profile/evals/selfhost_throughput.mjs": "1a806befee02216a9499f6b4dcde7e2326e01f0a5b96bbd36b75295344c50317",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g51-checker-3juqew7r/repository-profile/evals/checker_core_step_runtime.mjs": "00cd400ac0452a3681bf6491db08be51f9ae3a33ff2baf88654a9763eb5073ed",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g51-checker-3juqew7r/repository-profile/evals/selfhost_cpu_profile.mjs": "5d5fc8d329a3b600522c58eeac59c49c515109bc7f48845d8177cb520129a1c0",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g51-checker-3juqew7r/repository-profile/evals/native_seed_runtime.mjs": "7f81a9b9013853355910b93bf59586b2acbcda4de7bcaa08d7942ebf45c0147a",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g51-checker-3juqew7r/repository-profile/evals/heavy_gate.ts": "e72f2b81970be76734df918e35b1a4289d0fb194039e5ca20e9785e5ac0ee015",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g50-combined-jb80lebe/fast-image/oracle.mjs": "003dca748437a25dcdc834d11690d543e2a41e101444d086fcea40685382855e",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g50-combined-jb80lebe/fast-image/receipt.json": "91456382a269c26dbd8f4b4b5c618540c3476f05537c3603b473f61d915f5703"
+    },
+    "inputs": {
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g50-combined-jb80lebe/repository/bend2/base.bend": "21baec76caf1a6cfd4a544340b291f7bb55bf30cc841f9f5f29e3b12a1a4d614",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g50-combined-jb80lebe/repository/bend2/effs/args.js": "4fa9772d438257793425d4f9516e1411ce58455fdaec402ab836e6a6cf8a7a82",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g50-combined-jb80lebe/repository/bend2/effs/audio_close.js": "c700e2fc0eda1f9a67afd317184999d9283912817aaec00637af41b135b84c62",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g50-combined-jb80lebe/repository/bend2/effs/audio_open.js": "ed792cb29df28497c60fb6bfcebaa72d9f4bb0a9d8b22063567aa40ac4803fc9",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g50-combined-jb80lebe/repository/bend2/effs/audio_write.js": "ca3731d6da39355c0b924007dfe4f3ea25ed1a9d7b06b7bf19cacf49fdcc0de6",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g50-combined-jb80lebe/repository/bend2/effs/chan.js": "c8e4f3cdaea81cfd35dc22e07c29a86b8f08272d284bf3506dd5148dff8d168f",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g50-combined-jb80lebe/repository/bend2/effs/file_close.js": "2b83f900113776ab875fa3afd29f31000a191fe48645abe78b1d7b34cb12a7fe",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g50-combined-jb80lebe/repository/bend2/effs/file_open.js": "e6cbf6455aeae0768f1e8e7cabbafb8d0999eb27660cbaa23885757322b8c694",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g50-combined-jb80lebe/repository/bend2/effs/file_read.js": "7aa8a95a0b02f3c8db1167da5a936958a90c64e7df3e327ba5c66766d5e57da7",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g50-combined-jb80lebe/repository/bend2/effs/file_size.js": "508a931334016f725f0446d9c63f91d7e9de79b9fb347d0e148777dba834ef0b",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g50-combined-jb80lebe/repository/bend2/effs/file_write.js": "fbb706714fe6724e12658ad638d8b7aa2228f6297791bf74bd4894af361776f0",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g50-combined-jb80lebe/repository/bend2/effs/get_env.js": "4bbb377d73898055bd06b498bef605e81bc2a0885e7ac664bc77591fd7e3dfa4",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g50-combined-jb80lebe/repository/bend2/effs/listener_close.js": "1b87fb43c373b1a8a54b5afaf0cf8e3ec2f8d39bdfde131e49527caa19ac0cb8",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g50-combined-jb80lebe/repository/bend2/effs/now.js": "f41624aba3f07d56b671f41691b5cb833b4d018266668f5f48329290fc41b2d9",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g50-combined-jb80lebe/repository/bend2/effs/print.js": "814ceba4efbaa291b7b6a9ff29aa20e3a23c06eb4fa165c69ee0bd22878adaa9",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g50-combined-jb80lebe/repository/bend2/effs/print_err.js": "a7a00612edfe98af1a351e8f7b912af4ee33f4bb888c36f119f7712d72a9394e",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g50-combined-jb80lebe/repository/bend2/effs/process_run.js": "26868538280a1df9570ed2fba234d2a329f1e1d9e86c6fe9353de417adaee729",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g50-combined-jb80lebe/repository/bend2/effs/random_u32.js": "ab0b37cb6055ad08573d1263aa380c339c3fe7417530cfa63264629dce7744c2",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g50-combined-jb80lebe/repository/bend2/effs/sleep.js": "6711ccd804dcaede381da9ff0283b4640feb440e1d413381101f22bfed65a934",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g50-combined-jb80lebe/repository/bend2/effs/socket_close.js": "dc4bf1fa95692c91528d4eb855506dde8dfc9164a90de2c43cd1bd6916e0c380",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g50-combined-jb80lebe/repository/bend2/effs/spawn.js": "8a14c7a7a5ff80b049f0659f9e58d43bf0f3b1a6724d35a199c3f864b3242e4b",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g50-combined-jb80lebe/repository/bend2/effs/tcp_accept.js": "26406cce42c497994e597a7a032629fab65f43ec14f06ee69aace2b353afe28d",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g50-combined-jb80lebe/repository/bend2/effs/tcp_connect.js": "c51c4b55ffbc4a520f01082a1307498801a17e5123bdffbd01077fb42730f1cb",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g50-combined-jb80lebe/repository/bend2/effs/tcp_listen.js": "0da4cfafaa24ba5e17d9fda5e6a5b207b2b36031b2c888944f67b85842d76399",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g50-combined-jb80lebe/repository/bend2/effs/tcp_recv.js": "e8c54490445cb71a4328c07be8c40a49cee3e643cbf74f42dc73d31ab95890d7",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g50-combined-jb80lebe/repository/bend2/effs/tcp_send.js": "350bc6ac8f957d6a154cc9437b4ad871bd11ec65babbbd7c3b0d2c77590ec5c6",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g50-combined-jb80lebe/repository/bend2/effs/thread_count.js": "f4ef6d8ded95fe3114e50b7d2b6eb873e693419b85150f681b4a54a5043c2de9",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g50-combined-jb80lebe/repository/bend2/effs/udp_bind.js": "e3afae5bf246184e76703efbcf41cb35bf5289e746cc40dc0300eef98753dfb5",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g50-combined-jb80lebe/repository/bend2/effs/udp_recv_from.js": "66435d23dd12f30aa47bf618c925a42250920768d5ae28c7c52c35d4e04fa5ad",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g50-combined-jb80lebe/repository/bend2/effs/udp_send_to.js": "40c835c4d73eb15d089a41b425968d04931d02820cb901aadb8eb3dd4905f247",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g50-combined-jb80lebe/repository/bend2/effs/window_close.js": "be4ef11e9ac57c59aa4aee847f15ece18034ca9fe1c4a68c6e0b0d7bbd7c3590",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g50-combined-jb80lebe/repository/bend2/effs/window_frame.js": "78baa53aa46e02165c0c94da68d1f6362386ebcfb97dbb36fffb82792a03d34f",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g50-combined-jb80lebe/repository/bend2/effs/window_grab.js": "55cfc1925114f2d1f177137fad24d6252fe28707d26a1aae18a98ad97060a668",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g50-combined-jb80lebe/repository/bend2/effs/window_open.js": "cd716864b8dfb27ca955c8aa58643c7d693ce76eb56472bd8255ff7ac0656e8d",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g50-combined-jb80lebe/repository/bend2/effs/window_set_title.js": "eee0bf26b7f381f8800364e22e8c735e47dd6db3f58e23ff3dda8478a8411513",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g50-combined-jb80lebe/repository/bend2/effs/write.js": "e3495066a5d8c53fe1c46cfd2bb32577e3bd7dcae9797808801599073504dacb",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g50-combined-jb80lebe/repository/bend2/selfhost/ast.bend": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g50-combined-jb80lebe/repository/bend2/selfhost/core.bend": "33823e56b9c70306970ccb0e3b5fb3b995806d3a1907dd97d45c5c9634d13511",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g50-combined-jb80lebe/repository/bend2/selfhost/loaded_module.bend": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g50-combined-jb80lebe/repository/bend2/selfhost/path.bend": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g50-combined-jb80lebe/repository/bend2/selfhost/sha256.bend": "2fe6b6fc50c90db1b4730a384724bc989398b0ce41752cc510aa2478a3e845d6",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g50-combined-jb80lebe/repository/checkpoints/template_steps_component_v1.bend": "86c9e3b009a91b233a314d76ddd65d83ecd66e620231e63121ba625c853b3e39",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g50-combined-jb80lebe/repository/checkpoints/template_steps_v1.bend": "b9f4d860de0c58a274e1f23e90558191e23d7ac0de18d1fd452914160b9a5ae5"
+    },
+    "limits": {
+      "memoryMiB": 8192,
+      "rssMiB": 8192,
+      "pollMs": 10,
+      "timeoutMs": 600000
+    },
+    "stopAfter": "check",
+    "scope": "Complete fresh public-ABI own parser/template/checker; canonical source-oracle image is development-only, not native acceptance."
+  },
+  "result": {
+    "status": "PASS",
+    "stopAfter": "check",
+    "moduleCount": 8,
+    "sourceDeclarations": 941,
+    "phases": [
+      {
+        "phase": "startup",
+        "elapsedMs": 139.87937499999998,
+        "userCpuMs": 125.745,
+        "systemCpuMs": 12.867,
+        "memoryEnd": {
+          "rss": 193495040,
+          "heapTotal": 38813696,
+          "heapUsed": 35883184,
+          "external": 40720547,
+          "arrayBuffers": 78252
+        }
+      },
+      {
+        "phase": "load-parse",
+        "elapsedMs": 499.992167,
+        "userCpuMs": 985.41,
+        "systemCpuMs": 93.983,
+        "memoryEnd": {
+          "rss": 508837888,
+          "heapTotal": 250380288,
+          "heapUsed": 174156688,
+          "external": 10493131,
+          "arrayBuffers": 25039
+        }
+      },
+      {
+        "phase": "expand",
+        "elapsedMs": 356.278334,
+        "userCpuMs": 643.334,
+        "systemCpuMs": 16.73,
+        "memoryEnd": {
+          "rss": 529514496,
+          "heapTotal": 270303232,
+          "heapUsed": 176875992,
+          "external": 10493131,
+          "arrayBuffers": 25039
+        }
+      },
+      {
+        "phase": "check",
+        "elapsedMs": 10598.613000000001,
+        "userCpuMs": 13086.446,
+        "systemCpuMs": 249.484,
+        "memoryEnd": {
+          "rss": 731725824,
+          "heapTotal": 512983040,
+          "heapUsed": 264388912,
+          "external": 10493131,
+          "arrayBuffers": 25039
+        }
+      }
+    ],
+    "stepCounts": {
+      "expand": 63611,
+      "check": 466660
+    },
+    "pipelineElapsedMs": 11596.706125,
+    "workerPolicy": {
+      "stackMiB": 256,
+      "oldGenerationMiB": 6144,
+      "youngGenerationMiB": 128
+    },
+    "runtime": {
+      "execPath": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "versions": {
+        "node": "23.11.0",
+        "acorn": "8.14.1",
+        "ada": "3.2.1",
+        "amaro": "0.4.1",
+        "ares": "1.34.4",
+        "brotli": "1.1.0",
+        "cjs_module_lexer": "2.1.0",
+        "cldr": "46.0",
+        "icu": "76.1",
+        "llhttp": "9.2.1",
+        "modules": "131",
+        "napi": "10",
+        "nbytes": "0.1.1",
+        "ncrypto": "0.0.1",
+        "nghttp2": "1.64.0",
+        "openssl": "3.0.16",
+        "simdjson": "3.12.2",
+        "simdutf": "6.0.3",
+        "sqlite": "3.49.1",
+        "tz": "2025a",
+        "undici": "6.21.2",
+        "unicode": "16.0",
+        "uv": "1.50.0",
+        "uvwasi": "0.0.21",
+        "v8": "12.9.202.28-node.14",
+        "zlib": "1.3.0.1-motley-788cb3c",
+        "zstd": "1.5.6"
+      },
+      "execArgv": [
+        "--experimental-strip-types",
+        "--max-old-space-size=6144",
+        "--max-semi-space-size=128"
+      ],
+      "heapLimitBytes": 6845104128
+    },
+    "limits": {
+      "memoryMiB": 8192,
+      "rssMiB": 8192,
+      "pollMs": 10,
+      "timeoutMs": 600000
+    }
+  },
+  "guardian": {
+    "status": "PASS",
+    "reason": "command_exit",
+    "elapsedMs": 12032,
+    "peakRssBytes": 746602496,
+    "peakFootprintBytes": 703438936,
+    "timeoutMs": 600000,
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592,
+    "ownedTreeStopped": true,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793620521432-3bd00e2cd265cf9d.json"
+  },
+  "realEmittedTemplateConsumer": {
+    "componentBytes": 1903750,
+    "componentSha256": "1b15bafad32a9847e86bfc4a2e78add5ea62a18ccd593a97e072406937dd3326",
+    "source": "specialize(~A:Type,x:A)->A;main=U32.add(specialize(~U32,20),specialize(~U32,22))",
+    "observedConsumerResult": 42,
+    "hostBoundary": "Temporary public ABI13 overlay with only Template public start/step replaced by emitted component; shared opaque driver; no hidden Run/Stack access."
+  },
+  "negativeScenarios": {
+    "mixedConstructorParser": "Failed before checking; corrected by using each image own parser; not compiler regression.",
+    "checkOnlyEmittedOutputClaim": {
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g51-checker-3juqew7r/repository-profile/evals/selfhost_throughput.mjs",
+        "js",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g51-checker-3juqew7r/invalid-output-claim-request.json",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g51-checker-3juqew7r/invalid-output-claim-report.json"
+      ],
+      "exitCode": 1,
+      "observed": "Check-only runs cannot claim emitted output equality before worker launch"
+    }
+  },
+  "fullRootProfileReference": "checkpoints/local2039g51-profile-measured.json",
+  "qualification": {
+    "nativeOrProductAccepted": false,
+    "acceptedVersion": "G24R12",
+    "fullRootTimingSubstitution": false,
+    "byteFixedpointClaim": false
+  }
+}

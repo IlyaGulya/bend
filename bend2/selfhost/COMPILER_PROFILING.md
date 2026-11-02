@@ -2,7 +2,7 @@
 
 This is a diagnostic collector for the official TypeScript compiler producers.
 It is not an acceptance signal, a benchmark, a fixedpoint proof, or a claim
-that every stage is covered. Ordinary runs do not import it and do not write
+that every stage is covered. Disabled runs do not create a collector or write
 profile files.
 
 `evals/selfhost_throughput.mjs` also accepts the existing
@@ -22,6 +22,37 @@ reproduced the unprofiled output's 31,906,405 bytes and SHA-256
 under the unchanged 8-GiB RSS/footprint gate. Neither profiling overhead nor
 overlapping inclusive sample totals establish an optimization win.
 `checkpoints/local2039g51-profile-measured.json`.
+
+### Fast actual-checker iteration
+
+The pinned request accepts `"stopAfter": "check"` in JS-component mode.
+It still requires ABI13, freshly runs the image's own parser with 8M fuel per
+module, expands and checks the complete declared source closure, and retains
+the original 8192-MiB RSS/footprint, 10-ms poll and 600-s hard guard. It skips
+only emission; output files and emitted-byte equality claims are prohibited.
+Default requests still compile. This is not native/bootstrap acceptance.
+
+`checkpoints/local2039g51-checker-mini.corpus.json` freezes the existing real
+`template_steps_component_v1.bend` closure: eight Bend modules and 35 unique
+declared JS alternatives, not generated ASTs or synthetic typechecking work.
+The measured canonical development image freshly parsed/expanded/checked it in
+11,597 ms (checker 10,599 ms; RSS 746,602,496 bytes). This is a quick falsifier,
+not a substitute for the full-root final measurement, and its timing must not
+be compared as a compiler speedup against a differently produced image.
+
+```bash
+bun --smol evals/selfhost_throughput.mjs js \
+  /absolute/pinned-check-only-request.json /absolute/fresh-report.json
+```
+
+Use the same image's own parser: canonical `comp.ts` and selfhost-produced
+images have different runtime constructor layouts. Mixing their parser values
+failed before checking and is a harness error, not a compiler regression.
+The full-mode template compilation reproduced the exact 1,903,750-byte JS;
+the resulting real template component specialized a consumer that returned 42.
+The clean driver omits per-step stage attribution, whose CPU probes are
+measurable overhead on this small workload. Phase CPU/heap profiling remains
+available through the opt-in above and is never throughput evidence.
 
 ## Fast development checks
 
