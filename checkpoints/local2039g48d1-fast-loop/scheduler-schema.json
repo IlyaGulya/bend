@@ -1,0 +1,469 @@
+{
+  "schemaVersion": 1,
+  "acceptanceEvidence": false,
+  "status": "ALL_THREE_SCHEMAS_MATCH",
+  "commands": {
+    "small": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf_shape.ts",
+      "--source=/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf.bend",
+      "--out=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/perf-small-main-shape.json"
+    ],
+    "medium": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf_shape.ts",
+      "--source=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g48d1-fast-loop/perf-medium.bend",
+      "--out=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/perf-medium-main-shape.json"
+    ],
+    "large": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf_shape.ts",
+      "--source=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g48d1-fast-loop/perf-large.bend",
+      "--out=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/perf-large-main-shape.json"
+    ]
+  },
+  "cases": {
+    "small": {
+      "status": "matched",
+      "passed": true,
+      "witnessSha256": "c6c342f503277e608328b0e936ee495109351442766cade7f72a706bb892ab21",
+      "coreCoverage": {
+        "families": 4,
+        "constructors": 9,
+        "constructorNames": [
+          "Value",
+          "Finished",
+          "Pending",
+          "Direct",
+          "Bound",
+          "StackDone",
+          "StackMore",
+          "RunFinished",
+          "RunState"
+        ],
+        "note": "Frozen anchors contain nine constructors, not seven; all nine are compared.",
+        "equality": "ordered AST alpha-equivalence; exact quantities, binder dependencies, recursive families, equality rewrite and five loop/cast bodies; result/step_one signatures only"
+      },
+      "unknowns": [],
+      "limitations": [
+        "Parser acceptance is not book_valid, native totality/equality validation, compilation or execution.",
+        "Request/group widths and handler computations intentionally differ; group dispatch coverage and dependent signatures are structural, not behavioral equivalence.",
+        "No type-function evaluation: aliases remain explicit AST references/applications; only parser-resolved unbound Var.v -> Ref links are followed.",
+        "No claim about main workload reachability, stdout/checksum correctness, handler execution, owned payload lifetime or IO behavior.",
+        "No dynamic first NF/layout query provenance, BIR size, performance measurement or evidence that the expensive original path is reached.",
+        "A matching witness licenses only a development surrogate; it never replaces original-source qualification."
+      ],
+      "sourceSha256": "da70f714bae3024b7df1323ef53011d156252eb69b297c5644aa2635226870b4",
+      "originalSha256": "e4c1197d63129394551d5643ef2934be84af82eaeacfa3da1e4e660c6ff603a4",
+      "widths": {
+        "original": {
+          "groups": 19,
+          "requests": 1161,
+          "armsPerGroup": [
+            64,
+            64,
+            64,
+            64,
+            64,
+            64,
+            64,
+            64,
+            64,
+            64,
+            64,
+            64,
+            64,
+            64,
+            64,
+            64,
+            64,
+            64,
+            9
+          ]
+        },
+        "benchmark": {
+          "groups": 1,
+          "requests": 4,
+          "armsPerGroup": [
+            4
+          ]
+        }
+      },
+      "comparisons": [
+        {
+          "original": "CheckerValue",
+          "benchmark": "PerfValue",
+          "equal": true,
+          "originalShapeSha256": "39b13e5605361353f98bd9fc95ebcca172ca9d92e35f27444140f063dab85998",
+          "benchmarkShapeSha256": "39b13e5605361353f98bd9fc95ebcca172ca9d92e35f27444140f063dab85998"
+        },
+        {
+          "original": "CheckerProgress",
+          "benchmark": "PerfProgress",
+          "equal": true,
+          "originalShapeSha256": "fa9b262c47a2beb4705805275457e8edf18ee3ac6552232b24c94c41117974d1",
+          "benchmarkShapeSha256": "fa9b262c47a2beb4705805275457e8edf18ee3ac6552232b24c94c41117974d1"
+        },
+        {
+          "original": "CheckerStack",
+          "benchmark": "PerfStack",
+          "equal": true,
+          "originalShapeSha256": "9508f281151076a4a5d3efd020f7d95de9267578c014d831ff2a5610716e6738",
+          "benchmarkShapeSha256": "9508f281151076a4a5d3efd020f7d95de9267578c014d831ff2a5610716e6738"
+        },
+        {
+          "original": "CheckerRun",
+          "benchmark": "PerfRun",
+          "equal": true,
+          "originalShapeSha256": "3707c4af0e878cadd2f960cc98a2b103ba171e2c24b0b2b9b81c7039d318978b",
+          "benchmarkShapeSha256": "3707c4af0e878cadd2f960cc98a2b103ba171e2c24b0b2b9b81c7039d318978b"
+        },
+        {
+          "original": "checker_cast_box",
+          "benchmark": "Perf.cast",
+          "equal": true,
+          "originalShapeSha256": "1abb9084e6328065ec161821e858eec5064692b0974f99b607f80a26c5ffad31",
+          "benchmarkShapeSha256": "1abb9084e6328065ec161821e858eec5064692b0974f99b607f80a26c5ffad31"
+        },
+        {
+          "original": "checker_pop",
+          "benchmark": "Perf.pop",
+          "equal": true,
+          "originalShapeSha256": "809afe4637aabea7aec29a2aa43f130abdc7040064733f7baafa59e1b933f977",
+          "benchmarkShapeSha256": "809afe4637aabea7aec29a2aa43f130abdc7040064733f7baafa59e1b933f977"
+        },
+        {
+          "original": "checker_advance",
+          "benchmark": "Perf.advance",
+          "equal": true,
+          "originalShapeSha256": "6f2b30e3266458f3d87ac0d2632d257649bea2000c8c21e5599b1e2a1f8fa9f7",
+          "benchmarkShapeSha256": "6f2b30e3266458f3d87ac0d2632d257649bea2000c8c21e5599b1e2a1f8fa9f7"
+        },
+        {
+          "original": "checker_chunk",
+          "benchmark": "Perf.chunk",
+          "equal": true,
+          "originalShapeSha256": "07f7bc87e76872c43fbc047b4595d034d4151376c2408ed73feb55d23f3ce596",
+          "benchmarkShapeSha256": "07f7bc87e76872c43fbc047b4595d034d4151376c2408ed73feb55d23f3ce596"
+        },
+        {
+          "original": "checker_step",
+          "benchmark": "Perf.step",
+          "equal": true,
+          "originalShapeSha256": "41cad2c66aed5f6cc2862d41cfbd58560bd4dfdb2d76811c4c591ca1a207397f",
+          "benchmarkShapeSha256": "41cad2c66aed5f6cc2862d41cfbd58560bd4dfdb2d76811c4c591ca1a207397f"
+        },
+        {
+          "original": "checker_result",
+          "benchmark": "Perf.result",
+          "equal": true,
+          "originalShapeSha256": "acd4ae6b2734c3d25ccd8aab4d093a2e6d8d16285f7c5b1a3fcf194129728c83",
+          "benchmarkShapeSha256": "acd4ae6b2734c3d25ccd8aab4d093a2e6d8d16285f7c5b1a3fcf194129728c83"
+        },
+        {
+          "original": "checker_step_one",
+          "benchmark": "Perf.step_one",
+          "equal": true,
+          "originalShapeSha256": "5efde6ad3a0289c100ec32b6200bb7550f0119d9d322a340f77ae6622054dffe",
+          "benchmarkShapeSha256": "5efde6ad3a0289c100ec32b6200bb7550f0119d9d322a340f77ae6622054dffe"
+        }
+      ]
+    },
+    "medium": {
+      "status": "matched",
+      "passed": true,
+      "witnessSha256": "8307efebafb38e9c6b1e2a9b0b7d320e67a1077e3c45be5361d68fa4cfe167d2",
+      "coreCoverage": {
+        "families": 4,
+        "constructors": 9,
+        "constructorNames": [
+          "Value",
+          "Finished",
+          "Pending",
+          "Direct",
+          "Bound",
+          "StackDone",
+          "StackMore",
+          "RunFinished",
+          "RunState"
+        ],
+        "note": "Frozen anchors contain nine constructors, not seven; all nine are compared.",
+        "equality": "ordered AST alpha-equivalence; exact quantities, binder dependencies, recursive families, equality rewrite and five loop/cast bodies; result/step_one signatures only"
+      },
+      "unknowns": [],
+      "limitations": [
+        "Parser acceptance is not book_valid, native totality/equality validation, compilation or execution.",
+        "Request/group widths and handler computations intentionally differ; group dispatch coverage and dependent signatures are structural, not behavioral equivalence.",
+        "No type-function evaluation: aliases remain explicit AST references/applications; only parser-resolved unbound Var.v -> Ref links are followed.",
+        "No claim about main workload reachability, stdout/checksum correctness, handler execution, owned payload lifetime or IO behavior.",
+        "No dynamic first NF/layout query provenance, BIR size, performance measurement or evidence that the expensive original path is reached.",
+        "A matching witness licenses only a development surrogate; it never replaces original-source qualification."
+      ],
+      "sourceSha256": "49faaf785ea754d5773a1ced967378a1b727e9c17fdc40f10f1a3e5dec0d4fba",
+      "originalSha256": "e4c1197d63129394551d5643ef2934be84af82eaeacfa3da1e4e660c6ff603a4",
+      "widths": {
+        "original": {
+          "groups": 19,
+          "requests": 1161,
+          "armsPerGroup": [
+            64,
+            64,
+            64,
+            64,
+            64,
+            64,
+            64,
+            64,
+            64,
+            64,
+            64,
+            64,
+            64,
+            64,
+            64,
+            64,
+            64,
+            64,
+            9
+          ]
+        },
+        "benchmark": {
+          "groups": 2,
+          "requests": 16,
+          "armsPerGroup": [
+            8,
+            8
+          ]
+        }
+      },
+      "comparisons": [
+        {
+          "original": "CheckerValue",
+          "benchmark": "PerfValue",
+          "equal": true,
+          "originalShapeSha256": "39b13e5605361353f98bd9fc95ebcca172ca9d92e35f27444140f063dab85998",
+          "benchmarkShapeSha256": "39b13e5605361353f98bd9fc95ebcca172ca9d92e35f27444140f063dab85998"
+        },
+        {
+          "original": "CheckerProgress",
+          "benchmark": "PerfProgress",
+          "equal": true,
+          "originalShapeSha256": "fa9b262c47a2beb4705805275457e8edf18ee3ac6552232b24c94c41117974d1",
+          "benchmarkShapeSha256": "fa9b262c47a2beb4705805275457e8edf18ee3ac6552232b24c94c41117974d1"
+        },
+        {
+          "original": "CheckerStack",
+          "benchmark": "PerfStack",
+          "equal": true,
+          "originalShapeSha256": "9508f281151076a4a5d3efd020f7d95de9267578c014d831ff2a5610716e6738",
+          "benchmarkShapeSha256": "9508f281151076a4a5d3efd020f7d95de9267578c014d831ff2a5610716e6738"
+        },
+        {
+          "original": "CheckerRun",
+          "benchmark": "PerfRun",
+          "equal": true,
+          "originalShapeSha256": "3707c4af0e878cadd2f960cc98a2b103ba171e2c24b0b2b9b81c7039d318978b",
+          "benchmarkShapeSha256": "3707c4af0e878cadd2f960cc98a2b103ba171e2c24b0b2b9b81c7039d318978b"
+        },
+        {
+          "original": "checker_cast_box",
+          "benchmark": "Perf.cast",
+          "equal": true,
+          "originalShapeSha256": "1abb9084e6328065ec161821e858eec5064692b0974f99b607f80a26c5ffad31",
+          "benchmarkShapeSha256": "1abb9084e6328065ec161821e858eec5064692b0974f99b607f80a26c5ffad31"
+        },
+        {
+          "original": "checker_pop",
+          "benchmark": "Perf.pop",
+          "equal": true,
+          "originalShapeSha256": "809afe4637aabea7aec29a2aa43f130abdc7040064733f7baafa59e1b933f977",
+          "benchmarkShapeSha256": "809afe4637aabea7aec29a2aa43f130abdc7040064733f7baafa59e1b933f977"
+        },
+        {
+          "original": "checker_advance",
+          "benchmark": "Perf.advance",
+          "equal": true,
+          "originalShapeSha256": "6f2b30e3266458f3d87ac0d2632d257649bea2000c8c21e5599b1e2a1f8fa9f7",
+          "benchmarkShapeSha256": "6f2b30e3266458f3d87ac0d2632d257649bea2000c8c21e5599b1e2a1f8fa9f7"
+        },
+        {
+          "original": "checker_chunk",
+          "benchmark": "Perf.chunk",
+          "equal": true,
+          "originalShapeSha256": "07f7bc87e76872c43fbc047b4595d034d4151376c2408ed73feb55d23f3ce596",
+          "benchmarkShapeSha256": "07f7bc87e76872c43fbc047b4595d034d4151376c2408ed73feb55d23f3ce596"
+        },
+        {
+          "original": "checker_step",
+          "benchmark": "Perf.step",
+          "equal": true,
+          "originalShapeSha256": "41cad2c66aed5f6cc2862d41cfbd58560bd4dfdb2d76811c4c591ca1a207397f",
+          "benchmarkShapeSha256": "41cad2c66aed5f6cc2862d41cfbd58560bd4dfdb2d76811c4c591ca1a207397f"
+        },
+        {
+          "original": "checker_result",
+          "benchmark": "Perf.result",
+          "equal": true,
+          "originalShapeSha256": "acd4ae6b2734c3d25ccd8aab4d093a2e6d8d16285f7c5b1a3fcf194129728c83",
+          "benchmarkShapeSha256": "acd4ae6b2734c3d25ccd8aab4d093a2e6d8d16285f7c5b1a3fcf194129728c83"
+        },
+        {
+          "original": "checker_step_one",
+          "benchmark": "Perf.step_one",
+          "equal": true,
+          "originalShapeSha256": "5efde6ad3a0289c100ec32b6200bb7550f0119d9d322a340f77ae6622054dffe",
+          "benchmarkShapeSha256": "5efde6ad3a0289c100ec32b6200bb7550f0119d9d322a340f77ae6622054dffe"
+        }
+      ]
+    },
+    "large": {
+      "status": "matched",
+      "passed": true,
+      "witnessSha256": "e790bcf4d43d55d1f8a4af99ed6c81cdb0bcb4fa5a41e0bd77c4f0a4e14650c4",
+      "coreCoverage": {
+        "families": 4,
+        "constructors": 9,
+        "constructorNames": [
+          "Value",
+          "Finished",
+          "Pending",
+          "Direct",
+          "Bound",
+          "StackDone",
+          "StackMore",
+          "RunFinished",
+          "RunState"
+        ],
+        "note": "Frozen anchors contain nine constructors, not seven; all nine are compared.",
+        "equality": "ordered AST alpha-equivalence; exact quantities, binder dependencies, recursive families, equality rewrite and five loop/cast bodies; result/step_one signatures only"
+      },
+      "unknowns": [],
+      "limitations": [
+        "Parser acceptance is not book_valid, native totality/equality validation, compilation or execution.",
+        "Request/group widths and handler computations intentionally differ; group dispatch coverage and dependent signatures are structural, not behavioral equivalence.",
+        "No type-function evaluation: aliases remain explicit AST references/applications; only parser-resolved unbound Var.v -> Ref links are followed.",
+        "No claim about main workload reachability, stdout/checksum correctness, handler execution, owned payload lifetime or IO behavior.",
+        "No dynamic first NF/layout query provenance, BIR size, performance measurement or evidence that the expensive original path is reached.",
+        "A matching witness licenses only a development surrogate; it never replaces original-source qualification."
+      ],
+      "sourceSha256": "7777c98d149d119f14c58ee3ad9eb8ab213528453ce7ae290c1f0784e0384d8e",
+      "originalSha256": "e4c1197d63129394551d5643ef2934be84af82eaeacfa3da1e4e660c6ff603a4",
+      "widths": {
+        "original": {
+          "groups": 19,
+          "requests": 1161,
+          "armsPerGroup": [
+            64,
+            64,
+            64,
+            64,
+            64,
+            64,
+            64,
+            64,
+            64,
+            64,
+            64,
+            64,
+            64,
+            64,
+            64,
+            64,
+            64,
+            64,
+            9
+          ]
+        },
+        "benchmark": {
+          "groups": 4,
+          "requests": 64,
+          "armsPerGroup": [
+            16,
+            16,
+            16,
+            16
+          ]
+        }
+      },
+      "comparisons": [
+        {
+          "original": "CheckerValue",
+          "benchmark": "PerfValue",
+          "equal": true,
+          "originalShapeSha256": "39b13e5605361353f98bd9fc95ebcca172ca9d92e35f27444140f063dab85998",
+          "benchmarkShapeSha256": "39b13e5605361353f98bd9fc95ebcca172ca9d92e35f27444140f063dab85998"
+        },
+        {
+          "original": "CheckerProgress",
+          "benchmark": "PerfProgress",
+          "equal": true,
+          "originalShapeSha256": "fa9b262c47a2beb4705805275457e8edf18ee3ac6552232b24c94c41117974d1",
+          "benchmarkShapeSha256": "fa9b262c47a2beb4705805275457e8edf18ee3ac6552232b24c94c41117974d1"
+        },
+        {
+          "original": "CheckerStack",
+          "benchmark": "PerfStack",
+          "equal": true,
+          "originalShapeSha256": "9508f281151076a4a5d3efd020f7d95de9267578c014d831ff2a5610716e6738",
+          "benchmarkShapeSha256": "9508f281151076a4a5d3efd020f7d95de9267578c014d831ff2a5610716e6738"
+        },
+        {
+          "original": "CheckerRun",
+          "benchmark": "PerfRun",
+          "equal": true,
+          "originalShapeSha256": "3707c4af0e878cadd2f960cc98a2b103ba171e2c24b0b2b9b81c7039d318978b",
+          "benchmarkShapeSha256": "3707c4af0e878cadd2f960cc98a2b103ba171e2c24b0b2b9b81c7039d318978b"
+        },
+        {
+          "original": "checker_cast_box",
+          "benchmark": "Perf.cast",
+          "equal": true,
+          "originalShapeSha256": "1abb9084e6328065ec161821e858eec5064692b0974f99b607f80a26c5ffad31",
+          "benchmarkShapeSha256": "1abb9084e6328065ec161821e858eec5064692b0974f99b607f80a26c5ffad31"
+        },
+        {
+          "original": "checker_pop",
+          "benchmark": "Perf.pop",
+          "equal": true,
+          "originalShapeSha256": "809afe4637aabea7aec29a2aa43f130abdc7040064733f7baafa59e1b933f977",
+          "benchmarkShapeSha256": "809afe4637aabea7aec29a2aa43f130abdc7040064733f7baafa59e1b933f977"
+        },
+        {
+          "original": "checker_advance",
+          "benchmark": "Perf.advance",
+          "equal": true,
+          "originalShapeSha256": "6f2b30e3266458f3d87ac0d2632d257649bea2000c8c21e5599b1e2a1f8fa9f7",
+          "benchmarkShapeSha256": "6f2b30e3266458f3d87ac0d2632d257649bea2000c8c21e5599b1e2a1f8fa9f7"
+        },
+        {
+          "original": "checker_chunk",
+          "benchmark": "Perf.chunk",
+          "equal": true,
+          "originalShapeSha256": "07f7bc87e76872c43fbc047b4595d034d4151376c2408ed73feb55d23f3ce596",
+          "benchmarkShapeSha256": "07f7bc87e76872c43fbc047b4595d034d4151376c2408ed73feb55d23f3ce596"
+        },
+        {
+          "original": "checker_step",
+          "benchmark": "Perf.step",
+          "equal": true,
+          "originalShapeSha256": "41cad2c66aed5f6cc2862d41cfbd58560bd4dfdb2d76811c4c591ca1a207397f",
+          "benchmarkShapeSha256": "41cad2c66aed5f6cc2862d41cfbd58560bd4dfdb2d76811c4c591ca1a207397f"
+        },
+        {
+          "original": "checker_result",
+          "benchmark": "Perf.result",
+          "equal": true,
+          "originalShapeSha256": "acd4ae6b2734c3d25ccd8aab4d093a2e6d8d16285f7c5b1a3fcf194129728c83",
+          "benchmarkShapeSha256": "acd4ae6b2734c3d25ccd8aab4d093a2e6d8d16285f7c5b1a3fcf194129728c83"
+        },
+        {
+          "original": "checker_step_one",
+          "benchmark": "Perf.step_one",
+          "equal": true,
+          "originalShapeSha256": "5efde6ad3a0289c100ec32b6200bb7550f0119d9d322a340f77ae6622054dffe",
+          "benchmarkShapeSha256": "5efde6ad3a0289c100ec32b6200bb7550f0119d9d322a340f77ae6622054dffe"
+        }
+      ]
+    }
+  }
+}

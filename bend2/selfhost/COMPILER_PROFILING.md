@@ -1450,3 +1450,129 @@ semantic proof и original deadline сохранены. Принятые compile
 требовали rollback: G47 работал в отдельном worktree. Throwaway controllers
 удалены; executable/JS images, runtime payloads и bulk logs остаются вне Git.
 
+
+### G48D1: representative fast development fixture — not compiler promotion
+
+`evals/semantic_scheduler_perf.bend` is a 273-line, 10337-byte runnable
+development surrogate, not a flat Show workload and not the original gate.
+It retains the four generic Value/Progress/Stack/Run families and all nine
+constructors, erased type parameters, `result(request)`, heterogeneous
+continuations, equality cast, Pending/Direct/Bound, owned Array capture and
+the original chunk/advance/pop algorithm with quantum64. All retained request
+arms execute; literal stdout covers the scheduler boundaries and checksums.
+
+`semantic_scheduler_perf_shape.ts` compares actual parser ASTs, binder-ID
+scopes and quantities, not source spelling. All11 core schema/body/signature
+comparisons matched in small, medium and large. Request widths intentionally
+differ: the frozen original has19 groups/1161 constructors; the development
+presets have1x4,2x8 and4x16. This is not a proof of termination, native
+equivalence, matching cost distribution or original-source qualification.
+
+`evals/semantic_scheduler_perf/bend2/base.bend` keeps62 of511 original Base
+declarations. `semantic_scheduler_perf_base.ts` computes their source-reference
+closure **plus implicit runtime constructor roots from the actual
+`c_backend.runtime_cid_aliases` AST**. Bodies stay original; foreign paths
+resolve to the original print.c/print.js bytes. Keep the `/bend2/base.bend`
+suffix: `lower_catalog.base_source` uses that module identity for scalar/IO
+native markers. An arbitrarily renamed prelude loses those markers and is
+not an equivalent source-compiler workload.
+
+Earlier source-only closure attempts are explicitly rejected in receipts:
+one lost native IO identity, another omitted the runtime's mandatory Fail
+constructor. Neither error was bypassed. The final prelude SHA256 is
+`67ab606499009c2e8ac5020133acfa0616174635b791853e1410403dd998d648`.
+Original qualification still uses full Base and the original frozen corpus.
+
+#### Measured inner loops
+
+Bun1.4.3 `c6da4a4d3`, Node23.11.0 Worker, Apple clang21.0.0
+`clang-2100.4.1.1`, darwin25.6/arm64. Runs serialized per physical host.
+The benchmark retains8192MiB RSS **and footprint**, poll10ms, and a separate
+20000ms development-stage budget; it does not lower a qualification deadline.
+Canonical real-C oracle uses clang `-O0` and verifies every literal stdout line.
+
+| Preset | Requests | Canonical source→C→clang→run, s | Source-compiler baseline source→C guard, s |
+| --- | ---: | ---: | ---: |
+| small | 4 | 0.498 median of3 | 7.339 single run |
+| medium | 16 | 0.780 single run | 11.560 single run |
+| large | 64 | 1.804 single run | not run |
+
+These are different workloads/toolchains, not a compiler throughput speedup
+claim. Final integrated small oracle samples also passed at0.534s/0.426s.
+Fresh all-body checking with `selfhost_fast.ts` passed391 definitions in
+2 modules:0.096s guard in the final warm-cache run,0.299s in the earlier run.
+No checked AST replay, cached book, body exclusions, compiler/native rebuild
+or changes to parser fuel/quantum are involved.
+
+Small baseline phase wall: import596.363ms, parse391.421ms,
+expand83.205ms, check2098.168ms, emit3833.248ms. The same reduced source with
+the full prelude had already spent12–15s in checking alone. The small source
+therefore needs the real prelude dependency slice, not only a smaller root.
+
+The authenticated G45 query-trace image exercised the final source and
+correctly identified prelude:1.000013s emitter window,6.355s whole guard,
+40902 observed boundaries,6237 NF and619 reach calls, all classified with
+zero unsupported/censored queries. All43 node_declared brackets closed,
+matching the43 unique captured constructor rows, including PerfRunState;
+show_build was never entered. The captured BIR has87 code rows,71 declarations,
+23 families and8 type functions. This establishes actual generic NF/layout
+work, not just similar syntax. Window timings include observer work and are
+censored; they are not exclusive NF CPU or completed compilation times.
+
+#### Commands and evidence boundaries
+
+```sh
+bun --smol evals/selfhost_fast.ts --repository=. \
+  --source=evals/semantic_scheduler_perf.bend --check-only \
+  --out=/tmp/bend-perf-check-01
+bun evals/semantic_scheduler_perf.ts --mode=oracle \
+  --source=evals/semantic_scheduler_perf.bend --samples=3 \
+  --out=/tmp/bend-perf-oracle-01
+bun evals/semantic_scheduler_perf.ts --mode=emit \
+  --image="$IMAGE" --node="$NODE" \
+  --source=evals/semantic_scheduler_perf.bend \
+  --base=evals/semantic_scheduler_perf/bend2/base.bend \
+  --out=/tmp/bend-perf-emit-01
+bun evals/semantic_scheduler_perf_source.ts --preset medium \
+  --out /tmp/bend-perf-medium.bend
+```
+
+Use a fresh output directory every run. `oracle` uses canonical TS and full
+Base, then real C execution. `emit` deliberately reports
+`REPRESENTATIVE_C_EMITTED_EXECUTION_UNVERIFIED`; `window` observes an
+authenticated bounded prefix. Only `complete` runs the source-compiler C
+artifact and checks its stdout. Emission/window success cannot turn a failed
+runtime into a pass. Each sample starts a fresh source frontend/emitter and
+keeps phases, hashes, guard receipts, partial progress and failed artifacts.
+
+For the authenticated trace window, supply `--mode=window --binding=...`
+`--manifest=... --window-ms=1000`, absolute source/base paths, and
+`--repository` pointing at the controller checkout. Raw native producer
+authentication still uses its immutable producer cwd; canonical manifest
+sources are now resolved against the controller's explicitly recorded
+sourceRoot, with every original hash/tamper check intact. A fail-before/
+pass-after regression and all18 stage-profile tests passed.
+
+#### New real runtime failure — deliberately still red
+
+G47 emitted the small C artifact in9.407s guard (emit phase5573.193ms);
+clang passed in0.476s. Its executable hit the unchanged8GiB physical-footprint
+cap after10.973s: peak footprint8597592424B, RSS2235793408B, empty stdout,
+owned tree stopped. The failed binary was not retried and no limit was raised.
+Cause is unresolved; canonical C runs every expected line correctly.
+
+Baseline and G47 source-compiler C outputs are byte-identical:
+391044 bytes, SHA256
+`f05909d1ee076a786487907ed74f37f056ab7d1abca04340e6e243c1273a376e`.
+This does **not** establish a G47-specific regression, baseline runtime pass
+or compiler byte-fixedpoint. It is a smaller useful failing consumer, not a
+reason to relax the runtime gate. G47 remains rejected; G24R12 remains accepted.
+
+Frozen small/medium/large source inputs, exact commands, toolchain/limits,
+compact AST/prelude proofs, all failed harness/source attempts and runtime
+rejection are under `checkpoints/local2039g48d1-fast-loop/`.
+Compiler images, C/binary outputs, bulk AST/profile payloads stay outside Git.
+Original scheduler, full native production, stage2/byte-fixedpoint,95+190,
+C62/JS67/native33/admission12/host5 and strict12 remain separate qualification
+gates. This fast-loop change does not claim that any of them passed.
+

@@ -1,0 +1,678 @@
+{
+  "schemaVersion": 1,
+  "acceptanceEvidence": false,
+  "note": "Rejected/superseded attempts are not passes; generated images/ASTs/logs remain outside Git. Canonical output is independent of source-compiler runtime qualification.",
+  "attempts": [
+    {
+      "version": "mini-a1/75a2c831",
+      "status": "REJECTED_SOURCE_ADMISSION",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/selfhost_fast.ts",
+        "--repository=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/repository",
+        "--source=evals/semantic_scheduler_perf.bend",
+        "--check-only",
+        "--out=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/perf-small-typecheck-v1",
+        "--memory-mib=8192",
+        "--rss-mib=8192",
+        "--poll-ms=10",
+        "--timeout-ms=30000"
+      ],
+      "guardMs": 113,
+      "error": "unknown constructor PerfValue before declaration",
+      "receipt": {
+        "schemaVersion": 1,
+        "kind": "selfhost-fast-ts-oracle",
+        "acceptanceEvidence": false,
+        "nativeCompiler": false,
+        "byteFixedpointClaim": false,
+        "source": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/repository/evals/semantic_scheduler_perf.bend",
+        "repository": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/repository",
+        "checkOnly": true,
+        "exports": null,
+        "runtime": {
+          "versions": {
+            "node": "26.3.0",
+            "bun": "1.4.3",
+            "boringssl": "41bf9b59c2ebf277a7aa427e1ecad5cc80dd4d4f",
+            "openssl": "1.1.0",
+            "llhttp": "9.4.2",
+            "libarchive": "27cbc7827172698143e440801fc0ba39ccb4f1f5",
+            "mimalloc": "92ef6587c57b262f6e6abf513f7776a2f8d12aeb",
+            "picohttpparser": "f4d94b48b31e0abae029ebeafcfd9ca0680ede58",
+            "uwebsockets": "c6da4a4d3010e5553438c60f6bd76d981976867c",
+            "webkit": "0c06faadf65bf8e8c8ad3a5a8aca83e1e9ed653f",
+            "zig": "04e7f6ac1e009525bc00934f20199c68f04e0a24",
+            "zlib": "12731092979c6d07f42da27da673a9f6c7b13586",
+            "tinycc": "05f0fafaa3be31e31d7b4b5c17dc60f62c991171",
+            "lolhtml": "725ce499aa9b71e38b7a2d0a9fbb6d7294a4079e",
+            "ares": "c7a3138dcfe3bb0eaaf10c0c24c36dc66dc790ab",
+            "libdeflate": "92e6a0db9fa848d742f9eb286c92afc60f2c3dda",
+            "usockets": "c6da4a4d3010e5553438c60f6bd76d981976867c",
+            "lshpack": "cf0f70dd10b352194c97448eb5d00b4aa484f531",
+            "zstd": "f8745da6ff1ad1e7bab384bd1f9d742439278e99",
+            "v8": "14.6.202.34-node.20",
+            "uv": "1.48.0",
+            "napi": "10",
+            "icu": "78.1",
+            "unicode": "17.0",
+            "sqlite": "3.51.0",
+            "typescript": "7.0.2",
+            "modules": "147"
+          },
+          "executable": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "execArgv": []
+        },
+        "scope": "Fresh TS canonical source check and JS oracle; never substitutes native parsing/checking/emission or final consumer gates",
+        "status": "FAST_ORACLE_FAIL",
+        "checkedDefinitions": 0,
+        "modules": 0,
+        "timings": {
+          "importMs": 33.908709
+        },
+        "wallMs": 74.097,
+        "loadedInputs": {
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/repository/bend2/bend.ts": "22b5915cd7cccd23b6aa28849b23a7f1e3549333cdd0954ab48103ddd0777e9e",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/repository/bend2/comp.ts": "880a9b3b86f273852a39fc664f8c3d7b71e3860b6d365e4321949fc812b6e7cc",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/repository/evals/semantic_scheduler_perf.bend": "0b0b1b2ab4e6d4733f4e7fca98c8a2d18ecf7418f5cf0163739cca9bfcb778af",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/repository/bend2/base.bend": "21baec76caf1a6cfd4a544340b291f7bb55bf30cc841f9f5f29e3b12a1a4d614"
+        },
+        "error": "Error:\n- message  : a declared constructor (unknown: PerfValue)\nLocation:\n41 |   match payload:\n42>|     case PerfPayload{words, PerfValue{value}}:\n   |                             ^^^^^^^^^^^^^^^^\n43 |       (number, flag) = value"
+      }
+    },
+    {
+      "version": "mini-a2/d1e13a0d",
+      "status": "REJECTED_SOURCE_ADMISSION",
+      "guardMs": 173,
+      "error": "cannot infer unannotated owned Array constructor",
+      "receipt": {
+        "schemaVersion": 1,
+        "kind": "selfhost-fast-ts-oracle",
+        "acceptanceEvidence": false,
+        "nativeCompiler": false,
+        "byteFixedpointClaim": false,
+        "source": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/repository/evals/semantic_scheduler_perf.bend",
+        "repository": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/repository",
+        "checkOnly": true,
+        "exports": null,
+        "runtime": {
+          "versions": {
+            "node": "26.3.0",
+            "bun": "1.4.3",
+            "boringssl": "41bf9b59c2ebf277a7aa427e1ecad5cc80dd4d4f",
+            "openssl": "1.1.0",
+            "llhttp": "9.4.2",
+            "libarchive": "27cbc7827172698143e440801fc0ba39ccb4f1f5",
+            "mimalloc": "92ef6587c57b262f6e6abf513f7776a2f8d12aeb",
+            "picohttpparser": "f4d94b48b31e0abae029ebeafcfd9ca0680ede58",
+            "uwebsockets": "c6da4a4d3010e5553438c60f6bd76d981976867c",
+            "webkit": "0c06faadf65bf8e8c8ad3a5a8aca83e1e9ed653f",
+            "zig": "04e7f6ac1e009525bc00934f20199c68f04e0a24",
+            "zlib": "12731092979c6d07f42da27da673a9f6c7b13586",
+            "tinycc": "05f0fafaa3be31e31d7b4b5c17dc60f62c991171",
+            "lolhtml": "725ce499aa9b71e38b7a2d0a9fbb6d7294a4079e",
+            "ares": "c7a3138dcfe3bb0eaaf10c0c24c36dc66dc790ab",
+            "libdeflate": "92e6a0db9fa848d742f9eb286c92afc60f2c3dda",
+            "usockets": "c6da4a4d3010e5553438c60f6bd76d981976867c",
+            "lshpack": "cf0f70dd10b352194c97448eb5d00b4aa484f531",
+            "zstd": "f8745da6ff1ad1e7bab384bd1f9d742439278e99",
+            "v8": "14.6.202.34-node.20",
+            "uv": "1.48.0",
+            "napi": "10",
+            "icu": "78.1",
+            "unicode": "17.0",
+            "sqlite": "3.51.0",
+            "typescript": "7.0.2",
+            "modules": "147"
+          },
+          "executable": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "execArgv": []
+        },
+        "scope": "Fresh TS canonical source check and JS oracle; never substitutes native parsing/checking/emission or final consumer gates",
+        "status": "FAST_ORACLE_FAIL",
+        "checkedDefinitions": 0,
+        "modules": 2,
+        "timings": {
+          "importMs": 40.543459,
+          "loadMs": 47.53875000000001
+        },
+        "wallMs": 127.728667,
+        "loadedInputs": {
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/repository/bend2/bend.ts": "22b5915cd7cccd23b6aa28849b23a7f1e3549333cdd0954ab48103ddd0777e9e",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/repository/bend2/comp.ts": "880a9b3b86f273852a39fc664f8c3d7b71e3860b6d365e4321949fc812b6e7cc",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/repository/evals/semantic_scheduler_perf.bend": "812e0c5b1715e02489cd882692333b37fe77c24ca5a1152651082faf6d5f92fd",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/repository/bend2/base.bend": "21baec76caf1a6cfd4a544340b291f7bb55bf30cc841f9f5f29e3b12a1a4d614"
+        },
+        "error": "Error:\n- expected : an annotated term (cannot infer)\n- observed : [10, 11]\nLocation: Perf.owned_direct\n184 | def Perf.owned_direct() -> PerfRun<U32>:\n185>|   captured = ANode{ALeaf{10}, ALeaf{11}}\n    |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n186 |   Perf.run(PerfDirect{PerfPayload<PerfValue<Perf.Flagged()>>, Perf.request(),"
+      }
+    },
+    {
+      "name": "baseline",
+      "status": "REJECTED_FAST_BUDGET",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf.ts",
+        "--image=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g46r1-baseline-stage1.json.mjs",
+        "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--source=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/repository/evals/semantic_scheduler_perf.bend",
+        "--out=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/perf-small-baseline-v1",
+        "--samples=1",
+        "--budget-ms=20000"
+      ],
+      "guard": {
+        "status": "FAIL",
+        "reason": "deadline_exceeded",
+        "commandExitCode": -1,
+        "commandSignal": 15,
+        "peakRssBytes": 1277231104,
+        "peakFootprintBytes": 1173920200,
+        "elapsedMs": 20076,
+        "timeoutMs": 20000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 1,
+        "command": [
+          "/bin/sh",
+          "-c",
+          "out=$1; err=$2; shift 2; exec \"$@\" >\"$out\" 2>\"$err\"",
+          "sh",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/perf-small-baseline-v1/sample-0/emit.stdout",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/perf-small-baseline-v1/sample-0/emit.stderr",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--experimental-strip-types",
+          "/Users/ilyagulya/Projects/My/bend/evals/candidate_consumer_worker.mjs",
+          "/Users/ilyagulya/Projects/My/bend/evals/candidate_host.ts",
+          "--candidate=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g46r1-baseline-stage1.json.mjs",
+          "--parser=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g46r1-baseline-stage1.json.mjs",
+          "--stage-profile=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/perf-small-baseline-v1/sample-0/stages",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/repository/evals/semantic_scheduler_perf.bend",
+          "-o",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/perf-small-baseline-v1/sample-0/program.c",
+          "--base",
+          "/Users/ilyagulya/Projects/My/bend/bend2/base.bend",
+          "--runtime-c",
+          "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/c_runtime.c"
+        ],
+        "label": "Representative scheduler 0 emit",
+        "exitCode": 1,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793604591137-1c30ada68a414332.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      },
+      "activePhase": [
+        {
+          "id": 5,
+          "parentId": null,
+          "name": "emit",
+          "details": {
+            "target": "c",
+            "library": false,
+            "exports": null
+          },
+          "startedAt": "2026-11-02T07:30:08.118Z",
+          "startedMonotonicMs": 16946.654125
+        }
+      ]
+    },
+    {
+      "name": "g47",
+      "status": "REJECTED_FAST_BUDGET",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf.ts",
+        "--image=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g47r1-identity-native-v1.json.mjs",
+        "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--source=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/repository/evals/semantic_scheduler_perf.bend",
+        "--out=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/perf-small-g47-v1",
+        "--samples=1",
+        "--budget-ms=20000"
+      ],
+      "guard": {
+        "status": "FAIL",
+        "reason": "deadline_exceeded",
+        "commandExitCode": -1,
+        "commandSignal": 15,
+        "peakRssBytes": 1135247360,
+        "peakFootprintBytes": 1204107008,
+        "elapsedMs": 20077,
+        "timeoutMs": 20000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 1,
+        "command": [
+          "/bin/sh",
+          "-c",
+          "out=$1; err=$2; shift 2; exec \"$@\" >\"$out\" 2>\"$err\"",
+          "sh",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/perf-small-g47-v1/sample-0/emit.stdout",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/perf-small-g47-v1/sample-0/emit.stderr",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--experimental-strip-types",
+          "/Users/ilyagulya/Projects/My/bend/evals/candidate_consumer_worker.mjs",
+          "/Users/ilyagulya/Projects/My/bend/evals/candidate_host.ts",
+          "--candidate=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g47r1-identity-native-v1.json.mjs",
+          "--parser=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g47r1-identity-native-v1.json.mjs",
+          "--stage-profile=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/perf-small-g47-v1/sample-0/stages",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/repository/evals/semantic_scheduler_perf.bend",
+          "-o",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/perf-small-g47-v1/sample-0/program.c",
+          "--base",
+          "/Users/ilyagulya/Projects/My/bend/bend2/base.bend",
+          "--runtime-c",
+          "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/c_runtime.c"
+        ],
+        "label": "Representative scheduler 0 emit",
+        "exitCode": 1,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793604676614-1576e7f894a30d78.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      },
+      "activePhase": [
+        {
+          "id": 5,
+          "parentId": null,
+          "name": "emit",
+          "details": {
+            "target": "c",
+            "library": false,
+            "exports": null
+          },
+          "startedAt": "2026-11-02T07:31:32.216Z",
+          "startedMonotonicMs": 15569.746833
+        }
+      ]
+    },
+    {
+      "name": "window",
+      "status": "REJECTED_FAST_BUDGET",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf.ts",
+        "--mode=window",
+        "--repository=/Users/ilyagulya/Projects/My/bend",
+        "--source=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/repository/evals/semantic_scheduler_perf.bend",
+        "--image=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g45d1-stage1.json.mjs",
+        "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--binding=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g45d3-xwhsn_am/scheduler/image-binding.json",
+        "--manifest=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/emitter-steps-trace-queries-v1.json",
+        "--window-ms=1000",
+        "--samples=1",
+        "--out=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/perf-small-window-v1"
+      ],
+      "guard": {
+        "status": "FAIL",
+        "reason": "deadline_exceeded",
+        "commandExitCode": -1,
+        "commandSignal": 15,
+        "peakRssBytes": 1249558528,
+        "peakFootprintBytes": 1115318536,
+        "elapsedMs": 20106,
+        "timeoutMs": 20000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 1,
+        "command": [
+          "/bin/sh",
+          "-c",
+          "out=$1; err=$2; shift 2; exec \"$@\" >\"$out\" 2>\"$err\"",
+          "sh",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/perf-small-window-v1/sample-0/emit.stdout",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/perf-small-window-v1/sample-0/emit.stderr",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--experimental-strip-types",
+          "/Users/ilyagulya/Projects/My/bend/evals/candidate_consumer_worker.mjs",
+          "/Users/ilyagulya/Projects/My/bend/evals/candidate_host.ts",
+          "--candidate=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g45d1-stage1.json.mjs",
+          "--parser=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g45d1-stage1.json.mjs",
+          "--stage-profile=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/perf-small-window-v1/sample-0/stages",
+          "--stage-manifest=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/emitter-steps-trace-queries-v1.json",
+          "--stage-receipt=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g45d3-xwhsn_am/scheduler/image-binding.json",
+          "--work-census=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/perf-small-window-v1/sample-0/work-census.json",
+          "--work-census-binding=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g45d3-xwhsn_am/scheduler/image-binding.json",
+          "--work-census-ms=1000",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/repository/evals/semantic_scheduler_perf.bend",
+          "-o",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/perf-small-window-v1/sample-0/program.c",
+          "--base",
+          "/Users/ilyagulya/Projects/My/bend/bend2/base.bend",
+          "--runtime-c",
+          "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/c_runtime.c"
+        ],
+        "label": "Representative scheduler 0 emit",
+        "exitCode": 1,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793605227243-fa81765fe27f3e78.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      },
+      "activePhase": [
+        {
+          "id": 4,
+          "parentId": null,
+          "name": "check-signature-body",
+          "details": {
+            "inputModules": 2
+          },
+          "startedAt": "2026-11-02T07:40:32.582Z",
+          "startedMonotonicMs": 5249.827917
+        }
+      ]
+    },
+    {
+      "name": "shape-admission-v1",
+      "status": "unsupported",
+      "unknowns": [
+        {
+          "location": "CheckerValue",
+          "reason": "unsupported AST field v"
+        }
+      ],
+      "witnessSha256": "cf980cf971a8e39ff2daa72226bdabd8ead3398027996b6b1825946fdd7ae669"
+    },
+    {
+      "name": "shape-admission-v2",
+      "status": "unsupported",
+      "unknowns": [
+        {
+          "location": "CheckerProgress",
+          "reason": "variable carries a substitution; raw binder correspondence required"
+        }
+      ],
+      "witnessSha256": "26077800228c119a16890220a560b61b34960243bdc847f3dd92ec61cddb28e6"
+    },
+    {
+      "name": "shape-admission-v3",
+      "status": "unsupported",
+      "unknowns": [
+        {
+          "location": "checker_result",
+          "reason": "expected one request-family parameter"
+        }
+      ],
+      "witnessSha256": "46e1445def5611a73a89f6b09496f510982e39c8dd7e9d6ebaa4d82a116763d1"
+    },
+    {
+      "name": "prelude-slicer-a1/a2",
+      "status": "REJECTED_BEFORE_OUTPUT",
+      "sourceCheckpoints": [
+        "9a7dde9a",
+        "50c6b445"
+      ],
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/repository/evals/semantic_scheduler_perf_base.ts",
+        "--source=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/repository/evals/semantic_scheduler_perf.bend",
+        "--base=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/repository/bend2/base.bend",
+        "--out=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/repository/evals/semantic_scheduler_perf_base.bend",
+        "--receipt=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/perf-base-closure-v1.json"
+      ],
+      "error": "Ambiguous IO.print import: nativeImports are resolved absolute paths; /var and /private/var were not canonicalized. Fixed exact path recovery, not a relaxed match."
+    },
+    {
+      "name": "missing-prelude-prerequisite",
+      "status": "REJECTED_BEFORE_NATIVE_RUN",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf.ts",
+        "--mode=window",
+        "--repository=/Users/ilyagulya/Projects/My/bend",
+        "--source=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/repository/evals/semantic_scheduler_perf.bend",
+        "--image=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g45d1-stage1.json.mjs",
+        "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--binding=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g45d3-xwhsn_am/scheduler/image-binding.json",
+        "--manifest=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/emitter-steps-trace-queries-v1.json",
+        "--window-ms=1000",
+        "--samples=1",
+        "--out=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/perf-small-slice-window-v1",
+        "--base=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/repository/evals/semantic_scheduler_perf_base.bend"
+      ],
+      "error": "ENOENT exact prelude output because slicer had not succeeded; no image/runtime claim"
+    },
+    {
+      "name": "wrong-source-auth-root",
+      "status": "REJECTED_TRACE_AUTHENTICATION",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf.ts",
+        "--mode=window",
+        "--repository=/Users/ilyagulya/Projects/My/bend",
+        "--source=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/repository/evals/semantic_scheduler_perf.bend",
+        "--image=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g45d1-stage1.json.mjs",
+        "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--binding=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g45d3-xwhsn_am/scheduler/image-binding.json",
+        "--manifest=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/emitter-steps-trace-queries-v1.json",
+        "--window-ms=1000",
+        "--samples=1",
+        "--out=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/perf-small-slice-window-v1",
+        "--base=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/repository/evals/semantic_scheduler_perf_base.bend"
+      ],
+      "guard": {
+        "status": "FAIL",
+        "reason": "command_exit",
+        "commandExitCode": 1,
+        "commandSignal": 0,
+        "peakRssBytes": 1258766336,
+        "peakFootprintBytes": 1282813656,
+        "elapsedMs": 7171,
+        "timeoutMs": 20000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 1,
+        "command": [
+          "/bin/sh",
+          "-c",
+          "out=$1; err=$2; shift 2; exec \"$@\" >\"$out\" 2>\"$err\"",
+          "sh",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/perf-small-slice-window-v1/sample-0/emit.stdout",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/perf-small-slice-window-v1/sample-0/emit.stderr",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--experimental-strip-types",
+          "/Users/ilyagulya/Projects/My/bend/evals/candidate_consumer_worker.mjs",
+          "/Users/ilyagulya/Projects/My/bend/evals/candidate_host.ts",
+          "--candidate=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g45d1-stage1.json.mjs",
+          "--parser=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g45d1-stage1.json.mjs",
+          "--stage-profile=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/perf-small-slice-window-v1/sample-0/stages",
+          "--stage-manifest=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/emitter-steps-trace-queries-v1.json",
+          "--stage-receipt=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g45d3-xwhsn_am/scheduler/image-binding.json",
+          "--work-census=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/perf-small-slice-window-v1/sample-0/work-census.json",
+          "--work-census-binding=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g45d3-xwhsn_am/scheduler/image-binding.json",
+          "--work-census-ms=1000",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/repository/evals/semantic_scheduler_perf.bend",
+          "-o",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/perf-small-slice-window-v1/sample-0/program.c",
+          "--base",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/repository/evals/semantic_scheduler_perf_base.bend",
+          "--runtime-c",
+          "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/c_runtime.c"
+        ],
+        "label": "Representative scheduler 0 emit",
+        "exitCode": 1,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793605971796-45c84f6ce5a93236.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      },
+      "error": "8 of 24 canonical trace roots failed authentication; producer cwd had other canonical source bytes. Fixed explicit controller sourceRoot, all hashes unchanged."
+    },
+    {
+      "name": "noncanonical-prelude-filename",
+      "status": "REJECTED_SOURCE_FIXTURE",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf.ts",
+        "--mode=complete",
+        "--source=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/repository/evals/semantic_scheduler_perf.bend",
+        "--base=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/repository/evals/semantic_scheduler_perf_base.bend",
+        "--image=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g47r1-identity-native-v1.json.mjs",
+        "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--samples=1",
+        "--budget-ms=20000",
+        "--out=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/perf-small-slice-g47-complete-v1"
+      ],
+      "guard": {
+        "status": "FAIL",
+        "reason": "command_exit",
+        "commandExitCode": 1,
+        "commandSignal": 0,
+        "peakRssBytes": 1200275456,
+        "peakFootprintBytes": 1148823768,
+        "elapsedMs": 9638,
+        "timeoutMs": 20000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 1,
+        "command": [
+          "/bin/sh",
+          "-c",
+          "out=$1; err=$2; shift 2; exec \"$@\" >\"$out\" 2>\"$err\"",
+          "sh",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/perf-small-slice-g47-complete-v1/sample-0/emit.stdout",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/perf-small-slice-g47-complete-v1/sample-0/emit.stderr",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--experimental-strip-types",
+          "/Users/ilyagulya/Projects/My/bend/evals/candidate_consumer_worker.mjs",
+          "/Users/ilyagulya/Projects/My/bend/evals/candidate_host.ts",
+          "--candidate=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g47r1-identity-native-v1.json.mjs",
+          "--parser=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g47r1-identity-native-v1.json.mjs",
+          "--stage-profile=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/perf-small-slice-g47-complete-v1/sample-0/stages",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/repository/evals/semantic_scheduler_perf.bend",
+          "-o",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/perf-small-slice-g47-complete-v1/sample-0/program.c",
+          "--base",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/repository/evals/semantic_scheduler_perf_base.bend",
+          "--runtime-c",
+          "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/c_runtime.c"
+        ],
+        "label": "Representative scheduler 0 emit",
+        "exitCode": 1,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793606506812-1f2f111d597873f0.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      },
+      "error": "main's type is abstract or open and cannot be printed",
+      "cause": "lower_catalog requires the real /bend2/base.bend suffix for native IO/scalar markers"
+    },
+    {
+      "name": "source-only-closure",
+      "status": "REJECTED_SOURCE_FIXTURE",
+      "receipt": "prelude-a4-rejected.json"
+    },
+    {
+      "name": "generated-C-runtime",
+      "status": "REJECTED_GENERATED_PROGRAM_RUNTIME",
+      "receipt": "complete-g47-runtime-rejected.json"
+    },
+    {
+      "name": "intentional-oracle-stdout-mismatch",
+      "status": "EXPECTED_REJECTION_SMOKE_PASS",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf.ts",
+        "--mode=oracle",
+        "--source=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/perf-negative-stdout.bend",
+        "--out=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/perf-negative-stdout-result",
+        "--budget-ms=10000"
+      ],
+      "sourceMutation": "Only last expected comment changes #|58 to #|59; executable source unchanged. Throwaway input removed after smoke.",
+      "observedLastLine": "58",
+      "expectedLastLine": "59",
+      "completedCompilerRowRetained": true,
+      "executionVerified": false,
+      "guards": {
+        "emit": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "commandExitCode": 0,
+          "commandSignal": 0,
+          "peakRssBytes": 100057088,
+          "peakFootprintBytes": 76022408,
+          "elapsedMs": 175,
+          "timeoutMs": 10000,
+          "reportPhase": "complete",
+          "ownedTreeStopped": true,
+          "supervisorExitCode": 0,
+          "command": [
+            "/bin/sh",
+            "-c",
+            "out=$1; err=$2; shift 2; exec \"$@\" >\"$out\" 2>\"$err\"",
+            "sh",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/perf-negative-stdout-result/sample-0/emit.stdout",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/perf-negative-stdout-result/sample-0/emit.stderr",
+            "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+            "--smol",
+            "/Users/ilyagulya/Projects/My/bend/bend2/main.ts",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/perf-negative-stdout.bend",
+            "-o",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/perf-negative-stdout-result/sample-0/program.c"
+          ],
+          "label": "Representative scheduler 0 emit",
+          "exitCode": 0,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793608948046-a2fd6ca93c4dff66.json",
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592
+        },
+        "clang": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "commandExitCode": 0,
+          "commandSignal": 0,
+          "peakRssBytes": 74874880,
+          "peakFootprintBytes": 34112184,
+          "elapsedMs": 363,
+          "timeoutMs": 10000,
+          "reportPhase": "complete",
+          "ownedTreeStopped": true,
+          "supervisorExitCode": 0,
+          "command": [
+            "/bin/sh",
+            "-c",
+            "out=$1; err=$2; shift 2; exec \"$@\" >\"$out\" 2>\"$err\"",
+            "sh",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/perf-negative-stdout-result/sample-0/clang.stdout",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/perf-negative-stdout-result/sample-0/clang.stderr",
+            "/usr/bin/clang",
+            "-std=c11",
+            "-O0",
+            "-ferror-limit=0",
+            "-pthread",
+            "-lm",
+            "-o",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/perf-negative-stdout-result/sample-0/program",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/perf-negative-stdout-result/sample-0/program.c"
+          ],
+          "label": "Representative scheduler 0 clang",
+          "exitCode": 0,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793608948229-5e27eaf344e7720a.json",
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592
+        },
+        "run": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "commandExitCode": 0,
+          "commandSignal": 0,
+          "peakRssBytes": 147456,
+          "peakFootprintBytes": 327824,
+          "elapsedMs": 14,
+          "timeoutMs": 10000,
+          "reportPhase": "complete",
+          "ownedTreeStopped": true,
+          "supervisorExitCode": 0,
+          "command": [
+            "/bin/sh",
+            "-c",
+            "out=$1; err=$2; shift 2; exec \"$@\" >\"$out\" 2>\"$err\"",
+            "sh",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/perf-negative-stdout-result/sample-0/run.stdout",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/perf-negative-stdout-result/sample-0/run.stderr",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/perf-negative-stdout-result/sample-0/program"
+          ],
+          "label": "Representative scheduler 0 run",
+          "exitCode": 0,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793608948596-51dcd4de719ec13b.json",
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592
+        }
+      }
+    }
+  ]
+}

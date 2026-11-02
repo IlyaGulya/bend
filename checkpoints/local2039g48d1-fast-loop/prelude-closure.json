@@ -1,0 +1,610 @@
+{
+  "schemaVersion": 1,
+  "acceptanceEvidence": false,
+  "kind": "exact-performance-prelude-source-closure",
+  "source": "/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf.bend",
+  "sourceSha256": "da70f714bae3024b7df1323ef53011d156252eb69b297c5644aa2635226870b4",
+  "base": "/Users/ilyagulya/Projects/My/bend/bend2/base.bend",
+  "baseSha256": "21baec76caf1a6cfd4a544340b291f7bb55bf30cc841f9f5f29e3b12a1a4d614",
+  "out": "/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf/bend2/base.bend",
+  "outputSha256": "67ab606499009c2e8ac5020133acfa0616174635b791853e1410403dd998d648",
+  "bytes": 7178,
+  "originalDeclarations": 511,
+  "retainedDeclarations": 62,
+  "retainedNames": 60,
+  "rows": [
+    {
+      "key": "Unit",
+      "kind": "type",
+      "begin": 53,
+      "end": 82,
+      "sourceSha256": "f9a5efe5b25aa7d5bf904dd2cf0e35e7b7767100d4337769a63ada48c8df961d",
+      "emittedSha256": "f9a5efe5b25aa7d5bf904dd2cf0e35e7b7767100d4337769a63ada48c8df961d",
+      "nativeImports": []
+    },
+    {
+      "key": "Bool",
+      "kind": "type",
+      "begin": 82,
+      "end": 121,
+      "sourceSha256": "1ba11c3a27058e63c7564414e2acee71130c710e16a410ef1e936f481cde5757",
+      "emittedSha256": "1ba11c3a27058e63c7564414e2acee71130c710e16a410ef1e936f481cde5757",
+      "nativeImports": []
+    },
+    {
+      "key": "Cmp",
+      "kind": "type",
+      "begin": 121,
+      "end": 161,
+      "sourceSha256": "811daaa0de5d716e8df44d562ae19b8438a7adaa1e41c58dcd60fd8b43d83de2",
+      "emittedSha256": "811daaa0de5d716e8df44d562ae19b8438a7adaa1e41c58dcd60fd8b43d83de2",
+      "nativeImports": []
+    },
+    {
+      "key": "Sigma",
+      "kind": "type",
+      "begin": 256,
+      "end": 357,
+      "sourceSha256": "65c186d7af714f9209176ef8366772ec37a2aedd92f91796a9f8583326be88a0",
+      "emittedSha256": "65c186d7af714f9209176ef8366772ec37a2aedd92f91796a9f8583326be88a0",
+      "nativeImports": []
+    },
+    {
+      "key": "Nat",
+      "kind": "type",
+      "begin": 357,
+      "end": 403,
+      "sourceSha256": "95a8a021b8bce420e375c2f22cb0869a63fa382ef1189f9b3b15a525c5b5b5bd",
+      "emittedSha256": "95a8a021b8bce420e375c2f22cb0869a63fa382ef1189f9b3b15a525c5b5b5bd",
+      "nativeImports": []
+    },
+    {
+      "key": "Maybe",
+      "kind": "type",
+      "begin": 403,
+      "end": 469,
+      "sourceSha256": "7c35b7316a71cef510a8c17a39f243757c59c3370755dee20cc8aee9e0c99af2",
+      "emittedSha256": "7c35b7316a71cef510a8c17a39f243757c59c3370755dee20cc8aee9e0c99af2",
+      "nativeImports": []
+    },
+    {
+      "key": "Result",
+      "kind": "type",
+      "begin": 469,
+      "end": 767,
+      "sourceSha256": "f4b6270f0ea5b46c98c9bba3a38868be1763600f87d05d426d8f06d8cf255a29",
+      "emittedSha256": "f4b6270f0ea5b46c98c9bba3a38868be1763600f87d05d426d8f06d8cf255a29",
+      "nativeImports": []
+    },
+    {
+      "key": "Poll",
+      "kind": "type",
+      "begin": 767,
+      "end": 862,
+      "sourceSha256": "5a334e9bcb0edf3eeb7982c025b3f09f17a180099b27be6fcb2dad098222996b",
+      "emittedSha256": "5a334e9bcb0edf3eeb7982c025b3f09f17a180099b27be6fcb2dad098222996b",
+      "nativeImports": []
+    },
+    {
+      "key": "List",
+      "kind": "type",
+      "begin": 862,
+      "end": 942,
+      "sourceSha256": "f959dc2c1afb4f82c6236d43ca8fa6db752868d95682bfaf44158717773457a8",
+      "emittedSha256": "f959dc2c1afb4f82c6236d43ca8fa6db752868d95682bfaf44158717773457a8",
+      "nativeImports": []
+    },
+    {
+      "key": "Word.Nil",
+      "kind": "type",
+      "begin": 942,
+      "end": 975,
+      "sourceSha256": "9000d2252f37aed83ad153842155b3c58761a58dba7624a6038d180ff6ce795e",
+      "emittedSha256": "9000d2252f37aed83ad153842155b3c58761a58dba7624a6038d180ff6ce795e",
+      "nativeImports": []
+    },
+    {
+      "key": "Word.Con",
+      "kind": "type",
+      "begin": 975,
+      "end": 1042,
+      "sourceSha256": "e43a3a9a168fcce652401673243a9d4b69aa56dfb9d21c38dda92348e24ca57a",
+      "emittedSha256": "e43a3a9a168fcce652401673243a9d4b69aa56dfb9d21c38dda92348e24ca57a",
+      "nativeImports": []
+    },
+    {
+      "key": "Word",
+      "kind": "def",
+      "begin": 1042,
+      "end": 1141,
+      "sourceSha256": "a5900276feeb4e0df0f5bb2fbd0867eecf48a4688417c359c79894e325326551",
+      "emittedSha256": "a5900276feeb4e0df0f5bb2fbd0867eecf48a4688417c359c79894e325326551",
+      "nativeImports": []
+    },
+    {
+      "key": "U32",
+      "kind": "type",
+      "begin": 1141,
+      "end": 1183,
+      "sourceSha256": "ae1c3ea96a4c900c07a98b4e48318714571d718c869ada51bd3699bb27d93fbc",
+      "emittedSha256": "ae1c3ea96a4c900c07a98b4e48318714571d718c869ada51bd3699bb27d93fbc",
+      "nativeImports": []
+    },
+    {
+      "key": "Char",
+      "kind": "type",
+      "begin": 1225,
+      "end": 1262,
+      "sourceSha256": "7d602da49bdf1acb3ecdfef29937ec8e2181b96c474e6db9c324c21578c21922",
+      "emittedSha256": "7d602da49bdf1acb3ecdfef29937ec8e2181b96c474e6db9c324c21578c21922",
+      "nativeImports": []
+    },
+    {
+      "key": "String",
+      "kind": "type",
+      "begin": 1262,
+      "end": 1326,
+      "sourceSha256": "3a8cb1806e3ccef053f9b93406151d4588608a6ac53df57fa0ae6530c1eaa55c",
+      "emittedSha256": "3a8cb1806e3ccef053f9b93406151d4588608a6ac53df57fa0ae6530c1eaa55c",
+      "nativeImports": []
+    },
+    {
+      "key": "Array",
+      "kind": "type",
+      "begin": 1326,
+      "end": 1411,
+      "sourceSha256": "15efb92e5f483c027ddbb52bce1fb9b592035f06a26b7fb9b5e26cbd5efb6595",
+      "emittedSha256": "15efb92e5f483c027ddbb52bce1fb9b592035f06a26b7fb9b5e26cbd5efb6595",
+      "nativeImports": []
+    },
+    {
+      "key": "IO.OP",
+      "kind": "type",
+      "begin": 2451,
+      "end": 2552,
+      "sourceSha256": "5985ac7f6fe4c336706dbebdef47e4e9b61f11e6973e6ce1427fda9a8c522323",
+      "emittedSha256": "5985ac7f6fe4c336706dbebdef47e4e9b61f11e6973e6ce1427fda9a8c522323",
+      "nativeImports": []
+    },
+    {
+      "key": "Pair",
+      "kind": "def",
+      "begin": 2684,
+      "end": 2750,
+      "sourceSha256": "01e7218c138db4240ec683f3cc0f91b27bb19e38a637e167a475d7771d609bd9",
+      "emittedSha256": "01e7218c138db4240ec683f3cc0f91b27bb19e38a637e167a475d7771d609bd9",
+      "nativeImports": []
+    },
+    {
+      "key": "IO",
+      "kind": "def",
+      "begin": 3038,
+      "end": 3116,
+      "sourceSha256": "1b16956f71077a1fe5fa12fd3bba7fae3bf46330e5f6f00a8a90e22b6b3e824e",
+      "emittedSha256": "1b16956f71077a1fe5fa12fd3bba7fae3bf46330e5f6f00a8a90e22b6b3e824e",
+      "nativeImports": []
+    },
+    {
+      "key": "IO.bind",
+      "kind": "def",
+      "begin": 3172,
+      "end": 3274,
+      "sourceSha256": "0cda5684952c5394fbe33424734f9dc960fb1e6c3b0ba06fefcd477fa48b16bd",
+      "emittedSha256": "0cda5684952c5394fbe33424734f9dc960fb1e6c3b0ba06fefcd477fa48b16bd",
+      "nativeImports": []
+    },
+    {
+      "key": "IO.print",
+      "kind": "def",
+      "begin": 3274,
+      "end": 3368,
+      "sourceSha256": "568be042204027435f275a80e302d1b6e97563ce2667ffcd62f552888d307ea6",
+      "emittedSha256": "09590b6d40b293526d53dd752cbd22ce38b620feb78de703d056ca3b252bbbc1",
+      "nativeImports": [
+        "/Users/ilyagulya/Projects/My/bend/bend2/./effs/print.c",
+        "/Users/ilyagulya/Projects/My/bend/bend2/./effs/print.js"
+      ]
+    },
+    {
+      "key": "Bool.not",
+      "kind": "def",
+      "begin": 16633,
+      "end": 16738,
+      "sourceSha256": "aa09dee68f90699a08eec31a5768e532d29f585d84600777d3a49d423e3290aa",
+      "emittedSha256": "aa09dee68f90699a08eec31a5768e532d29f585d84600777d3a49d423e3290aa",
+      "nativeImports": []
+    },
+    {
+      "key": "Bool.and",
+      "kind": "def",
+      "begin": 16738,
+      "end": 16847,
+      "sourceSha256": "77920c249e2e8fe3681a2fee6613d2d179f9f1b46c13322b9d5d4da2da56035e",
+      "emittedSha256": "77920c249e2e8fe3681a2fee6613d2d179f9f1b46c13322b9d5d4da2da56035e",
+      "nativeImports": []
+    },
+    {
+      "key": "Bool.or",
+      "kind": "def",
+      "begin": 16847,
+      "end": 16954,
+      "sourceSha256": "265216777b7006be342c99ee4941c19df8b809d0406eccdba642d10de62ceb6d",
+      "emittedSha256": "265216777b7006be342c99ee4941c19df8b809d0406eccdba642d10de62ceb6d",
+      "nativeImports": []
+    },
+    {
+      "key": "Bool.xor",
+      "kind": "def",
+      "begin": 16954,
+      "end": 17067,
+      "sourceSha256": "8db026108d51747bd91a385d9d683e2245bba81dfaf617c853341866a63a6a39",
+      "emittedSha256": "8db026108d51747bd91a385d9d683e2245bba81dfaf617c853341866a63a6a39",
+      "nativeImports": []
+    },
+    {
+      "key": "Bool.cmp",
+      "kind": "def",
+      "begin": 17067,
+      "end": 17264,
+      "sourceSha256": "e83612c61c7c175bb8d40029c5860a23fd04b20e800334f6e28089c07395aedc",
+      "emittedSha256": "e83612c61c7c175bb8d40029c5860a23fd04b20e800334f6e28089c07395aedc",
+      "nativeImports": []
+    },
+    {
+      "key": "Bool.full_add",
+      "kind": "def",
+      "begin": 17264,
+      "end": 17461,
+      "sourceSha256": "7ee35fc0279f71ced89ed4ba2bf4988532ff0a050ce901202294dc03bb86ec17",
+      "emittedSha256": "7ee35fc0279f71ced89ed4ba2bf4988532ff0a050ce901202294dc03bb86ec17",
+      "nativeImports": []
+    },
+    {
+      "key": "Bool.to_u32",
+      "kind": "def",
+      "begin": 17575,
+      "end": 17684,
+      "sourceSha256": "206dd1ad61a5ee972cc625b55ff7a6bb1978875a9d4ab2cb4c732e98de54503a",
+      "emittedSha256": "206dd1ad61a5ee972cc625b55ff7a6bb1978875a9d4ab2cb4c732e98de54503a",
+      "nativeImports": []
+    },
+    {
+      "key": "Cmp.is_lt",
+      "kind": "def",
+      "begin": 17684,
+      "end": 17781,
+      "sourceSha256": "a02e8069741749bc649c3065b0d3a95e77506453c4438d5d04a97101cce8a3c7",
+      "emittedSha256": "a02e8069741749bc649c3065b0d3a95e77506453c4438d5d04a97101cce8a3c7",
+      "nativeImports": []
+    },
+    {
+      "key": "Cmp.is_eq",
+      "kind": "def",
+      "begin": 17781,
+      "end": 17878,
+      "sourceSha256": "b38b826cd014151dfa4835679340ce39ef2ca402636124569f0ff521597df6ed",
+      "emittedSha256": "b38b826cd014151dfa4835679340ce39ef2ca402636124569f0ff521597df6ed",
+      "nativeImports": []
+    },
+    {
+      "key": "Cmp.is_ge",
+      "kind": "def",
+      "begin": 18072,
+      "end": 18182,
+      "sourceSha256": "382eacb76243d722e0ab61769eba7b7c1a95b9ebb2dc7cdd085a30592e3f3209",
+      "emittedSha256": "382eacb76243d722e0ab61769eba7b7c1a95b9ebb2dc7cdd085a30592e3f3209",
+      "nativeImports": []
+    },
+    {
+      "key": "Word.shl.out.con",
+      "kind": "def",
+      "begin": 31647,
+      "end": 31763,
+      "sourceSha256": "fb5f52449419898742140d3e6c089dc17e4507e244d9d62b373a5c8c22fe161d",
+      "emittedSha256": "fb5f52449419898742140d3e6c089dc17e4507e244d9d62b373a5c8c22fe161d",
+      "nativeImports": []
+    },
+    {
+      "key": "Word.shl.out",
+      "kind": "def",
+      "begin": 31763,
+      "end": 31982,
+      "sourceSha256": "b08c9f280aa751e55f70e47b9f390ccbaf762bd2d41fb65589781aa6e776c772",
+      "emittedSha256": "b08c9f280aa751e55f70e47b9f390ccbaf762bd2d41fb65589781aa6e776c772",
+      "nativeImports": []
+    },
+    {
+      "key": "Word.cmp.fin",
+      "kind": "def",
+      "begin": 32342,
+      "end": 32497,
+      "sourceSha256": "3365a56d3b609f32761f5b828d83dda3e707e90746df5178ee97fbe6b4749873",
+      "emittedSha256": "3365a56d3b609f32761f5b828d83dda3e707e90746df5178ee97fbe6b4749873",
+      "nativeImports": []
+    },
+    {
+      "key": "Word.cmp",
+      "kind": "def",
+      "begin": 32497,
+      "end": 32710,
+      "sourceSha256": "1fa04722c9b058d7519f8f8875a14f0e9fdc73965c0e975910695bb3d087cc8a",
+      "emittedSha256": "1fa04722c9b058d7519f8f8875a14f0e9fdc73965c0e975910695bb3d087cc8a",
+      "nativeImports": []
+    },
+    {
+      "key": "Word.adc",
+      "kind": "law",
+      "begin": 32950,
+      "end": 33050,
+      "sourceSha256": "0128510da105f2f61ba7ead5b4ca72469a6dc7b151866d76b44551415708bcb4",
+      "emittedSha256": "0128510da105f2f61ba7ead5b4ca72469a6dc7b151866d76b44551415708bcb4",
+      "nativeImports": []
+    },
+    {
+      "key": "Word.adc.con",
+      "kind": "def",
+      "begin": 33050,
+      "end": 33196,
+      "sourceSha256": "801973b4dbec355a002ea14dcf321c0f3fc3c0a6e522f381b8b318b20cee7234",
+      "emittedSha256": "801973b4dbec355a002ea14dcf321c0f3fc3c0a6e522f381b8b318b20cee7234",
+      "nativeImports": []
+    },
+    {
+      "key": "Word.adc",
+      "kind": "def",
+      "begin": 33196,
+      "end": 33539,
+      "sourceSha256": "f8f6c9dda9e78bfbda1968416b4a90dee85d405a02ff44ca44dfeef696f895ef",
+      "emittedSha256": "f8f6c9dda9e78bfbda1968416b4a90dee85d405a02ff44ca44dfeef696f895ef",
+      "nativeImports": []
+    },
+    {
+      "key": "Word.add",
+      "kind": "def",
+      "begin": 33539,
+      "end": 33635,
+      "sourceSha256": "191526605049d7b1e2a9dbd526526474ceccdee8bab3fda9b66bf02b2f679f41",
+      "emittedSha256": "191526605049d7b1e2a9dbd526526474ceccdee8bab3fda9b66bf02b2f679f41",
+      "nativeImports": []
+    },
+    {
+      "key": "Word.sub",
+      "kind": "def",
+      "begin": 33635,
+      "end": 33729,
+      "sourceSha256": "5efbc46b651af5b9b9430599cb859c536f212b00e63fb5799a67fa520ddabc64",
+      "emittedSha256": "5efbc46b651af5b9b9430599cb859c536f212b00e63fb5799a67fa520ddabc64",
+      "nativeImports": []
+    },
+    {
+      "key": "U32.add",
+      "kind": "def",
+      "begin": 36331,
+      "end": 36436,
+      "sourceSha256": "17b223db90cb6fcd2a94a0c80224479280ea9cc6fd3871dfcf519f091dcd9cc5",
+      "emittedSha256": "17b223db90cb6fcd2a94a0c80224479280ea9cc6fd3871dfcf519f091dcd9cc5",
+      "nativeImports": []
+    },
+    {
+      "key": "U32.sub",
+      "kind": "def",
+      "begin": 36706,
+      "end": 36811,
+      "sourceSha256": "ab30f3a34f86128feba13d7074c114edd34072bbaed0a885f3ee84a562848e8c",
+      "emittedSha256": "ab30f3a34f86128feba13d7074c114edd34072bbaed0a885f3ee84a562848e8c",
+      "nativeImports": []
+    },
+    {
+      "key": "U32.cmp",
+      "kind": "def",
+      "begin": 37714,
+      "end": 37814,
+      "sourceSha256": "272516aee53b20e656fe6f9f17c82d8c59758bd197fe7ff365a00d4c890d1c70",
+      "emittedSha256": "272516aee53b20e656fe6f9f17c82d8c59758bd197fe7ff365a00d4c890d1c70",
+      "nativeImports": []
+    },
+    {
+      "key": "U32.is_eq",
+      "kind": "def",
+      "begin": 37814,
+      "end": 37881,
+      "sourceSha256": "35de2ddeec7cd90c9d1311ba431183c5b25a4f84c570082949e707dc7a9ab30c",
+      "emittedSha256": "35de2ddeec7cd90c9d1311ba431183c5b25a4f84c570082949e707dc7a9ab30c",
+      "nativeImports": []
+    },
+    {
+      "key": "U32.is_lt",
+      "kind": "def",
+      "begin": 37958,
+      "end": 38025,
+      "sourceSha256": "8b787f195f5a8c91560fc7a791b47278124b687d57abca05f65c6831819cd847",
+      "emittedSha256": "8b787f195f5a8c91560fc7a791b47278124b687d57abca05f65c6831819cd847",
+      "nativeImports": []
+    },
+    {
+      "key": "U32.is_ge",
+      "kind": "def",
+      "begin": 38159,
+      "end": 38226,
+      "sourceSha256": "32f1c3612ccb4bd369d4caad708e6a242e374169f04d8ce59e03407e4c4b9283",
+      "emittedSha256": "32f1c3612ccb4bd369d4caad708e6a242e374169f04d8ce59e03407e4c4b9283",
+      "nativeImports": []
+    },
+    {
+      "key": "U32.is_zero",
+      "kind": "def",
+      "begin": 38226,
+      "end": 38278,
+      "sourceSha256": "26bcf3965a0a607e5cfad99298ec10505884017a093d8cbe95c018444f1cb6f6",
+      "emittedSha256": "26bcf3965a0a607e5cfad99298ec10505884017a093d8cbe95c018444f1cb6f6",
+      "nativeImports": []
+    },
+    {
+      "key": "U32.divmod.go.fin",
+      "kind": "def",
+      "begin": 38796,
+      "end": 39001,
+      "sourceSha256": "20443738de68c6e5650780d66c6580131f284dd36ea622d9f193abcb2e79b84a",
+      "emittedSha256": "20443738de68c6e5650780d66c6580131f284dd36ea622d9f193abcb2e79b84a",
+      "nativeImports": []
+    },
+    {
+      "key": "U32.divmod.go.shl",
+      "kind": "def",
+      "begin": 39001,
+      "end": 39199,
+      "sourceSha256": "39f514da02e0422fc52f1553121b68bc5bf4eb13a94ceecd451e46ab2b69a285",
+      "emittedSha256": "39f514da02e0422fc52f1553121b68bc5bf4eb13a94ceecd451e46ab2b69a285",
+      "nativeImports": []
+    },
+    {
+      "key": "U32.divmod.go.rec",
+      "kind": "def",
+      "begin": 39199,
+      "end": 39376,
+      "sourceSha256": "0e757b5bec855997f5ad03292d7d5916f676cc1e490f5f557c6d578bf1895ed1",
+      "emittedSha256": "0e757b5bec855997f5ad03292d7d5916f676cc1e490f5f557c6d578bf1895ed1",
+      "nativeImports": []
+    },
+    {
+      "key": "U32.divmod.go",
+      "kind": "def",
+      "begin": 39376,
+      "end": 39580,
+      "sourceSha256": "4a0f496a8b3a63881480c7a4e6375670aaa04a11064f5ec6cb75d1deef610ba3",
+      "emittedSha256": "4a0f496a8b3a63881480c7a4e6375670aaa04a11064f5ec6cb75d1deef610ba3",
+      "nativeImports": []
+    },
+    {
+      "key": "U32.div.fin",
+      "kind": "def",
+      "begin": 39580,
+      "end": 39649,
+      "sourceSha256": "111a16daf7f94dd7413403e93df9c67bbd58a9b4d3d82f7194547242dcaef462",
+      "emittedSha256": "111a16daf7f94dd7413403e93df9c67bbd58a9b4d3d82f7194547242dcaef462",
+      "nativeImports": []
+    },
+    {
+      "key": "U32.div.if",
+      "kind": "def",
+      "begin": 39649,
+      "end": 39804,
+      "sourceSha256": "4880b258d02711b65946d585040cef0b553f24254ba9ede95a9fe291081b3787",
+      "emittedSha256": "4880b258d02711b65946d585040cef0b553f24254ba9ede95a9fe291081b3787",
+      "nativeImports": []
+    },
+    {
+      "key": "U32.div",
+      "kind": "def",
+      "begin": 39804,
+      "end": 39918,
+      "sourceSha256": "166879db4e51b0d205d294944d67557d464769d13148257e76ae0d9dccbbca22",
+      "emittedSha256": "166879db4e51b0d205d294944d67557d464769d13148257e76ae0d9dccbbca22",
+      "nativeImports": []
+    },
+    {
+      "key": "U32.mod.fin",
+      "kind": "def",
+      "begin": 39918,
+      "end": 39982,
+      "sourceSha256": "5f245ad2ce4b3b8be2da1edb5e4b4dce19f534a81179a42df62a910990fec7f3",
+      "emittedSha256": "5f245ad2ce4b3b8be2da1edb5e4b4dce19f534a81179a42df62a910990fec7f3",
+      "nativeImports": []
+    },
+    {
+      "key": "U32.mod.if",
+      "kind": "def",
+      "begin": 39982,
+      "end": 40143,
+      "sourceSha256": "b61a443455b7ba4c0e56ed08ab7484cf040f5c45486ab7034b4e152fc46e8271",
+      "emittedSha256": "b61a443455b7ba4c0e56ed08ab7484cf040f5c45486ab7034b4e152fc46e8271",
+      "nativeImports": []
+    },
+    {
+      "key": "U32.mod",
+      "kind": "def",
+      "begin": 40143,
+      "end": 40257,
+      "sourceSha256": "824243fb8b7cf5b02585f1b053fafd621e31ee40f80ad2402685516c6a6db230",
+      "emittedSha256": "824243fb8b7cf5b02585f1b053fafd621e31ee40f80ad2402685516c6a6db230",
+      "nativeImports": []
+    },
+    {
+      "key": "U32.show.go",
+      "kind": "law",
+      "begin": 55423,
+      "end": 55501,
+      "sourceSha256": "88c223c5a11577dc76fae08faa6c7b1283d9870359903d25bbcf2eefccdbb55f",
+      "emittedSha256": "88c223c5a11577dc76fae08faa6c7b1283d9870359903d25bbcf2eefccdbb55f",
+      "nativeImports": []
+    },
+    {
+      "key": "U32.show.fin",
+      "kind": "def",
+      "begin": 55501,
+      "end": 55715,
+      "sourceSha256": "0c9474379a536a03d536f8e791707c0cbf908eb49120c3c133d1ac790ac0028a",
+      "emittedSha256": "0c9474379a536a03d536f8e791707c0cbf908eb49120c3c133d1ac790ac0028a",
+      "nativeImports": []
+    },
+    {
+      "key": "U32.show.go",
+      "kind": "def",
+      "begin": 55715,
+      "end": 55839,
+      "sourceSha256": "558d1bc66c0cfa40b3816f479bf06431b28141dc8c4f5d5c86b171ce801bd570",
+      "emittedSha256": "558d1bc66c0cfa40b3816f479bf06431b28141dc8c4f5d5c86b171ce801bd570",
+      "nativeImports": []
+    },
+    {
+      "key": "U32.show.if",
+      "kind": "def",
+      "begin": 55839,
+      "end": 55992,
+      "sourceSha256": "4627f672f326acf03cb1850a399d9805f1348b04caaacd10b39d9e7240b14f63",
+      "emittedSha256": "4627f672f326acf03cb1850a399d9805f1348b04caaacd10b39d9e7240b14f63",
+      "nativeImports": []
+    },
+    {
+      "key": "U32.show",
+      "kind": "def",
+      "begin": 55992,
+      "end": 56067,
+      "sourceSha256": "c0e74560421820fe3f8d4048eb1a41d5477e87e9c0e2f02f112ef137463b27b0",
+      "emittedSha256": "c0e74560421820fe3f8d4048eb1a41d5477e87e9c0e2f02f112ef137463b27b0",
+      "nativeImports": []
+    }
+  ],
+  "foreign": {
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/print.c": "58657b7351daee89121e1df2856f102743c9db7640257e50c6009a0f1080b00e",
+    "/Users/ilyagulya/Projects/My/bend/bend2/effs/print.js": "814ceba4efbaa291b7b6a9ff29aa20e3a23c06eb4fa165c69ee0bd22878adaa9"
+  },
+  "runtimeABI": {
+    "source": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/c_backend.bend",
+    "sourceSha256": "71ae3cf1a6d44332d218be095a01fb59bb1b3bdbb606b8ca4e16ead6ca6cd576",
+    "declaration": "runtime_cid_aliases",
+    "declarationSha256": "ebe41899df584cdf205bb88e8b472f135bc01829328376bd5f68ad5fa3d3d029",
+    "constructors": [
+      "Nil",
+      "Con",
+      "Tuple",
+      "SNil",
+      "SCon",
+      "WCon",
+      "Emit",
+      "Halt",
+      "Exit",
+      "Fail",
+      "Done",
+      "Ready",
+      "Wait",
+      "None",
+      "Some"
+    ]
+  },
+  "limitations": [
+    "Unused declarations intentionally absent: development fixture only, not original qualification.",
+    "Raw parsed declarations drive reference closure; canonical and native source checks must still accept the result.",
+    "Only FFI path spelling is relocated; implementation bodies are original bytes."
+  ]
+}

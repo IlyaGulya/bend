@@ -1,0 +1,332 @@
+{
+  "status": "INTENTIONAL_DIAGNOSTIC_STOP",
+  "command": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf.ts",
+    "--mode=window",
+    "--repository=/Users/ilyagulya/Projects/My/bend",
+    "--source=/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf.bend",
+    "--base=/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf/bend2/base.bend",
+    "--image=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g45d1-stage1.json.mjs",
+    "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+    "--binding=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g45d3-xwhsn_am/scheduler/image-binding.json",
+    "--manifest=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/emitter-steps-trace-queries-v1.json",
+    "--window-ms=1000",
+    "--samples=1",
+    "--out=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/perf-small-final-window-v1"
+  ],
+  "cwd": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository",
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 20000
+  },
+  "guard": {
+    "status": "PASS",
+    "reason": "command_exit",
+    "commandExitCode": 0,
+    "commandSignal": 0,
+    "peakRssBytes": 1427505152,
+    "peakFootprintBytes": 1232105560,
+    "elapsedMs": 6355,
+    "timeoutMs": 20000,
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 0,
+    "command": [
+      "/bin/sh",
+      "-c",
+      "out=$1; err=$2; shift 2; exec \"$@\" >\"$out\" 2>\"$err\"",
+      "sh",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/perf-small-final-window-v1/sample-0/emit.stdout",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/perf-small-final-window-v1/sample-0/emit.stderr",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "--experimental-strip-types",
+      "/Users/ilyagulya/Projects/My/bend/evals/candidate_consumer_worker.mjs",
+      "/Users/ilyagulya/Projects/My/bend/evals/candidate_host.ts",
+      "--candidate=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g45d1-stage1.json.mjs",
+      "--parser=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g45d1-stage1.json.mjs",
+      "--stage-profile=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/perf-small-final-window-v1/sample-0/stages",
+      "--stage-manifest=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/emitter-steps-trace-queries-v1.json",
+      "--stage-receipt=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g45d3-xwhsn_am/scheduler/image-binding.json",
+      "--work-census=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/perf-small-final-window-v1/sample-0/work-census.json",
+      "--work-census-binding=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g45d3-xwhsn_am/scheduler/image-binding.json",
+      "--work-census-ms=1000",
+      "/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf.bend",
+      "-o",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/perf-small-final-window-v1/sample-0/program.c",
+      "--base",
+      "/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf/bend2/base.bend",
+      "--runtime-c",
+      "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/c_runtime.c"
+    ],
+    "label": "Representative scheduler 0 emit",
+    "exitCode": 0,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793608315271-c2571b3f991fa138.json",
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592
+  },
+  "window": {
+    "startHostStep": 0,
+    "lastObservedHostStep": 40901,
+    "elapsedMs": 1000.0134579999994,
+    "runtimeReportedSteps": 40901,
+    "stopBoundaryAdvanced": false,
+    "scope": "first observed emitter boundary through last observation; not entire compiler lifetime",
+    "limitEnforcement": "host boundaries only; cannot interrupt one native step"
+  },
+  "hostBoundaries": {
+    "observed": 40902,
+    "runStates": 23517,
+    "spanBoundaries": 17385,
+    "progressForms": {
+      "Finished": 11792,
+      "Pending": 2728,
+      "Direct": 8997,
+      "unknown": 0,
+      "depth-limit": 0
+    },
+    "outerProgressForms": {
+      "Finished": 11792,
+      "Pending": 2728,
+      "Direct": 8997,
+      "Bound": 0,
+      "unknown": 0
+    },
+    "evidence": "all observed host boundaries only; not all internal64 transitions"
+  },
+  "observerWallMs": 148.9933070000543,
+  "markedRoots": [
+    {
+      "site": 1,
+      "source": "bend2/selfhost/emitter.bend",
+      "canonicalName": "emit",
+      "begins": 0,
+      "ends": 0,
+      "open": 0
+    },
+    {
+      "site": 2,
+      "source": "bend2/selfhost/emitter.bend",
+      "canonicalName": "emit_library",
+      "begins": 0,
+      "ends": 0,
+      "open": 0
+    },
+    {
+      "site": 3,
+      "source": "bend2/selfhost/emitter.bend",
+      "canonicalName": "emit_c",
+      "begins": 1,
+      "ends": 0,
+      "open": 1
+    },
+    {
+      "site": 4,
+      "source": "bend2/selfhost/emitter.bend",
+      "canonicalName": "emit_c_library",
+      "begins": 0,
+      "ends": 0,
+      "open": 0
+    },
+    {
+      "site": 5,
+      "source": "bend2/selfhost/backend_lower.bend",
+      "canonicalName": "lower",
+      "begins": 1,
+      "ends": 1,
+      "open": 0
+    },
+    {
+      "site": 6,
+      "source": "bend2/selfhost/backend_lower.bend",
+      "canonicalName": "lower_library",
+      "begins": 0,
+      "ends": 0,
+      "open": 0
+    },
+    {
+      "site": 7,
+      "source": "bend2/selfhost/lower_catalog.bend",
+      "canonicalName": "build",
+      "begins": 1,
+      "ends": 1,
+      "open": 0
+    },
+    {
+      "site": 8,
+      "source": "bend2/selfhost/descriptor_nf.bend",
+      "canonicalName": "normalize_in",
+      "begins": 16,
+      "ends": 16,
+      "open": 0
+    },
+    {
+      "site": 9,
+      "source": "bend2/selfhost/descriptor_nf.bend",
+      "canonicalName": "nf",
+      "begins": 6237,
+      "ends": 6237,
+      "open": 0
+    },
+    {
+      "site": 10,
+      "source": "bend2/selfhost/descriptor_nf.bend",
+      "canonicalName": "nf_context",
+      "begins": 3,
+      "ends": 3,
+      "open": 0
+    },
+    {
+      "site": 11,
+      "source": "bend2/selfhost/c_backend_layout.bend",
+      "canonicalName": "context",
+      "begins": 1,
+      "ends": 1,
+      "open": 0
+    },
+    {
+      "site": 23,
+      "source": "bend2/selfhost/c_emit_core.bend",
+      "canonicalName": "emit",
+      "begins": 1,
+      "ends": 0,
+      "open": 1
+    },
+    {
+      "site": 24,
+      "source": "bend2/selfhost/c_emit_core.bend",
+      "canonicalName": "emit_library",
+      "begins": 0,
+      "ends": 0,
+      "open": 0
+    },
+    {
+      "site": 25,
+      "source": "bend2/selfhost/c_emit_core.bend",
+      "canonicalName": "render",
+      "begins": 1,
+      "ends": 0,
+      "open": 1
+    },
+    {
+      "site": 26,
+      "source": "bend2/selfhost/c_backend.bend",
+      "canonicalName": "emit",
+      "begins": 1,
+      "ends": 0,
+      "open": 1
+    },
+    {
+      "site": 27,
+      "source": "bend2/selfhost/c_backend.bend",
+      "canonicalName": "render",
+      "begins": 0,
+      "ends": 0,
+      "open": 0
+    },
+    {
+      "site": 28,
+      "source": "bend2/selfhost/c_backend.bend",
+      "canonicalName": "plan_make",
+      "begins": 1,
+      "ends": 0,
+      "open": 1
+    },
+    {
+      "site": 29,
+      "source": "bend2/selfhost/c_backend_physical.bend",
+      "canonicalName": "show_build",
+      "begins": 0,
+      "ends": 0,
+      "open": 0
+    },
+    {
+      "site": 30,
+      "source": "bend2/selfhost/c_backend_link.bend",
+      "canonicalName": "rewrite",
+      "begins": 0,
+      "ends": 0,
+      "open": 0
+    },
+    {
+      "site": 31,
+      "source": "bend2/selfhost/c_backend.bend",
+      "canonicalName": "cid_rows",
+      "begins": 0,
+      "ends": 0,
+      "open": 0
+    },
+    {
+      "site": 32,
+      "source": "bend2/selfhost/c_backend_layout.bend",
+      "canonicalName": "node_declared",
+      "begins": 43,
+      "ends": 43,
+      "open": 0
+    },
+    {
+      "site": 33,
+      "source": "bend2/selfhost/c_backend_layout.bend",
+      "canonicalName": "family_reach",
+      "begins": 531,
+      "ends": 531,
+      "open": 0
+    },
+    {
+      "site": 34,
+      "source": "bend2/selfhost/c_backend_layout.bend",
+      "canonicalName": "reach_arms",
+      "begins": 1238,
+      "ends": 1238,
+      "open": 0
+    },
+    {
+      "site": 35,
+      "source": "bend2/selfhost/c_backend_layout.bend",
+      "canonicalName": "reaches",
+      "begins": 619,
+      "ends": 619,
+      "open": 0
+    }
+  ],
+  "inventory": {
+    "codeRows": 87,
+    "declarationRows": 71,
+    "constructorRows": 43,
+    "familyRows": 23,
+    "typeFunctionRows": 8,
+    "familyArmRows": 43,
+    "duplicateCodeIds": 0,
+    "duplicateDeclarations": 0,
+    "duplicateConstructorKeys": 0,
+    "duplicateConstructorIds": 0,
+    "duplicateFamilyKeys": 0,
+    "duplicateTypeFunctionKeys": 0,
+    "duplicateArmKeys": 0
+  },
+  "constructorEndpoints": {
+    "first": "Unit",
+    "last": "PerfRunState"
+  },
+  "queries": {
+    "nf": {
+      "total": 6237,
+      "classified": 6237,
+      "exactDistinct": 1100,
+      "exactRepeats": 5137,
+      "unsupported": 0,
+      "censored": 0
+    },
+    "reach": {
+      "total": 619,
+      "classified": 619,
+      "exactDistinct": 350,
+      "exactRepeats": 269,
+      "unsupported": 0,
+      "censored": 0
+    }
+  },
+  "limitations": "Authenticated instrumented prefix including observer time; all 43 constructor brackets closed, SHOW was not entered. Not completion, exclusive CPU, or native compiler qualification."
+}
