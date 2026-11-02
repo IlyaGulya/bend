@@ -10,6 +10,7 @@ import {getHeapStatistics} from 'node:v8';
 import {runHeavyGate} from './heavy_gate.ts';
 import {ABI,workloadRows,corpusFor,runtimeManifest,runNativeStage0,requireNativeRun} from './native_seed_runtime.mjs';
 import {runTemplateSteps,runCheckerSteps,runLibraryEmitterSteps,sourceFiles,sourceFileTagFromRoot} from './checker_core_step_runtime.mjs';
+import {createCpuProfiler} from './selfhost_cpu_profile.mjs';
 
 const script=fileURLToPath(import.meta.url);
 const sha=bytes=>createHash('sha256').update(bytes).digest('hex');
@@ -34,7 +35,11 @@ async function run(mode,requestPath,requestSha256,reportPath){
   if(existsSync(output))throw Error('Output path already exists');
   const report={schemaVersion:1,status:'RUNNING',diagnosticOnly:true,acceptanceEvidence:false,mode,request:requestPath,requestSha256,source:request.root,sourceSha256:hash(request.root),runtime:{execPath:process.execPath,versions:process.versions,execArgv:process.execArgv,heapLimitBytes:getHeapStatistics().heap_size_limit},limits:request.limits,workerPolicy:{stackMiB:256,oldGenerationMiB:6144,youngGenerationMiB:128},exports:ABI,phases:[],checksExcluded:0,outputPatches:0};
   const started=performance.now();save(reportPath,report);
+  const profileDirectory=process.env.SELFHOST_CPU_PROFILE_DIR;
+  const profiler=profileDirectory?createCpuProfiler(profileDirectory,{mode,root:request.root,image:request.image,request:requestPath,requestSha256}):undefined;
+  let profileError;
   const phase=async(name,action)=>{
+    profiler?.mark(name,{root:request.root,mode});
     const before=performance.now(),cpu=process.cpuUsage();report.activePhase=name;save(reportPath,report);
     const result=await action(),used=process.cpuUsage(cpu);
     report.phases.push({phase:name,elapsedMs:performance.now()-before,userCpuMs:used.user/1000,systemCpuMs:used.system/1000,memoryEnd:process.memoryUsage()});delete report.activePhase;save(reportPath,report);return result;
@@ -105,7 +110,8 @@ async function run(mode,requestPath,requestSha256,reportPath){
     if(mode!=='ts'&&request.expectedSelfhostOutput&&report.output.sha256!==request.expectedSelfhostOutput)throw Error('Unchanged G21 output bytes differ');
     verify(request.pins);verify(request.inputs);
     report.status='PASS';
-  }catch(error){report.status='FAIL';report.error=String(error);report.stack=error?.stack;process.exitCode=1;}
+  }catch(error){profileError=error;report.status='FAIL';report.error=String(error);report.stack=error?.stack;process.exitCode=1;}
+  try{profiler?.finish(profileError);}catch(error){report.status='FAIL';report.error=String(error);report.stack=error?.stack;process.exitCode=1;}
   report.totalElapsedMs=performance.now()-started;save(reportPath,report);console.log(JSON.stringify({status:report.status,mode,report:reportPath,pipelineElapsedMs:report.pipelineElapsedMs,phases:report.phases.map(row=>({phase:row.phase,elapsedMs:row.elapsedMs})),output:report.output,error:report.error}));
 }
 if(!isMainThread){await run(workerData.mode,workerData.requestPath,workerData.requestSha256,workerData.reportPath);}
