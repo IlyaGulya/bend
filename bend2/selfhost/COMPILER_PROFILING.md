@@ -54,6 +54,21 @@ The clean driver omits per-step stage attribution, whose CPU probes are
 measurable overhead on this small workload. Phase CPU/heap profiling remains
 available through the opt-in above and is never throughput evidence.
 
+The same canonical development control is **not eligible for the complete
+compiler-root workload** under this worker policy: its recursive `String.to_list`
+overflowed during own parsing, before expansion/checking. This was a control
+failure, not a G53 regression. Do not hide it with a larger stack, host parsing
+or replayed ASTs. Full comparisons use genuine native-produced images from
+the same authenticated C seed; the quick corpus only rejects hypotheses early.
+
+G52 descriptor elision was rejected after three samples per variant: checker
+median 10,432.685 versus control 10,481.490 ms (0.47%, inside variability).
+Its all-body source admission and 27 actual positive/negative checker/emitter
+consumers passed. G53's read-only name/prefix lookup reached 9,793.580 ms
+(6.56% on this quick source), with the same 466,660 public checker chunks;
+27 consumers and the Arena boundary fixture's emitted JS and compiled C passed.
+These are isolated source experiments, not accepted compiler changes.
+
 ## Fast development checks
 
 Do not run parser admission, LLVM and the complete fixture matrices for every
