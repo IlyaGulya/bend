@@ -1576,3 +1576,92 @@ Original scheduler, full native production, stage2/byte-fixedpoint,95+190,
 C62/JS67/native33/admission12/host5 and strict12 remain separate qualification
 gates. This fast-loop change does not claim that any of them passed.
 
+### G49: five isolated source experiments, measured before any promotion
+
+Five thorough-task-executor agents used separate `selfhost/g49-{env,reach,cps,
+parts,runtime}` branches/worktrees from `dfc6f252`. Source work ran in parallel;
+one guarded heavy lane serialized actual generation, full canonical JS image
+admission, fixture emission and runtime work on this Mac. Source checkpoints
+preceded execution. No native compiler image or bulk generated transport was
+added to Git. The shared frozen ABI13 compiler input is
+`checkpoints/local2039g49-compiler-root.bend`.
+
+#### Explicit canonical-image authentication
+
+`semantic_scheduler_perf.ts --oracle-receipt=... --source-tag=SourceFile`
+forwards a distinct `candidate_host.ts --candidate-oracle=...` proof. It
+requires the actual successful fully checked `selfhost-fast-ts-oracle` receipt,
+current image hash and every loaded-source pin. It is mutually exclusive with
+native build proof and refuses native/acceptance/fixedpoint labels or check-only
+receipts. An actual tampered native-labelled receipt was rejected before output.
+The canonical carrier is derived from the authenticated root, not guessed as
+the native `.compiled.SourceFile` carrier. Native authentication is unchanged.
+This admits a development image; it does not relabel TS production as native
+bootstrap or compiler qualification.
+
+All five full images admitted roughly12400 definitions in18 modules. The
+baseline image guard took25592ms; generation/image time is separate from
+the measured source-fixture pipeline. The original fixture, reduced Base,
+ABI13, parser fuel8M/module, quantum64,8GiB RSS/footprint caps and10ms polling
+were unchanged. Emit stages retain their20s limit.
+
+#### Decisions from actual execution
+
+* **Environment spine:** existing38 normalizer assertions and identical18
+  scope/fuel controls passed on candidate and baseline. Three-sample pipeline
+  medians small6756ms versus6747ms, medium11341ms versus11852ms.
+  Not selected: mixed small effects, no general acceleration claim.
+* **Visited-key map:** complete composed layout probe, including42 new reach
+  assertions, ran to failures0. Three-sample medians small6588ms,
+  medium11701ms against the same baseline. Not selected for these small effects.
+* **Typed-sum fusion:** actual candidate and record-only baseline both returned
+  `47/33/8/0/91/7/16`; one new Some/None fusion occurred in that fixture.
+  Production had zero multi-constructor sites, so no production speedup is
+  attributed to the new rule. Final proof infrastructure also regenerated
+  byte-identical production checker/emitter sources.
+* **C fragments:** all16 unchanged consumer assertions passed via the existing
+  owned/CPS backend boundary. All sampled small/medium C retained baseline
+  hashes. An order-balanced baseline/parts/parts/baseline discriminator found:
+
+| Source | Baseline pipeline ms | Fragments pipeline ms | Reduction |
+| --- | ---: | ---: | ---: |
+| small | 6822.5 | 5730 | 16.01% |
+| medium | 11768.5 | 10178 | 13.51% |
+
+Each value is the median of two fresh processes in that order-balanced cohort.
+Pipeline includes frontend/check/emit, not compiler-image building, clang or
+program runtime. The fragment image build itself was28378ms versus25592ms
+baseline; this is **not** a demonstrated whole-rebuild speedup.
+
+#### The runtime failure was generated out-of-bounds code
+
+The new diagnostic retained the original failure: the instrumented control
+printed all21 expected lines, while the candidate repeated `FID_CLO_APPLY` and
+`FID_0` until the unchanged8GiB footprint cap at16998ms. Sixteen print handlers
+had completed; buffered empty stdout did not mean failure at the first U32.
+
+`c_backend_physical.bend` had padded inline forms using canonical boxed-node
+width instead of actual directional nested `Nest.take`/`Nest.make` widths.
+Generated code wrote a four-word request's bias at5 instead of3 and a six-word
+pending node's resume at7 instead of5. The observed invalid continuation loop
+is consistent with those proved out-of-bounds writes; it is not a Mac-specific
+performance explanation.
+
+The isolated correction uses actual nested widths for all three conversion
+directions while preserving boxed allocation/free sizes and real short-arm
+padding. Fresh changed-source C then ran the **entire unchanged21-line fixture**
+successfully: emit7220ms, clang779ms, runtime14ms. The focused
+`tests/reg/nested_form_padding.bend` regression printed40/39/28 through both
+canonical and changed-source C. The source correction remains separately
+checkpointed on `selfhost/g49-runtime`; fragment/correctness combination and
+native/full qualification are not silently claimed.
+
+All experiment source revisions, exact executed commands, input/image/C hashes,
+timings, sampled memory, failed harness attempts and explicit decisions are in
+`checkpoints/local2039g49-batch-measured.json` and the per-branch
+`checkpoints/local2039g49-parent-measured.json` receipts. Raw-module wrappers
+and rejected replacement runners were removed after the correct controls.
+Compiler images, generated step sources, C/binaries and bulk logs remain
+outside Git. G24R12 remains the accepted image; native production, original
+scheduler, byte-fixedpoint and the broader qualification gates were not run.
+

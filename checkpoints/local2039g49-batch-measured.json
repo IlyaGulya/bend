@@ -1,0 +1,1675 @@
+{
+  "schemaVersion": 1,
+  "kind": "g49-isolated-source-experiment-batch",
+  "acceptanceEvidence": false,
+  "acceptedCompiler": "G24R12",
+  "nativeCompilerProduction": false,
+  "byteFixedpointClaim": false,
+  "baselineRevision": "dfc6f252",
+  "controllerRevision": "cd5b65b1",
+  "root": {
+    "path": "checkpoints/local2039g49-compiler-root.bend",
+    "sha256": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed"
+  },
+  "worktrees": {
+    "env": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/repository-env",
+    "reach": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/repository-reach",
+    "cps": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/repository-cps",
+    "parts": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/repository-parts",
+    "runtime": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/repository-runtime"
+  },
+  "sourceCheckpoints": {
+    "env": "bdbbb263eab76a7578e0d6ffcbe17b773dda03ef",
+    "reach": "6466df2d2febfb167e6b77ec1c7bcbe6ec91410a",
+    "parts": "62a567c6d28feca72a0d77fefe175620d10266c4",
+    "cps": "39b5163f616eed5473cecdc9cd3065e5e71eff02",
+    "runtime": "1f8204b0"
+  },
+  "limits": {
+    "rssMiB": 8192,
+    "footprintMiB": 8192,
+    "pollMs": 10,
+    "benchmarkStageMs": 20000,
+    "generationAndImageMs": 120000,
+    "ABI": 13,
+    "parserFuelPerModule": 8000000,
+    "quantum": 64
+  },
+  "baselineMedians": {
+    "small": {
+      "samples": 3,
+      "pipelineMedianMs": 6747,
+      "emitMedianMs": 3996.550666,
+      "CSourceSha256": "f05909d1ee076a786487907ed74f37f056ab7d1abca04340e6e243c1273a376e",
+      "allCIdentical": true
+    },
+    "medium": {
+      "samples": 3,
+      "pipelineMedianMs": 11852,
+      "emitMedianMs": 8931.543708,
+      "CSourceSha256": "6781fb43e02b3876a8e4cf96a7429ffeffb69334e8e5b2f08c9441afc3620769",
+      "allCIdentical": true
+    }
+  },
+  "threeSampleCandidateMedians": {
+    "env": {
+      "small": {
+        "samples": 3,
+        "pipelineMedianMs": 6756,
+        "pipelineRangeMs": [
+          6438,
+          8068
+        ],
+        "emitMedianMs": 4319.258,
+        "allCIdenticalToBaseline": true,
+        "pipelineDeltaPercent": 0.13339261894174115
+      },
+      "medium": {
+        "samples": 3,
+        "pipelineMedianMs": 11341,
+        "pipelineRangeMs": [
+          11270,
+          13997
+        ],
+        "emitMedianMs": 8464.635875,
+        "allCIdenticalToBaseline": true,
+        "pipelineDeltaPercent": -4.311508606142422
+      }
+    },
+    "reach": {
+      "small": {
+        "samples": 3,
+        "pipelineMedianMs": 6588,
+        "pipelineRangeMs": [
+          6459,
+          7739
+        ],
+        "emitMedianMs": 3974.735917,
+        "allCIdenticalToBaseline": true,
+        "pipelineDeltaPercent": -2.3566029346376194
+      },
+      "medium": {
+        "samples": 3,
+        "pipelineMedianMs": 11701,
+        "pipelineRangeMs": [
+          11462,
+          14835
+        ],
+        "emitMedianMs": 8886.911459,
+        "allCIdenticalToBaseline": true,
+        "pipelineDeltaPercent": -1.2740465744178198
+      }
+    },
+    "parts": {
+      "small": {
+        "samples": 3,
+        "pipelineMedianMs": 5695,
+        "pipelineRangeMs": [
+          5329,
+          8438
+        ],
+        "emitMedianMs": 3273.4015830000003,
+        "allCIdenticalToBaseline": true,
+        "pipelineDeltaPercent": -15.592115014080331
+      },
+      "medium": {
+        "samples": 3,
+        "pipelineMedianMs": 9454,
+        "pipelineRangeMs": [
+          9434,
+          11153
+        ],
+        "emitMedianMs": 6659.206458000001,
+        "allCIdenticalToBaseline": true,
+        "pipelineDeltaPercent": -20.232872089098887
+      }
+    }
+  },
+  "semanticControls": {
+    "env-scope": {
+      "status": "PASS",
+      "bits": "111111111111111111",
+      "chunks": 44,
+      "artifact": "fe455ae0fc8387b4ffacb6dd6f6ebb2d4a11a3efa95a639a7d4bc5ba8255227c"
+    },
+    "baseline-nf": {
+      "status": "PASS",
+      "bits": "11111111111111111111111111111111111111",
+      "chunks": 189,
+      "artifact": "d4fe2c8ad18b118b62edd3cb7a37872c223cecac894bdce3089d8de9961c1ebe"
+    },
+    "baseline-scope": {
+      "status": "PASS",
+      "bits": "111111111111111111",
+      "chunks": 45,
+      "artifact": "5744fc6dfba1630f481235bae5258978b7006db61f6eef6a17940461450c1e13"
+    },
+    "env-nf": {
+      "status": "PASS",
+      "bits": "11111111111111111111111111111111111111",
+      "chunks": 211,
+      "artifact": "1088684e32721e62378666d548650ffc2f4e5fb3d9c8d475c83c2cd91b733c4f"
+    },
+    "reach-layout": {
+      "status": "PASS",
+      "failures": 0,
+      "chunks": 59434,
+      "artifact": "0565cdd1acc84e2f40eb7a2db04eda3caec405c22e7f8af45db2a8ebd40bac22"
+    },
+    "cps-sum": {
+      "status": "PASS",
+      "bits": "47/33/8/0/91/7/16",
+      "chunks": 0,
+      "artifact": "fb4a2f3005ef3c83c1ccf8f1aca9df3d093c00407aaacc47c3f36429dc37604b"
+    },
+    "baseline-cps-sum": {
+      "status": "PASS",
+      "bits": "47/33/8/0/91/7/16",
+      "chunks": 0,
+      "artifact": "a63f3d7548bfeec44ef54a963e25254793cda7eb5fd0590557eba7c306e304a2"
+    },
+    "parts-edges": {
+      "status": "PASS",
+      "assertions": 16,
+      "chunks": 388,
+      "artifact": "ed07c76277a9d946cff0c45e93a78b6da1354362c68fe37b80709e3ae195c9b9",
+      "assertionsSource": "99f8feb65a7c9511e815d1d0855ab64ac6feb4ad8d1eb58a6437d1fb0ef14ddc"
+    }
+  },
+  "sumFusionActivation": {
+    "productionDeforestedSites": 435,
+    "productionMultiConstructorSites": 0,
+    "decision": "no production speedup claim; new rule inactive on this compiler book"
+  },
+  "failedBeforeRuntime": {
+    "oracle": {
+      "fullStdoutVerified": true,
+      "observed": "4294967295\n37\n0\n4294967295\n1\n31\n4294967295\n32\n32\n4294967295\n48\n4294967295\n72\n2\n1\n38\n17\n1\n18\n22\n58\n"
+    },
+    "candidate": {
+      "fullStdoutVerified": false,
+      "status": "RESOURCE_LIMIT",
+      "reason": "physical_footprint_limit",
+      "elapsedMs": 16998,
+      "peakRssBytes": 3056844800,
+      "peakFootprintBytes": 8594839912
+    },
+    "causalSourceCorrection": "90672071f8e4114c7c64d153f60b5454b1ed541c",
+    "acceptedVersionUnchanged": "G24R12"
+  },
+  "guardFailuresNotCandidateRegressions": [
+    "Raw-provider direct canonical preflight used the wrong pre-ownership dialect; superseded by composed CPS controls.",
+    "One baseline semantic probe command was refused LOCK_BUSY before doing work while the serialized baseline benchmark held the heavy lock; rerun only after benchmark completion succeeded."
+  ],
+  "bulkArtifactsRoot": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s",
+  "status": "MEASURED_BATCH_COMPLETE_NO_ACCEPTED_IMAGE_PROMOTION",
+  "measuredBranchCheckpoints": {
+    "env": "0cda263b",
+    "reach": "a7ebb80f",
+    "cps": "c9c94950",
+    "runtime": "c8b5c493",
+    "parts": "cbefdb9b"
+  },
+  "baselineControlCheckpoint": "6f46144d",
+  "pairedOrderFragmentComparison": {
+    "small": {
+      "baseline": {
+        "pipelineMs": [
+          6697,
+          6948
+        ],
+        "pipelineMedianMs": 6822.5,
+        "emitMedianMs": 4211.573542
+      },
+      "parts": {
+        "pipelineMs": [
+          5660,
+          5800
+        ],
+        "pipelineMedianMs": 5730.0,
+        "emitMedianMs": 3170.616958
+      }
+    },
+    "medium": {
+      "baseline": {
+        "pipelineMs": [
+          12145,
+          11392
+        ],
+        "pipelineMedianMs": 11768.5,
+        "emitMedianMs": 8970.2852915
+      },
+      "parts": {
+        "pipelineMs": [
+          9787,
+          10569
+        ],
+        "pipelineMedianMs": 10178.0,
+        "emitMedianMs": 7215.548104
+      }
+    }
+  },
+  "CpsFinalProductionRegenerationIdentity": {
+    "checker_core_steps_v1.bend": {
+      "sameAsAdmittedImage": true,
+      "sha256": "556bb77f90902b00106bc4bcbf3f334f92a1776ff4f103e134ca6bef56dbdf32"
+    },
+    "emitter_steps_v1.bend": {
+      "sameAsAdmittedImage": true,
+      "sha256": "17542bfdc4d22b6cc54e8d2e8f67f0ca40dbafdf0ab3d3a619b20b4d88b09cc8"
+    }
+  },
+  "runtimeAfter": {
+    "wholeFixtureStatus": "REPRESENTATIVE_PERF_PASS",
+    "wholeFixtureExpected": "4294967295\n37\n0\n4294967295\n1\n31\n4294967295\n32\n32\n4294967295\n48\n4294967295\n72\n2\n1\n38\n17\n1\n18\n22\n58",
+    "wholeFixture": {
+      "sample": 0,
+      "phases": [
+        {
+          "name": "startup-import",
+          "status": "completed",
+          "wallMs": 118.47287499999999
+        },
+        {
+          "name": "parse-import-fuel",
+          "status": "completed",
+          "wallMs": 1161.566792
+        },
+        {
+          "name": "template-expand",
+          "status": "completed",
+          "wallMs": 78.836458
+        },
+        {
+          "name": "check-signature-body",
+          "status": "completed",
+          "wallMs": 961.4125000000001
+        },
+        {
+          "name": "emit",
+          "status": "completed",
+          "wallMs": 4529.304334
+        },
+        {
+          "name": "output-write",
+          "status": "completed",
+          "wallMs": 2.2613750000000437
+        }
+      ],
+      "compilationCompleted": true,
+      "executionVerified": true,
+      "CSourceSha256": "4cbc66250e71782938248b535e7885adbc49f992e92546a0ccadc1a311134f40",
+      "CBytes": 390430,
+      "emit": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "elapsedMs": 7220,
+        "peakRssBytes": 1378713600,
+        "peakFootprintBytes": 1742218528,
+        "timeoutMs": 20000,
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592,
+        "ownedTreeStopped": true,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793613267669-3eb264446a268ad7.json"
+      },
+      "clang": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "elapsedMs": 779,
+        "peakRssBytes": 88522752,
+        "peakFootprintBytes": 45580936,
+        "timeoutMs": 20000,
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592,
+        "ownedTreeStopped": true,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793613274904-f1658c06e451500c.json"
+      },
+      "run": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "elapsedMs": 14,
+        "peakRssBytes": 131072,
+        "peakFootprintBytes": 327824,
+        "timeoutMs": 20000,
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592,
+        "ownedTreeStopped": true,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793613275688-994c89463bb6c0c3.json"
+      }
+    },
+    "regressionExpected": "40\n39\n28",
+    "regressionCanonical": {
+      "sample": 0,
+      "phases": [
+        {
+          "name": "canonical_parse_check_emit",
+          "status": "completed",
+          "wallMs": 147
+        }
+      ],
+      "compilationCompleted": true,
+      "executionVerified": true,
+      "CSourceSha256": "cc769106076cd9a0da18cc40574151de8d32c55332b98a8d5f77aa8757165068",
+      "CBytes": 103737,
+      "emit": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "elapsedMs": 147,
+        "peakRssBytes": 96026624,
+        "peakFootprintBytes": 77152976,
+        "timeoutMs": 20000,
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592,
+        "ownedTreeStopped": true,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793613332383-5a723053c979747e.json"
+      },
+      "clang": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "elapsedMs": 172,
+        "peakRssBytes": 61587456,
+        "peakFootprintBytes": 30474648,
+        "timeoutMs": 20000,
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592,
+        "ownedTreeStopped": true,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793613332537-9df5197698caa730.json"
+      },
+      "run": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "elapsedMs": 14,
+        "peakRssBytes": 131072,
+        "peakFootprintBytes": 327824,
+        "timeoutMs": 20000,
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592,
+        "ownedTreeStopped": true,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793613332713-53d61b1d7d236f8d.json"
+      }
+    },
+    "regressionSourceCompiler": {
+      "sample": 0,
+      "phases": [
+        {
+          "name": "startup-import",
+          "status": "completed",
+          "wallMs": 135.536292
+        },
+        {
+          "name": "parse-import-fuel",
+          "status": "completed",
+          "wallMs": 1153.102708
+        },
+        {
+          "name": "template-expand",
+          "status": "completed",
+          "wallMs": 29.110541000000012
+        },
+        {
+          "name": "check-signature-body",
+          "status": "completed",
+          "wallMs": 730.1929579999999
+        },
+        {
+          "name": "emit",
+          "status": "completed",
+          "wallMs": 2201.444667
+        },
+        {
+          "name": "output-write",
+          "status": "completed",
+          "wallMs": 1.3184170000004087
+        }
+      ],
+      "compilationCompleted": true,
+      "executionVerified": true,
+      "CSourceSha256": "67640ae983e5cf791ef0d38e68841c60801a09f14c737b3cde0e4347e975e209",
+      "CBytes": 212493,
+      "emit": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "elapsedMs": 4677,
+        "peakRssBytes": 930234368,
+        "peakFootprintBytes": 1350673872,
+        "timeoutMs": 20000,
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592,
+        "ownedTreeStopped": true,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793613333144-22831b8b18e65049.json"
+      },
+      "clang": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "elapsedMs": 219,
+        "peakRssBytes": 69713920,
+        "peakFootprintBytes": 32604856,
+        "timeoutMs": 20000,
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592,
+        "ownedTreeStopped": true,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793613337838-378a74e62888992b.json"
+      },
+      "run": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "elapsedMs": 13,
+        "peakRssBytes": 131072,
+        "peakFootprintBytes": 327824,
+        "timeoutMs": 20000,
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592,
+        "ownedTreeStopped": true,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793613338060-23f77e1e8525349c.json"
+      }
+    }
+  },
+  "runtimeCause": "Inline padding incorrectly used canonical boxed-node widths; actual Nest.take/Nest.make directional widths remove the proved request/pending out-of-bounds writes.",
+  "sourceImageReceipts": {
+    "baseline": {
+      "kind": "selfhost-fast-ts-oracle",
+      "status": "FAST_ORACLE_PASS",
+      "acceptanceEvidence": false,
+      "nativeCompiler": false,
+      "byteFixedpointClaim": false,
+      "repository": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/repository-baseline",
+      "source": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/repository-baseline/checkpoints/local2039g49-compiler-root.bend",
+      "checkedDefinitions": 12426,
+      "modules": 18,
+      "timings": {
+        "importMs": 83.80670900000001,
+        "loadMs": 3891.931834,
+        "checkMs": 3050.3059169999997,
+        "emitJsMs": 17499.772292
+      },
+      "wallMs": 24582.806042,
+      "outputBytes": 14746661,
+      "outputSha256": "2eb3c103054e2c05ac2c7cf74a89a439ccc162d12560b6d5966a0ca7a2f4c361"
+    },
+    "env": {
+      "kind": "selfhost-fast-ts-oracle",
+      "status": "FAST_ORACLE_PASS",
+      "acceptanceEvidence": false,
+      "nativeCompiler": false,
+      "byteFixedpointClaim": false,
+      "repository": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/repository-env",
+      "source": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/repository-env/checkpoints/local2039g49-compiler-root.bend",
+      "checkedDefinitions": 12428,
+      "modules": 18,
+      "timings": {
+        "importMs": 76.89245799999998,
+        "loadMs": 4007.3216250000005,
+        "checkMs": 3502.184209,
+        "emitJsMs": 19247.649625
+      },
+      "wallMs": 26895.928292,
+      "outputBytes": 14754087,
+      "outputSha256": "0331b04437bbb283c9a22e936bed39a6a09c31e29e3334ce68f42ad142d3beda"
+    },
+    "reach": {
+      "kind": "selfhost-fast-ts-oracle",
+      "status": "FAST_ORACLE_PASS",
+      "acceptanceEvidence": false,
+      "nativeCompiler": false,
+      "byteFixedpointClaim": false,
+      "repository": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/repository-reach",
+      "source": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/repository-reach/checkpoints/local2039g49-compiler-root.bend",
+      "checkedDefinitions": 12424,
+      "modules": 18,
+      "timings": {
+        "importMs": 73.21154200000001,
+        "loadMs": 3605.4254170000004,
+        "checkMs": 3302.603917,
+        "emitJsMs": 16897.891459000002
+      },
+      "wallMs": 23935.1535,
+      "outputBytes": 14744635,
+      "outputSha256": "66603ab00aa377100df37015789d9cb72946b238bd29b3a4f733a2d8475037a8"
+    },
+    "parts": {
+      "kind": "selfhost-fast-ts-oracle",
+      "status": "FAST_ORACLE_PASS",
+      "acceptanceEvidence": false,
+      "nativeCompiler": false,
+      "byteFixedpointClaim": false,
+      "repository": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/repository-parts",
+      "source": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/repository-parts/checkpoints/local2039g49-compiler-root.bend",
+      "checkedDefinitions": 12469,
+      "modules": 18,
+      "timings": {
+        "importMs": 79.57495799999998,
+        "loadMs": 4395.135333,
+        "checkMs": 3232.1670830000003,
+        "emitJsMs": 19447.489625
+      },
+      "wallMs": 27225.256583,
+      "outputBytes": 14802350,
+      "outputSha256": "a45b1ba21d48f8240d415d170e9137081e52085b602e4d6d22001a8ee30d272c"
+    },
+    "cps": {
+      "kind": "selfhost-fast-ts-oracle",
+      "status": "FAST_ORACLE_PASS",
+      "acceptanceEvidence": false,
+      "nativeCompiler": false,
+      "byteFixedpointClaim": false,
+      "repository": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/repository-cps",
+      "source": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/repository-cps/checkpoints/local2039g49-compiler-root.bend",
+      "checkedDefinitions": 12426,
+      "modules": 18,
+      "timings": {
+        "importMs": 119.24329099999997,
+        "loadMs": 3621.912042,
+        "checkMs": 3113.750458,
+        "emitJsMs": 16292.060958000002
+      },
+      "wallMs": 23199.601916,
+      "outputBytes": 14749995,
+      "outputSha256": "4ee835390cb372060e5b69019362cac537d91e0e02799739df7ff79c36f9251b"
+    },
+    "runtime": {
+      "kind": "selfhost-fast-ts-oracle",
+      "status": "FAST_ORACLE_PASS",
+      "acceptanceEvidence": false,
+      "nativeCompiler": false,
+      "byteFixedpointClaim": false,
+      "repository": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/repository-runtime",
+      "source": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/repository-runtime/checkpoints/local2039g49-compiler-root.bend",
+      "checkedDefinitions": 12430,
+      "modules": 18,
+      "timings": {
+        "importMs": 69.171875,
+        "loadMs": 3687.90375,
+        "checkMs": 3172.740084,
+        "emitJsMs": 16520.93175
+      },
+      "wallMs": 23517.187833999997,
+      "outputBytes": 14755847,
+      "outputSha256": "2823e9da9dc857b25ead58a7cb93de8c7578471bc2ebfa097938edc9d228aefa"
+    }
+  },
+  "imageGuardObservations": {
+    "baseline": {
+      "elapsedMs": 25592,
+      "peakRssBytes": 3103801344,
+      "peakFootprintBytes": 3257948872
+    },
+    "env": {
+      "elapsedMs": 27394,
+      "peakRssBytes": 3161079808,
+      "peakFootprintBytes": 3292478664
+    },
+    "reach": {
+      "elapsedMs": 25058,
+      "peakRssBytes": 3125805056,
+      "peakFootprintBytes": 3259472848
+    },
+    "parts": {
+      "elapsedMs": 28378,
+      "peakRssBytes": 3121954816,
+      "peakFootprintBytes": 3262192328
+    },
+    "cps": {
+      "elapsedMs": 24138,
+      "peakRssBytes": 3109552128,
+      "peakFootprintBytes": 3254966480
+    },
+    "runtime": {
+      "elapsedMs": 24003,
+      "peakRssBytes": 2994356224,
+      "peakFootprintBytes": 3255610032
+    }
+  },
+  "toolchain": {
+    "bun": {
+      "path": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "version": "1.4.3 c6da4a4d3"
+    },
+    "node": {
+      "path": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "version": "v23.11.0"
+    },
+    "clang": {
+      "path": "/usr/bin/clang",
+      "version": "Apple clang21.0.0 clang-2100.4.1.1"
+    },
+    "host": "darwin25.6 arm64",
+    "sourceImageBuilder": "fresh canonical TS all-body checking + JS emission; not native compiler production",
+    "semanticProbeExecution": "Bun invoking fully admitted canonical JS images; benchmark source compiler execution uses pinned Node"
+  },
+  "commands": {
+    "sourceGeneration": {
+      "env": [
+        [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "evals/checker_core_owned_source.ts"
+        ],
+        [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "evals/emitter_step_lower.ts"
+        ]
+      ],
+      "reach": [
+        [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "evals/checker_core_owned_source.ts"
+        ],
+        [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "evals/emitter_step_lower.ts"
+        ]
+      ],
+      "parts": [
+        [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "evals/checker_core_owned_source.ts"
+        ],
+        [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "evals/emitter_step_lower.ts"
+        ]
+      ],
+      "cps": [
+        [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "evals/checker_core_owned_source.ts"
+        ],
+        [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "evals/checker_core_step_lower.ts"
+        ],
+        [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "evals/emitter_step_lower.ts"
+        ]
+      ],
+      "runtime": [
+        [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "evals/checker_core_owned_source.ts"
+        ],
+        [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "evals/emitter_step_lower.ts"
+        ]
+      ]
+    },
+    "sourceImages": {
+      "baseline": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/selfhost_fast.ts",
+        "--repository=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/repository-baseline",
+        "--source=checkpoints/local2039g49-compiler-root.bend",
+        "--exports=parsed_module,parse_with_fuel,expand_modules_start,template_step,check_expanded_start,inspect_checked_start,checker_step,emit_modules_start,emit_library_start,emitter_step,emit_c_modules_start,emit_c_library_start,c_emitter_step",
+        "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--out=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/baseline-fast-image",
+        "--memory-mib=8192",
+        "--rss-mib=8192",
+        "--poll-ms=10",
+        "--timeout-ms=120000"
+      ],
+      "env": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/selfhost_fast.ts",
+        "--repository=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/repository-env",
+        "--source=checkpoints/local2039g49-compiler-root.bend",
+        "--exports=parsed_module,parse_with_fuel,expand_modules_start,template_step,check_expanded_start,inspect_checked_start,checker_step,emit_modules_start,emit_library_start,emitter_step,emit_c_modules_start,emit_c_library_start,c_emitter_step",
+        "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--out=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/env-fast-image",
+        "--memory-mib=8192",
+        "--rss-mib=8192",
+        "--poll-ms=10",
+        "--timeout-ms=120000"
+      ],
+      "reach": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/selfhost_fast.ts",
+        "--repository=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/repository-reach",
+        "--source=checkpoints/local2039g49-compiler-root.bend",
+        "--exports=parsed_module,parse_with_fuel,expand_modules_start,template_step,check_expanded_start,inspect_checked_start,checker_step,emit_modules_start,emit_library_start,emitter_step,emit_c_modules_start,emit_c_library_start,c_emitter_step",
+        "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--out=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/reach-fast-image",
+        "--memory-mib=8192",
+        "--rss-mib=8192",
+        "--poll-ms=10",
+        "--timeout-ms=120000"
+      ],
+      "parts": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/selfhost_fast.ts",
+        "--repository=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/repository-parts",
+        "--source=checkpoints/local2039g49-compiler-root.bend",
+        "--exports=parsed_module,parse_with_fuel,expand_modules_start,template_step,check_expanded_start,inspect_checked_start,checker_step,emit_modules_start,emit_library_start,emitter_step,emit_c_modules_start,emit_c_library_start,c_emitter_step",
+        "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--out=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/parts-fast-image",
+        "--memory-mib=8192",
+        "--rss-mib=8192",
+        "--poll-ms=10",
+        "--timeout-ms=120000"
+      ],
+      "cps": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/selfhost_fast.ts",
+        "--repository=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/repository-cps",
+        "--source=checkpoints/local2039g49-compiler-root.bend",
+        "--exports=parsed_module,parse_with_fuel,expand_modules_start,template_step,check_expanded_start,inspect_checked_start,checker_step,emit_modules_start,emit_library_start,emitter_step,emit_c_modules_start,emit_c_library_start,c_emitter_step",
+        "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--out=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/cps-fast-image",
+        "--memory-mib=8192",
+        "--rss-mib=8192",
+        "--poll-ms=10",
+        "--timeout-ms=120000"
+      ],
+      "runtime": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/selfhost_fast.ts",
+        "--repository=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/repository-runtime",
+        "--source=checkpoints/local2039g49-compiler-root.bend",
+        "--exports=parsed_module,parse_with_fuel,expand_modules_start,template_step,check_expanded_start,inspect_checked_start,checker_step,emit_modules_start,emit_library_start,emitter_step,emit_c_modules_start,emit_c_library_start,c_emitter_step",
+        "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--out=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/runtime-fast-image",
+        "--memory-mib=8192",
+        "--rss-mib=8192",
+        "--poll-ms=10",
+        "--timeout-ms=120000"
+      ]
+    },
+    "baselineRepeated": {
+      "small": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf.ts",
+        "--mode=emit",
+        "--repository=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/repository-baseline",
+        "--host=/Users/ilyagulya/Projects/My/bend/evals/candidate_host.ts",
+        "--source=/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf.bend",
+        "--base=/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf/bend2/base.bend",
+        "--image=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/baseline-fast-image/oracle.mjs",
+        "--oracle-receipt=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/baseline-fast-image/receipt.json",
+        "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--source-tag=SourceFile",
+        "--samples=3",
+        "--out=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/baseline-small-repeat"
+      ],
+      "medium": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf.ts",
+        "--mode=emit",
+        "--repository=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/repository-baseline",
+        "--host=/Users/ilyagulya/Projects/My/bend/evals/candidate_host.ts",
+        "--source=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g48d1-fast-loop/perf-medium.bend",
+        "--base=/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf/bend2/base.bend",
+        "--image=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/baseline-fast-image/oracle.mjs",
+        "--oracle-receipt=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/baseline-fast-image/receipt.json",
+        "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--source-tag=SourceFile",
+        "--samples=3",
+        "--out=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/baseline-medium-repeat"
+      ]
+    },
+    "candidateFirst": {
+      "env": {
+        "small": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf.ts",
+          "--mode=emit",
+          "--repository=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/repository-env",
+          "--host=/Users/ilyagulya/Projects/My/bend/evals/candidate_host.ts",
+          "--source=/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf.bend",
+          "--base=/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf/bend2/base.bend",
+          "--image=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/env-fast-image/oracle.mjs",
+          "--oracle-receipt=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/env-fast-image/receipt.json",
+          "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--source-tag=SourceFile",
+          "--samples=1",
+          "--out=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/env-small-v1"
+        ],
+        "medium": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf.ts",
+          "--mode=emit",
+          "--repository=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/repository-env",
+          "--host=/Users/ilyagulya/Projects/My/bend/evals/candidate_host.ts",
+          "--source=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g48d1-fast-loop/perf-medium.bend",
+          "--base=/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf/bend2/base.bend",
+          "--image=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/env-fast-image/oracle.mjs",
+          "--oracle-receipt=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/env-fast-image/receipt.json",
+          "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--source-tag=SourceFile",
+          "--samples=1",
+          "--out=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/env-medium-v1"
+        ]
+      },
+      "reach": {
+        "small": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf.ts",
+          "--mode=emit",
+          "--repository=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/repository-reach",
+          "--host=/Users/ilyagulya/Projects/My/bend/evals/candidate_host.ts",
+          "--source=/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf.bend",
+          "--base=/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf/bend2/base.bend",
+          "--image=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/reach-fast-image/oracle.mjs",
+          "--oracle-receipt=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/reach-fast-image/receipt.json",
+          "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--source-tag=SourceFile",
+          "--samples=1",
+          "--out=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/reach-small-v1"
+        ],
+        "medium": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf.ts",
+          "--mode=emit",
+          "--repository=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/repository-reach",
+          "--host=/Users/ilyagulya/Projects/My/bend/evals/candidate_host.ts",
+          "--source=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g48d1-fast-loop/perf-medium.bend",
+          "--base=/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf/bend2/base.bend",
+          "--image=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/reach-fast-image/oracle.mjs",
+          "--oracle-receipt=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/reach-fast-image/receipt.json",
+          "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--source-tag=SourceFile",
+          "--samples=1",
+          "--out=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/reach-medium-v1"
+        ]
+      },
+      "parts": {
+        "small": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf.ts",
+          "--mode=emit",
+          "--repository=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/repository-parts",
+          "--host=/Users/ilyagulya/Projects/My/bend/evals/candidate_host.ts",
+          "--source=/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf.bend",
+          "--base=/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf/bend2/base.bend",
+          "--image=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/parts-fast-image/oracle.mjs",
+          "--oracle-receipt=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/parts-fast-image/receipt.json",
+          "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--source-tag=SourceFile",
+          "--samples=1",
+          "--out=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/parts-small-v1"
+        ],
+        "medium": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf.ts",
+          "--mode=emit",
+          "--repository=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/repository-parts",
+          "--host=/Users/ilyagulya/Projects/My/bend/evals/candidate_host.ts",
+          "--source=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g48d1-fast-loop/perf-medium.bend",
+          "--base=/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf/bend2/base.bend",
+          "--image=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/parts-fast-image/oracle.mjs",
+          "--oracle-receipt=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/parts-fast-image/receipt.json",
+          "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--source-tag=SourceFile",
+          "--samples=1",
+          "--out=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/parts-medium-v1"
+        ]
+      },
+      "cps": {
+        "small": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf.ts",
+          "--mode=emit",
+          "--repository=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/repository-cps",
+          "--host=/Users/ilyagulya/Projects/My/bend/evals/candidate_host.ts",
+          "--source=/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf.bend",
+          "--base=/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf/bend2/base.bend",
+          "--image=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/cps-fast-image/oracle.mjs",
+          "--oracle-receipt=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/cps-fast-image/receipt.json",
+          "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--source-tag=SourceFile",
+          "--samples=1",
+          "--out=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/cps-small-v1"
+        ],
+        "medium": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf.ts",
+          "--mode=emit",
+          "--repository=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/repository-cps",
+          "--host=/Users/ilyagulya/Projects/My/bend/evals/candidate_host.ts",
+          "--source=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g48d1-fast-loop/perf-medium.bend",
+          "--base=/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf/bend2/base.bend",
+          "--image=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/cps-fast-image/oracle.mjs",
+          "--oracle-receipt=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/cps-fast-image/receipt.json",
+          "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--source-tag=SourceFile",
+          "--samples=1",
+          "--out=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/cps-medium-v1"
+        ]
+      }
+    },
+    "candidateRepeated": {
+      "env": {
+        "small": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf.ts",
+          "--mode=emit",
+          "--repository=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/repository-env",
+          "--host=/Users/ilyagulya/Projects/My/bend/evals/candidate_host.ts",
+          "--source=/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf.bend",
+          "--base=/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf/bend2/base.bend",
+          "--image=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/env-fast-image/oracle.mjs",
+          "--oracle-receipt=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/env-fast-image/receipt.json",
+          "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--source-tag=SourceFile",
+          "--samples=2",
+          "--out=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/env-small-repeat"
+        ],
+        "medium": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf.ts",
+          "--mode=emit",
+          "--repository=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/repository-env",
+          "--host=/Users/ilyagulya/Projects/My/bend/evals/candidate_host.ts",
+          "--source=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g48d1-fast-loop/perf-medium.bend",
+          "--base=/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf/bend2/base.bend",
+          "--image=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/env-fast-image/oracle.mjs",
+          "--oracle-receipt=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/env-fast-image/receipt.json",
+          "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--source-tag=SourceFile",
+          "--samples=2",
+          "--out=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/env-medium-repeat"
+        ]
+      },
+      "reach": {
+        "small": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf.ts",
+          "--mode=emit",
+          "--repository=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/repository-reach",
+          "--host=/Users/ilyagulya/Projects/My/bend/evals/candidate_host.ts",
+          "--source=/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf.bend",
+          "--base=/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf/bend2/base.bend",
+          "--image=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/reach-fast-image/oracle.mjs",
+          "--oracle-receipt=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/reach-fast-image/receipt.json",
+          "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--source-tag=SourceFile",
+          "--samples=2",
+          "--out=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/reach-small-repeat"
+        ],
+        "medium": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf.ts",
+          "--mode=emit",
+          "--repository=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/repository-reach",
+          "--host=/Users/ilyagulya/Projects/My/bend/evals/candidate_host.ts",
+          "--source=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g48d1-fast-loop/perf-medium.bend",
+          "--base=/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf/bend2/base.bend",
+          "--image=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/reach-fast-image/oracle.mjs",
+          "--oracle-receipt=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/reach-fast-image/receipt.json",
+          "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--source-tag=SourceFile",
+          "--samples=2",
+          "--out=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/reach-medium-repeat"
+        ]
+      },
+      "parts": {
+        "small": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf.ts",
+          "--mode=emit",
+          "--repository=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/repository-parts",
+          "--host=/Users/ilyagulya/Projects/My/bend/evals/candidate_host.ts",
+          "--source=/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf.bend",
+          "--base=/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf/bend2/base.bend",
+          "--image=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/parts-fast-image/oracle.mjs",
+          "--oracle-receipt=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/parts-fast-image/receipt.json",
+          "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--source-tag=SourceFile",
+          "--samples=2",
+          "--out=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/parts-small-repeat"
+        ],
+        "medium": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf.ts",
+          "--mode=emit",
+          "--repository=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/repository-parts",
+          "--host=/Users/ilyagulya/Projects/My/bend/evals/candidate_host.ts",
+          "--source=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g48d1-fast-loop/perf-medium.bend",
+          "--base=/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf/bend2/base.bend",
+          "--image=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/parts-fast-image/oracle.mjs",
+          "--oracle-receipt=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/parts-fast-image/receipt.json",
+          "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--source-tag=SourceFile",
+          "--samples=2",
+          "--out=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/parts-medium-repeat"
+        ]
+      }
+    },
+    "orderBalanced": [
+      [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf.ts",
+        "--mode=emit",
+        "--repository=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/repository-baseline",
+        "--host=/Users/ilyagulya/Projects/My/bend/evals/candidate_host.ts",
+        "--source=/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf.bend",
+        "--base=/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf/bend2/base.bend",
+        "--image=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/baseline-fast-image/oracle.mjs",
+        "--oracle-receipt=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/baseline-fast-image/receipt.json",
+        "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--source-tag=SourceFile",
+        "--samples=1",
+        "--out=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/abba-0-baseline-small"
+      ],
+      [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf.ts",
+        "--mode=emit",
+        "--repository=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/repository-baseline",
+        "--host=/Users/ilyagulya/Projects/My/bend/evals/candidate_host.ts",
+        "--source=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g48d1-fast-loop/perf-medium.bend",
+        "--base=/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf/bend2/base.bend",
+        "--image=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/baseline-fast-image/oracle.mjs",
+        "--oracle-receipt=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/baseline-fast-image/receipt.json",
+        "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--source-tag=SourceFile",
+        "--samples=1",
+        "--out=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/abba-0-baseline-medium"
+      ],
+      [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf.ts",
+        "--mode=emit",
+        "--repository=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/repository-parts",
+        "--host=/Users/ilyagulya/Projects/My/bend/evals/candidate_host.ts",
+        "--source=/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf.bend",
+        "--base=/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf/bend2/base.bend",
+        "--image=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/parts-fast-image/oracle.mjs",
+        "--oracle-receipt=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/parts-fast-image/receipt.json",
+        "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--source-tag=SourceFile",
+        "--samples=1",
+        "--out=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/abba-1-parts-small"
+      ],
+      [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf.ts",
+        "--mode=emit",
+        "--repository=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/repository-parts",
+        "--host=/Users/ilyagulya/Projects/My/bend/evals/candidate_host.ts",
+        "--source=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g48d1-fast-loop/perf-medium.bend",
+        "--base=/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf/bend2/base.bend",
+        "--image=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/parts-fast-image/oracle.mjs",
+        "--oracle-receipt=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/parts-fast-image/receipt.json",
+        "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--source-tag=SourceFile",
+        "--samples=1",
+        "--out=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/abba-1-parts-medium"
+      ],
+      [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf.ts",
+        "--mode=emit",
+        "--repository=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/repository-parts",
+        "--host=/Users/ilyagulya/Projects/My/bend/evals/candidate_host.ts",
+        "--source=/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf.bend",
+        "--base=/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf/bend2/base.bend",
+        "--image=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/parts-fast-image/oracle.mjs",
+        "--oracle-receipt=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/parts-fast-image/receipt.json",
+        "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--source-tag=SourceFile",
+        "--samples=1",
+        "--out=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/abba-2-parts-small"
+      ],
+      [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf.ts",
+        "--mode=emit",
+        "--repository=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/repository-parts",
+        "--host=/Users/ilyagulya/Projects/My/bend/evals/candidate_host.ts",
+        "--source=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g48d1-fast-loop/perf-medium.bend",
+        "--base=/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf/bend2/base.bend",
+        "--image=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/parts-fast-image/oracle.mjs",
+        "--oracle-receipt=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/parts-fast-image/receipt.json",
+        "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--source-tag=SourceFile",
+        "--samples=1",
+        "--out=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/abba-2-parts-medium"
+      ],
+      [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf.ts",
+        "--mode=emit",
+        "--repository=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/repository-baseline",
+        "--host=/Users/ilyagulya/Projects/My/bend/evals/candidate_host.ts",
+        "--source=/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf.bend",
+        "--base=/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf/bend2/base.bend",
+        "--image=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/baseline-fast-image/oracle.mjs",
+        "--oracle-receipt=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/baseline-fast-image/receipt.json",
+        "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--source-tag=SourceFile",
+        "--samples=1",
+        "--out=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/abba-3-baseline-small"
+      ],
+      [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf.ts",
+        "--mode=emit",
+        "--repository=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/repository-baseline",
+        "--host=/Users/ilyagulya/Projects/My/bend/evals/candidate_host.ts",
+        "--source=/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g48d1-fast-loop/perf-medium.bend",
+        "--base=/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf/bend2/base.bend",
+        "--image=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/baseline-fast-image/oracle.mjs",
+        "--oracle-receipt=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/baseline-fast-image/receipt.json",
+        "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--source-tag=SourceFile",
+        "--samples=1",
+        "--out=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/abba-3-baseline-medium"
+      ]
+    ],
+    "behaviorProbes": {
+      "env-nf": [
+        [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "evals/descriptor_nf_step_smoke.ts"
+        ],
+        [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/selfhost_fast.ts",
+          "--repository=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/repository-env",
+          "--source=checkpoints/descriptor_nf_steps_component_v1.bend",
+          "--exports=expand_modules_start,template_step",
+          "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--out=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/env-nf-probe",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000"
+        ],
+        [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "evals/descriptor_nf_step_smoke.ts",
+          "--run=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/env-nf-probe/oracle.mjs"
+        ]
+      ],
+      "env-scope": [
+        [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "evals/descriptor_nf_step_smoke.ts",
+          "--env-spine"
+        ],
+        [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/selfhost_fast.ts",
+          "--repository=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/repository-env",
+          "--source=checkpoints/descriptor_nf_env_steps_component_v1.bend",
+          "--exports=expand_modules_start,template_step",
+          "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--out=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/env-scope-probe",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000"
+        ],
+        [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "evals/descriptor_nf_step_smoke.ts",
+          "--env-spine",
+          "--run=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/env-scope-probe/oracle.mjs"
+        ]
+      ],
+      "reach-layout": [
+        [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "evals/clay_layout_step_smoke.ts"
+        ],
+        [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/selfhost_fast.ts",
+          "--repository=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/repository-reach",
+          "--source=checkpoints/clay_layout_steps_component_v1.bend",
+          "--exports=expand_modules_start,template_step",
+          "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--out=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/reach-layout-probe",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000"
+        ],
+        [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "evals/clay_layout_step_smoke.ts",
+          "--run=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/reach-layout-probe/oracle.mjs"
+        ]
+      ],
+      "cps-sum": [
+        [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "evals/cps_region_scalarization_smoke.ts",
+          "--sum-result"
+        ],
+        [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/selfhost_fast.ts",
+          "--repository=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/repository-cps",
+          "--source=checkpoints/cps_sum_result_fusion_component_v1.bend",
+          "--exports=check_expanded_start,inspect_checked_start,checker_step",
+          "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--out=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/cps-sum-probe",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000"
+        ],
+        [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "evals/cps_region_scalarization_smoke.ts",
+          "--sum-result",
+          "--run=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/cps-sum-probe/oracle.mjs"
+        ]
+      ],
+      "baseline-nf": [
+        [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "evals/descriptor_nf_step_smoke.ts"
+        ],
+        [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/selfhost_fast.ts",
+          "--repository=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/repository-baseline",
+          "--source=checkpoints/descriptor_nf_steps_component_v1.bend",
+          "--exports=expand_modules_start,template_step",
+          "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--out=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/baseline-nf-probe",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000"
+        ],
+        [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "evals/descriptor_nf_step_smoke.ts",
+          "--run=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/baseline-nf-probe/oracle.mjs"
+        ]
+      ],
+      "baseline-scope": [
+        [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "evals/descriptor_nf_step_smoke.ts",
+          "--env-spine"
+        ],
+        [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/selfhost_fast.ts",
+          "--repository=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/repository-baseline",
+          "--source=checkpoints/descriptor_nf_env_steps_component_v1.bend",
+          "--exports=expand_modules_start,template_step",
+          "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--out=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/baseline-scope-probe",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000"
+        ],
+        [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "evals/descriptor_nf_step_smoke.ts",
+          "--env-spine",
+          "--run=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/baseline-scope-probe/oracle.mjs"
+        ]
+      ],
+      "baseline-cps-sum": [
+        [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "evals/cps_region_scalarization_smoke.ts",
+          "--sum-result"
+        ],
+        [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/selfhost_fast.ts",
+          "--repository=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/repository-baseline",
+          "--source=checkpoints/cps_sum_result_fusion_component_v1.bend",
+          "--exports=check_expanded_start,inspect_checked_start,checker_step",
+          "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--out=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/baseline-cps-sum-probe",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000"
+        ],
+        [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "evals/cps_region_scalarization_smoke.ts",
+          "--sum-result",
+          "--run=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/baseline-cps-sum-probe/oracle.mjs"
+        ]
+      ],
+      "parts-edges": [
+        [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "evals/c_backend_parts_step_smoke.ts"
+        ],
+        [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/selfhost_fast.ts",
+          "--repository=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/repository-parts",
+          "--source=checkpoints/local2039g49-parts-cps-smoke/component.bend",
+          "--exports=expand_modules_start,template_step",
+          "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--out=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/parts-cps-edge-probe",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000"
+        ],
+        [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "evals/c_backend_parts_step_smoke.ts",
+          "--run=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/parts-cps-edge-probe/oracle.mjs"
+        ]
+      ]
+    },
+    "runtimeDiagnostic": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/repository-runtime/evals/semantic_scheduler_runtime_probe.ts",
+      "--oracle-c=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/perf-small-oracle-runner-v1/sample-0/program.c",
+      "--candidate-c=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g48d1-q2lfdd0u/perf-small-final-g47-complete-v2/sample-0/program.c",
+      "--out=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/runtime-diagnostic-v1"
+    ],
+    "runtimeWhole": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf.ts",
+      "--mode=complete",
+      "--repository=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/repository-runtime",
+      "--host=/Users/ilyagulya/Projects/My/bend/evals/candidate_host.ts",
+      "--source=/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf.bend",
+      "--base=/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf/bend2/base.bend",
+      "--image=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/runtime-fast-image/oracle.mjs",
+      "--oracle-receipt=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/runtime-fast-image/receipt.json",
+      "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "--source-tag=SourceFile",
+      "--samples=1",
+      "--out=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/runtime-fixed-small"
+    ],
+    "runtimeRegressionCanonical": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf.ts",
+      "--mode=oracle",
+      "--repository=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/repository-runtime",
+      "--source=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/repository-runtime/tests/reg/nested_form_padding.bend",
+      "--samples=1",
+      "--out=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/runtime-reg-canonical-control-v2"
+    ],
+    "runtimeRegressionSource": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf.ts",
+      "--mode=complete",
+      "--repository=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/repository-runtime",
+      "--host=/Users/ilyagulya/Projects/My/bend/evals/candidate_host.ts",
+      "--source=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/repository-runtime/tests/reg/nested_form_padding.bend",
+      "--base=/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf/bend2/base.bend",
+      "--image=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/runtime-fast-image/oracle.mjs",
+      "--oracle-receipt=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/runtime-fast-image/receipt.json",
+      "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "--source-tag=SourceFile",
+      "--samples=1",
+      "--out=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/runtime-fixed-reg"
+    ],
+    "rejectedNativeLabelProof": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "--experimental-strip-types",
+      "/Users/ilyagulya/Projects/My/bend/evals/candidate_host.ts",
+      "--candidate=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/baseline-fast-image/oracle.mjs",
+      "--candidate-oracle=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/invalid-native-label-oracle.json",
+      "--base=/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf/bend2/base.bend",
+      "/Users/ilyagulya/Projects/My/bend/evals/semantic_scheduler_perf.bend",
+      "-o",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g49-batch-vu6r206s/invalid-must-not-emit.c"
+    ]
+  },
+  "decisions": {
+    "env": "NOT_SELECTED: small mixed effects do not justify a compiler cutover; source experiment remains private",
+    "reach": "NOT_SELECTED: small mixed effects do not justify a compiler cutover; source experiment remains private",
+    "cps": "NOT_SELECTED: feature works on the new sum fixture but has zero new production activation; no speedup claimed",
+    "runtime": "FIXTURE_LEVEL_CORRECTION_CONFIRMED: uninstrumented original21stdout and new40/39/28 regression pass; native/full qualification and accepted image unchanged",
+    "parts": "FAST_COHORT_SELECTED: paired-order pipeline improvement16.01%small/13.51%medium with identical C and16 unchanged edge outputs; private source candidate, not native or accepted-image promotion"
+  },
+  "perBranchReceipt": "checkpoints/local2039g49-parent-measured.json",
+  "notExercised": [
+    "native compiler image production",
+    "compiler byte-fixedpoint",
+    "original scheduler input",
+    "full95+190 and backend/admission/strict12 qualification",
+    "combined fragment+padding compiler version"
+  ],
+  "qualificationUnchanged": "G24R12 remains accepted; source variants remain isolated; no merges or shims added",
+  "failedHarnessAttempts": [
+    "Env first source normalization rejected a missed list-to-spine caller, repaired in bdbbb263 before successful regeneration.",
+    "Direct raw-provider preflight used wrong pre-ownership dialect; replaced by actual composed CPS source admission.",
+    "Initial canonical SourceFile host invocation rejected a mismatched native carrier; explicit authenticated source-oracle proof added and native-labelled tamper rejected.",
+    "Reach42 fixture had a malformed constructor/list; corrected in6466df2d before passing failures0.",
+    "Sum fixture first lacked checker-mode provenance, then included unreachable provider functions; repaired with authenticated exact public-root composition, guards unchanged.",
+    "Parts template full-provider attempt correctly rejected dependent IndexLookup.find; direct-owned JS correctly rejected forward/mutual refs; replaced by established C-backend CPS provider boundary.",
+    "Parent direct-JS export helper initially split main into m,a,i,n; that attempt failed admission before export selection.",
+    "Padding regression first lacked compound-type parentheses; corrected in1f8204b0 before canonical/source40/39/28 passes.",
+    "Heavy lock refused an attempted independent baseline semantic preflight before doing work; serial retry after the baseline measurement passed."
+  ]
+}
