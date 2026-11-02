@@ -1,0 +1,202 @@
+{
+  "schemaVersion": 1,
+  "version": "G51-G53",
+  "status": "FAST_ITERATION_INTEGRATED_COMPILER_EXPERIMENTS_REJECTED",
+  "acceptedCompilerUnchanged": "G24R12",
+  "integratedToolingCommits": [
+    "6b7e2c29",
+    "9ea1352d",
+    "193618ce",
+    "28d68c6f",
+    "87f7115e",
+    "6f764936"
+  ],
+  "tooling": "evals/selfhost_throughput.mjs optional stopAfter=check for actual ABI13 own parser/template/checker; unchanged8GiB RSS+footprint,256MiB worker stack,8M parser fuel,64-step quantum; CPU/heap collector opt-in; no AST cache, output patch or compiler algorithm change in main.",
+  "quickFrozenCorpus": "checkpoints/local2039g51-checker-mini.corpus.json",
+  "quickStatistics": {
+    "baseline": {
+      "samples": 3,
+      "checkMedianMs": 10481.489958,
+      "pipelineMedianMs": 11551.202875,
+      "maxRss": 746602496,
+      "maxFootprint": 703438936,
+      "steps": [
+        466660
+      ],
+      "checkSpeedupPct": 0.0
+    },
+    "G53": {
+      "samples": 3,
+      "checkMedianMs": 9793.579625,
+      "pipelineMedianMs": 10729.76575,
+      "maxRss": 742277120,
+      "maxFootprint": 691937440,
+      "steps": [
+        466660
+      ],
+      "checkSpeedupPct": 6.563096809294288
+    },
+    "G52": {
+      "samples": 3,
+      "checkMedianMs": 10432.684792,
+      "pipelineMedianMs": 11346.974875,
+      "maxRss": 748093440,
+      "maxFootprint": 706125456,
+      "steps": [
+        463925
+      ],
+      "checkSpeedupPct": 0.4656319492320815
+    }
+  },
+  "quickEvidence": "checkpoints/local2039g51-quick-ablation.json",
+  "profileEvidence": "checkpoints/local2039g51-profile-measured.json",
+  "compilerExperiments": {
+    "G52": {
+      "branch": "selfhost/g52-chunk",
+      "finalCommit": "fa5569ec",
+      "status": "REJECTED_NO_MEANINGFUL_QUICK_SPEEDUP",
+      "source": "defer unchanged materialization descriptors",
+      "quickCheckerSpeedupPct": 0.4656319492320815,
+      "realCases": 27,
+      "fullRun": false,
+      "oldG26SchedulerNotRepeated": true
+    },
+    "G53": {
+      "branch": "selfhost/g53-readonly-map",
+      "finalCommit": "d4b1d2bf",
+      "status": "REJECTED_FOR_PROMOTION_SMALL_UNREPLICATED_FULL_GAIN_AND_HIGHER_FOOTPRINT",
+      "source": "reuse existing exact Map.find on shared DATA name/prefix maps; preserve max-U32 sentinel; no cache or new primitive",
+      "fullComparison": {
+        "samplesPerVariant": 1,
+        "genuineSameSeedImageOrigin": true,
+        "baselinePipelineMs": 318641.847083,
+        "candidatePipelineMs": 312063.70495800005,
+        "baselineCheckMs": 282728.39112499997,
+        "candidateCheckMs": 276075.602833,
+        "baselineRssBytes": 2475966464,
+        "candidateRssBytes": 2376499200,
+        "baselineFootprintBytes": 2681825672,
+        "candidateFootprintBytes": 2835197424,
+        "baselineStepCounts": {
+          "expand": 1072965,
+          "check": 10409462,
+          "emit": 1289397
+        },
+        "candidateStepCounts": {
+          "expand": 1072965,
+          "check": 10409462,
+          "emit": 1289397
+        },
+        "pipelineSpeedupPct": 2.0644313310443696,
+        "checkerSpeedupPct": 2.353066936619963,
+        "peakFootprintDeltaPct": 5.718930712063086
+      },
+      "fullEvidence": "checkpoints/local2039g53-readonly-map-measured.json",
+      "fullEvidenceSha256": "77cd453187e4d875a3d1231397913260461a9efc800577afd8fc92f6bad8d1fa",
+      "worktree": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g53-readonly-map-m8jkm9cb/repository",
+      "sourceConsumers": 27,
+      "nativeProducedConsumers": 27,
+      "arenaJsAndCStdout": "0\n"
+    }
+  },
+  "fullCommands": [
+    [
+      "/usr/bin/env",
+      "PATH=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools:/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/cmux-cli-shims/1AE884FF-4153-438F-922A-7660D416EB20:/Applications/cmux.app/Contents/Resources/bin:/Users/ilyagulya/.antigravity/antigravity/bin:/opt/homebrew/opt/mysql-client/bin:/opt/homebrew/opt/binutils/bin:/Users/ilyagulya/.depot_tools:/opt/homebrew/opt/whois/bin:/Users/ilyagulya/go/bin:/opt/homebrew/opt/curl/bin:/Users/ilyagulya/Library/pnpm:/Users/ilyagulya/.opam/default/bin:/Users/ilyagulya/.bun/bin:/Users/ilyagulya/.local/bin:/Users/ilyagulya/.local/bin:/Users/ilyagulya/fvm/default/bin:/opt/homebrew/opt/ruby/bin:/Users/ilyagulya/.elan/bin:/Library/Frameworks/Python.framework/Versions/3.12/bin:/opt/homebrew/share/google-cloud-sdk/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/pkg/env/global/bin:/opt/X11/bin:/Library/Apple/usr/bin:/Applications/Wireshark.app/Contents/MacOS:/Applications/VMware Fusion.app/Contents/Public:/opt/homebrew/bin:/Users/ilyagulya/.cargo/bin:/Users/ilyagulya/Library/Application Support/JetBrains/Toolbox/scripts:/Users/ilyagulya/.orbstack/bin:/Users/ilyagulya/Library/Android/sdk/platform-tools:/Users/ilyagulya/Library/Android/sdk/build-tools/34.0.0:/Users/ilyagulya/Library/Android/sdk/tools/proguard/bin:/Users/ilyagulya/Library/Android/sdk/emulator:/Users/ilyagulya/Library/Android/sdk/cmdline-tools/latest/bin:/Users/ilyagulya/.spoof-dpi/bin:/Users/ilyagulya/.pub-cache/bin:/Users/ilyagulya/Library/Android/sdk/ndk/26.3.11579264:/Users/ilyagulya/.lmstudio/bin:/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "/Users/ilyagulya/Projects/My/bend/evals/checker_core_target_gate.ts",
+      "--component=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g53-readonly-map-native-v2.json.mjs",
+      "--parser=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g53-readonly-map-native-v2.json.mjs",
+      "--report=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g53-readonly-map-m8jkm9cb/native-checker-targets.json"
+    ],
+    [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+      "js",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g51-checker-3juqew7r/native-image-baseline-full-request.json",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g51-checker-3juqew7r/native-image-baseline-full.json"
+    ],
+    [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+      "js",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g53-readonly-map-m8jkm9cb/native-image-full-request.json",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g53-readonly-map-m8jkm9cb/native-image-full.json"
+    ]
+  ],
+  "fullLimits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000
+  },
+  "fullRuntime": {
+    "execPath": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+    "versions": {
+      "node": "23.11.0",
+      "acorn": "8.14.1",
+      "ada": "3.2.1",
+      "amaro": "0.4.1",
+      "ares": "1.34.4",
+      "brotli": "1.1.0",
+      "cjs_module_lexer": "2.1.0",
+      "cldr": "46.0",
+      "icu": "76.1",
+      "llhttp": "9.2.1",
+      "modules": "131",
+      "napi": "10",
+      "nbytes": "0.1.1",
+      "ncrypto": "0.0.1",
+      "nghttp2": "1.64.0",
+      "openssl": "3.0.16",
+      "simdjson": "3.12.2",
+      "simdutf": "6.0.3",
+      "sqlite": "3.49.1",
+      "tz": "2025a",
+      "undici": "6.21.2",
+      "unicode": "16.0",
+      "uv": "1.50.0",
+      "uvwasi": "0.0.21",
+      "v8": "12.9.202.28-node.14",
+      "zlib": "1.3.0.1-motley-788cb3c",
+      "zstd": "1.5.6"
+    },
+    "execArgv": [
+      "--experimental-strip-types",
+      "--max-old-space-size=6144",
+      "--max-semi-space-size=128"
+    ],
+    "heapLimitBytes": 6845104128
+  },
+  "unchangedTargetOutput": {
+    "bytes": 31906405,
+    "sha256": "273b0022813e17908020c0ee58fd4e02da4f3dc756ce58e3389093440863c3fe",
+    "isCandidateSelfFixedpoint": false
+  },
+  "realTemplateConsumer": {
+    "sourceText": "import Base\n\ndef specialize(~A: Type, x: A) -> A:\n  x\n\ndef main() -> U32:\n  U32.add(specialize(~U32, 20), specialize(~U32, 22))\n",
+    "sourceSha256": "ef74b12f60dd87eaea0b488e4859a1600fd0316978151a6467fda0104f069d7b",
+    "publicShimText": "import full from \"file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g50-combined-native-v2.json.mjs\";\nimport template from \"file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g51-checker-3juqew7r/template-component-baseline.mjs\";\nexport default {...full,...template};\n",
+    "outputBytes": 384769,
+    "outputSha256": "aece439202ca56ecef401c9e35d955fcc18a3936becb94e2d96021b8d9aa606d",
+    "observedReturnValue": 42
+  },
+  "throwawayConsumerSourceAndOverlayRemoved": true,
+  "failedSetups": {
+    "canonicalFullControl": "String.to_list stack overflow before checking; candidate not run. No cap relaxation.",
+    "initialMixedParser": "Canonical TS and selfhost-produced runtime constructor layout mismatch; corrected by image own parser.",
+    "nativeSeedInitialCwd": "Source escaped repository before native compute; corrected cwd to frozen source worktree with fresh report."
+  },
+  "notClaimed": [
+    "new accepted compiler",
+    "native binary rebuild",
+    "candidate self-fixedpoint",
+    "full95/190candidate matrices",
+    "strict12paired performance acceptance",
+    "full compiler speedup from quick corpus"
+  ],
+  "action": "Use pinned eight-module real source for10-12s fast falsification; all-body development image production observed23-25s; reserve genuine full source/native qualification for promising candidates. Both current compiler-source experiments remain isolated, unpromoted and explicitly rejected."
+}

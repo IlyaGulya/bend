@@ -69,6 +69,20 @@ consumers passed. G53's read-only name/prefix lookup reached 9,793.580 ms
 27 consumers and the Arena boundary fixture's emitted JS and compiled C passed.
 These are isolated source experiments, not accepted compiler changes.
 
+The genuine same-seed full-source pair reproduced the same 31,906,405-byte
+target JS and SHA-256
+`273b0022813e17908020c0ee58fd4e02da4f3dc756ce58e3389093440863c3fe`.
+G53 reduced checker wall time from 282,728.391 to 276,075.603 ms (2.35%) and
+the full pipeline from 318,641.847 to 312,063.705 ms (2.06%), with exactly
+10,409,462 checker chunks in both. This is one pair, not a replicated win.
+Peak physical footprint rose from 2,681,825,672 to 2,835,197,424 bytes (5.72%).
+G53 is therefore **rejected for promotion**: the small unreplicated full-source
+gain and worse footprint do not justify cutover. Its native-produced image also
+passed 27 real consumers; no new native binary, candidate self-fixedpoint,
+full 95/190 matrices or strict twelve-pair acceptance is claimed. Only the
+fast-loop tooling is integrated; G24R12 remains accepted.
+`checkpoints/local2039g53-summary.json`.
+
 ## Fast development checks
 
 Do not run parser admission, LLVM and the complete fixture matrices for every
