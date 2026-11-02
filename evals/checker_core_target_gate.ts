@@ -10,6 +10,9 @@ const report=resolve(options.get('--report')??'checkpoints/checker-core-target-g
 const sha=(path:string)=>createHash('sha256').update(readFileSync(path)).digest('hex');
 const bit='type Bit is Data:\n  BitZero{}\n  BitOne{}\n';
 const duo='type Duo is Type:\n  Duo{left: Bit, right: Bit}\n';
+const usagePair=bit+'type Pair is Data:\n  Pair{left: Bit, right: Bit}\n';
+const usagePack=usagePair+'def pack(left: Bit, right: Bit) -> Pair:\n  Pair{left, right}\n';
+const usagePick=bit+'def pick(-A: Type, live: A, -erased: A) -> A:\n  live\n';
 const fixtures=[
  {name:'enum-constant',source:bit+'def main() -> Bit:\n  BitOne{}\n',accepted:true,output:'BitOne{}'},
  {name:'affine-identity',source:bit+'def identity(x: Bit) -> Bit:\n  x\ndef main() -> Bit:\n  identity(BitZero{})\n',accepted:true,output:'BitZero{}'},
@@ -41,6 +44,32 @@ const fixtures=[
  {name:'unknown-forward-datatype',source:'type A is Data:\n  MkA{f: B}\ndef main() -> A:\n  MkA{MkB{}}\n',accepted:false,failure:{beg:25,end:26,observed:'B'}},
  {name:'duplicate-datatype-header',source:'type A is Data:\n  MkA{}\n',second:'type A is Data:\n  MkA2{}\n',duplicateDeclaration:true,accepted:false},
  {name:'ill-kinded-forward-field',source:'type A is Data:\n  MkA{f: B}\ntype B is Type:\n  MkB{}\ndef main() -> A:\n  MkA{MkB{}}\n',accepted:false,failure:{beg:25,end:26}},
+ // Original covered rows remain usage obligations even when checked occurrences
+ // omit them. Keep these sources identical to the frozen G50 safety controls.
+ {name:'covered-one',source:usagePair+'def choose(x: Bit, v: Bit) -> Pair:\n  match x:\n    case BitZero{}: Pair{BitZero{}, BitZero{}}\n    case BitOne{}: Pair{BitZero{}, BitZero{}}\n    case other: Pair{v, BitZero{}}\ndef main() -> Pair:\n  choose(BitZero{}, BitOne{})\n',accepted:true,output:'Pair{BitZero{}, BitZero{}}'},
+ {name:'covered-many',source:usagePair+'def choose(x: Bit, +v: Bit) -> Pair:\n  match x:\n    case BitZero{}: Pair{BitZero{}, BitZero{}}\n    case BitOne{}: Pair{BitZero{}, BitZero{}}\n    case other: Pair{v, v}\ndef main() -> Pair:\n  choose(BitZero{}, BitOne{})\n',accepted:true,output:'Pair{BitZero{}, BitZero{}}'},
+ {name:'covered-affine-duplicate',source:usagePair+'def choose(x: Bit, v: Bit) -> Pair:\n  match x:\n    case BitZero{}: Pair{BitZero{}, BitZero{}}\n    case BitOne{}: Pair{BitZero{}, BitZero{}}\n    case other: Pair{v, v}\n',accepted:false,failure:{beg:109,end:115}},
+ {name:'covered-erased-use',source:usagePair+'def choose(x: Bit, -v: Bit) -> Pair:\n  match x:\n    case BitZero{}: Pair{BitZero{}, BitZero{}}\n    case BitOne{}: Pair{BitZero{}, BitZero{}}\n    case other: Pair{v, BitZero{}}\n',accepted:false,failure:{beg:110,end:116}},
+ {name:'typed-local-reusable',source:usagePair+'def identity(x: Bit) -> Bit:\n  x\ndef main() -> Pair:\n  +value = identity(BitOne{})\n  Pair{value, value}\n',accepted:true,output:'Pair{BitOne{}, BitOne{}}'},
+ {name:'typed-local-affine-duplicate',source:usagePair+'def identity(x: Bit) -> Bit:\n  x\ndef bad(x: Bit) -> Pair:\n  value = identity(x)\n  Pair{value, value}\n',accepted:false,failure:{beg:150,end:155}},
+ {name:'typed-local-dependent-scope',source:usagePair+'def identity(-A: Type, x: A) -> A:\n  x\ndef local(-A: Type, x: A) -> A:\n  value = identity(A, x)\n  value\ndef main() -> Bit:\n  local(Bit, BitOne{})\n',accepted:true,output:'BitOne{}'},
+ // Do not pin the incidental acceptance of duplicating an unchecked covered
+ // local alias. The dummy is unused; direct outer-v use is the obligation here.
+ {name:'covered-local-outer-affine',source:usagePair+'def choose(x: Bit, v: Bit) -> Pair:\n  match x:\n    case BitZero{}: Pair{BitZero{}, BitZero{}}\n    case BitOne{}: Pair{BitZero{}, BitZero{}}\n    case other:\n      dummy = BitZero{}\n      Pair{v, v}\n',accepted:false,failure:{beg:109,end:115}},
+ {name:'covered-local-outer-erased',source:usagePair+'def choose(x: Bit, -v: Bit) -> Pair:\n  match x:\n    case BitZero{}: Pair{BitZero{}, BitZero{}}\n    case BitOne{}: Pair{BitZero{}, BitZero{}}\n    case other:\n      dummy = BitZero{}\n      Pair{v, BitZero{}}\n',accepted:false,failure:{beg:110,end:116}},
+ // Curried source applications exercise head facts. An explicit annotation
+ // rebuilds checked term handles, so the same obligations must survive fallback.
+ {name:'usage-curried-single',source:usagePack+'def good(x: Bit) -> Pair:\n  pack(x)(BitZero{})\ndef main() -> Pair:\n  good(BitOne{})\n',accepted:true,output:'Pair{BitOne{}, BitZero{}}'},
+ {name:'usage-curried-duplicate',source:usagePack+'def bad(x: Bit) -> Pair:\n  pack(x)(x)\n',accepted:false,failure:{beg:usagePack.length+8,end:usagePack.length+14}},
+ {name:'usage-annotation-single',source:usagePack+'def good(x: Bit) -> Pair:\n  pack({x : Bit})(BitZero{})\ndef main() -> Pair:\n  good(BitOne{})\n',accepted:true,output:'Pair{BitOne{}, BitZero{}}'},
+ {name:'usage-annotation-duplicate',source:usagePack+'def bad(x: Bit) -> Pair:\n  pack({x : Bit})(x)\n',accepted:false,failure:{beg:usagePack.length+8,end:usagePack.length+14}},
+ // Local value facts belong to the outer scope; the body still uses the
+ // original lexical environment and each instantiated formal's quantity.
+ {name:'usage-local-function-single',source:usagePack+'def good(x: Bit) -> Pair:\n  fn = pack\n  fn(x, BitZero{})\ndef main() -> Pair:\n  good(BitOne{})\n',accepted:true,output:'Pair{BitOne{}, BitZero{}}'},
+ {name:'usage-local-function-duplicate',source:usagePack+'def bad(x: Bit) -> Pair:\n  fn = pack\n  fn(x, x)\n',accepted:false,failure:{beg:usagePack.length+8,end:usagePack.length+14}},
+ {name:'usage-local-function-erased',source:bit+'def ignore(-x: Bit) -> Bit:\n  BitZero{}\ndef good(-x: Bit) -> Bit:\n  fn = ignore\n  fn(x)\ndef main() -> Bit:\n  good(BitOne{})\n',accepted:true,output:'BitZero{}'},
+ {name:'usage-local-function-dependent',source:usagePick+'def good(x: Bit) -> Bit:\n  fn = pick(Bit)\n  fn(x, x)\ndef main() -> Bit:\n  good(BitOne{})\n',accepted:true,output:'BitOne{}'},
+ {name:'usage-local-function-dependent-live',source:usagePick+'def bad(-x: Bit) -> Bit:\n  fn = pick(Bit)\n  fn(x, x)\n',accepted:false,failure:{beg:usagePick.length+9,end:usagePick.length+15}},
 ];
 const temporary=mkdtempSync(join(tmpdir(),'bend-checker-gate-')),sidecars=report+'.cases';mkdirSync(sidecars,{recursive:true});mkdirSync(dirname(report),{recursive:true});
 const rows:any[]=[];
@@ -70,7 +99,7 @@ try{
   // missing or duplicated name is the point; never diagnostic prose. The worker
   // has already asserted the structured outcome for spliced duplicate modules.
   const failure=fixture.failure,diagnostic=row.diagnostic;
-  const spanObserved=failure===undefined||(diagnostic?.span?.beg===failure.beg&&diagnostic?.span?.end===failure.end);
+  const spanObserved=failure===undefined||(diagnostic?.span?.file===join(temporary,fixture.name+'.bend')&&diagnostic?.span?.beg===failure.beg&&diagnostic?.span?.end===failure.end);
   const identityObserved=failure?.observed===undefined||diagnostic?.observed===failure.observed;
   const structureObserved=spanObserved&&identityObserved;
   rows.push({...row,name:fixture.name,source:fixture.source,expectedAccepted:fixture.accepted,expectedOutput:fixture.output,expectedFailure:failure,structureObserved,guardian,passed:row.passed===true&&structureObserved&&guardian.status==='PASS'});save();console.log(JSON.stringify(rows.at(-1)));

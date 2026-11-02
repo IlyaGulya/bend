@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "version": "G54-usage-witness-target-regressions",
+  "status": "TEST_ONLY_SOURCE_COMMITTED_BEFORE_EXECUTION",
+  "sourceAlgorithmCommit": "4c6a8156",
+  "parentGeneratedSourceCheckpoint": "4399c3a7",
+  "acceptanceEvidence": false,
+  "speedClaim": false,
+  "changes": {
+    "tests/selfhost/checker.bend": "Restored exactly to baseline d1a2fd48 using the frozen G50 original; removed all G54 AST regression additions, including parent edits to their output helper.",
+    "evals/checker_core_target_gate.ts": "Retained all 27 existing cases and added 18 source-language cases through the existing source/accepted/output/failure fields. Negative span checks also require the actual request file identity. Worker and public ABI protocol are unchanged."
+  },
+  "files": {
+    "tests/selfhost/checker.bend": "633bee016572df5f11b0915967c08de421990b870be249a3914eb75c4be67d38",
+    "evals/checker_core_target_gate.ts": "8ef992f1a2b9c7daa11aaa652f76db11be5c1450aa4628956e8a0a3f44f9fc98"
+  },
+  "reason": "Parent observed the unchanged bare-CLI checker fixture fail before candidate execution at canonical template.bend:335 (computed String.eq match scrutinee). This test-only migration does not change Template, checker source, generated sources, validation policy or runtime limits.",
+  "supersedes": "The regression location and #| scenario instructions in local2039g54-usage-source.json and its parent follow-up: durable G54 coverage now lives in the existing target gate, not tests/selfhost/checker.bend.",
+  "frozenBaselineControls": {
+    "directory": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g54-usage-1f3i4hpl",
+    "sourceInputs": "The nine corresponding *-baseline-request.json source strings are incorporated verbatim, using a shared identical Bit/Pair prefix. No execution was repeated by this assignment.",
+    "cases": [
+      {"name": "covered-one", "accepted": true, "output": "Pair{BitZero{}, BitZero{}}"},
+      {"name": "covered-many", "accepted": true, "output": "Pair{BitZero{}, BitZero{}}"},
+      {"name": "covered-affine-duplicate", "accepted": false, "span": [109, 115]},
+      {"name": "covered-erased-use", "accepted": false, "span": [110, 116]},
+      {"name": "typed-local-reusable", "accepted": true, "output": "Pair{BitOne{}, BitOne{}}"},
+      {"name": "typed-local-affine-duplicate", "accepted": false, "span": [150, 155]},
+      {"name": "typed-local-dependent-scope", "accepted": true, "output": "BitOne{}"},
+      {"name": "covered-local-outer-affine", "accepted": false, "span": [109, 115]},
+      {"name": "covered-local-outer-erased", "accepted": false, "span": [110, 116]}
+    ]
+  },
+  "additionalCasesUnexecuted": [
+    "usage-curried-single",
+    "usage-curried-duplicate",
+    "usage-annotation-single",
+    "usage-annotation-duplicate",
+    "usage-local-function-single",
+    "usage-local-function-duplicate",
+    "usage-local-function-erased",
+    "usage-local-function-dependent",
+    "usage-local-function-dependent-live"
+  ],
+  "assertionPolicy": "Real parser source -> checker public ABI -> owning CheckedProgram -> emitter public ABI -> execution of unchanged emitted JS for accepted cases. Rejections assert actual CheckFailure and original source file/beg/end; no new diagnostic prose assertions, AST stubs, mocks, output patches or wrapper protocol. Existing identity assertions remain intact.",
+  "excludedCounterexample": "Covered local value=v followed by Pair{value,value} is accepted by the immutable baseline. No test pins that incidental acceptance or changes policy to force rejection. Covered-local negatives use an unused dummy and direct outer-v uses instead.",
+  "parentGateCommand": "bun --smol evals/checker_core_target_gate.ts --component=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g54-usage-1f3i4hpl/fast-image/oracle.mjs --parser=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g50-combined-native-v2.json.mjs --report=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g54-usage-1f3i4hpl/usage-target-gate.json",
+  "verification": {"tests": "not run", "builds": "not run", "generators": "not run", "benchmarks": "not run", "evidence": "source and frozen parent request/result inspection; SHA-256 recording only"},
+  "preservedParentWork": "Preexisting modified generated checkpoint files were neither edited nor staged. No source-algorithm file was edited. Parent runtime measurements using the existing image are unaffected by these test-only changes."
+}
