@@ -1,0 +1,733 @@
+{
+  "schemaVersion": 1,
+  "version": "G54-usage-witness",
+  "status": "REJECTED_QUICK_SCREEN_SLOWER",
+  "acceptedCompiler": "G24R12 unchanged",
+  "productPromotion": false,
+  "compilerSourceIntegrated": false,
+  "sourceBranch": "selfhost/g54-usage-witness",
+  "sourceCheckpoint": "4c6a8156",
+  "generatedInputsCheckpoint": "4399c3a7",
+  "experimentFinalCommit": "323f3725",
+  "experimentWorktree": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g54-usage-1f3i4hpl/repository",
+  "completeMeasuredReceipt": "checkpoints/local2039g54-usage-measured.json on sourceBranch",
+  "completeMeasuredReceiptSha256": "f9ea5c3e6231539e8aef4fedea127c34ec6f1edee0b255978e25ca308e9a3a2c",
+  "baseline": {
+    "branch": "selfhost/g50-combined",
+    "commit": "d1a2fd48",
+    "canonicalImage": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g50-combined-jb80lebe/fast-image/oracle.mjs",
+    "imageBytes": 14811514,
+    "imageSha256": "003dca748437a25dcdc834d11690d543e2a41e101444d086fcea40685382855e"
+  },
+  "candidate": {
+    "branch": "selfhost/g54-usage-witness",
+    "sourceCommit": "4c6a8156",
+    "frozenGeneratedInputsCommit": "4399c3a7",
+    "runnableRegressionsCommit": "d8f83d43",
+    "checkerSha256": "b41c25964c7d75058f2cea663380f9902f0d558abae625df7e6bdea7398073dc",
+    "image": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g54-usage-1f3i4hpl/fast-image/oracle.mjs",
+    "imageBytes": 14832729,
+    "imageSha256": "b8f615f1f3b26ce1dc06b0b246317fc0d03b457f0edca5351e7bf7ce354464fa",
+    "imageProducer": "canonical TS source check and JS emitter, not native source qualification",
+    "imageReceipt": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g54-usage-1f3i4hpl/fast-image/receipt.json",
+    "checkedDefinitions": 12491,
+    "modules": 18,
+    "producerWallMs": 22702.558375,
+    "producerGuardian": {
+      "status": "PASS",
+      "elapsedMs": 23557,
+      "peakRssBytes": 3089563648,
+      "peakFootprintBytes": 3195766720
+    }
+  },
+  "runtime": {
+    "os": "darwin 25.6.0 arm64",
+    "bun": "1.4.3 c6da4a4d3",
+    "node": "23.11.0",
+    "v8": "12.9.202.28-node.14"
+  },
+  "limits": {
+    "rssMiB": 8192,
+    "footprintMiB": 8192,
+    "pollMs": 10,
+    "throughputTimeoutMs": 600000,
+    "workerStackMiB": 256,
+    "workerOldGenerationMiB": 6144,
+    "workerYoungGenerationMiB": 128,
+    "throughputParserFuelPerModule": 8000000,
+    "smallFixtureParserFuelPerModule": 2000000,
+    "ABIExports": 13,
+    "checkerQuantum": 64,
+    "maximumHeavyLanes": 1
+  },
+  "sourceContract": {
+    "originalSourceWalk": true,
+    "coveredRowsRetained": true,
+    "invocationLocalWitness": true,
+    "exactTermPatternTypeDepthRequiredForLocalReuse": true,
+    "sourceAlignedSupportedApplicationSpinesOnly": true,
+    "dropEvidenceAtChangedScopeOrRewrittenTerm": true,
+    "globalCache": false,
+    "IRSchemaChanged": false,
+    "ABIChanged": false,
+    "runtimeChanged": false,
+    "fullOccurrenceOnlyFusion": "not sound without original source obligations omitted during lowering; intentionally not used"
+  },
+  "quickScreen": {
+    "corpus": "checkpoints/local2039g51-checker-mini.corpus.json",
+    "source": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g50-combined-jb80lebe/repository/checkpoints/template_steps_component_v1.bend",
+    "sourceSha256": "86c9e3b009a91b233a314d76ddd65d83ecd66e620231e63121ba625c853b3e39",
+    "modules": 8,
+    "sourceDeclarations": 941,
+    "declaredSourceAndForeignFiles": 43,
+    "order": [
+      "baseline",
+      "candidate",
+      "candidate",
+      "baseline",
+      "baseline",
+      "candidate"
+    ],
+    "statistics": {
+      "baseline": {
+        "samples": 3,
+        "checkMedianMs": 10365.736292,
+        "pipelineMedianMs": 11398.969833000001,
+        "checkValuesMs": [
+          10208.871125,
+          10365.736292,
+          10903.104833
+        ],
+        "maxRssBytes": 774668288,
+        "maxFootprintBytes": 768308256,
+        "steps": [
+          466660
+        ]
+      },
+      "candidate": {
+        "samples": 3,
+        "checkMedianMs": 10754.133875,
+        "pipelineMedianMs": 11804.145458,
+        "checkValuesMs": [
+          10948.027417,
+          10495.988125,
+          10754.133875
+        ],
+        "maxRssBytes": 784990208,
+        "maxFootprintBytes": 778975008,
+        "steps": [
+          467698
+        ],
+        "checkerDeltaPct": 3.7469367545048815,
+        "pipelineDeltaPct": 3.554493352785415
+      }
+    },
+    "runs": [
+      {
+        "label": "baseline",
+        "cwd": "/Users/ilyagulya/Projects/My/bend",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+          "js",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g54-usage-1f3i4hpl/quick-1-baseline-request.json",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g54-usage-1f3i4hpl/quick-1-baseline.json"
+        ],
+        "requestSha256": "909416fd74950420243a403806c606ff04170d23fd49551f839a5fa95a3b94fb",
+        "status": "PASS",
+        "checker": {
+          "phase": "check",
+          "elapsedMs": 10208.871125,
+          "userCpuMs": 12810.219,
+          "systemCpuMs": 235.11,
+          "memoryEnd": {
+            "rss": 772128768,
+            "heapTotal": 508461056,
+            "heapUsed": 349665560,
+            "external": 10493131,
+            "arrayBuffers": 25039
+          }
+        },
+        "pipelineElapsedMs": 11110.541416,
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 11484,
+          "peakRssBytes": 772980736,
+          "peakFootprintBytes": 767145688,
+          "timeoutMs": 600000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793626903986-c5d09586740b1cf4.json"
+        }
+      },
+      {
+        "label": "candidate",
+        "cwd": "/Users/ilyagulya/Projects/My/bend",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+          "js",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g54-usage-1f3i4hpl/quick-2-candidate-request.json",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g54-usage-1f3i4hpl/quick-2-candidate.json"
+        ],
+        "requestSha256": "9c820aa646bf5e0e2bce92807555c65b5cd7a82fd5a6aa6cbd0e3195140f172f",
+        "status": "PASS",
+        "checker": {
+          "phase": "check",
+          "elapsedMs": 10948.027417,
+          "userCpuMs": 13152.314,
+          "systemCpuMs": 249.152,
+          "memoryEnd": {
+            "rss": 775061504,
+            "heapTotal": 507232256,
+            "heapUsed": 250488888,
+            "external": 10493131,
+            "arrayBuffers": 25039
+          }
+        },
+        "pipelineElapsedMs": 11958.660084000001,
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 12217,
+          "peakRssBytes": 775372800,
+          "peakFootprintBytes": 769029368,
+          "timeoutMs": 600000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793626915613-0ebb236ecd567e07.json"
+        }
+      },
+      {
+        "label": "candidate",
+        "cwd": "/Users/ilyagulya/Projects/My/bend",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+          "js",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g54-usage-1f3i4hpl/quick-3-candidate-request.json",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g54-usage-1f3i4hpl/quick-3-candidate.json"
+        ],
+        "requestSha256": "9c820aa646bf5e0e2bce92807555c65b5cd7a82fd5a6aa6cbd0e3195140f172f",
+        "status": "PASS",
+        "checker": {
+          "phase": "check",
+          "elapsedMs": 10495.988125,
+          "userCpuMs": 12884.86,
+          "systemCpuMs": 256.353,
+          "memoryEnd": {
+            "rss": 777502720,
+            "heapTotal": 510099456,
+            "heapUsed": 355184904,
+            "external": 10493131,
+            "arrayBuffers": 25039
+          }
+        },
+        "pipelineElapsedMs": 11480.749249999999,
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 11837,
+          "peakRssBytes": 778928128,
+          "peakFootprintBytes": 772978536,
+          "timeoutMs": 600000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793626927985-a8b552ec6469f80a.json"
+        }
+      },
+      {
+        "label": "baseline",
+        "cwd": "/Users/ilyagulya/Projects/My/bend",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+          "js",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g54-usage-1f3i4hpl/quick-4-baseline-request.json",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g54-usage-1f3i4hpl/quick-4-baseline.json"
+        ],
+        "requestSha256": "909416fd74950420243a403806c606ff04170d23fd49551f839a5fa95a3b94fb",
+        "status": "PASS",
+        "checker": {
+          "phase": "check",
+          "elapsedMs": 10365.736292,
+          "userCpuMs": 12880.67,
+          "systemCpuMs": 229.229,
+          "memoryEnd": {
+            "rss": 773947392,
+            "heapTotal": 511410176,
+            "heapUsed": 300786464,
+            "external": 10493131,
+            "arrayBuffers": 25039
+          }
+        },
+        "pipelineElapsedMs": 11398.969833000001,
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 11687,
+          "peakRssBytes": 774668288,
+          "peakFootprintBytes": 768308256,
+          "timeoutMs": 600000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793626939977-0f04aa809832abc6.json"
+        }
+      },
+      {
+        "label": "baseline",
+        "cwd": "/Users/ilyagulya/Projects/My/bend",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+          "js",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g54-usage-1f3i4hpl/quick-5-baseline-request.json",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g54-usage-1f3i4hpl/quick-5-baseline.json"
+        ],
+        "requestSha256": "909416fd74950420243a403806c606ff04170d23fd49551f839a5fa95a3b94fb",
+        "status": "PASS",
+        "checker": {
+          "phase": "check",
+          "elapsedMs": 10903.104833,
+          "userCpuMs": 13230.624,
+          "systemCpuMs": 256.241,
+          "memoryEnd": {
+            "rss": 762396672,
+            "heapTotal": 494878720,
+            "heapUsed": 324607344,
+            "external": 10493131,
+            "arrayBuffers": 25039
+          }
+        },
+        "pipelineElapsedMs": 11866.969000000001,
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 12122,
+          "peakRssBytes": 763019264,
+          "peakFootprintBytes": 755756864,
+          "timeoutMs": 600000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793626951806-337bb5c59b71f85e.json"
+        }
+      },
+      {
+        "label": "candidate",
+        "cwd": "/Users/ilyagulya/Projects/My/bend",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+          "js",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g54-usage-1f3i4hpl/quick-6-candidate-request.json",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g54-usage-1f3i4hpl/quick-6-candidate.json"
+        ],
+        "requestSha256": "9c820aa646bf5e0e2bce92807555c65b5cd7a82fd5a6aa6cbd0e3195140f172f",
+        "status": "PASS",
+        "checker": {
+          "phase": "check",
+          "elapsedMs": 10754.133875,
+          "userCpuMs": 13053.304,
+          "systemCpuMs": 247.291,
+          "memoryEnd": {
+            "rss": 783564800,
+            "heapTotal": 509853696,
+            "heapUsed": 369723472,
+            "external": 10493131,
+            "arrayBuffers": 25039
+          }
+        },
+        "pipelineElapsedMs": 11804.145458,
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 12074,
+          "peakRssBytes": 784990208,
+          "peakFootprintBytes": 778975008,
+          "timeoutMs": 600000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793626964072-1c3d5ee46aeab2d4.json"
+        }
+      }
+    ]
+  },
+  "coverageDiagnostic": {
+    "method": "NODE_V8_COVERAGE built-in VM function/block coverage; distinct body entry only, never sum _c resume closure factories",
+    "references": [
+      "https://nodejs.org/download/release/v23.11.0/docs/api/cli.html#node_v8_coveragedir",
+      "https://v8.dev/blog/javascript-code-coverage"
+    ],
+    "sourceCounters": [
+      {
+        "source": "infer",
+        "baselineCalls": 49766,
+        "candidateCalls": 49713
+      },
+      {
+        "source": "infer_raw",
+        "baselineCalls": 49766,
+        "candidateCalls": 49713
+      },
+      {
+        "source": "check_term",
+        "baselineCalls": 41234,
+        "candidateCalls": 41149
+      },
+      {
+        "source": "usage_value_type",
+        "baselineCalls": 3490,
+        "candidateCalls": 3476
+      },
+      {
+        "source": "usage_annotation_type",
+        "baselineCalls": 68,
+        "candidateCalls": 68
+      },
+      {
+        "source": "usage_value_type_projected",
+        "baselineCalls": 2638,
+        "candidateCalls": 2638
+      },
+      {
+        "source": "usage_local_value_type",
+        "baselineCalls": null,
+        "candidateCalls": 3490
+      },
+      {
+        "source": "usage_local_env",
+        "baselineCalls": 6971,
+        "candidateCalls": 6971
+      },
+      {
+        "source": "usage_application_view",
+        "baselineCalls": null,
+        "candidateCalls": 18540
+      },
+      {
+        "source": "usage_projectable_spine",
+        "baselineCalls": null,
+        "candidateCalls": 917
+      },
+      {
+        "source": "term_usage_map",
+        "baselineCalls": 80424,
+        "candidateCalls": 80424
+      },
+      {
+        "source": "binder_usage_map",
+        "baselineCalls": 3319,
+        "candidateCalls": 3319
+      },
+      {
+        "source": "validate_definition_uses",
+        "baselineCalls": 726,
+        "candidateCalls": 726
+      },
+      {
+        "source": "function_application_view",
+        "baselineCalls": 18540,
+        "candidateCalls": 18064
+      },
+      {
+        "source": "function_type_of",
+        "baselineCalls": 44100,
+        "candidateCalls": 43183
+      },
+      {
+        "source": "usage_occurrence_child",
+        "baselineCalls": null,
+        "candidateCalls": 39407
+      },
+      {
+        "source": "usage_application_view",
+        "baselineCalls": null,
+        "candidateCalls": 18540
+      },
+      {
+        "source": "usage_projectable_spine",
+        "baselineCalls": null,
+        "candidateCalls": 917
+      }
+    ],
+    "baselineDirectRepeatedInferRequestsAtLeast": 830,
+    "baselineProjectionQueriesWithoutFallback": 2638,
+    "typeQueriesAvoided": 14,
+    "totalInferEntryDifference": -53,
+    "notCpuShares": true,
+    "timingsExcludedFromThroughput": true,
+    "noImagePatchesOrHiddenRunInspection": true,
+    "baseline": {
+      "command": [
+        "/usr/bin/env",
+        "NODE_V8_COVERAGE=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g54-usage-1f3i4hpl/baseline-v8-coverage",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+        "js",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g54-usage-1f3i4hpl/mini-baseline-profile-request.json",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g54-usage-1f3i4hpl/mini-baseline-coverage.json"
+      ],
+      "cwd": "/Users/ilyagulya/Projects/My/bend",
+      "request": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g54-usage-1f3i4hpl/mini-baseline-profile-request.json",
+      "requestSha256": "909416fd74950420243a403806c606ff04170d23fd49551f839a5fa95a3b94fb",
+      "v8File": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g54-usage-1f3i4hpl/baseline-v8-coverage/coverage-57804-1793624576277-1.json",
+      "v8FileSha256": "a614d5297f68cfeb20f9e146c3b3fdb2b5516e5c0453256a1929a49232955738",
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "elapsedMs": 35505,
+        "peakRssBytes": 793280512,
+        "peakFootprintBytes": 785789816,
+        "timeoutMs": 600000,
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592,
+        "ownedTreeStopped": true,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793624540847-143785b9bde2abb6.json"
+      }
+    },
+    "candidate": {
+      "command": [
+        "/usr/bin/env",
+        "NODE_V8_COVERAGE=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g54-usage-1f3i4hpl/candidate-v8-coverage",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+        "js",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g54-usage-1f3i4hpl/mini-candidate-coverage-request.json",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g54-usage-1f3i4hpl/mini-candidate-coverage.json"
+      ],
+      "cwd": "/Users/ilyagulya/Projects/My/bend",
+      "request": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g54-usage-1f3i4hpl/mini-candidate-coverage-request.json",
+      "requestSha256": "9c820aa646bf5e0e2bce92807555c65b5cd7a82fd5a6aa6cbd0e3195140f172f",
+      "v8File": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g54-usage-1f3i4hpl/candidate-v8-coverage/coverage-22339-1793627088771-1.json",
+      "v8FileSha256": "cfd690213777fce0b2bcb5ccaaeecdce7f267ac15243479e84db6811c36c2078",
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "elapsedMs": 41010,
+        "peakRssBytes": 760610816,
+        "peakFootprintBytes": 801552136,
+        "timeoutMs": 600000,
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592,
+        "ownedTreeStopped": true,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793627047823-cc6fa6a04f68d0ae.json"
+      }
+    }
+  },
+  "sourceNamedCpuLimitation": "CPS physical self samples are not semantic/transitive usage costs or a savings ceiling; VM coverage runs are diagnostic and excluded from throughput.",
+  "durableRegressions": {
+    "integrationCommit": "a3e4ffd3",
+    "file": "evals/checker_core_target_gate.ts",
+    "sha256": "8ef992f1a2b9c7daa11aaa652f76db11be5c1450aa4628956e8a0a3f44f9fc98",
+    "oldCasesRetained": 27,
+    "newBehavioralCases": 18,
+    "totalExercisedCases": 135,
+    "protocol": "each image own parser -> public checker -> owning CheckedProgram -> public emitter -> actual unchanged emitted-JS execution; negative usage cases preserve actual file/beg/end",
+    "runs": [
+      {
+        "label": "baseline",
+        "cwd": "/Users/ilyagulya/Projects/My/bend",
+        "command": [
+          "/usr/bin/env",
+          "PATH=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools:/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/cmux-cli-shims/1AE884FF-4153-438F-922A-7660D416EB20:/Applications/cmux.app/Contents/Resources/bin:/Users/ilyagulya/.antigravity/antigravity/bin:/opt/homebrew/opt/mysql-client/bin:/opt/homebrew/opt/binutils/bin:/Users/ilyagulya/.depot_tools:/opt/homebrew/opt/whois/bin:/Users/ilyagulya/go/bin:/opt/homebrew/opt/curl/bin:/Users/ilyagulya/Library/pnpm:/Users/ilyagulya/.opam/default/bin:/Users/ilyagulya/.bun/bin:/Users/ilyagulya/.local/bin:/Users/ilyagulya/.local/bin:/Users/ilyagulya/fvm/default/bin:/opt/homebrew/opt/ruby/bin:/Users/ilyagulya/.elan/bin:/Library/Frameworks/Python.framework/Versions/3.12/bin:/opt/homebrew/share/google-cloud-sdk/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/pkg/env/global/bin:/opt/X11/bin:/Library/Apple/usr/bin:/Applications/Wireshark.app/Contents/MacOS:/Applications/VMware Fusion.app/Contents/Public:/opt/homebrew/bin:/Users/ilyagulya/.cargo/bin:/Users/ilyagulya/Library/Application Support/JetBrains/Toolbox/scripts:/Users/ilyagulya/.orbstack/bin:/Users/ilyagulya/Library/Android/sdk/platform-tools:/Users/ilyagulya/Library/Android/sdk/build-tools/34.0.0:/Users/ilyagulya/Library/Android/sdk/tools/proguard/bin:/Users/ilyagulya/Library/Android/sdk/emulator:/Users/ilyagulya/Library/Android/sdk/cmdline-tools/latest/bin:/Users/ilyagulya/.spoof-dpi/bin:/Users/ilyagulya/.pub-cache/bin:/Users/ilyagulya/Library/Android/sdk/ndk/26.3.11579264:/Users/ilyagulya/.lmstudio/bin:/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g54-usage-1f3i4hpl/repository/evals/checker_core_target_gate.ts",
+          "--component=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g50-combined-jb80lebe/fast-image/oracle.mjs",
+          "--parser=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g50-combined-jb80lebe/fast-image/oracle.mjs",
+          "--report=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g54-usage-1f3i4hpl/durable-baseline-targets.json"
+        ],
+        "report": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g54-usage-1f3i4hpl/durable-baseline-targets.json",
+        "passed": true,
+        "finished": true,
+        "cases": 45,
+        "accepted": 23,
+        "image": {
+          "component": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g50-combined-jb80lebe/fast-image/oracle.mjs",
+          "sha256": "003dca748437a25dcdc834d11690d543e2a41e101444d086fcea40685382855e",
+          "parser": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g50-combined-jb80lebe/fast-image/oracle.mjs",
+          "parserSha256": "003dca748437a25dcdc834d11690d543e2a41e101444d086fcea40685382855e"
+        },
+        "limits": {
+          "memoryMiB": 8192,
+          "rssMiB": 8192,
+          "pollMs": 10,
+          "workerStackMiB": 256,
+          "parserFuel": 2000000,
+          "maxHeavyChildren": 1
+        },
+        "summedCaseGuardianMs": 20279,
+        "maximumCaseRssBytes": 410435584,
+        "maximumCaseFootprintBytes": 399748152
+      },
+      {
+        "label": "candidate",
+        "cwd": "/Users/ilyagulya/Projects/My/bend",
+        "command": [
+          "/usr/bin/env",
+          "PATH=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools:/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/cmux-cli-shims/1AE884FF-4153-438F-922A-7660D416EB20:/Applications/cmux.app/Contents/Resources/bin:/Users/ilyagulya/.antigravity/antigravity/bin:/opt/homebrew/opt/mysql-client/bin:/opt/homebrew/opt/binutils/bin:/Users/ilyagulya/.depot_tools:/opt/homebrew/opt/whois/bin:/Users/ilyagulya/go/bin:/opt/homebrew/opt/curl/bin:/Users/ilyagulya/Library/pnpm:/Users/ilyagulya/.opam/default/bin:/Users/ilyagulya/.bun/bin:/Users/ilyagulya/.local/bin:/Users/ilyagulya/.local/bin:/Users/ilyagulya/fvm/default/bin:/opt/homebrew/opt/ruby/bin:/Users/ilyagulya/.elan/bin:/Library/Frameworks/Python.framework/Versions/3.12/bin:/opt/homebrew/share/google-cloud-sdk/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/pkg/env/global/bin:/opt/X11/bin:/Library/Apple/usr/bin:/Applications/Wireshark.app/Contents/MacOS:/Applications/VMware Fusion.app/Contents/Public:/opt/homebrew/bin:/Users/ilyagulya/.cargo/bin:/Users/ilyagulya/Library/Application Support/JetBrains/Toolbox/scripts:/Users/ilyagulya/.orbstack/bin:/Users/ilyagulya/Library/Android/sdk/platform-tools:/Users/ilyagulya/Library/Android/sdk/build-tools/34.0.0:/Users/ilyagulya/Library/Android/sdk/tools/proguard/bin:/Users/ilyagulya/Library/Android/sdk/emulator:/Users/ilyagulya/Library/Android/sdk/cmdline-tools/latest/bin:/Users/ilyagulya/.spoof-dpi/bin:/Users/ilyagulya/.pub-cache/bin:/Users/ilyagulya/Library/Android/sdk/ndk/26.3.11579264:/Users/ilyagulya/.lmstudio/bin:/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g54-usage-1f3i4hpl/repository/evals/checker_core_target_gate.ts",
+          "--component=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g54-usage-1f3i4hpl/fast-image/oracle.mjs",
+          "--parser=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g54-usage-1f3i4hpl/fast-image/oracle.mjs",
+          "--report=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g54-usage-1f3i4hpl/durable-candidate-targets.json"
+        ],
+        "report": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g54-usage-1f3i4hpl/durable-candidate-targets.json",
+        "passed": true,
+        "finished": true,
+        "cases": 45,
+        "accepted": 23,
+        "image": {
+          "component": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g54-usage-1f3i4hpl/fast-image/oracle.mjs",
+          "sha256": "b8f615f1f3b26ce1dc06b0b246317fc0d03b457f0edca5351e7bf7ce354464fa",
+          "parser": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g54-usage-1f3i4hpl/fast-image/oracle.mjs",
+          "parserSha256": "b8f615f1f3b26ce1dc06b0b246317fc0d03b457f0edca5351e7bf7ce354464fa"
+        },
+        "limits": {
+          "memoryMiB": 8192,
+          "rssMiB": 8192,
+          "pollMs": 10,
+          "workerStackMiB": 256,
+          "parserFuel": 2000000,
+          "maxHeavyChildren": 1
+        },
+        "summedCaseGuardianMs": 19319,
+        "maximumCaseRssBytes": 410845184,
+        "maximumCaseFootprintBytes": 399813616
+      },
+      {
+        "label": "integrated-native-produced-G50-control",
+        "cwd": "/Users/ilyagulya/Projects/My/bend",
+        "command": [
+          "env",
+          "PATH=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools:/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/cmux-cli-shims/1AE884FF-4153-438F-922A-7660D416EB20:/Applications/cmux.app/Contents/Resources/bin:/Users/ilyagulya/.antigravity/antigravity/bin:/opt/homebrew/opt/mysql-client/bin:/opt/homebrew/opt/binutils/bin:/Users/ilyagulya/.depot_tools:/opt/homebrew/opt/whois/bin:/Users/ilyagulya/go/bin:/opt/homebrew/opt/curl/bin:/Users/ilyagulya/Library/pnpm:/Users/ilyagulya/.opam/default/bin:/Users/ilyagulya/.bun/bin:/Users/ilyagulya/.local/bin:/Users/ilyagulya/.local/bin:/Users/ilyagulya/fvm/default/bin:/opt/homebrew/opt/ruby/bin:/Users/ilyagulya/.elan/bin:/Library/Frameworks/Python.framework/Versions/3.12/bin:/opt/homebrew/share/google-cloud-sdk/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/pkg/env/global/bin:/opt/X11/bin:/Library/Apple/usr/bin:/Applications/Wireshark.app/Contents/MacOS:/Applications/VMware Fusion.app/Contents/Public:/opt/homebrew/bin:/Users/ilyagulya/.cargo/bin:/Users/ilyagulya/Library/Application Support/JetBrains/Toolbox/scripts:/Users/ilyagulya/.orbstack/bin:/Users/ilyagulya/Library/Android/sdk/platform-tools:/Users/ilyagulya/Library/Android/sdk/build-tools/34.0.0:/Users/ilyagulya/Library/Android/sdk/tools/proguard/bin:/Users/ilyagulya/Library/Android/sdk/emulator:/Users/ilyagulya/Library/Android/sdk/cmdline-tools/latest/bin:/Users/ilyagulya/.spoof-dpi/bin:/Users/ilyagulya/.pub-cache/bin:/Users/ilyagulya/Library/Android/sdk/ndk/26.3.11579264:/Users/ilyagulya/.lmstudio/bin:/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/checker_core_target_gate.ts",
+          "--component=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g50-combined-native-v2.json.mjs",
+          "--parser=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g50-combined-native-v2.json.mjs",
+          "--report=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g54-usage-1f3i4hpl/integrated-native-control-targets.json"
+        ],
+        "report": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g54-usage-1f3i4hpl/integrated-native-control-targets.json",
+        "passed": true,
+        "finished": true,
+        "cases": 45,
+        "accepted": 23,
+        "image": {
+          "component": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g50-combined-native-v2.json.mjs",
+          "sha256": "273b0022813e17908020c0ee58fd4e02da4f3dc756ce58e3389093440863c3fe",
+          "parser": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g50-combined-native-v2.json.mjs",
+          "parserSha256": "273b0022813e17908020c0ee58fd4e02da4f3dc756ce58e3389093440863c3fe"
+        },
+        "limits": {
+          "memoryMiB": 8192,
+          "rssMiB": 8192,
+          "pollMs": 10,
+          "workerStackMiB": 256,
+          "parserFuel": 2000000,
+          "maxHeavyChildren": 1
+        },
+        "summedCaseGuardianMs": 41204,
+        "maximumCaseRssBytes": 756285440,
+        "maximumCaseFootprintBytes": 605928608
+      }
+    ]
+  },
+  "representativeEmission": {
+    "status": "PASS_BYTE_IDENTICAL_TO_G51_CONTROL",
+    "command": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+      "--memory-mib=8192",
+      "--rss-mib=8192",
+      "--poll-ms=10",
+      "--timeout-ms=60000",
+      "--",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "--experimental-strip-types",
+      "/Users/ilyagulya/Projects/My/bend/evals/candidate_consumer_worker.mjs",
+      "/Users/ilyagulya/Projects/My/bend/evals/candidate_host.ts",
+      "--candidate-oracle=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g54-usage-1f3i4hpl/fast-image/receipt.json",
+      "--candidate=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g54-usage-1f3i4hpl/fast-image/oracle.mjs",
+      "--parser=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g54-usage-1f3i4hpl/fast-image/oracle.mjs",
+      "--library",
+      "--exports=expand_modules_start,template_step",
+      "--stage-profile=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g54-usage-1f3i4hpl/template-witness-stages",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g50-combined-jb80lebe/repository/checkpoints/template_steps_component_v1.bend",
+      "-o",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g54-usage-1f3i4hpl/template-component-witness.mjs",
+      "--base=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g50-combined-jb80lebe/repository/bend2/base.bend"
+    ],
+    "cwd": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g50-combined-jb80lebe/repository",
+    "output": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g54-usage-1f3i4hpl/template-component-witness.mjs",
+    "bytes": 1903750,
+    "sha256": "1b15bafad32a9847e86bfc4a2e78add5ea62a18ccd593a97e072406937dd3326",
+    "guardian": {
+      "status": "PASS",
+      "elapsedMs": 22470,
+      "peakRssBytes": 1885896704,
+      "peakFootprintBytes": 2011010576
+    },
+    "selfhostFixedpoint": false,
+    "modules": 8,
+    "foreignFiles": 58,
+    "inputDistinction": "This candidate_host smoke uses its normal full foreign discovery (58 foreign files), not the checker-only corpus's 35 selected JS alternatives. Its exact output is compared with the same existing G51 smoke control."
+  },
+  "rejectedSetups": [
+    {
+      "name": "bare CLI expanded AST checker fixture",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+        "--memory-mib=8192",
+        "--rss-mib=8192",
+        "--poll-ms=10",
+        "--timeout-ms=60000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g54-control-6e2260mm/repository/bend2/main.ts",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g54-control-6e2260mm/repository/tests/selfhost/checker.bend",
+        "-o",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g54-usage-1f3i4hpl/checker-regression-baseline.js"
+      ],
+      "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g54-control-6e2260mm/repository",
+      "status": "FAILED_UNCHANGED_BASELINE_BEFORE_CANDIDATE",
+      "observed": "template.bend:335: match String.eq(owner, namespace): a parameter or field scrutinee required; computed match forbidden",
+      "candidateAndProgramExecution": "NOT_RUN; no claim that the old 60-line expected fixture passed",
+      "resolution": "G54 AST additions removed from candidate; 18 real source cases moved into the existing public-ABI gate; no Template or validation policy changes"
+    },
+    {
+      "name": "covered local alias duplicate expected rejection",
+      "status": "BASELINE_EXPECTATION_MISMATCH",
+      "observed": "immutable G50 accepted value=v followed by Pair{value,value} in a covered row",
+      "resolution": "No new acceptance pin or forced rejection. Covered-local negatives retain direct outer-v use and unused dummy local."
+    }
+  ],
+  "notRun": [
+    "full-source candidate native image production",
+    "full own-JS compiler-root comparison",
+    "byte fixedpoint",
+    "original scheduler and product-wide matrices",
+    "strict12"
+  ],
+  "decision": "Reject the source optimization: same quick workload checker median +3.7469367545%, pipeline +3.5544933528%; original traversal remains while exact safe reuse is sparse. Counts are not CPU attribution. Do not pay for full/native qualification after this negative screen. Keep regression tests and measured source checkpoints; accepted G24R12 unchanged.",
+  "nextArchitecturalConstraint": "A larger fusion must retain original source usage obligations before FIR drops covered rows; occurrence-only walking is not semantics-preserving. This experiment does not establish the CPU share or performance of that unimplemented architecture.",
+  "artifactPolicy": "Images, AST transports, caches, coverage/profiles, native binaries and bulk logs outside Git. Source and required generated Bend inputs committed before execution; compact receipts retained."
+}

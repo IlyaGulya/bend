@@ -1795,3 +1795,47 @@ accepted-baseline throughput remain separate gates. Accepted G24R12 is unchanged
 The own-JS-book run spends88.81% in checking (291167.482ms of327871.230ms);
 that is the observed larger build bottleneck, not fragment assembly.
 
+
+### G54: checked usage facts preserve behavior but lose the quick screen
+
+The isolated `selfhost/g54-usage-witness` experiment keeps the original source
+usage walk, including covered match rows omitted from materialized occurrences.
+Only exact same-invocation local value types and source-aligned application
+heads may reuse checked facts; scope-changing or rewritten paths retain the old
+lookup. No occurrence-only replacement, global cache or runtime/ABI change.
+
+Six fresh checker-only processes used the frozen G51 real-source mini corpus,
+in baseline/candidate/candidate/baseline/baseline/candidate order:
+
+| Measurement | G50 control | G54 reuse |
+| --- | ---: | ---: |
+| Median checker ms | 10365.736292 | 10754.133875 |
+| Median parse/expand/check pipeline ms | 11398.969833 | 11804.145458 |
+| Public checker chunks | 466660 | 467698 |
+| Sampled maximum footprint B | 768308256 | 778975008 |
+
+**Rejected for promotion:** checker +3.75%, pipeline +3.55%; not a speedup.
+Separate built-in V8 coverage diagnostics observed infer calls49766→49713
+and usage type queries3490→3476, while all80424 source usage visits remain.
+New application guards ran18540 times and child-alignment lookups39407 times.
+These are exact entry counts, not a CPU-share or attainable-speedup estimate;
+coverage-instrumented timings are excluded from the throughput comparison.
+
+The existing public-ABI target gate retains its27 cases and adds18 behavioral
+regressions for covered rows, quantities, annotations and dependent local scopes.
+All45 passed on each canonical control/candidate image, and all45 passed again
+through the integrated gate using the genuine native-produced G50 control.
+Actual parser/checker/emitter execution and returned-JS output are exercised;
+negative usage cases preserve original file and spans. The small fixture gate
+still uses2M parser fuel; throughput uses the unchanged8M/module policy.
+Representative mini emission also retained1903750B/SHA256
+`1b15bafad32a9847e86bfc4a2e78add5ea62a18ccd593a97e072406937dd3326`.
+
+The losing candidate did not enter full-root native production or fixedpoint
+qualification. Original8GiB RSS/footprint,10ms polling,256MiB worker stack,
+ABI13 and quantum64 remain unchanged; accepted G24R12 is untouched.
+Only the durable regression gate and compact evidence are integrated.
+Exact commands, runtime, limits, counters and rejected setup attempts:
+`checkpoints/local2039g54-summary.json`; experiment details:
+`checkpoints/local2039g54-usage-measured.json` on the isolated source branch.
+

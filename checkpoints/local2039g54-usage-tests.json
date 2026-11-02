@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "version": "G54-usage-witness-target-regressions",
-  "status": "TEST_ONLY_SOURCE_COMMITTED_BEFORE_EXECUTION",
+  "status": "PASS_45_CONTROL_45_CANDIDATE_45_INTEGRATED_NATIVE_CONTROL",
   "sourceAlgorithmCommit": "4c6a8156",
   "parentGeneratedSourceCheckpoint": "4399c3a7",
   "acceptanceEvidence": false,
@@ -31,7 +31,7 @@
       {"name": "covered-local-outer-erased", "accepted": false, "span": [110, 116]}
     ]
   },
-  "additionalCasesUnexecuted": [
+  "additionalCasesExecutedInBothImages": [
     "usage-curried-single",
     "usage-curried-duplicate",
     "usage-annotation-single",
@@ -44,7 +44,7 @@
   ],
   "assertionPolicy": "Real parser source -> checker public ABI -> owning CheckedProgram -> emitter public ABI -> execution of unchanged emitted JS for accepted cases. Rejections assert actual CheckFailure and original source file/beg/end; no new diagnostic prose assertions, AST stubs, mocks, output patches or wrapper protocol. Existing identity assertions remain intact.",
   "excludedCounterexample": "Covered local value=v followed by Pair{value,value} is accepted by the immutable baseline. No test pins that incidental acceptance or changes policy to force rejection. Covered-local negatives use an unused dummy and direct outer-v uses instead.",
-  "parentGateCommand": "bun --smol evals/checker_core_target_gate.ts --component=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g54-usage-1f3i4hpl/fast-image/oracle.mjs --parser=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g50-combined-native-v2.json.mjs --report=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g54-usage-1f3i4hpl/usage-target-gate.json",
-  "verification": {"tests": "not run", "builds": "not run", "generators": "not run", "benchmarks": "not run", "evidence": "source and frozen parent request/result inspection; SHA-256 recording only"},
+  "verificationReceipts": ["selfhost/integration:checkpoints/local2039g54-summary.json", "selfhost/g54-usage-witness:checkpoints/local2039g54-usage-measured.json"],
+  "verification": {"tests": "45/45 canonical G50 control, 45/45 canonical G54 candidate, 45/45 integrated gate on genuine native-produced G50 control; each image uses its own parser. Exact commands and per-case outcomes are in verificationReceipts.", "builds": "No new build for the regression-only integration; canonical candidate image production recorded separately.", "generators": "No regeneration for test-only migration.", "benchmarks": "Separate unprofiled six-process quick screen; not fixture gate timings.", "evidence": "Actual source parser/checker/emitter and unchanged returned-JS execution for accepted cases; actual CheckFailure and original source file/beg/end for new negatives. Small fixtures retain 2M parser fuel, not full 8M qualification."},
   "preservedParentWork": "Preexisting modified generated checkpoint files were neither edited nor staged. No source-algorithm file was edited. Parent runtime measurements using the existing image are unaffected by these test-only changes."
 }
