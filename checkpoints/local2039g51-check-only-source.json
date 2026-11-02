@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1,
+  "status": "SOURCE_CHECKPOINT_UNEXERCISED_CHECK_ONLY_MODE",
+  "version": "G51-fast-check-driver",
+  "sourceSha256": "1a806befee02216a9499f6b4dcde7e2326e01f0a5b96bbd36b75295344c50317",
+  "frozenCorpusSha256": "2a553a408e17dc6972ec3089d2c235eee1a662982b0a7e165942c642e64b0edd",
+  "contract": "Optional request.stopAfter=check only for JS public-ABI component; retains fresh own8M parsing, expansion, complete checker, ABI13 and8GiB guard. Cannot request emitted-output equality; no emitted output or acceptance claim. Default compile path unchanged."
+}

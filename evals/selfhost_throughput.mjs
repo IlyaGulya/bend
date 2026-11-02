@@ -26,14 +26,18 @@ function requestAt(path){
   const request=JSON.parse(readFileSync(path,'utf8'));
   if(request.schemaVersion!==1||!request.pins||!request.inputs||JSON.stringify(request.exports)!==JSON.stringify(ABI))throw Error('Invalid throughput request');
   if(request.limits?.memoryMiB!==8192||request.limits?.rssMiB!==8192||request.limits?.timeoutMs!==600000)throw Error('Throughput guard must retain original limits');
+  if(!['check','compile'].includes(request.stopAfter??'compile'))throw Error('Invalid throughput stopAfter');
+  if(request.stopAfter==='check'&&request.expectedSelfhostOutput!==undefined)throw Error('Check-only runs cannot claim emitted output equality');
   verify(request.pins);verify(request.inputs);
   return request;
 }
 async function run(mode,requestPath,requestSha256,reportPath){
   if(hash(requestPath)!==requestSha256)throw Error('Throughput request drift');
   const request=requestAt(requestPath),output=reportPath+'.output.mjs';
+  if(request.stopAfter==='check'&&mode!=='js')throw Error('Check-only mode requires the actual JS component pipeline');
   if(existsSync(output))throw Error('Output path already exists');
   const report={schemaVersion:1,status:'RUNNING',diagnosticOnly:true,acceptanceEvidence:false,mode,request:requestPath,requestSha256,source:request.root,sourceSha256:hash(request.root),runtime:{execPath:process.execPath,versions:process.versions,execArgv:process.execArgv,heapLimitBytes:getHeapStatistics().heap_size_limit},limits:request.limits,workerPolicy:{stackMiB:256,oldGenerationMiB:6144,youngGenerationMiB:128},exports:ABI,phases:[],checksExcluded:0,outputPatches:0};
+  report.stopAfter=request.stopAfter??'compile';
   const started=performance.now();save(reportPath,report);
   const profileDirectory=process.env.SELFHOST_CPU_PROFILE_DIR;
   const profiler=profileDirectory?createCpuProfiler(profileDirectory,{mode,root:request.root,image:request.image,request:requestPath,requestSha256}):undefined;
@@ -99,15 +103,19 @@ async function run(mode,requestPath,requestSha256,reportPath){
       if(tag(expanded)!=='ExpandSuccess')throw Error('Own expansion failed');
       let checked=await phase('check',()=>runCheckerSteps({...api,check_expanded_start:input=>{expanded=undefined;return api.check_expanded_start(input);}},expanded.modules,{onFinish(_,steps){stepCounts.check=steps;}}));
       if(tag(checked)!=='CheckSuccess')throw Error('Own checking failed');
-      const carrier=sourceFileTagFromRoot(readFileSync(request.root,'utf8'),'selfhost');
-      const emitted=await phase('emit',()=>runLibraryEmitterSteps({...api,emit_library_start:(program,names,sources)=>{checked=undefined;return api.emit_library_start(program,names,sources);}},checked.program,list(ABI),sourceFiles(files,carrier),{onFinish(_,steps){stepCounts.emit=steps;}}));
-      if(tag(emitted)!=='EmitSuccess')throw Error('Own emission failed');source=emitted.source;
+      if(request.stopAfter!=='check'){
+        const carrier=sourceFileTagFromRoot(readFileSync(request.root,'utf8'),'selfhost');
+        const emitted=await phase('emit',()=>runLibraryEmitterSteps({...api,emit_library_start:(program,names,sources)=>{checked=undefined;return api.emit_library_start(program,names,sources);}},checked.program,list(ABI),sourceFiles(files,carrier),{onFinish(_,steps){stepCounts.emit=steps;}}));
+        if(tag(emitted)!=='EmitSuccess')throw Error('Own emission failed');source=emitted.source;
+      }
       report.stepCounts=stepCounts;report.phaseCpuScope='Node process-wide CPU; includes worker/helper threads, excludes child processes';
     }else throw Error('Unknown throughput mode: '+mode);
     report.pipelineElapsedMs=performance.now()-started;
     if(source!==undefined){writeFileSync(output,source,{flag:'wx'});source=undefined;}
-    report.output={path:output,bytes:readFileSync(output).length,sha256:hash(output)};
-    if(mode!=='ts'&&request.expectedSelfhostOutput&&report.output.sha256!==request.expectedSelfhostOutput)throw Error('Unchanged G21 output bytes differ');
+    if(request.stopAfter!=='check'){
+      report.output={path:output,bytes:readFileSync(output).length,sha256:hash(output)};
+      if(mode!=='ts'&&request.expectedSelfhostOutput&&report.output.sha256!==request.expectedSelfhostOutput)throw Error('Unchanged G21 output bytes differ');
+    }
     verify(request.pins);verify(request.inputs);
     report.status='PASS';
   }catch(error){profileError=error;report.status='FAIL';report.error=String(error);report.stack=error?.stack;process.exitCode=1;}
