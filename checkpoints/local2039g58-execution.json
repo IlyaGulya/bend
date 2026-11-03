@@ -1,0 +1,280 @@
+{
+  "schemaVersion": 1,
+  "version": "G58 frozen actual execution",
+  "status": "CORRECTNESS_PASSED_BEFORE_FIRST_TIMING",
+  "protocol": {
+    "path": "checkpoints/local2039g58-protocol.json",
+    "sha256": "99f0d746743cf4ee2222383c2626a84bcd809ff647083fa59513987947015867"
+  },
+  "exactSchedule": [
+    {
+      "candidate": "G58A",
+      "pair": 1,
+      "role": "baseline",
+      "order": [
+        "baseline",
+        "variant"
+      ],
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/selfhost_corpus_run.ts",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/main-complete.corpus.json",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g50-combined-native-v2.json.mjs",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g50-combined-native-v2.json",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/screen-g58a-p1-baseline"
+      ],
+      "expectedReport": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/screen-g58a-p1-baseline/report.json",
+      "status": "NOT_STARTED"
+    },
+    {
+      "candidate": "G58A",
+      "pair": 1,
+      "role": "variant",
+      "order": [
+        "baseline",
+        "variant"
+      ],
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/selfhost_corpus_run.ts",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/main-complete.corpus.json",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/g58a-native-v2-producer.json.mjs",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/g58a-native-v2-producer.json",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/screen-g58a-p1-variant"
+      ],
+      "expectedReport": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/screen-g58a-p1-variant/report.json",
+      "status": "NOT_STARTED"
+    },
+    {
+      "candidate": "G58B",
+      "pair": 1,
+      "role": "variant",
+      "order": [
+        "variant",
+        "baseline"
+      ],
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/selfhost_corpus_run.ts",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/main-complete.corpus.json",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/g58b-native-producer-v2.json.mjs",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/g58b-native-producer-v2.json",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/screen-g58b-p1-variant"
+      ],
+      "expectedReport": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/screen-g58b-p1-variant/report.json",
+      "status": "NOT_STARTED"
+    },
+    {
+      "candidate": "G58B",
+      "pair": 1,
+      "role": "baseline",
+      "order": [
+        "variant",
+        "baseline"
+      ],
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/selfhost_corpus_run.ts",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/main-complete.corpus.json",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g50-combined-native-v2.json.mjs",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g50-combined-native-v2.json",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/screen-g58b-p1-baseline"
+      ],
+      "expectedReport": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/screen-g58b-p1-baseline/report.json",
+      "status": "NOT_STARTED"
+    },
+    {
+      "candidate": "G58A",
+      "pair": 2,
+      "role": "variant",
+      "order": [
+        "variant",
+        "baseline"
+      ],
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/selfhost_corpus_run.ts",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/main-complete.corpus.json",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/g58a-native-v2-producer.json.mjs",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/g58a-native-v2-producer.json",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/screen-g58a-p2-variant"
+      ],
+      "expectedReport": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/screen-g58a-p2-variant/report.json",
+      "status": "NOT_STARTED"
+    },
+    {
+      "candidate": "G58A",
+      "pair": 2,
+      "role": "baseline",
+      "order": [
+        "variant",
+        "baseline"
+      ],
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/selfhost_corpus_run.ts",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/main-complete.corpus.json",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g50-combined-native-v2.json.mjs",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g50-combined-native-v2.json",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/screen-g58a-p2-baseline"
+      ],
+      "expectedReport": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/screen-g58a-p2-baseline/report.json",
+      "status": "NOT_STARTED"
+    },
+    {
+      "candidate": "G58B",
+      "pair": 2,
+      "role": "baseline",
+      "order": [
+        "baseline",
+        "variant"
+      ],
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/selfhost_corpus_run.ts",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/main-complete.corpus.json",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g50-combined-native-v2.json.mjs",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g50-combined-native-v2.json",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/screen-g58b-p2-baseline"
+      ],
+      "expectedReport": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/screen-g58b-p2-baseline/report.json",
+      "status": "NOT_STARTED"
+    },
+    {
+      "candidate": "G58B",
+      "pair": 2,
+      "role": "variant",
+      "order": [
+        "baseline",
+        "variant"
+      ],
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/selfhost_corpus_run.ts",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/main-complete.corpus.json",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/g58b-native-producer-v2.json.mjs",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/g58b-native-producer-v2.json",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/screen-g58b-p2-variant"
+      ],
+      "expectedReport": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/screen-g58b-p2-variant/report.json",
+      "status": "NOT_STARTED"
+    }
+  ],
+  "sourceWorld": "Same53 original G50 relative paths; G58A changes canonical arena only; G58B changes generated checker source only. Evaluation corpora never changed.",
+  "sourceCheckpoints": {
+    "baseline": "19d1f046",
+    "G58A": "4b8c4fc0/4a93c85d; regression94a17465",
+    "G58B": "d1dcbe23/553f687d/df53bbe5; native coordinatef6febc30"
+  },
+  "evaluation": {
+    "screen": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/main-complete.corpus.json",
+      "sha256": "1a269e15bf70257b019ab572c003b6eb130b4e3f63ad507783525e28d307b0e4"
+    },
+    "full": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/full-frozen.corpus.json",
+      "sha256": "60bf820e76a9c336e58c848eec6a40b3f8fbb4b7ac2ae45ffd1abdb1d217ebc6"
+    }
+  },
+  "images": {
+    "G50": {
+      "image": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g50-combined-native-v2.json.mjs",
+        "sha256": "273b0022813e17908020c0ee58fd4e02da4f3dc756ce58e3389093440863c3fe"
+      },
+      "producer": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g50-combined-native-v2.json",
+        "sha256": "255477ed64fc5c3040b64b0e8bd6cd6128ffb1ad147725b3ffe2d1dd9f8453bc"
+      }
+    },
+    "G58A": {
+      "image": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/g58a-native-v2-producer.json.mjs",
+        "sha256": "ed272e1ce0af509669d0b34d8add837ed366979f5b946430600e5d88e26b9132"
+      },
+      "producer": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/g58a-native-v2-producer.json",
+        "sha256": "2264c667120dfcc2e3b5ca75704bbcab1ddeb0bfa25334d65dbc4aa57920f2f2"
+      },
+      "sourceManifest": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/g58a-native-v2.corpus.json",
+        "sha256": "97eb70f76a7f1b68610019b6cd0248aec8093234a39529493a3a08c72dc24c72"
+      }
+    },
+    "G58B": {
+      "image": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/g58b-native-producer-v2.json.mjs",
+        "sha256": "e6f1c2ed6a33779dd3b7eb05d044294bc104c0c0c7917873e093fd35d0026a2b"
+      },
+      "producer": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/g58b-native-producer-v2.json",
+        "sha256": "6f994bb7cec17872c0f35cc9ab0b01677dd98f544c58ba3160c84be2ba8e5138"
+      },
+      "sourceManifest": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/g58b-native.corpus.json",
+        "sha256": "3ed4d970d14d3bd311310b3b513daddbec8069464e017ced8907b7dff3228084"
+      }
+    }
+  },
+  "correctness": {
+    "G50": {
+      "nativeConsumers": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/baseline-native-targets.json",
+        "sha256": "69bcdea8719ed30d7fee221165ec99d554995e1e77a0b7a9f4d9c47c14b37bf7"
+      },
+      "passed": 69
+    },
+    "G58A": {
+      "allBody": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/arena-v2-fast-image/receipt.json",
+        "sha256": "cf67d3d604350670dc166f20522eb4f0b14ad55b7ab6ee1d219648b60f1e63ab"
+      },
+      "nativeConsumers": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/arena-v2-native-targets.json",
+        "sha256": "eff7cca57595f5a39d010a399e72e6550edf050e328f3343de687103a641ff94"
+      },
+      "passed": 71,
+      "sourceSmoke": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/arena-v2-source-c-js-smoke.json",
+        "sha256": "37f37f7be367f8e86fb1d9a5fe4219bdb0354c8262d128e4d8376c034eaee171"
+      },
+      "cAndJsProgramsPassed": 6
+    },
+    "G58B": {
+      "allBody": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/scheduler-fast-image/receipt.json",
+        "sha256": "0515bfa7fbc6babee32f533e66eeb805b0a88180e3c90ed7ad18a11d835a1583"
+      },
+      "nativeConsumers": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/scheduler-native-targets.json",
+        "sha256": "317ec4436d3dd44115c9c7cec6efce42e600d27f270c515af02b225d95d8a3f9"
+      },
+      "passed": 69,
+      "sourceSmoke": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/scheduler-source-c-js-smoke.json",
+        "sha256": "bcbc650530cc8ef0d8599249134e33621769caa64ae811abe37df77da4271e69"
+      },
+      "cAndJsProgramsPassed": 2,
+      "schedulerLiteralObservationsPerTarget": 49
+    }
+  },
+  "noPerformanceResponsesObserved": true,
+  "acceptedCompiler": "G24R12 unchanged",
+  "promoted": false
+}
