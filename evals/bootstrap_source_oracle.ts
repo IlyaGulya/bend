@@ -137,9 +137,10 @@ async function acquireObservation(entry: InstrumentedStage0): Promise<() => void
  *
  * Nothing calls book_valid, term_wnf, the compiler, or a target definition.
  */
-export async function sourceOracle(file: string, source: string, options: { preloadBase?: boolean; recordInputs?: boolean } = {}): Promise<SourceOracleResult> {
+export async function sourceOracle(file: string, source: string, options: { preloadBase?: boolean; recordInputs?: boolean; stage0File?: string } = {}): Promise<SourceOracleResult> {
   const rootFile = realpathSync(resolve(file));
-  const stage0File = resolve(import.meta.dir, "../bend2/bend.ts");
+  // An isolated frozen compiler keeps its own BASE_BEND and loader semantics.
+  const stage0File = realpathSync(options.stage0File ?? resolve(import.meta.dir, "../bend2/bend.ts"));
   const original = readFileSync(stage0File, "utf8");
   const changes: { label: string; before: string; after: string; occurrences: number }[] = [];
   let observed = original;

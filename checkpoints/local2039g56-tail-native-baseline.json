@@ -1,0 +1,318 @@
+{
+  "schemaVersion": 1,
+  "version": "G56-authentic-tail-native-baseline",
+  "status": "NATIVE_SOURCE_CHECK_PASS_ORIGINAL_FAST_BUDGET_FAIL",
+  "sourceInputCommit": "447508a3",
+  "selected": "tail-complete",
+  "selectionUsesVariantResponse": false,
+  "sourceSpanProof": [
+    {
+      "id": "tail-min-emitter",
+      "definitionsVerified": 261,
+      "sourceSha256": "b292b8a767c27d46497915e12f2bd91012bc5fd280d6b537ca90d1dd214d2bb0",
+      "outputSha256": "314c8b4cb2b97263dc148cb0a0b1cf0bda7d32dc67614ce5207da709570566f3",
+      "outputBytes": 551023,
+      "types": 189,
+      "maxArity": 50,
+      "FeedbackFrame": null,
+      "feedbackResumeFrame": null,
+      "omittedImports": []
+    },
+    {
+      "id": "tail-min-parser",
+      "definitionsVerified": 50,
+      "sourceSha256": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed",
+      "outputSha256": "8516c25ab694c125163d4fe7e032d0267bcf21fa09bf4d999a0335a48ada380f",
+      "outputBytes": 39981,
+      "types": 36,
+      "maxArity": 4,
+      "FeedbackFrame": 25064,
+      "feedbackResumeFrame": null,
+      "omittedImports": [
+        {
+          "alias": "CheckerCore",
+          "path": "./checker_core_steps_v1.bend",
+          "proof": "no-selected-reference-to-module-and-all-external-owners-retained"
+        }
+      ]
+    },
+    {
+      "id": "tail-complete-emitter",
+      "definitionsVerified": 261,
+      "sourceSha256": "b292b8a767c27d46497915e12f2bd91012bc5fd280d6b537ca90d1dd214d2bb0",
+      "outputSha256": "314c8b4cb2b97263dc148cb0a0b1cf0bda7d32dc67614ce5207da709570566f3",
+      "outputBytes": 551023,
+      "types": 189,
+      "maxArity": 50,
+      "FeedbackFrame": null,
+      "feedbackResumeFrame": null,
+      "omittedImports": []
+    },
+    {
+      "id": "tail-complete-parser",
+      "definitionsVerified": 832,
+      "sourceSha256": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed",
+      "outputSha256": "b8610312159cad7621ad5b9713bcb171fba9b32d4feaa4061e9664a7f8dae2e4",
+      "outputBytes": 427338,
+      "types": 36,
+      "maxArity": 14,
+      "FeedbackFrame": 25064,
+      "feedbackResumeFrame": 66793,
+      "omittedImports": [
+        {
+          "alias": "CheckerCore",
+          "path": "./checker_core_steps_v1.bend",
+          "proof": "no-selected-reference-to-module-and-all-external-owners-retained"
+        }
+      ]
+    }
+  ],
+  "baselines": [
+    {
+      "candidate": "tail-min",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/repository/evals/selfhost_corpus_run.ts",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/tail-min.corpus.json",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g50-combined-native-v2.json.mjs",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g50-combined-native-v2.json",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/tail-min-baseline-native"
+      ],
+      "request": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/tail-min-baseline-native/request.json",
+        "sha256": "01315ab0f3ba7c37a3eb975f69987533284c303a43b83aa158977b62858a6d7f"
+      },
+      "report": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/tail-min-baseline-native/report.json",
+        "sha256": "c13ea27553160225acc1cb68791fbcb2e978bc3d3afde1ec6f18e2eb74c4030f"
+      },
+      "status": "PASS",
+      "sourceDeclarations": 2172,
+      "moduleCount": 17,
+      "phases": [
+        {
+          "phase": "startup",
+          "elapsedMs": 586.753833,
+          "userCpuMs": 532.238,
+          "systemCpuMs": 67.2,
+          "memoryEnd": {
+            "rss": 515719168,
+            "heapTotal": 93782016,
+            "heapUsed": 83496232,
+            "external": 42399496,
+            "arrayBuffers": 31931444
+          }
+        },
+        {
+          "phase": "load-parse",
+          "elapsedMs": 2001.300125,
+          "userCpuMs": 3178.679,
+          "systemCpuMs": 141.772,
+          "memoryEnd": {
+            "rss": 953090048,
+            "heapTotal": 541409280,
+            "heapUsed": 375660120,
+            "external": 42399536,
+            "arrayBuffers": 31931444
+          }
+        },
+        {
+          "phase": "expand",
+          "elapsedMs": 1771.4359170000002,
+          "userCpuMs": 2551.061,
+          "systemCpuMs": 205.96,
+          "memoryEnd": {
+            "rss": 1487437824,
+            "heapTotal": 795066368,
+            "heapUsed": 294772000,
+            "external": 10493131,
+            "arrayBuffers": 25039
+          }
+        },
+        {
+          "phase": "check",
+          "elapsedMs": 41687.220208,
+          "userCpuMs": 48429.162,
+          "systemCpuMs": 681.704,
+          "memoryEnd": {
+            "rss": 1020575744,
+            "heapTotal": 946241536,
+            "heapUsed": 627074120,
+            "external": 10493131,
+            "arrayBuffers": 25039
+          }
+        }
+      ],
+      "pipelineElapsedMs": 46048.474291,
+      "stepCounts": {
+        "expand": 168345,
+        "check": 1142704
+      },
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "elapsedMs": 46707,
+        "peakRssBytes": 1494745088,
+        "peakFootprintBytes": 1523387112,
+        "timeoutMs": 600000,
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592,
+        "ownedTreeStopped": true,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793707802426-3454fd1fb93581de.json"
+      }
+    },
+    {
+      "candidate": "tail-complete",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/repository/evals/selfhost_corpus_run.ts",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/tail-complete.corpus.json",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g50-combined-native-v2.json.mjs",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g50-combined-native-v2.json",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/tail-complete-baseline-native"
+      ],
+      "request": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/tail-complete-baseline-native/request.json",
+        "sha256": "4938366e77230dc16aa1fa854286117586f65d1f163821f727166b5d7850b56d"
+      },
+      "report": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/tail-complete-baseline-native/report.json",
+        "sha256": "46937679b58ed6b4cc00f7fdd5e420d5d61c07a5827eb4226866b7784b4732f4"
+      },
+      "status": "PASS",
+      "sourceDeclarations": 2954,
+      "moduleCount": 17,
+      "phases": [
+        {
+          "phase": "startup",
+          "elapsedMs": 561.8764170000001,
+          "userCpuMs": 529.112,
+          "systemCpuMs": 54.786,
+          "memoryEnd": {
+            "rss": 514342912,
+            "heapTotal": 94994432,
+            "heapUsed": 82518632,
+            "external": 42399496,
+            "arrayBuffers": 31931444
+          }
+        },
+        {
+          "phase": "load-parse",
+          "elapsedMs": 2460.8860830000003,
+          "userCpuMs": 4165.051,
+          "systemCpuMs": 152.487,
+          "memoryEnd": {
+            "rss": 922648576,
+            "heapTotal": 483147776,
+            "heapUsed": 242230760,
+            "external": 10493131,
+            "arrayBuffers": 25039
+          }
+        },
+        {
+          "phase": "expand",
+          "elapsedMs": 1739.3085840000003,
+          "userCpuMs": 2351.217,
+          "systemCpuMs": 54.688,
+          "memoryEnd": {
+            "rss": 965967872,
+            "heapTotal": 566771712,
+            "heapUsed": 365460216,
+            "external": 10493131,
+            "arrayBuffers": 25039
+          }
+        },
+        {
+          "phase": "check",
+          "elapsedMs": 65578.759416,
+          "userCpuMs": 71868.345,
+          "systemCpuMs": 1243.718,
+          "memoryEnd": {
+            "rss": 915226624,
+            "heapTotal": 833273856,
+            "heapUsed": 527532176,
+            "external": 10487433,
+            "arrayBuffers": 25039
+          }
+        }
+      ],
+      "pipelineElapsedMs": 70342.350125,
+      "stepCounts": {
+        "expand": 263032,
+        "check": 1975761
+      },
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "elapsedMs": 70895,
+        "peakRssBytes": 1066450944,
+        "peakFootprintBytes": 1149886760,
+        "timeoutMs": 600000,
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592,
+        "ownedTreeStopped": true,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793707849579-48a4021b38bbfbba.json"
+      }
+    }
+  ],
+  "runtime": {
+    "execPath": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+    "versions": {
+      "node": "23.11.0",
+      "acorn": "8.14.1",
+      "ada": "3.2.1",
+      "amaro": "0.4.1",
+      "ares": "1.34.4",
+      "brotli": "1.1.0",
+      "cjs_module_lexer": "2.1.0",
+      "cldr": "46.0",
+      "icu": "76.1",
+      "llhttp": "9.2.1",
+      "modules": "131",
+      "napi": "10",
+      "nbytes": "0.1.1",
+      "ncrypto": "0.0.1",
+      "nghttp2": "1.64.0",
+      "openssl": "3.0.16",
+      "simdjson": "3.12.2",
+      "simdutf": "6.0.3",
+      "sqlite": "3.49.1",
+      "tz": "2025a",
+      "undici": "6.21.2",
+      "unicode": "16.0",
+      "uv": "1.50.0",
+      "uvwasi": "0.0.21",
+      "v8": "12.9.202.28-node.14",
+      "zlib": "1.3.0.1-motley-788cb3c",
+      "zstd": "1.5.6"
+    },
+    "execArgv": [
+      "--experimental-strip-types",
+      "--max-old-space-size=6144",
+      "--max-semi-space-size=128"
+    ],
+    "heapLimitBytes": 6845104128
+  },
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000
+  },
+  "workerPolicy": {
+    "stackMiB": 256,
+    "oldGenerationMiB": 6144,
+    "youngGenerationMiB": 128
+  },
+  "originalFastBudget": {
+    "maxPipelineMs": 45000,
+    "status": "FAIL for both measured candidates; no relaxed runtime cap or retrospective budget PASS"
+  },
+  "coverage": "Real50/47/44parameter continuation/application chain, full29153B emitter many-arm match,127n/125n literal patterns, full25064BFeedbackFrame; complete candidate also full66793Bfeedback_resume_frame and all832parser declarations in its source closure.",
+  "selectionReason": "Retain largest real parser dispatcher and dependencies even though70s exceeds45s.70s versus observed323\u2013346s full is a descriptive run-cost comparison, not a compiler-speedup or performance-transfer qualification.",
+  "byteFixedpoint": "Not run/not claimed; check-only no emitted output; accepted G24R12 unchanged."
+}

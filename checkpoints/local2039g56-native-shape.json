@@ -1,0 +1,106 @@
+{
+  "schemaVersion": 1,
+  "status": "NATIVE_PUBLIC_CHECKER_INPUT_OBSERVED_ZERO_OMISSIONS",
+  "selected": "tail-complete",
+  "sourceInputCommit": "447508a3",
+  "probeCommandReports": [
+    {
+      "id": "tail-complete",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+        "--memory-mib=8192",
+        "--rss-mib=8192",
+        "--poll-ms=10",
+        "--timeout-ms=600000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=6144",
+        "--max-semi-space-size=128",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/repository/evals/selfhost_corpus_shape.mjs",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/tail-complete-baseline-native/request.json",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/tail-complete-native-shape.json"
+      ],
+      "cwd": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/repository/checkpoints/local2039g56-tail-complete-input",
+      "exitCode": 0,
+      "report": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/tail-complete-native-shape.json",
+        "sha256": "acd1ff0c77d0800da5a51a46f1e5f6d7634b02b14348fa9690d05052401824f1"
+      }
+    },
+    {
+      "id": "full",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+        "--memory-mib=8192",
+        "--rss-mib=8192",
+        "--poll-ms=10",
+        "--timeout-ms=600000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=6144",
+        "--max-semi-space-size=128",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/repository/evals/selfhost_corpus_shape.mjs",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/s1-p1-G53-full-baseline-request.json",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/full-native-shape.json"
+      ],
+      "cwd": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/repository",
+      "exitCode": 0,
+      "report": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/full-native-shape.json",
+        "sha256": "32cbc9fd6760fbf20ac2d68db482d1422eb3ea311072f34b217096797f481632"
+      }
+    }
+  ],
+  "scope": "Fresh native G50 own parser and template expansion; census actual public expanded.modules, no host-parser substitution, no replayed ASTs, no check/emit in probe; independent successful native checker runs in prior receipt.",
+  "observations": {
+    "tail-complete": {
+      "status": "OBSERVED",
+      "moduleCount": 17,
+      "declarations": 2954,
+      "structureOmissions": {
+        "accessorFields": 0,
+        "callableFields": 0,
+        "symbolFields": 0,
+        "symbolKeys": 0,
+        "nonEnumerableFields": 0,
+        "otherFields": 0
+      },
+      "templateSteps": 263032
+    },
+    "full": {
+      "status": "OBSERVED",
+      "moduleCount": 18,
+      "declarations": 13059,
+      "structureOmissions": {
+        "accessorFields": 0,
+        "callableFields": 0,
+        "symbolFields": 0,
+        "symbolKeys": 0,
+        "nonEnumerableFields": 0,
+        "otherFields": 0
+      },
+      "templateSteps": 1072965
+    }
+  },
+  "comparison": {
+    "tagCounts": {
+      "tailTotal": 529850,
+      "fullTotal": 2394870,
+      "totalVariation": 0.061814783593340854,
+      "majorMissingFullTags": []
+    },
+    "taggedIncomingEdgeCounts": {
+      "tailTotal": 546550,
+      "fullTotal": 2531884,
+      "totalVariation": 0.061213789896812684,
+      "majorMissingFullTags": []
+    }
+  },
+  "vectorScope": "Physical unique-tagged-object and tagged incoming-edge vectors; explicitly exclude only generic Con/Nil tags, do not unfold shared subgraphs. No claim of semantic native AST arity/depth or future optimization response.",
+  "originalFastBudget": "FAIL <=45s, unchanged.",
+  "byteFixedpoint": "Not run/not claimed."
+}

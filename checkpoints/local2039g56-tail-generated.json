@@ -1,0 +1,146 @@
+{
+  "schemaVersion": 1,
+  "version": "G56-authentic-tail-inputs",
+  "status": "SOURCE_GENERATION_AND_BYTE_PROVENANCE_PASS_NATIVE_CHECK_PENDING",
+  "sourceCommit": "ceed3906",
+  "protocolCommit": "1a477a4f",
+  "guardian": {
+    "status": "PASS",
+    "reason": "command_exit",
+    "commandExitCode": 0,
+    "commandSignal": 0,
+    "peakRssBytes": 1020755968,
+    "peakFootprintBytes": 1171523072,
+    "elapsedMs": 27109,
+    "timeoutMs": 180000,
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 0,
+    "command": [
+      "/usr/bin/env",
+      "BEND_CORPUS_TAIL_TRACE=1",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/repository/evals/selfhost_corpus_tails.ts",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/repository/checkpoints/local2039g56-tail-plan.json",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/tail-source-generation-v5.json"
+    ],
+    "label": "heavy command",
+    "exitCode": 0,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793707628767-a6a60497a2da53c0.json",
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592
+  },
+  "sourceGenerationReport": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/tail-source-generation-v5.json",
+    "sha256": "19c5213f4f9ae6a4028da223435e5aa7075455476176fcd07efc8d5d97360b6e"
+  },
+  "wholeSourceSlicesIndependentlyVerified": [
+    {
+      "id": "tail-min-emitter",
+      "definitionsVerified": 261,
+      "sourceSha256": "b292b8a767c27d46497915e12f2bd91012bc5fd280d6b537ca90d1dd214d2bb0",
+      "outputSha256": "314c8b4cb2b97263dc148cb0a0b1cf0bda7d32dc67614ce5207da709570566f3",
+      "outputBytes": 551023,
+      "types": 189,
+      "maxArity": 50,
+      "FeedbackFrame": null,
+      "feedbackResumeFrame": null,
+      "omittedImports": []
+    },
+    {
+      "id": "tail-min-parser",
+      "definitionsVerified": 50,
+      "sourceSha256": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed",
+      "outputSha256": "8516c25ab694c125163d4fe7e032d0267bcf21fa09bf4d999a0335a48ada380f",
+      "outputBytes": 39981,
+      "types": 36,
+      "maxArity": 4,
+      "FeedbackFrame": 25064,
+      "feedbackResumeFrame": null,
+      "omittedImports": [
+        {
+          "alias": "CheckerCore",
+          "path": "./checker_core_steps_v1.bend",
+          "proof": "no-selected-reference-to-module-and-all-external-owners-retained"
+        }
+      ]
+    },
+    {
+      "id": "tail-complete-emitter",
+      "definitionsVerified": 261,
+      "sourceSha256": "b292b8a767c27d46497915e12f2bd91012bc5fd280d6b537ca90d1dd214d2bb0",
+      "outputSha256": "314c8b4cb2b97263dc148cb0a0b1cf0bda7d32dc67614ce5207da709570566f3",
+      "outputBytes": 551023,
+      "types": 189,
+      "maxArity": 50,
+      "FeedbackFrame": null,
+      "feedbackResumeFrame": null,
+      "omittedImports": []
+    },
+    {
+      "id": "tail-complete-parser",
+      "definitionsVerified": 832,
+      "sourceSha256": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed",
+      "outputSha256": "b8610312159cad7621ad5b9713bcb171fba9b32d4feaa4061e9664a7f8dae2e4",
+      "outputBytes": 427338,
+      "types": 36,
+      "maxArity": 14,
+      "FeedbackFrame": 25064,
+      "feedbackResumeFrame": 66793,
+      "omittedImports": [
+        {
+          "alias": "CheckerCore",
+          "path": "./checker_core_steps_v1.bend",
+          "proof": "no-selected-reference-to-module-and-all-external-owners-retained"
+        }
+      ]
+    }
+  ],
+  "ordinaryCorpora": [
+    {
+      "candidate": "tail-min",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/repository/evals/native_seed_corpus.ts",
+        "--root=checkpoints/local2039g49-compiler-root.bend",
+        "--out=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/tail-min.corpus.json"
+      ],
+      "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/repository/checkpoints/local2039g56-tail-min-input",
+      "result": {
+        "corpus": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/tail-min.corpus.json",
+        "corpusSha256": "510894a0de47ffc6bd75f17790b7e1b30da3dd09e119dd9acf97791de4ebbb55",
+        "directory": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/repository/checkpoints/local2039g56-tail-min-input",
+        "root": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/repository/checkpoints/local2039g56-tail-min-input/checkpoints/local2039g49-compiler-root.bend",
+        "sources": 17,
+        "externals": 35,
+        "files": 52
+      }
+    },
+    {
+      "candidate": "tail-complete",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/repository/evals/native_seed_corpus.ts",
+        "--root=checkpoints/local2039g49-compiler-root.bend",
+        "--out=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/tail-complete.corpus.json"
+      ],
+      "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/repository/checkpoints/local2039g56-tail-complete-input",
+      "result": {
+        "corpus": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/tail-complete.corpus.json",
+        "corpusSha256": "00a18da59c39792ed1dd429cc188876f895dbc4aa9d61ba8ae49ca7454d21faf",
+        "directory": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/repository/checkpoints/local2039g56-tail-complete-input",
+        "root": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/repository/checkpoints/local2039g56-tail-complete-input/checkpoints/local2039g49-compiler-root.bend",
+        "sources": 17,
+        "externals": 35,
+        "files": 52
+      }
+    }
+  ],
+  "compilerOptimizations": false,
+  "astTransports": false,
+  "nativeAcceptance": "Pending actual fresh own-parser/expand/check via existing unchanged throughput driver; source generator completeness is NOT native checker acceptance.",
+  "byteFixedpoint": "Not run/not claimed."
+}

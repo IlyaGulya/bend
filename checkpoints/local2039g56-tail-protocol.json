@@ -1,0 +1,117 @@
+{
+  "schemaVersion": 1,
+  "version": "G56-tail-coverage-amendment",
+  "status": "SOURCE_ONLY_PREREGISTRATION_BEFORE_NEW_CANDIDATE_RESPONSES",
+  "reason": "Whole-module mixed filter misses real50argument CPS continuation/application chain and127/125n literal-pattern lowering tails. Observed average syntaxTV alone did not establish representative tails.",
+  "sourceSelectionBasedOnVariantTiming": false,
+  "responseDataInspected": "No ongoing G53/G55 calibration response report opened by parent or tail agents at this checkpoint. Previous historical single-pair signs known and not ground truth.",
+  "immutableSource": {
+    "directory": "local2039g56-input",
+    "officialCommit": "d1a2fd48",
+    "inputReceipt": "local2039g56-input-source.json",
+    "observer": {
+      "path": "bend2/bend.ts",
+      "sha256": "22b5915cd7cccd23b6aa28849b23a7f1e3549333cdd0954ab48103ddd0777e9e"
+    }
+  },
+  "candidates": [
+    {
+      "id": "native-tail-min",
+      "parserRoots": [
+        "encode_float_normal_rounding_limit",
+        "parse_unicode_digits"
+      ],
+      "emitterRoots": [
+        "emitter_continuation_1089",
+        "emitter_match_710"
+      ],
+      "allLocalTypeLawSignatureDeclarations": true,
+      "largestDispatcher": "OMITTED unless conservative declaration dependencies reach it; omission precludes complete-tail structuralPASS",
+      "nativeSemanticDepthClaim": false
+    },
+    {
+      "id": "native-tail-complete",
+      "parserRoots": [
+        "encode_float_normal_rounding_limit",
+        "parse_unicode_digits",
+        "feedback_resume_frame"
+      ],
+      "emitterRoots": [
+        "emitter_continuation_1089",
+        "emitter_match_710"
+      ],
+      "allLocalTypeLawSignatureDeclarations": true,
+      "largestDispatcher": "Full66793B authentic definition and complete dependency closure required",
+      "nativeSemanticDepthClaim": false
+    }
+  ],
+  "namespaceContract": "Fragments go into a fresh candidate source tree at original relative file names: checkpoints/local2039g49-compiler-root.bend (entrypoint empty namespace), checkpoints/emitter_steps_v1.bend (original emitter_steps_v1 imported namespace). Every supporting frozen source/import/JS alternative retains original relative tree and bytes. No overwriting main shared emitter or immutable G56 original inputs.",
+  "imports": {
+    "parserRetained": "Every original import except optional proven-unused CheckerCore; retain original Emit and Template imports to cover complete actual wide emitter and wholeCPS template.",
+    "parserMayOmitOnly": "./checker_core_steps_v1.bend as CheckerCore, only when unused by every retained original signature/type/body/law.",
+    "emitter": "All original imports retained unchanged."
+  },
+  "closure": "Binding-aware original body closure using nativeSourceClosure plus conservative complete local type/law/signature and callable definition dependency closure, all callbacks/match rows/signature/type functions; no synthesized signatures, normalizationBook, stubs, source arm sampling or AST replay. Unknown unobserved dependencies reject completeness.",
+  "requiredFiniteTails": [
+    {
+      "source": "checkpoints/emitter_steps_v1.bend",
+      "symbols": [
+        "emitter_continuation_1089",
+        "emitter_continuation_1088",
+        "emitter_continuation_1087"
+      ],
+      "parameterArities": [
+        44,
+        47,
+        50
+      ],
+      "purpose": "Genuine declaration and wide application/capture chain"
+    },
+    {
+      "source": "checkpoints/local2039g49-compiler-root.bend",
+      "symbols": [
+        "encode_float_normal_rounding_limit",
+        "parse_unicode_digits"
+      ],
+      "sourceLoweredPatternDepths": [
+        131,
+        128
+      ],
+      "purpose": "Authentic recursive127n/125n Nat literal-pattern source representation, not authored or native semantic AST depth"
+    },
+    {
+      "source": "checkpoints/emitter_steps_v1.bend",
+      "symbols": [
+        "emitter_match_710"
+      ],
+      "bytes": 29153,
+      "purpose": "Complete many-arm match with dependent callbacks, not large literal padding"
+    },
+    {
+      "source": "checkpoints/local2039g49-compiler-root.bend",
+      "symbols": [
+        "FeedbackFrame",
+        "feedback_resume_frame"
+      ],
+      "bytes": [
+        25064,
+        66793
+      ],
+      "purpose": "Full largest heterogeneous capture datatype and complete dispatcher; omission explicitly PARTIAL, never complete-tailPASS"
+    }
+  ],
+  "baselineSelection": "Generate and authenticate exact closed source candidates; freeze hashes/provenance before native runs; baseline-only own-native parse/expand/check plus structural census determines feasibility. Do not select by G53/G55 response or tune weights.",
+  "originalFastBudget": {
+    "maxPipelineMs": 45000,
+    "maxMatchedFullFraction": 0.25
+  },
+  "limitsUnchanged": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000
+  },
+  "oldMixedCalibration": "Keep all48existing scheduled mixed/full cells as preregistered oldmixed control; no discarded/noisypair replacement and no claiming oldmixed covers missing tails. Full reference cells may be shared across separate screen comparisons, not counted twice as independent full observations.",
+  "compilerOptimizationChanges": false,
+  "byteFixedpoint": "Not run/not claimed; diagnostic source-input task, accepted G24R12 unchanged."
+}
