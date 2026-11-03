@@ -1828,7 +1828,7 @@ through the integrated gate using the genuine native-produced G50 control.
 Actual parser/checker/emitter execution and returned-JS output are exercised;
 negative usage cases preserve original file and spans. The small fixture gate
 still uses2M parser fuel; throughput uses the unchanged8M/module policy.
-Representative mini emission also retained1903750B/SHA256
+Eight-module mini emission also retained1903750B/SHA256
 `1b15bafad32a9847e86bfc4a2e78add5ea62a18ccd593a97e072406937dd3326`.
 
 The losing candidate did not enter full-root native production or fixedpoint
@@ -1866,7 +1866,7 @@ The69-case public source gate keeps all45 cases and adds24 behavior regressions,
 including parser-created do-lets. All69 passed on the genuine native-produced
 G50 control and canonical G55B image. Accepted cases execute unchanged emitted
 JS; new rejections retain the actual first blamed source file/beg/end. The
-representative eight-module emitter retained1903750B/SHA256
+eight-module mini emitter retained1903750B/SHA256
 `1b15bafad32a9847e86bfc4a2e78add5ea62a18ccd593a97e072406937dd3326`.
 
 A first six-process cohort had host-wide wall-time nonstationarity, affecting
@@ -1947,4 +1947,130 @@ self-fixedpoint, original scheduler/full product matrices and strict12 were not
 run. Exact commands, phases/CPU, limits, memory, both cohorts, source/image
 fingerprints and all failures: `checkpoints/local2039g55-final-measured.json`
 on that branch; main pointer `checkpoints/local2039g55-summary.json`.
+
+### G56: frozen real-source tail corpus, not an unqualified mini proxy
+
+The old quick and full comparisons used different image producers: canonical
+TS-produced mini images versus native-produced full images. Their signs were
+not directly comparable. The whole-module replacement adds real arena, BIR
+sharing and CPS-template inputs, but still misses the full compiler's extreme
+signatures and patterns. Its 31.5s baseline is retained as a control, not called
+representative. The stopped control matrix keeps all40 completed cells, the
+explicitly interrupted cell and seven unstarted cells; no replacement or
+six-pair qualification is inferred.
+
+`checkpoints/local2039g56-corpus.json` now selects the isolated
+`checkpoints/local2039g56-tail-complete-input` tree. Original relative filenames,
+module namespaces, complete imports and all35 JS alternatives are preserved.
+Its parser and emitter are unchanged whole-declaration source slices, not AST
+replay, stubs, copied signatures or sampled match arms. All local datatypes and
+dependent signature helpers remain. Exact original/prefix/emitted byte spans
+and complete header/suffix reconstruction are authenticated by
+`checkpoints/local2039g56-tail-provenance.json`.
+
+The selected input retains the actual44/47/50-argument continuation/application
+chain, the entire29153B emitter match, the127n/125n numeric patterns, the
+25064B heterogeneous `FeedbackFrame` and the entire66793B
+`feedback_resume_frame` plus its dependency closure. The smaller source control
+omits that dispatcher and is not a complete-tail substitute.
+
+| Native G50 source check | Partial tails | Complete tails | Full-source reference |
+| --- | ---: | ---: | ---: |
+| Source declarations | 2172 | 2954 | 13059 |
+| Baseline parse/expand/check ms | 46048.474291 | 70342.350125 | 323172–345852 |
+| Maximum source-observed arity | 50 | 50 | 50 |
+| Maximum source-observed declaration B | 29153 | 66793 | 66793 |
+
+The full reference range is from separate retained five-pair control cohorts,
+not a matched-run speedup claim. **Both new candidates fail the original
+<=45000ms fast budget.** The complete input is selected for structural coverage,
+not by relaxing that budget or fitting G53/G55 response. Accepted G24R12,
+original8GiB RSS/footprint,10ms poll,600000ms throughput deadline,256MiB worker
+stack,6144/128MiB heaps,8M parser fuel/module, ABI13 and quantum64 are unchanged.
+
+The native public-input probe independently runs the image's own parser and
+template expansion and counts actual `expanded.modules`. Both selected/full
+observations complete with zero callable/accessor/other payload omissions.
+Non-list constructor total variation is0.061815 for unique objects and0.061214
+for tagged incoming edges; no full constructor with >=5% share is absent.
+These are physical graph vectors, not unfolded tree counts or semantic native
+AST depth. The source-observed depth131 is recursive numeric-pattern lowering,
+not131 authored expression levels. Static source observations separately retain
+the22 shared Base and one lexer computed-HOAS-signature exclusions; they do not
+become missing native-input nodes or a proof of complete semantic CPU ownership.
+
+| Source-observed p99 | Complete tails | Full |
+| --- | ---: | ---: |
+| Arity | 14 | 15 |
+| Recursive pattern/expression depth | 40 | 39 |
+| Declaration bytes | 7941 | 6777 |
+
+For a fresh native-image iteration, set absolute `CORPUS`, `IMAGE`, `PRODUCER`,
+`NODE` and `OUT` paths; `CORPUS` and `OUT` must not exist. `PRODUCER` is the
+successful native compile receipt for that exact image, not a canonical image
+receipt. From the repository root:
+
+```sh
+cd checkpoints/local2039g56-tail-complete-input
+bun --smol ../../evals/native_seed_corpus.ts \
+  --root=checkpoints/local2039g49-compiler-root.bend --out="$CORPUS"
+bun --smol ../../evals/selfhost_corpus_run.ts \
+  "$CORPUS" "$IMAGE" "$PRODUCER" "$NODE" "$OUT"
+```
+
+The wrapper authenticates closure, namespaces, foreign alternatives, producer,
+image, Node and sibling driver bytes, then delegates to the existing guarded
+`selfhost_throughput.mjs js` checker-only path. Every run performs fresh own-image
+parsing, expansion and checking. No stored AST or checked program is replayed.
+The ordinary request and unchanged driver report are in `OUT`.
+
+`selfhost_corpus.ts` produces authenticated static inventories;
+`selfhost_corpus_shape.mjs` observes public native checker input under the
+original guardian; `selfhost_corpus_cpu.ts` authenticates retained physical
+profiles and exact source-fragment lineage; `selfhost_corpus_calibration.ts`
+keeps paired uncertainty, incomplete schedules, wall/CPU disagreement and the
+strict fast-budget failure explicit. The prospective three-pair G53/G55
+complete-tail pilot is descriptive, not the earlier six-pair/two-session
+qualification, emitter throughput, fixedpoint or compiler promotion.
+
+All12 prospectively ordered complete-tail pilot processes pass native checking.
+The following ratios are variant/baseline, with paired Student95% intervals;
+the retained full controls are separate, incomplete cohorts, not replacement
+samples for the pilot. Process CPU is not worker-isolate sampled elapsed time.
+
+| Corpus | Variant | Complete pairs | Checker wall ratio [95% CI] | Process CPU ratio [95% CI] |
+| --- | --- | ---: | ---: | ---: |
+| Complete tails | G53 | 3 | 0.947 [0.694,1.291] | 0.949 [0.889,1.013] |
+| Retained full | G53 | 5 | 0.947 [0.900,0.997] | 0.954 [0.903,1.007] |
+| Complete tails | G55 | 3 | 1.121 [0.789,1.593] | 1.039 [0.809,1.335] |
+| Retained full | G55 | 5 | 1.056 [0.867,1.287] | 0.996 [0.918,1.081] |
+
+No row qualifies an improvement/regression beyond the practical2% band.
+The structural sentinel is suitable for finding failures and generating
+hypotheses; these data do not authorize promoting a performance optimization
+without full-source confirmation. Its six baseline pilot processes span
+67.2–97.7s for parsing/expansion/checking; the final integrated-main smoke passes
+in88.1s. Do not advertise the original70.3s observation as a stable deadline.
+
+One valid physical-family profile comparison has total variation0.022552 and
+no absent full family above5%. Its authority remains **INCONCLUSIVE**: unresolved
+physical ownership exceeds the unchanged20% ceiling, despite close vectors.
+
+| V8 checker self-sampled elapsed profile | Full | Complete tails |
+| --- | ---: | ---: |
+| Samples | 244594 | 44111 |
+| Unclassified sampled elapsed share | 22.5124% | 22.6476% |
+
+The initial selected profile contains two raw-42us intervals and is rejected,
+not clipped, sorted or filtered. A single fresh diagnostic capture was frozen
+by `local2039g56-cpu-recapture-protocol.json`; its native run passes and its raw
+weights are valid. Both captures are retained, excluded from timing cohorts,
+and neither supplies semantic CPU completeness or a speedup estimate.
+
+Final main verification:12 targeted tests pass with55 assertions; six distinct
+header/prefix/import/suffix/original-hash/missing-fragment corruptions are rejected
+by the actual CPU CLI; the portable static CLI reports its23 exclusions rather
+than claiming complete syntax authority. `checkpoints/local2039g56-summary.json`
+records exact executed commands, frozen source/runtime hashes, timing/memory,
+the descriptive pilot, rejected evidence and unrun byte-fixedpoint status.
 

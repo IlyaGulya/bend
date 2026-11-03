@@ -1,0 +1,479 @@
+{
+  "schemaVersion": 1,
+  "kind": "g56-finite-physical-family-coverage",
+  "status": "INCONCLUSIVE",
+  "acceptanceEvidence": false,
+  "sourceCheckpoint": "9a2a13ab",
+  "protocolCheckpoint": "70902587",
+  "protocol": {
+    "path": "checkpoints/local2039g56-cpu-recapture-protocol.json",
+    "sha256": "df5d53ea848305f387f707dc1b173938991d9d828753e791a4b2e3cfe5ecb5e1"
+  },
+  "exactCaptureCommand": [
+    "/usr/bin/env",
+    "SELFHOST_CPU_PROFILE_DIR=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/complete-profiles-recapture",
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "/Users/ilyagulya/Projects/My/bend/evals/selfhost_corpus_run.ts",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/main-complete.corpus.json",
+    "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g50-combined-native-v2.json.mjs",
+    "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g50-combined-native-v2.json",
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/main-complete-native-profile-recapture"
+  ],
+  "analyzer": {
+    "command": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "/Users/ilyagulya/Projects/My/bend/evals/selfhost_corpus_cpu.ts",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/complete-physical-cpu-recapture-plan.json",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/complete-physical-cpu-recapture.json"
+    ],
+    "exitCode": 2,
+    "stdout": "{\"status\":\"INCONCLUSIVE\",\"report\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/complete-physical-cpu-recapture.json\"}\n",
+    "stderr": ""
+  },
+  "plan": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/complete-physical-cpu-recapture-plan.json",
+    "sha256": "80d018b6eae898088c946845d5468eaf5b7f028525582ad422937cb780182cdd"
+  },
+  "output": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/complete-physical-cpu-recapture.json",
+    "sha256": "faa5f94d771721a09689cd7604530ea3d835c26730ce9c1d4ae336e828bd63d8"
+  },
+  "comparison": {
+    "totalVariation": 0.02255203432923823,
+    "absentFullFamiliesAtLeastFivePercent": [],
+    "unclassified": {
+      "full": 0.22512394895764928,
+      "screen": 0.22647611195693795
+    },
+    "gates": {
+      "sampleCounts": "PASS",
+      "totalVariation": "PASS",
+      "familyPresence": "PASS",
+      "unclassified": "INCONCLUSIVE",
+      "evidenceBinding": "PASS"
+    }
+  },
+  "profiles": {
+    "full": {
+      "samples": 244594,
+      "sampledMs": 310644,
+      "profileDurationMs": 310644.041,
+      "unattributedDurationMs": 0.041,
+      "excludedSamples": 0,
+      "zeroSelfSampleFunctionCount": 1635,
+      "families": [
+        {
+          "family": "scheduler-cps-dispatch",
+          "selfSamples": 46706,
+          "selfMicroseconds": 59486395,
+          "selfSampledMs": 59486.395,
+          "selfShare": 0.1914937838812274,
+          "distinctFunctionIdentities": 48
+        },
+        {
+          "family": "checker-body-helper",
+          "selfSamples": 58411,
+          "selfMicroseconds": 74041975,
+          "selfSampledMs": 74041.975,
+          "selfShare": 0.2383499278917346,
+          "distinctFunctionIdentities": 3246
+        },
+        {
+          "family": "normalized-helper",
+          "selfSamples": 43435,
+          "selfMicroseconds": 55083011,
+          "selfSampledMs": 55083.011,
+          "selfShare": 0.17731876681989672,
+          "distinctFunctionIdentities": 2535
+        },
+        {
+          "family": "arena",
+          "selfSamples": 15133,
+          "selfMicroseconds": 19156346,
+          "selfSampledMs": 19156.346,
+          "selfShare": 0.061666557216620954,
+          "distinctFunctionIdentities": 246
+        },
+        {
+          "family": "base-map-scope",
+          "selfSamples": 20979,
+          "selfMicroseconds": 26428722,
+          "selfSampledMs": 26428.722,
+          "selfShare": 0.0850772009116545,
+          "distinctFunctionIdentities": 63
+        },
+        {
+          "family": "gc",
+          "selfSamples": 4637,
+          "selfMicroseconds": 6105655,
+          "selfSampledMs": 6105.655,
+          "selfShare": 0.01965482996613487,
+          "distinctFunctionIdentities": 1
+        },
+        {
+          "family": "runtime-helper",
+          "selfSamples": 319,
+          "selfMicroseconds": 408492,
+          "selfSampledMs": 408.492,
+          "selfShare": 0.0013149843550817012,
+          "distinctFunctionIdentities": 3
+        },
+        {
+          "family": "unclassified",
+          "selfSamples": 54974,
+          "selfMicroseconds": 69933404,
+          "selfSampledMs": 69933.404,
+          "selfShare": 0.22512394895764928,
+          "distinctFunctionIdentities": 3630
+        }
+      ],
+      "evidence": {
+        "profile": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g51-checker-3juqew7r/profiles/selfhost-32443-thread-1-CLs7FO/000004-check.cpuprofile",
+          "sha256": "6fed359f72dbffd3bcfcfeab45ea81fe153915ad804004da66de7e6dc3916d20"
+        },
+        "report": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g51-checker-3juqew7r/full-profile.json",
+          "sha256": "270d9019821ae53f3edfe6bf6b5767334d0e96acd624d01d649a4ef0dd36fb2c"
+        },
+        "request": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g51-checker-3juqew7r/full-profile-request.json",
+          "sha256": "1b3780737da0dbb85f9fff472f850fca6a6f07959ed764fc0e48ff8fe45dfe6e"
+        },
+        "sourceManifest": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/corpora-static-v1.json.full.corpus.json",
+          "sha256": "5fd3f5644727ff7773df325e51124ae271c55b8b080e095d5cf54bafc75371d6"
+        }
+      }
+    },
+    "screen": {
+      "samples": 44111,
+      "sampledMs": 68227.125,
+      "profileDurationMs": 68227.208,
+      "unattributedDurationMs": 0.083,
+      "excludedSamples": 0,
+      "zeroSelfSampleFunctionCount": 2697,
+      "families": [
+        {
+          "family": "scheduler-cps-dispatch",
+          "selfSamples": 8232,
+          "selfMicroseconds": 12888023,
+          "selfSampledMs": 12888.023,
+          "selfShare": 0.1888988140713829,
+          "distinctFunctionIdentities": 49
+        },
+        {
+          "family": "checker-body-helper",
+          "selfSamples": 10222,
+          "selfMicroseconds": 15830399,
+          "selfSampledMs": 15830.399,
+          "selfShare": 0.23202500471769844,
+          "distinctFunctionIdentities": 2179
+        },
+        {
+          "family": "normalized-helper",
+          "selfSamples": 7295,
+          "selfMicroseconds": 11270777,
+          "selfSampledMs": 11270.777,
+          "selfShare": 0.16519495728421796,
+          "distinctFunctionIdentities": 1738
+        },
+        {
+          "family": "arena",
+          "selfSamples": 2884,
+          "selfMicroseconds": 4279591,
+          "selfSampledMs": 4279.591,
+          "selfShare": 0.06272565346993589,
+          "distinctFunctionIdentities": 206
+        },
+        {
+          "family": "base-map-scope",
+          "selfSamples": 4828,
+          "selfMicroseconds": 7178720,
+          "selfSampledMs": 7178.72,
+          "selfShare": 0.10521797598828911,
+          "distinctFunctionIdentities": 61
+        },
+        {
+          "family": "gc",
+          "selfSamples": 751,
+          "selfMicroseconds": 1272052,
+          "selfSampledMs": 1272.052,
+          "selfShare": 0.01864437348048888,
+          "distinctFunctionIdentities": 1
+        },
+        {
+          "family": "runtime-helper",
+          "selfSamples": 34,
+          "selfMicroseconds": 55749,
+          "selfSampledMs": 55.749,
+          "selfShare": 0.000817109031048868,
+          "distinctFunctionIdentities": 3
+        },
+        {
+          "family": "unclassified",
+          "selfSamples": 9865,
+          "selfMicroseconds": 15451814,
+          "selfSampledMs": 15451.814,
+          "selfShare": 0.22647611195693795,
+          "distinctFunctionIdentities": 2228
+        }
+      ],
+      "evidence": {
+        "profile": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/complete-profiles-recapture/selfhost-308-thread-1-MnbCuF/000004-check.cpuprofile",
+          "sha256": "95bd5f24dee325599cfbf26fdb5198218ad1f4fd8a857fd9271f43e837d26f02"
+        },
+        "report": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/main-complete-native-profile-recapture/report.json",
+          "sha256": "9eee3c84f5333d56b6af6fb0d100e2a445e25d709ed7f651504aeedcbcf47a0f"
+        },
+        "request": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/main-complete-native-profile-recapture/request.json",
+          "sha256": "9ec69eec07998676464f69caef232c0f96df7141905c2773726b6d18e969297c"
+        },
+        "sourceManifest": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/main-complete.corpus.json",
+          "sha256": "1a269e15bf70257b019ab572c003b6eb130b4e3f63ad507783525e28d307b0e4"
+        }
+      }
+    }
+  },
+  "lineage": {
+    "status": "AUTHENTICATED_BYTE_RECONSTRUCTION",
+    "provenance": {
+      "path": "checkpoints/local2039g56-tail-provenance.json",
+      "sha256": "4e778e0e4f0126e2ebdbfce6eab943e659478d42ca59030d406f2e5f7aae28f2"
+    },
+    "wholeMembers": 50,
+    "validatedMatchingFragments": [
+      {
+        "id": "tail-min-emitter",
+        "originalRelativePath": "checkpoints/emitter_steps_v1.bend",
+        "originalSha256": "b292b8a767c27d46497915e12f2bd91012bc5fd280d6b537ca90d1dd214d2bb0",
+        "outputSha256": "314c8b4cb2b97263dc148cb0a0b1cf0bda7d32dc67614ce5207da709570566f3",
+        "declarations": 261,
+        "outputBytes": 551023,
+        "omittedImports": []
+      },
+      {
+        "id": "tail-complete-emitter",
+        "originalRelativePath": "checkpoints/emitter_steps_v1.bend",
+        "originalSha256": "b292b8a767c27d46497915e12f2bd91012bc5fd280d6b537ca90d1dd214d2bb0",
+        "outputSha256": "314c8b4cb2b97263dc148cb0a0b1cf0bda7d32dc67614ce5207da709570566f3",
+        "declarations": 261,
+        "outputBytes": 551023,
+        "omittedImports": []
+      },
+      {
+        "id": "tail-complete-parser",
+        "originalRelativePath": "checkpoints/local2039g49-compiler-root.bend",
+        "originalSha256": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed",
+        "outputSha256": "b8610312159cad7621ad5b9713bcb171fba9b32d4feaa4061e9664a7f8dae2e4",
+        "declarations": 832,
+        "outputBytes": 427338,
+        "omittedImports": [
+          {
+            "alias": "CheckerCore",
+            "path": "./checker_core_steps_v1.bend",
+            "proof": "no-selected-reference-to-module-and-all-external-owners-retained",
+            "original": {
+              "beginByte": 401,
+              "endByte": 451,
+              "sliceSHA256": "be5127d58c9312ef646c76cfbb83e0b00192ec3319978f751ae6cec9f402db5b"
+            }
+          }
+        ]
+      }
+    ],
+    "scope": "Byte lineage is not source semantic closure; actual native checks and source closure generation are separate evidence."
+  },
+  "rejectedOriginalProfile": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/complete-profiles/selfhost-59367-thread-1-UAiJqP/000004-check.cpuprofile",
+    "sha256": "36502577566ae3cda94543966c56dd6e5cfff81f3069b5b39844e5e90d6b4b7d"
+  },
+  "rejectedOriginalInvalidSamples": {
+    "side": "complete",
+    "samples": 44229,
+    "badCount": 2,
+    "badSamples": [
+      {
+        "index": 906,
+        "sample": 3373,
+        "delta": -42,
+        "missingNode": false
+      },
+      {
+        "index": 6605,
+        "sample": 15043,
+        "delta": -42,
+        "missingNode": false
+      }
+    ]
+  },
+  "failedOriginalAnalyses": [
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/complete-physical-cpu.json",
+      "sha256": "30839ee7c83d25cb80eb9dc39d1e3900dfee89655b070bd88c06a8507a335b90"
+    },
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/complete-physical-cpu-v2.json",
+      "sha256": "3714cb15a2b5455fe0bf3ce51e82e80f8289c51bb2b516ecdb3cdcf7c14947b2"
+    }
+  ],
+  "historicalFullDriverPinArchive": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/historical-g51-throughput.mjs",
+    "sha256": "4b9b735630421c00f666a956f7adaaf40c0f57908d420ec2a1155e68c81ffd8e"
+  },
+  "recoveredFromSourceCommit": "631b088e",
+  "sampleRepairOrExclusion": false,
+  "corruptionProbes": [
+    {
+      "name": "header",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/selfhost_corpus_cpu.ts",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/lineage-qa-header-plan.json",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/lineage-qa-header-out.json"
+      ],
+      "exitCode": 1,
+      "plan": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/lineage-qa-header-plan.json",
+        "sha256": "25e114a7a6389bf44629c6f17c2da65ed6924195b5f68cd3d257e6e581a9d02b"
+      },
+      "output": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/lineage-qa-header-out.json",
+        "sha256": "69e4a97a744f47dae9e4c9b0b5e67f0346bf209a257575af2ccedef10e5231a3"
+      },
+      "errors": [
+        "Error: Fragment emitted header slice hash mismatch"
+      ]
+    },
+    {
+      "name": "prefix",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/selfhost_corpus_cpu.ts",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/lineage-qa-prefix-plan.json",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/lineage-qa-prefix-out.json"
+      ],
+      "exitCode": 1,
+      "plan": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/lineage-qa-prefix-plan.json",
+        "sha256": "2ce02b5ef994d6de908eeb3167250baaee81ac305c4df74cae93613d3ae532b4"
+      },
+      "output": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/lineage-qa-prefix-out.json",
+        "sha256": "e31d244e56969d11d4f65cbd3257b9cbc76e91ee370e2f488bd3222beb284979"
+      },
+      "errors": [
+        "Error: Fragment prefix EmitResult slice hash mismatch"
+      ]
+    },
+    {
+      "name": "import",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/selfhost_corpus_cpu.ts",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/lineage-qa-import-plan.json",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/lineage-qa-import-out.json"
+      ],
+      "exitCode": 1,
+      "plan": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/lineage-qa-import-plan.json",
+        "sha256": "46ff509cc1bfb68932dc59868c54d8b27fe811bc130ee2408017068b407c608d"
+      },
+      "output": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/lineage-qa-import-out.json",
+        "sha256": "757bcf294e8f627dc7c085b507e7bbc80d2a220e82e523ac8c7b20e5e24b089b"
+      },
+      "errors": [
+        "Error: Only the root CheckerCore import deletion is permitted"
+      ]
+    },
+    {
+      "name": "suffix",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/selfhost_corpus_cpu.ts",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/lineage-qa-suffix-plan.json",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/lineage-qa-suffix-out.json"
+      ],
+      "exitCode": 1,
+      "plan": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/lineage-qa-suffix-plan.json",
+        "sha256": "0509c8fc3aeb6c26ce71bcf9e25c038d69f3e4bed38b6183ee7051d46c028ed5"
+      },
+      "output": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/lineage-qa-suffix-out.json",
+        "sha256": "d3fb06530464a516b137ba056849adcf96082f09aac69eba4dc61ac1d0561383"
+      },
+      "errors": [
+        "Error: Fragment original suffix slice hash mismatch"
+      ]
+    },
+    {
+      "name": "original-hash",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/selfhost_corpus_cpu.ts",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/lineage-qa-original-hash-plan.json",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/lineage-qa-original-hash-out.json"
+      ],
+      "exitCode": 1,
+      "plan": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/lineage-qa-original-hash-plan.json",
+        "sha256": "636cfbdb32c90b0ec693ee6e9564354291407ab3a6d1b6aedc0986794132cc2d"
+      },
+      "output": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/lineage-qa-original-hash-out.json",
+        "sha256": "ed4433f789f1679ac3a83d15b1e3dd127fe53050ae699826932f34491c0e1d2e"
+      },
+      "errors": [
+        "Error: Fragment original differs from full manifest: checkpoints/local2039g49-compiler-root.bend"
+      ]
+    },
+    {
+      "name": "missing-emitter",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/selfhost_corpus_cpu.ts",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/lineage-qa-missing-emitter-plan.json",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/lineage-qa-missing-emitter-out.json"
+      ],
+      "exitCode": 1,
+      "plan": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/lineage-qa-missing-emitter-plan.json",
+        "sha256": "4dcd9bfe9956f1d6ed63d808d300cf173307f5eaf25be702bc23eb87b872b52b"
+      },
+      "output": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/lineage-qa-missing-emitter-out.json",
+        "sha256": "6baf1c1bd214b4e925b5f363baf4dbd4ac720cbf7e8539e2aaac7aee281e773e"
+      },
+      "errors": [
+        "Error: No matching fragment provenance for screen source: checkpoints/emitter_steps_v1.bend"
+      ]
+    }
+  ],
+  "limitations": [
+    "V8 samples measure worker-isolate sampled elapsed time, not process CPU; process-wide CPU figures are retained separately and never used as weights.",
+    "Only physical emitted source families are screened. CPS, normalization and inlining destroy semantic ownership; no inference/equality-family completeness claim is made.",
+    "match_N helpers have normalized-helper identity only, not inferred logical pre-CPS ownership.",
+    "Continuation ownership requires exactly one direct $b body reference; chained, ambiguous or unmapped continuations remain unclassified.",
+    "Blank-name callbacks inherit only an exact complete emitted-body line or authenticated public alias line. No nearest-line/name fallback exists.",
+    "GC means the canonical V8 garbage-collector leaf here; unlike an inclusive GC stack diagnostic it receives only self samples.",
+    "Profile/metadata hashes pin retained evidence, not a cryptographic proof that the process produced it; legacy metadata binds profile paths, not profile digests.",
+    "A single retained profile pair supplies no uncertainty interval, stationarity test or causal performance comparison.",
+    "Observed-vector source TV (including HOAS signature omissions) is a separate bound, not a complete native-checker-AST or semantic CPU coverage bound.",
+    "Fragment provenance proves ordered original-byte copying and complete output reconstruction only; declaration boundaries, dependency closure and import-deletion safety require separate source/native authority."
+  ]
+}

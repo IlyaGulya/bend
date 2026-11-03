@@ -520,5 +520,5 @@
   "sharedMainEmitterIntentionallyUnchanged": true,
   "compilerOptimizations": false,
   "strictFastBudget": "FAIL<=45s, not relaxed;70s structurally broader source sentinel selected, not performance-qualified",
-  "runtimeVerification": "Both experimental candidate own-native checks and native full/selected public-input probes passed before integration. Main actual CLI and current tests must still run; active prospective pilot uses immutable experimental worktree, not mutable main."
+  "runtimeVerification": "Integrated main: actual native checker CLI PASS on2954 declarations/52 files, pipeline88089.500125ms; portable static CLI correctly INCONCLUSIVE on23 computed signature exclusions;12 current targeted tests PASS with55 assertions. All12 prospective native G50/G53/G55 pilot cells authenticate and PASS; strict performance calibration remains INCONCLUSIVE. Final commands, memory, profile limitations and raw evidence hashes: checkpoints/local2039g56-summary.json."
 }

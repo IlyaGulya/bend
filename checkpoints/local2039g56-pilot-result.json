@@ -1,0 +1,1097 @@
+{
+  "schemaVersion": 1,
+  "kind": "g56-prospective-complete-tail-response-pilot",
+  "status": "INCONCLUSIVE_FOR_PERFORMANCE_TRANSFER",
+  "sourceCheckpoint": "9a2a13ab",
+  "prospectiveProtocol": {
+    "path": "checkpoints/local2039g56-complete-pilot-protocol.json",
+    "sha256": "2c7b37b6913f99d4d65dbae303124c60ebed50f3d0a7c8d41df3283186d59276"
+  },
+  "protocolSourceCommit": "050dd6fd",
+  "all12CellsAuthenticated": true,
+  "timingProcesses": [
+    {
+      "key": "complete-pilot-p1-G53-baseline",
+      "pair": 1,
+      "variant": "G53",
+      "role": "baseline",
+      "image": "G50",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/repository/evals/selfhost_corpus_run.ts",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/tail-complete.corpus.json",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g50-combined-native-v2.json.mjs",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g50-combined-native-v2.json",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/complete-pilot-p1-G53-baseline"
+      ],
+      "request": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/complete-pilot-p1-G53-baseline/request.json",
+        "sha256": "4938366e77230dc16aa1fa854286117586f65d1f163821f727166b5d7850b56d"
+      },
+      "report": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/complete-pilot-p1-G53-baseline/report.json",
+        "sha256": "18eed99c4da658329b0d8c9cda90a0983e70a1a9a7f601d5e6a16a0d37fbf782"
+      },
+      "status": "PASS",
+      "sourceDeclarations": 2954,
+      "moduleCount": 17,
+      "pipelineElapsedMs": 97717.77091600001,
+      "checkerWallMs": 92077.583167,
+      "checkerProcessCpuMs": 79732.485,
+      "stepCounts": {
+        "expand": 263032,
+        "check": 1975761
+      },
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "elapsedMs": 98805,
+        "peakRssBytes": 1080246272,
+        "peakFootprintBytes": 1358764032,
+        "timeoutMs": 600000,
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592,
+        "ownedTreeStopped": true,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793708800016-2b982736e49e53c4.json"
+      }
+    },
+    {
+      "key": "complete-pilot-p1-G53-variant",
+      "pair": 1,
+      "variant": "G53",
+      "role": "variant",
+      "image": "G53",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/repository/evals/selfhost_corpus_run.ts",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/tail-complete.corpus.json",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g53-readonly-map-native-v2.json.mjs",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g53-readonly-map-native-v2.json",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/complete-pilot-p1-G53-variant"
+      ],
+      "request": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/complete-pilot-p1-G53-variant/request.json",
+        "sha256": "e916066212b2c77c182169b273f05ddc064a6bba0cca58df8580269febf237ef"
+      },
+      "report": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/complete-pilot-p1-G53-variant/report.json",
+        "sha256": "9787e2f1a77a8fe0fe46e9c165ddc3dc5232d5ef9de0650615f791da647426ba"
+      },
+      "status": "PASS",
+      "sourceDeclarations": 2954,
+      "moduleCount": 17,
+      "pipelineElapsedMs": 84904.028875,
+      "checkerWallMs": 79087.898292,
+      "checkerProcessCpuMs": 74344.36,
+      "stepCounts": {
+        "expand": 263032,
+        "check": 1975761
+      },
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "elapsedMs": 85750,
+        "peakRssBytes": 1122402304,
+        "peakFootprintBytes": 1343428824,
+        "timeoutMs": 600000,
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592,
+        "ownedTreeStopped": true,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793708899795-cd31b7f94ba5ce71.json"
+      }
+    },
+    {
+      "key": "complete-pilot-p1-G55-variant",
+      "pair": 1,
+      "variant": "G55",
+      "role": "variant",
+      "image": "G55",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/repository/evals/selfhost_corpus_run.ts",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/tail-complete.corpus.json",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g55-source-usage-1cyua40u/repository/checkpoints/local2039g55b-native-image-v2.json.mjs",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g55-source-usage-1cyua40u/repository/checkpoints/local2039g55b-native-image-v2.json",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/complete-pilot-p1-G55-variant"
+      ],
+      "request": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/complete-pilot-p1-G55-variant/request.json",
+        "sha256": "96c3c7a8c752d71750a7d234fb725276ccdeee4c5f99c392213b925df3f9ba30"
+      },
+      "report": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/complete-pilot-p1-G55-variant/report.json",
+        "sha256": "9a427d8880535ffc342d0a6ab3b2836befbaeb6377448513b24a71c0aa777e87"
+      },
+      "status": "PASS",
+      "sourceDeclarations": 2954,
+      "moduleCount": 17,
+      "pipelineElapsedMs": 100119.200916,
+      "checkerWallMs": 92511.923333,
+      "checkerProcessCpuMs": 84181.746,
+      "stepCounts": {
+        "expand": 263032,
+        "check": 1941530
+      },
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "elapsedMs": 100783,
+        "peakRssBytes": 1027276800,
+        "peakFootprintBytes": 1122473760,
+        "timeoutMs": 600000,
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592,
+        "ownedTreeStopped": true,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793708986182-1b5d59cbd815dd2b.json"
+      }
+    },
+    {
+      "key": "complete-pilot-p1-G55-baseline",
+      "pair": 1,
+      "variant": "G55",
+      "role": "baseline",
+      "image": "G50",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/repository/evals/selfhost_corpus_run.ts",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/tail-complete.corpus.json",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g50-combined-native-v2.json.mjs",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g50-combined-native-v2.json",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/complete-pilot-p1-G55-baseline"
+      ],
+      "request": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/complete-pilot-p1-G55-baseline/request.json",
+        "sha256": "4938366e77230dc16aa1fa854286117586f65d1f163821f727166b5d7850b56d"
+      },
+      "report": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/complete-pilot-p1-G55-baseline/report.json",
+        "sha256": "c9cadbebb2ede369fd6c1f5059a789c5b42ad626293ca89e4673ec536574026d"
+      },
+      "status": "PASS",
+      "sourceDeclarations": 2954,
+      "moduleCount": 17,
+      "pipelineElapsedMs": 79301.171583,
+      "checkerWallMs": 70500.400583,
+      "checkerProcessCpuMs": 72122.739,
+      "stepCounts": {
+        "expand": 263032,
+        "check": 1975761
+      },
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "elapsedMs": 80503,
+        "peakRssBytes": 1056899072,
+        "peakFootprintBytes": 1288505600,
+        "timeoutMs": 600000,
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592,
+        "ownedTreeStopped": true,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793709087662-bb68874db33b540c.json"
+      }
+    },
+    {
+      "key": "complete-pilot-p2-G53-variant",
+      "pair": 2,
+      "variant": "G53",
+      "role": "variant",
+      "image": "G53",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/repository/evals/selfhost_corpus_run.ts",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/tail-complete.corpus.json",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g53-readonly-map-native-v2.json.mjs",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g53-readonly-map-native-v2.json",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/complete-pilot-p2-G53-variant"
+      ],
+      "request": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/complete-pilot-p2-G53-variant/request.json",
+        "sha256": "e916066212b2c77c182169b273f05ddc064a6bba0cca58df8580269febf237ef"
+      },
+      "report": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/complete-pilot-p2-G53-variant/report.json",
+        "sha256": "7b9014ba9b220581ceaf5f2de4980e8ad663920935c423689e3cf5b995231580"
+      },
+      "status": "PASS",
+      "sourceDeclarations": 2954,
+      "moduleCount": 17,
+      "pipelineElapsedMs": 65973.787833,
+      "checkerWallMs": 60535.073500000006,
+      "checkerProcessCpuMs": 71351.662,
+      "stepCounts": {
+        "expand": 263032,
+        "check": 1975761
+      },
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "elapsedMs": 66519,
+        "peakRssBytes": 1040089088,
+        "peakFootprintBytes": 1096420488,
+        "timeoutMs": 600000,
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592,
+        "ownedTreeStopped": true,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793709168729-a4436088fc977f7e.json"
+      }
+    },
+    {
+      "key": "complete-pilot-p2-G53-baseline",
+      "pair": 2,
+      "variant": "G53",
+      "role": "baseline",
+      "image": "G50",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/repository/evals/selfhost_corpus_run.ts",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/tail-complete.corpus.json",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g50-combined-native-v2.json.mjs",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g50-combined-native-v2.json",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/complete-pilot-p2-G53-baseline"
+      ],
+      "request": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/complete-pilot-p2-G53-baseline/request.json",
+        "sha256": "4938366e77230dc16aa1fa854286117586f65d1f163821f727166b5d7850b56d"
+      },
+      "report": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/complete-pilot-p2-G53-baseline/report.json",
+        "sha256": "5ce994e1b351aac2deceef0dd8c1f85aa475f9ff59ae43bdaf5a6b6b35101cc3"
+      },
+      "status": "PASS",
+      "sourceDeclarations": 2954,
+      "moduleCount": 17,
+      "pipelineElapsedMs": 72315.57462500001,
+      "checkerWallMs": 66807.665084,
+      "checkerProcessCpuMs": 76186.504,
+      "stepCounts": {
+        "expand": 263032,
+        "check": 1975761
+      },
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "elapsedMs": 72860,
+        "peakRssBytes": 1035026432,
+        "peakFootprintBytes": 1091785688,
+        "timeoutMs": 600000,
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592,
+        "ownedTreeStopped": true,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793709235786-db171f7da45fdf9a.json"
+      }
+    },
+    {
+      "key": "complete-pilot-p2-G55-baseline",
+      "pair": 2,
+      "variant": "G55",
+      "role": "baseline",
+      "image": "G50",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/repository/evals/selfhost_corpus_run.ts",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/tail-complete.corpus.json",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g50-combined-native-v2.json.mjs",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g50-combined-native-v2.json",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/complete-pilot-p2-G55-baseline"
+      ],
+      "request": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/complete-pilot-p2-G55-baseline/request.json",
+        "sha256": "4938366e77230dc16aa1fa854286117586f65d1f163821f727166b5d7850b56d"
+      },
+      "report": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/complete-pilot-p2-G55-baseline/report.json",
+        "sha256": "0fdbace3c679c1aca48a6c0136b2b195dd016acc22cc49e38b4a39e9a35014e6"
+      },
+      "status": "PASS",
+      "sourceDeclarations": 2954,
+      "moduleCount": 17,
+      "pipelineElapsedMs": 70897.04925,
+      "checkerWallMs": 65657.216417,
+      "checkerProcessCpuMs": 74457.27900000001,
+      "stepCounts": {
+        "expand": 263032,
+        "check": 1975761
+      },
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "elapsedMs": 71481,
+        "peakRssBytes": 1067892736,
+        "peakFootprintBytes": 1108122504,
+        "timeoutMs": 600000,
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592,
+        "ownedTreeStopped": true,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793709309218-2d3286c920780f96.json"
+      }
+    },
+    {
+      "key": "complete-pilot-p2-G55-variant",
+      "pair": 2,
+      "variant": "G55",
+      "role": "variant",
+      "image": "G55",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/repository/evals/selfhost_corpus_run.ts",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/tail-complete.corpus.json",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g55-source-usage-1cyua40u/repository/checkpoints/local2039g55b-native-image-v2.json.mjs",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g55-source-usage-1cyua40u/repository/checkpoints/local2039g55b-native-image-v2.json",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/complete-pilot-p2-G55-variant"
+      ],
+      "request": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/complete-pilot-p2-G55-variant/request.json",
+        "sha256": "96c3c7a8c752d71750a7d234fb725276ccdeee4c5f99c392213b925df3f9ba30"
+      },
+      "report": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/complete-pilot-p2-G55-variant/report.json",
+        "sha256": "19864b044c3b670d4f42ba766ad26550f8762e08282fb439c1c4fe0b571ec94d"
+      },
+      "status": "PASS",
+      "sourceDeclarations": 2954,
+      "moduleCount": 17,
+      "pipelineElapsedMs": 70260.20812499999,
+      "checkerWallMs": 65501.645124999995,
+      "checkerProcessCpuMs": 72365.987,
+      "stepCounts": {
+        "expand": 263032,
+        "check": 1941530
+      },
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "elapsedMs": 70834,
+        "peakRssBytes": 1083441152,
+        "peakFootprintBytes": 1323601304,
+        "timeoutMs": 600000,
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592,
+        "ownedTreeStopped": true,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793709381245-f24335ce35078f1d.json"
+      }
+    },
+    {
+      "key": "complete-pilot-p3-G53-baseline",
+      "pair": 3,
+      "variant": "G53",
+      "role": "baseline",
+      "image": "G50",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/repository/evals/selfhost_corpus_run.ts",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/tail-complete.corpus.json",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g50-combined-native-v2.json.mjs",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g50-combined-native-v2.json",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/complete-pilot-p3-G53-baseline"
+      ],
+      "request": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/complete-pilot-p3-G53-baseline/request.json",
+        "sha256": "4938366e77230dc16aa1fa854286117586f65d1f163821f727166b5d7850b56d"
+      },
+      "report": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/complete-pilot-p3-G53-baseline/report.json",
+        "sha256": "64799923652f304abb6fdfd4c1d49ff098c10e77687f3ee12e6b6ab2dc49aeac"
+      },
+      "status": "PASS",
+      "sourceDeclarations": 2954,
+      "moduleCount": 17,
+      "pipelineElapsedMs": 67221.961084,
+      "checkerWallMs": 62451.399792,
+      "checkerProcessCpuMs": 74191.071,
+      "stepCounts": {
+        "expand": 263032,
+        "check": 1975761
+      },
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "elapsedMs": 67811,
+        "peakRssBytes": 1053868032,
+        "peakFootprintBytes": 1112741424,
+        "timeoutMs": 600000,
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592,
+        "ownedTreeStopped": true,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793709452469-f51669152ba238f4.json"
+      }
+    },
+    {
+      "key": "complete-pilot-p3-G53-variant",
+      "pair": 3,
+      "variant": "G53",
+      "role": "variant",
+      "image": "G53",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/repository/evals/selfhost_corpus_run.ts",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/tail-complete.corpus.json",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g53-readonly-map-native-v2.json.mjs",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g53-readonly-map-native-v2.json",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/complete-pilot-p3-G53-variant"
+      ],
+      "request": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/complete-pilot-p3-G53-variant/request.json",
+        "sha256": "e916066212b2c77c182169b273f05ddc064a6bba0cca58df8580269febf237ef"
+      },
+      "report": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/complete-pilot-p3-G53-variant/report.json",
+        "sha256": "ed7f40952553a903c5c64757ce58b563a595a6382733acf09735f7dc2a43269b"
+      },
+      "status": "PASS",
+      "sourceDeclarations": 2954,
+      "moduleCount": 17,
+      "pipelineElapsedMs": 74063.489166,
+      "checkerWallMs": 68050.563208,
+      "checkerProcessCpuMs": 72538.315,
+      "stepCounts": {
+        "expand": 263032,
+        "check": 1975761
+      },
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "elapsedMs": 74858,
+        "peakRssBytes": 1044283392,
+        "peakFootprintBytes": 1161927272,
+        "timeoutMs": 600000,
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592,
+        "ownedTreeStopped": true,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793709520718-d19336fb51106903.json"
+      }
+    },
+    {
+      "key": "complete-pilot-p3-G55-variant",
+      "pair": 3,
+      "variant": "G55",
+      "role": "variant",
+      "image": "G55",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/repository/evals/selfhost_corpus_run.ts",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/tail-complete.corpus.json",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g55-source-usage-1cyua40u/repository/checkpoints/local2039g55b-native-image-v2.json.mjs",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g55-source-usage-1cyua40u/repository/checkpoints/local2039g55b-native-image-v2.json",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/complete-pilot-p3-G55-variant"
+      ],
+      "request": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/complete-pilot-p3-G55-variant/request.json",
+        "sha256": "96c3c7a8c752d71750a7d234fb725276ccdeee4c5f99c392213b925df3f9ba30"
+      },
+      "report": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/complete-pilot-p3-G55-variant/report.json",
+        "sha256": "a85aaf45cf0b5bd0b15b8a026f673976998ef94bbbe4b241ad78070f3d1273f2"
+      },
+      "status": "PASS",
+      "sourceDeclarations": 2954,
+      "moduleCount": 17,
+      "pipelineElapsedMs": 75067.739958,
+      "checkerWallMs": 67218.1195,
+      "checkerProcessCpuMs": 72662.435,
+      "stepCounts": {
+        "expand": 263032,
+        "check": 1941530
+      },
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "elapsedMs": 76057,
+        "peakRssBytes": 1089896448,
+        "peakFootprintBytes": 1242153056,
+        "timeoutMs": 600000,
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592,
+        "ownedTreeStopped": true,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793709596278-72a6871a2401175b.json"
+      }
+    },
+    {
+      "key": "complete-pilot-p3-G55-baseline",
+      "pair": 3,
+      "variant": "G55",
+      "role": "baseline",
+      "image": "G50",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/repository/evals/selfhost_corpus_run.ts",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/tail-complete.corpus.json",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g50-combined-native-v2.json.mjs",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g50-combined-native-v2.json",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/complete-pilot-p3-G55-baseline"
+      ],
+      "request": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/complete-pilot-p3-G55-baseline/request.json",
+        "sha256": "4938366e77230dc16aa1fa854286117586f65d1f163821f727166b5d7850b56d"
+      },
+      "report": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/complete-pilot-p3-G55-baseline/report.json",
+        "sha256": "061a37507dccc527f6c77ed1f95416c2962db35b1fba2c6957219af0573ab561"
+      },
+      "status": "PASS",
+      "sourceDeclarations": 2954,
+      "moduleCount": 17,
+      "pipelineElapsedMs": 67496.847417,
+      "checkerWallMs": 62407.211,
+      "checkerProcessCpuMs": 73442.16100000001,
+      "stepCounts": {
+        "expand": 263032,
+        "check": 1975761
+      },
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "elapsedMs": 67995,
+        "peakRssBytes": 1056505856,
+        "peakFootprintBytes": 1094048048,
+        "timeoutMs": 600000,
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592,
+        "ownedTreeStopped": true,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793709672920-ede29670a5590929.json"
+      }
+    }
+  ],
+  "pairedStatistics": [
+    {
+      "variant": "G53",
+      "corpus": "tail-complete",
+      "scope": "3pair prospective descriptive pilot; not sixpair qualification",
+      "pairs": [
+        {
+          "order": [
+            "baseline",
+            "variant"
+          ],
+          "baselineWall": 92077.583167,
+          "variantWall": 79087.898292,
+          "baselineCpu": 79732.485,
+          "variantCpu": 74344.36,
+          "baselinePipeline": 97717.77091600001,
+          "variantPipeline": 84904.028875,
+          "baselineChunks": 1975761,
+          "variantChunks": 1975761
+        },
+        {
+          "order": [
+            "variant",
+            "baseline"
+          ],
+          "baselineWall": 66807.665084,
+          "variantWall": 60535.073500000006,
+          "baselineCpu": 76186.504,
+          "variantCpu": 71351.662,
+          "baselinePipeline": 72315.57462500001,
+          "variantPipeline": 65973.787833,
+          "baselineChunks": 1975761,
+          "variantChunks": 1975761
+        },
+        {
+          "order": [
+            "baseline",
+            "variant"
+          ],
+          "baselineWall": 62451.399792,
+          "variantWall": 68050.563208,
+          "baselineCpu": 74191.071,
+          "variantCpu": 72538.315,
+          "baselinePipeline": 67221.961084,
+          "variantPipeline": 74063.489166,
+          "baselineChunks": 1975761,
+          "variantChunks": 1975761
+        }
+      ],
+      "statistics": {
+        "Wall": {
+          "n": 3,
+          "logRatios": [
+            -0.15207164641556198,
+            -0.09859489639357513,
+            0.08586235452417093
+          ],
+          "meanLog": -0.05493472942832207,
+          "varianceLog": 0.015582804835372537,
+          "geometricMeanRatio": 0.9465469275963498,
+          "ci95": [
+            0.6941741692990286,
+            1.2906718886512496
+          ],
+          "baselineMedian": 66807.665084,
+          "variantMedian": 68050.563208,
+          "descriptiveClassification": "inconclusive"
+        },
+        "Cpu": {
+          "n": 3,
+          "logRatios": [
+            -0.06996928112188426,
+            -0.06556369687083481,
+            -0.02252890098362414
+          ],
+          "meanLog": -0.05268729299211441,
+          "varianceLog": 0.0006869987495516008,
+          "geometricMeanRatio": 0.9486766239321625,
+          "ci95": [
+            0.8888754234337363,
+            1.012501091906292
+          ],
+          "baselineMedian": 76186.504,
+          "variantMedian": 72538.315,
+          "descriptiveClassification": "inconclusive"
+        },
+        "Pipeline": {
+          "n": 3,
+          "logRatios": [
+            -0.14056188865073369,
+            -0.0917820135381316,
+            0.09692269108186005
+          ],
+          "meanLog": -0.04514040370233508,
+          "varianceLog": 0.01573131122874767,
+          "geometricMeanRatio": 0.9558632656696712,
+          "ci95": [
+            0.6999739255621064,
+            1.3052980250985378
+          ],
+          "baselineMedian": 72315.57462500001,
+          "variantMedian": 74063.489166,
+          "descriptiveClassification": "inconclusive"
+        }
+      }
+    },
+    {
+      "variant": "G53",
+      "corpus": "full",
+      "scope": "5completed pairs from separately canceled control schedule; not repaired6pair qualification",
+      "pairs": [
+        {
+          "order": [
+            "baseline",
+            "variant"
+          ],
+          "baselineWall": 303932.41825,
+          "variantWall": 280033.817458,
+          "baselineCpu": 318350.86299999995,
+          "variantCpu": 296800.942,
+          "baselinePipeline": 321098.1585,
+          "variantPipeline": 297600.243292
+        },
+        {
+          "order": [
+            "variant",
+            "baseline"
+          ],
+          "baselineWall": 339160.19825,
+          "variantWall": 341784.471292,
+          "baselineCpu": 321376.236,
+          "variantCpu": 325424.097,
+          "baselinePipeline": 358115.580458,
+          "variantPipeline": 362324.63862499996
+        },
+        {
+          "order": [
+            "baseline",
+            "variant"
+          ],
+          "baselineWall": 382337.94862499996,
+          "variantWall": 367881.726166,
+          "baselineCpu": 351422.247,
+          "variantCpu": 316989.36600000004,
+          "baselinePipeline": 407142.353458,
+          "variantPipeline": 386581.832833
+        },
+        {
+          "order": [
+            "variant",
+            "baseline"
+          ],
+          "baselineWall": 313681.08975000004,
+          "variantWall": 295445.63308299996,
+          "baselineCpu": 325261.45399999997,
+          "variantCpu": 309633.651,
+          "baselinePipeline": 331613.076833,
+          "variantPipeline": 313271.85591700004
+        },
+        {
+          "order": [
+            "baseline",
+            "variant"
+          ],
+          "baselineWall": 327900.01058400003,
+          "variantWall": 297000.662291,
+          "baselineCpu": 320520.951,
+          "variantCpu": 311690.06399999995,
+          "baselinePipeline": 345852.395291,
+          "variantPipeline": 320614.588125
+        }
+      ],
+      "statistics": {
+        "Wall": {
+          "n": 5,
+          "logRatios": [
+            -0.08189499579183808,
+            0.007707780533958844,
+            -0.03854340954823649,
+            -0.05989199493931348,
+            -0.09897434739249547
+          ],
+          "meanLog": -0.05431939342758494,
+          "varianceLog": 0.0017204461559963199,
+          "geometricMeanRatio": 0.9471295512335528,
+          "ci95": [
+            0.8995852482751052,
+            0.9971866352187445
+          ],
+          "baselineMedian": 327900.01058400003,
+          "variantMedian": 297000.662291,
+          "descriptiveClassification": "inconclusive"
+        },
+        "Cpu": {
+          "n": 5,
+          "logRatios": [
+            -0.07009243216955863,
+            0.012516733962776647,
+            -0.10312025579441081,
+            -0.04923950509074305,
+            -0.027938334498410773
+          ],
+          "meanLog": -0.04757475871806932,
+          "varianceLog": 0.0018979239730894139,
+          "geometricMeanRatio": 0.9535391851008516,
+          "ci95": [
+            0.9033293521772285,
+            1.0065398354778674
+          ],
+          "baselineMedian": 321376.236,
+          "variantMedian": 311690.06399999995,
+          "descriptiveClassification": "inconclusive"
+        },
+        "Pipeline": {
+          "n": 5,
+          "logRatios": [
+            -0.07599574563345125,
+            0.011684816992986081,
+            -0.05181931357053319,
+            -0.05689749522240868,
+            -0.07577233911794518
+          ],
+          "meanLog": -0.049760015310270446,
+          "varianceLog": 0.0012989015702655515,
+          "geometricMeanRatio": 0.951457732393118,
+          "ci95": [
+            0.9098187002490136,
+            0.9950024288167358
+          ],
+          "baselineMedian": 345852.395291,
+          "variantMedian": 320614.588125,
+          "descriptiveClassification": "inconclusive"
+        }
+      }
+    },
+    {
+      "variant": "G55",
+      "corpus": "tail-complete",
+      "scope": "3pair prospective descriptive pilot; not sixpair qualification",
+      "pairs": [
+        {
+          "order": [
+            "variant",
+            "baseline"
+          ],
+          "baselineWall": 70500.400583,
+          "variantWall": 92511.923333,
+          "baselineCpu": 72122.739,
+          "variantCpu": 84181.746,
+          "baselinePipeline": 79301.171583,
+          "variantPipeline": 100119.200916,
+          "baselineChunks": 1975761,
+          "variantChunks": 1941530
+        },
+        {
+          "order": [
+            "baseline",
+            "variant"
+          ],
+          "baselineWall": 65657.216417,
+          "variantWall": 65501.645124999995,
+          "baselineCpu": 74457.27900000001,
+          "variantCpu": 72365.987,
+          "baselinePipeline": 70897.04925,
+          "variantPipeline": 70260.20812499999,
+          "baselineChunks": 1975761,
+          "variantChunks": 1941530
+        },
+        {
+          "order": [
+            "variant",
+            "baseline"
+          ],
+          "baselineWall": 62407.211,
+          "variantWall": 67218.1195,
+          "baselineCpu": 73442.16100000001,
+          "variantCpu": 72662.435,
+          "baselinePipeline": 67496.847417,
+          "variantPipeline": 75067.739958,
+          "baselineChunks": 1975761,
+          "variantChunks": 1941530
+        }
+      ],
+      "statistics": {
+        "Wall": {
+          "n": 3,
+          "logRatios": [
+            0.27171914527822094,
+            -0.002372258544011141,
+            0.07426201700450294
+          ],
+          "meanLog": 0.11453630124623759,
+          "varianceLog": 0.019998037890698504,
+          "geometricMeanRatio": 1.1213533468490862,
+          "ci95": [
+            0.7891833598525309,
+            1.593334822372097
+          ],
+          "baselineMedian": 65657.216417,
+          "variantMedian": 67218.1195,
+          "descriptiveClassification": "inconclusive"
+        },
+        "Cpu": {
+          "n": 3,
+          "logRatios": [
+            0.15460872841269646,
+            -0.028489128479689263,
+            -0.010673632780217572
+          ],
+          "meanLog": 0.03848198905092987,
+          "varianceLog": 0.010193412667851226,
+          "geometricMeanRatio": 1.039232010634607,
+          "ci95": [
+            0.8087037711567244,
+            1.335474385612017
+          ],
+          "baselineMedian": 73442.16100000001,
+          "variantMedian": 72662.435,
+          "descriptiveClassification": "inconclusive"
+        },
+        "Pipeline": {
+          "n": 3,
+          "logRatios": [
+            0.23310858267704135,
+            -0.009023205150202808,
+            0.1063100134826895
+          ],
+          "meanLog": 0.110131797003176,
+          "varianceLog": 0.014667905191062494,
+          "geometricMeanRatio": 1.116425202258821,
+          "ci95": [
+            0.8263598703131454,
+            1.5083080350529723
+          ],
+          "baselineMedian": 70897.04925,
+          "variantMedian": 75067.739958,
+          "descriptiveClassification": "inconclusive"
+        }
+      }
+    },
+    {
+      "variant": "G55",
+      "corpus": "full",
+      "scope": "5completed pairs from separately canceled control schedule; not repaired6pair qualification",
+      "pairs": [
+        {
+          "order": [
+            "baseline",
+            "variant"
+          ],
+          "baselineWall": 285389.029958,
+          "variantWall": 274529.763541,
+          "baselineCpu": 305900.609,
+          "variantCpu": 286827.176,
+          "baselinePipeline": 302618.51962499996,
+          "variantPipeline": 292746.21833299997
+        },
+        {
+          "order": [
+            "variant",
+            "baseline"
+          ],
+          "baselineWall": 306064.40508299996,
+          "variantWall": 292569.489459,
+          "baselineCpu": 322309.518,
+          "variantCpu": 308385.849,
+          "baselinePipeline": 325759.16970800003,
+          "variantPipeline": 310363.955375
+        },
+        {
+          "order": [
+            "baseline",
+            "variant"
+          ],
+          "baselineWall": 341860.77629199997,
+          "variantWall": 337084.361792,
+          "baselineCpu": 335537.30000000005,
+          "variantCpu": 324980.703,
+          "baselinePipeline": 360314.42254199996,
+          "variantPipeline": 357144.825125
+        },
+        {
+          "order": [
+            "variant",
+            "baseline"
+          ],
+          "baselineWall": 292895.222833,
+          "variantWall": 408840.988,
+          "baselineCpu": 310257.786,
+          "variantCpu": 342584.269,
+          "baselinePipeline": 312501.79191699997,
+          "variantPipeline": 426794.367166
+        },
+        {
+          "order": [
+            "baseline",
+            "variant"
+          ],
+          "baselineWall": 304455.387,
+          "variantWall": 316124.985791,
+          "baselineCpu": 318670.978,
+          "variantCpu": 325337.191,
+          "baselinePipeline": 323171.95091599994,
+          "variantPipeline": 334212.156458
+        }
+      ],
+      "statistics": {
+        "Wall": {
+          "n": 5,
+          "logRatios": [
+            -0.03879358360379089,
+            -0.045093344676822494,
+            -0.014070336563149613,
+            0.3335113542413115,
+            0.03761309594201515
+          ],
+          "meanLog": 0.05463343706791274,
+          "varianceLog": 0.025364208099729058,
+          "geometricMeanRatio": 1.0561533970240642,
+          "ci95": [
+            0.8666537336951934,
+            1.287088435296332
+          ],
+          "baselineMedian": 304455.387,
+          "variantMedian": 316124.985791,
+          "descriptiveClassification": "inconclusive"
+        },
+        "Cpu": {
+          "n": 5,
+          "logRatios": [
+            -0.06438038183767641,
+            -0.04416056445533661,
+            -0.031967322396902184,
+            0.09911414865486881,
+            0.020703001676174775
+          ],
+          "meanLog": -0.004138223671774329,
+          "varianceLog": 0.0043208757465003494,
+          "geometricMeanRatio": 0.9958703269769059,
+          "ci95": [
+            0.9178172512115338,
+            1.080561197606553
+          ],
+          "baselineMedian": 318670.978,
+          "variantMedian": 324980.703,
+          "descriptiveClassification": "inconclusive"
+        },
+        "Pipeline": {
+          "n": 5,
+          "logRatios": [
+            -0.033166916491256505,
+            -0.04841270671577648,
+            -0.00883567407605205,
+            0.3116921182157246,
+            0.033591452950587956
+          ],
+          "meanLog": 0.050973654776645505,
+          "varianceLog": 0.022202674630039408,
+          "geometricMeanRatio": 1.0522951699667293,
+          "ci95": [
+            0.8745539811309861,
+            1.2661598353292025
+          ],
+          "baselineMedian": 323171.95091599994,
+          "variantMedian": 334212.156458,
+          "descriptiveClassification": "inconclusive"
+        }
+      }
+    }
+  ],
+  "statisticsCommand": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "-e",
+    "import {readFileSync,writeFileSync} from \"node:fs\";import {pairedStats,classifyRatio} from \"/Users/ilyagulya/Projects/My/bend/evals/selfhost_corpus_calibration.ts\";const groups=JSON.parse(readFileSync(\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/complete-pilot-stats-input.json\",\"utf8\"));const out=groups.map(g=>({...g,statistics:Object.fromEntries([\"Wall\",\"Cpu\",\"Pipeline\"].map(k=>{const s=pairedStats(g.pairs.map(p=>p[\"baseline\"+k]),g.pairs.map(p=>p[\"variant\"+k]));return[k,{...s,descriptiveClassification:classifyRatio(s.ci95,0.02)}]}))}));writeFileSync(\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/complete-pilot-stats.json\",JSON.stringify(out,null,2)+\"\\n\",{flag:\"wx\"});"
+  ],
+  "strictAnalyzer": {
+    "command": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "/Users/ilyagulya/Projects/My/bend/evals/selfhost_corpus_calibration.ts",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/complete-pilot-calibration-plan.json",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/complete-pilot-calibration.json"
+    ],
+    "exitCode": 0,
+    "stdout": "{\"status\":\"INCONCLUSIVE\",\"report\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/complete-pilot-calibration.json\",\"qualification\":[{\"corpus\":\"tail-complete\",\"status\":\"INCONCLUSIVE\",\"checkerDirectionQualified\":false,\"checkerMagnitudeQualified\":false,\"reasons\":[],\"scope\":\"Representative checker screening qualification not established; retain narrower matrix observations.\"}]}\n",
+    "stderr": "",
+    "plan": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/complete-pilot-calibration-plan.json",
+      "sha256": "de32f77fb75eeb90c1871794b887e1ae2e0c0ab3ee9390aa24d739d78a6ab700"
+    },
+    "output": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/complete-pilot-calibration.json",
+      "sha256": "ab9de169fe9672face4232ca68ebaf93dbad4004e11769a6353b63a3c8d07b64"
+    },
+    "status": "INCONCLUSIVE",
+    "scope": "12 current pilot cells only; retained full controls are not pooled because driver absolute paths differ despite identical bytes. No new full cells were invented."
+  },
+  "incompleteFullControlLedger": {
+    "sourceBranch": "selfhost/g56-representative-corpus",
+    "checkpoint": "5378d349",
+    "receipt": "checkpoints/local2039g56-old-mixed-cutoff.json",
+    "scheduledCells": 48,
+    "completedPass": 40,
+    "explicitlyInterruptedFail": 1,
+    "notStarted": 7,
+    "retainedCompletedPairsPerVariantAndCorpus": 5,
+    "selectionReason": "Stopped for missing source structural tails, before response inspection; no timing-outlier selection."
+  },
+  "qualification": {
+    "requiredPairsPerVariantAndCorpus": 6,
+    "requiredSessions": 2,
+    "observedPilotPairsPerVariant": 3,
+    "observedPilotSessions": 1,
+    "requiredABAndBA": 3,
+    "practicalBand": 0.02,
+    "completeSixPairSchedule": false,
+    "compilerPromotion": false
+  }
+}

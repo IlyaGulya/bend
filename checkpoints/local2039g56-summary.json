@@ -1,0 +1,361 @@
+{
+  "schemaVersion": 1,
+  "version": "G56",
+  "status": "RETAINED_STRUCTURAL_SOURCE_SENTINEL_NOT_ACCEPTED_PERFORMANCE_PROXY",
+  "sourceCheckpoint": "9a2a13ab",
+  "diagnosticProtocolCheckpoint": "70902587",
+  "experimentalSourceBranch": "selfhost/g56-representative-corpus",
+  "compilerAcceptedVersion": "G24R12 unchanged",
+  "compilerAlgorithmChanged": false,
+  "compilerPromotion": false,
+  "scope": "Frozen real compiler-source input for fresh native-image parsing/template-expansion/checking. Not an emitter workload, end-to-end build-time proof, compiler fixedpoint or universal performance proxy.",
+  "selectedSource": {
+    "directory": "checkpoints/local2039g56-tail-complete-input",
+    "defaultPlan": {
+      "path": "checkpoints/local2039g56-corpus.json",
+      "sha256": "9390ec6d6d352293009a6a161bcf9daaef770eea593174835047de6bf43e8fdb"
+    },
+    "sourceReceipt": {
+      "path": "checkpoints/local2039g56-source.json",
+      "sha256": "645881c2f39823e969aeda557b33f21f7077cf61c7e91afbfd9d207747544fe3"
+    },
+    "provenance": {
+      "path": "checkpoints/local2039g56-tail-provenance.json",
+      "sha256": "4e778e0e4f0126e2ebdbfce6eab943e659478d42ca59030d406f2e5f7aae28f2"
+    },
+    "ordinaryMainManifest": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/main-complete.corpus.json",
+      "sha256": "1a269e15bf70257b019ab572c003b6eb130b4e3f63ad507783525e28d307b0e4"
+    },
+    "nativeClosureFiles": 52,
+    "bendFiles": 17,
+    "foreignJSFiles": 35,
+    "sourceDeclarations": 2954,
+    "fullSourceDeclarations": 13059,
+    "maximumSourceObservedArity": 50,
+    "selectedP99SourceObserved": {
+      "arity": 14,
+      "recursiveNumericPatternExpressionDepth": 40,
+      "declarationBytes": 7941
+    },
+    "fullP99SourceObserved": {
+      "arity": 15,
+      "recursiveNumericPatternExpressionDepth": 39,
+      "declarationBytes": 6777
+    },
+    "retainedActualTails": {
+      "continuationArguments": [
+        44,
+        47,
+        50
+      ],
+      "completeEmitterMatchBytes": 29153,
+      "numericPatterns": [
+        "127n",
+        "125n"
+      ],
+      "feedbackFrameBytes": 25064,
+      "completeFeedbackResumeFrameBytes": 66793
+    },
+    "namespacesAndForeignAlternativesPreserved": true,
+    "astReplay": false,
+    "stubbedBodiesOrDependencies": false,
+    "originSourceCheckpoint": "d1a2fd48",
+    "generationSourceCheckpoint": "ceed3906",
+    "frozenOutputCheckpoint": "447508a3",
+    "selectionBaselineCheckpoint": "86b6d3a3",
+    "sharedMainEmitterUnchangedSha256": "7f7c8d2e57a3fcd3925b4286a8300668ae91b7e11a26317cea6da2df5c9ea425"
+  },
+  "runtime": {
+    "os": "Darwin25.6.0",
+    "arch": "arm64",
+    "bun": "1.4.3 c6da4a4d3",
+    "node": {
+      "execPath": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "versions": {
+        "node": "23.11.0",
+        "acorn": "8.14.1",
+        "ada": "3.2.1",
+        "amaro": "0.4.1",
+        "ares": "1.34.4",
+        "brotli": "1.1.0",
+        "cjs_module_lexer": "2.1.0",
+        "cldr": "46.0",
+        "icu": "76.1",
+        "llhttp": "9.2.1",
+        "modules": "131",
+        "napi": "10",
+        "nbytes": "0.1.1",
+        "ncrypto": "0.0.1",
+        "nghttp2": "1.64.0",
+        "openssl": "3.0.16",
+        "simdjson": "3.12.2",
+        "simdutf": "6.0.3",
+        "sqlite": "3.49.1",
+        "tz": "2025a",
+        "undici": "6.21.2",
+        "unicode": "16.0",
+        "uv": "1.50.0",
+        "uvwasi": "0.0.21",
+        "v8": "12.9.202.28-node.14",
+        "zlib": "1.3.0.1-motley-788cb3c",
+        "zstd": "1.5.6"
+      },
+      "execArgv": [
+        "--experimental-strip-types",
+        "--max-old-space-size=6144",
+        "--max-semi-space-size=128"
+      ],
+      "heapLimitBytes": 6845104128
+    },
+    "nodeBinary": {
+      "path": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "sha256": "ead5889f15f4e17b37f941c7d9e92b624396786bd74d8155ef470f6381f032c5"
+    },
+    "images": [
+      {
+        "id": "G50",
+        "image": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g50-combined-native-v2.json.mjs",
+        "receipt": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g50-combined-native-v2.json",
+        "sha256": "273b0022813e17908020c0ee58fd4e02da4f3dc756ce58e3389093440863c3fe",
+        "origin": "native"
+      },
+      {
+        "id": "G53",
+        "image": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g53-readonly-map-native-v2.json.mjs",
+        "receipt": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g53-readonly-map-native-v2.json",
+        "sha256": "03358642e494f416223232dcbe711e73d70219544da6cfa52c1390136c361536",
+        "origin": "native"
+      },
+      {
+        "id": "G55",
+        "image": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g55-source-usage-1cyua40u/repository/checkpoints/local2039g55b-native-image-v2.json.mjs",
+        "receipt": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g55-source-usage-1cyua40u/repository/checkpoints/local2039g55b-native-image-v2.json",
+        "sha256": "49b3501c102e067fbc18b6f04645aecf7c45415fcaa5ec29f447851014622918",
+        "origin": "native"
+      }
+    ],
+    "limits": {
+      "memoryMiB": 8192,
+      "rssMiB": 8192,
+      "pollMs": 10,
+      "timeoutMs": 600000
+    },
+    "workerPolicy": {
+      "stackMiB": 256,
+      "oldGenerationMiB": 6144,
+      "youngGenerationMiB": 128
+    },
+    "parserFuelPerModule": 8000000,
+    "abi": 13,
+    "checkQuantum": 64,
+    "oneHeavyLane": true,
+    "unchangedDriverAndGuardianBytes": true
+  },
+  "originalTargets": {
+    "maximumBaselinePipelineMs": 45000,
+    "maximumMatchedFullFraction": 0.25,
+    "observedAbsolute45sTarget": "FAIL",
+    "matchedFullPerformanceQualification": "INCONCLUSIVE",
+    "limitsNotRelaxed": true
+  },
+  "nativeGraphShape": {
+    "receipt": {
+      "path": "checkpoints/local2039g56-native-shape.json",
+      "sha256": "b42118f3d83882321738b5a9aa980e78f94ce28145717d9b77ea117a6d5bdb86"
+    },
+    "selectedAndFullStatus": "OBSERVED",
+    "opaquePayloadOmissions": 0,
+    "uniqueNonListTaggedTV": 0.061814783593340854,
+    "incomingNonListTaggedTV": 0.061213789896812684,
+    "absentFullTagsAtLeastFivePercent": [],
+    "scope": "Physical public expanded.modules tagged graph; not unfolded AST/semantic depth or CPU proof."
+  },
+  "cpuCoverageReceipt": {
+    "path": "checkpoints/local2039g56-cpu-coverage.json",
+    "sha256": "2efcbce795fb5c9f2572d42f9942927104c441bdc54b4ee4421994afa4fa0cd7"
+  },
+  "cpuCoverageStatus": "INCONCLUSIVE due >20% unclassified ownership; finite physical TV0.022552 observed",
+  "pilotReceipt": {
+    "path": "checkpoints/local2039g56-pilot-result.json",
+    "sha256": "b20c5c991afef0bc5613d256446dd00108e3cb2b4d9e13b7c429e0aa74613bce"
+  },
+  "pilotTiming": {
+    "baselineCount": 6,
+    "minimumBaselinePipelineMs": 67221.961084,
+    "medianBaselinePipelineMs": 71606.3119375,
+    "maximumBaselinePipelineMs": 97717.77091600001,
+    "retainedSeparateFullBaselineMedianRangeMs": [
+      323171.95091599994,
+      345852.395291
+    ],
+    "speedupScope": "Descriptive separate-cohort iteration-cost reduction only, not a paired compiler speedup claim."
+  },
+  "finalIntegratedMainSmoke": {
+    "freezingCommand": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "/Users/ilyagulya/Projects/My/bend/evals/native_seed_corpus.ts",
+      "--root=checkpoints/local2039g49-compiler-root.bend",
+      "--out=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/main-complete.corpus.json"
+    ],
+    "freezingCwd": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g56-tail-complete-input",
+    "exactNativeCommand": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "/Users/ilyagulya/Projects/My/bend/evals/selfhost_corpus_run.ts",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/main-complete.corpus.json",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g50-combined-native-v2.json.mjs",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g50-combined-native-v2.json",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/main-complete-native"
+    ],
+    "request": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/main-complete-native/request.json",
+      "sha256": "9ec69eec07998676464f69caef232c0f96df7141905c2773726b6d18e969297c"
+    },
+    "report": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/main-complete-native/report.json",
+      "sha256": "c5734fec1a4edf2b9701698f83cf2e8760e6c0969e77eb6896ab7d2769b30eba"
+    },
+    "status": "PASS",
+    "pipelineElapsedMs": 88089.500125,
+    "phases": [
+      {
+        "phase": "startup",
+        "elapsedMs": 1350.02725,
+        "userCpuMs": 665.692,
+        "systemCpuMs": 93.929,
+        "memoryEnd": {
+          "rss": 505528320,
+          "heapTotal": 94732288,
+          "heapUsed": 82265096,
+          "external": 42399496,
+          "arrayBuffers": 31931444
+        }
+      },
+      {
+        "phase": "load-parse",
+        "elapsedMs": 3933.976042,
+        "userCpuMs": 4849.336,
+        "systemCpuMs": 205.298,
+        "memoryEnd": {
+          "rss": 898613248,
+          "heapTotal": 495992832,
+          "heapUsed": 312187688,
+          "external": 10493131,
+          "arrayBuffers": 25039
+        }
+      },
+      {
+        "phase": "expand",
+        "elapsedMs": 1708.4278750000003,
+        "userCpuMs": 2350.927,
+        "systemCpuMs": 46.738,
+        "memoryEnd": {
+          "rss": 986595328,
+          "heapTotal": 581189632,
+          "heapUsed": 436921472,
+          "external": 10493131,
+          "arrayBuffers": 25039
+        }
+      },
+      {
+        "phase": "check",
+        "elapsedMs": 81094.809083,
+        "userCpuMs": 76843.687,
+        "systemCpuMs": 1354.379,
+        "memoryEnd": {
+          "rss": 895549440,
+          "heapTotal": 822525952,
+          "heapUsed": 464028624,
+          "external": 10493131,
+          "arrayBuffers": 25039
+        }
+      }
+    ],
+    "stepCounts": {
+      "expand": 263032,
+      "check": 1975761
+    },
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "elapsedMs": 89290,
+      "peakRssBytes": 1140506624,
+      "peakFootprintBytes": 1244496568,
+      "timeoutMs": 600000,
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592,
+      "ownedTreeStopped": true,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793709785075-4acc029e4c20651a.json"
+    }
+  },
+  "targetedTests": {
+    "command": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "test",
+      "evals/selfhost_corpus_calibration.test.ts",
+      "evals/selfhost_corpus_cpu.test.ts",
+      "evals/bootstrap_source_oracle.test.ts"
+    ],
+    "exitCode": 0,
+    "stdout": "bun test v1.4.3 (c6da4a4d3)\n",
+    "stderr": "\nevals/bootstrap_source_oracle.test.ts:\n(pass) source oracle preserves root declarations and bodies through a directory symlink [44.46ms]\n(pass) identical frozen compilers retain their own Base and observation cache identity [87.99ms]\n\nevals/selfhost_corpus_calibration.test.ts:\n(pass) calibration uncertainty > uses small-sample Student intervals rather than normal confidence [2.18ms]\n(pass) calibration uncertainty > does not qualify a lone fast sample [0.07ms]\n(pass) calibration uncertainty > classifies only intervals wholly outside or within the practical band [0.03ms]\n(pass) calibration uncertainty > uses paired ratios rather than dividing pooled medians [0.44ms]\n(pass) calibration uncertainty > retains independent full and screen uncertainty in magnitude comparison [0.23ms]\n(pass) calibration uncertainty > handles a constant paired ratio without inventing variance [0.11ms]\n(pass) calibration uncertainty > rejects unpaired, zero and nonfinite timing data [0.55ms]\n\nevals/selfhost_corpus_cpu.test.ts:\n(pass) physical coverage weights timeDeltas and merges identities across script IDs [0.55ms]\n(pass) ambiguous, chained and unsupported continuations remain unclassified [0.71ms]\n(pass) physical profiles reject cyclic ancestry and invalid sample weights [0.10ms]\n\n 12 pass\n 0 fail\n 55 expect() calls\nRan 12 tests across 3 files. [544.00ms]\n",
+    "passed": 12,
+    "failed": 0,
+    "assertions": 55
+  },
+  "portableStaticCLI": {
+    "command": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "/Users/ilyagulya/Projects/My/bend/evals/selfhost_corpus.ts",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g56-corpus.json",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/main-selected-static.json"
+    ],
+    "cwd": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g56-tail-complete-input",
+    "exitCode": 2,
+    "stdout": "{\"output\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/main-selected-static.json\",\"status\":\"INCONCLUSIVE\",\"corpora\":[{\"id\":\"tail-complete\",\"manifest\":\"main-selected-static.json.tail-complete.corpus.json\",\"status\":\"INCONCLUSIVE\"}]}\n",
+    "stderr": "",
+    "output": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/main-selected-static.json",
+      "sha256": "a1324847acb9e02bc251e793a2284b925f1c4c18cfdcfbdb0bc749a52a4b9369"
+    },
+    "status": "INCONCLUSIVE",
+    "sharedBaseComputedSignatures": 22,
+    "lexerComputedSignature": 1,
+    "scope": "Does not weaken complete native public-input observation."
+  },
+  "strictPilotAnalyzer": {
+    "status": "INCONCLUSIVE",
+    "cellsAuthenticatedPASS": 12,
+    "cellsInvalidOrRejected": 0,
+    "checkerDirectionQualified": false,
+    "checkerMagnitudeQualified": false,
+    "qualifiedFullSourcePairs": false
+  },
+  "failedGeneratorVersionsRetainedOnExperimentalBranch": [
+    {
+      "sourceCheckpoint": "3339d890",
+      "status": "REJECTED_RESOURCE_LIMIT"
+    },
+    {
+      "sourceCheckpoint": "819a5f9d",
+      "status": "REJECTED_RESOURCE_LIMIT"
+    },
+    {
+      "sourceCheckpoint": "f2463df7",
+      "status": "REJECTED_RESOURCE_LIMIT"
+    },
+    {
+      "sourceCheckpoint": "9856c444",
+      "status": "REJECTED_INCOMPLETE_SOURCE_CLOSURE"
+    }
+  ],
+  "byteFixedpoint": {
+    "status": "NOT_RUN",
+    "claimed": false
+  },
+  "bulkArtifactsPolicy": "Generated images, AST transports, profiles, caches and raw/bulk evidence remain outside Git. Frozen source inputs, compact source provenance and these compact receipts are committed."
+}
