@@ -2173,3 +2173,98 @@ commands and conditional unrun schedules are in the branch receipts
 `checkpoints/local2039g58b-final-measured.json`; main keeps
 `checkpoints/local2039g58-summary.json`.
 
+### G59: actual C-native check-only corpus iteration
+
+`selfhost_corpus_run.ts --native-executable` uses an existing authenticated C
+executable instead of a native-produced JS image. It delegates to the existing
+`native_compiler_experiment.ts --phase=check`, preserving that CLI's raw report,
+guardian and real Bend parser/expander/checker. No compiler algorithm, runtime
+helper, scheduler quantum, source check or parser fuel allowance changes.
+The frozen `selfhost_throughput.mjs` and `native_seed_runtime.mjs` bytes stay
+unchanged, so this does not invalidate historical JS request pins.
+
+```sh
+bun --smol evals/selfhost_corpus_run.ts --native-executable \
+  "$CORPUS" "$BUILD" "$BUILD_CORPUS" "$OUT"
+```
+
+`CORPUS` is the ordinary workload manifest and `OUT` is a fresh directory.
+`BUILD` is the C executable's successful full canonical build receipt;
+`BUILD_CORPUS` is the original compiler-source manifest protected by that build,
+**not** the workload manifest. The executable, emitted C and every protected/
+loaded original source must still match their hashes. The runner authenticates
+the complete build using `authenticateNativeSeedBuild` at its original source
+coordinate before launching anything. It never rebuilds or silently falls back.
+
+The workload's full source/foreign closure and namespaces are independently
+validated. `OUT/workload.json` canonicalizes only ordinary manifest paths for
+the existing native CLI; no Bend source, AST or checked program is rewritten or
+replayed. `OUT/request.json` records intent and identities; `OUT/report.json`
+is the unmodified native CLI report, with `NATIVE_FULL_CHECK_PASS`, three phases
+and `CheckSuccess`, not a relabelled JS throughput report or emitted-byte claim.
+
+Native runs retain the existing 8GiB RSS/footprint, 10ms sampling, 300000ms native
+deadline, one compute thread, GPU off, 8M eager parser cells per module and
+quantum 64. Build authentication retains its 600000ms contract. C has no V8 heap
+claim; the unchanged JS path keeps its 600000ms, 256/6144/128MiB Worker policy.
+Native child RUSAGE_SELF CPU and Node process-wide CPU are separate scopes.
+
+The actual mode accepts valid source, rejects an unused affine-invalid body
+during checking, preserves a relative manifest's source identities, and refuses
+wrong producer kind, mismatched build corpus and missing foreign alternatives
+before creating an output directory. The frozen smoke inputs are under
+`checkpoints/local2039g59-input`.
+
+#### Reused-artifact cost observations
+
+The prospectively frozen four-process order was native → JS → JS → native,
+with no overlapping heavy jobs, exclusions or retries. Every run checked the
+same 17-module corpus and performed 263032 expand and 1975761 checker chunks.
+
+| Pair / position | Backend | Whole guardian ms | Checker wall ms | Guardian peak footprint MiB |
+| --- | --- | ---: | ---: | ---: |
+| 1 / first | Native C | 25059 | 18280.791 | 351.33 |
+| 1 / second | Native-produced JS / Node | 173798 | 165406.590 | 1197.13 |
+| 2 / first | Native-produced JS / Node | 147300 | 127742.563 | 1090.12 |
+| 2 / second | Native C | 98301 | 37885.090 | 350.89 |
+
+Both native observations were faster and used a smaller peak footprint.
+The paired whole-wall geometric ratio was 0.310197, but n=2 and the large
+cost spread leave a 95% interval of approximately [0.0000184, 5238.68]:
+this is an operational observation, not a qualified stable speedup or a
+25-second latency guarantee. Native parse/expand wall time also grew sharply
+in the second run; no host-load, thermal, scheduling or I/O cause was measured.
+CPU scopes differ, so no cross-backend CPU ratio is asserted.
+
+This reuses the already-built G50 C executable
+`44fe762976bfd371206634570f9310e326ffb271a21609c099378c6a92683c6b`.
+Its historical build took 271420ms under the guardian, with four LLVM21
+partitions and diagnostic `-O1`, not the official optimization default.
+No new native build was performed for these measurements.
+
+This is a faster execution-backend option, **not an algorithm speedup or a JS
+optimization proxy**. A changed checker implementation requires its own matching
+native build before measuring that implementation. Reusing G50 checks new source
+as input; it does not execute a newly edited checker. Native build time is a
+separate upfront cost, excluded from reused-artifact iteration comparisons.
+G56's JS 45s budget and unresolved JS transfer qualification are not rescued by
+a different runtime. G58 candidates are not promoted; G24R12 is unchanged.
+
+#### Main integration verification
+
+Main source checkpoint `130481ac` exercised the new mode on the full frozen
+53-file closure: 18 Bend modules plus 35 foreign alternatives. The real native
+parse → expand → check run passed, with 144000000 eager parser cells,
+1072965 expand chunks, 10409462 checker chunks and `CheckSuccess` for 18 modules.
+Whole guardian time was 221940ms; peak RSS was 797507584 bytes and peak footprint
+1001097112 bytes, within the unchanged 300000ms / 8GiB policy. This was check-only:
+emission, byte fixedpoint and native-binary bootstrap were not run or claimed.
+
+The integrated old five-argument JS interface also passed on the valid two-module
+fixture. Existing runtime authentication, corpus calibration, CPU attribution and
+source-oracle suites passed: 13 tests, 61 assertions, no failures.
+Exact commands, report identities, phase times, CPU scopes, memory, source/build
+provenance and negative smoke outcomes are retained in
+`checkpoints/local2039g59-summary.json`; the earlier source and prospective-order
+receipts remain separate historical checkpoints.
+
