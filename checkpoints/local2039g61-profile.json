@@ -1,0 +1,371 @@
+{
+  "schemaVersion": 1,
+  "version": "G61D0",
+  "status": "DIAGNOSTIC_CURRENT_BACKEND_PROFILE_COMPLETE_NOT_THROUGHPUT",
+  "protocolCheckpoint": "9b9f6398",
+  "report": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g61-same-runtime-r86b6awi/baseline-profile-check/report.json",
+    "sha256": "2cbaef4f0c028c2895c2b5ed478fd669521f48e81cc0d613bb399cddeaa17608"
+  },
+  "request": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g61-same-runtime-r86b6awi/baseline-profile-check/request.json",
+    "sha256": "c6816d33834950b156c9e15b2368db67ca38a310e17b01e16f56455621a4f74f"
+  },
+  "cpuProfile": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g61-same-runtime-r86b6awi/baseline-physical-profile/selfhost-58989-thread-1-Idtpi5/000004-check.cpuprofile",
+    "sha256": "97e62cc51371ab3d3a8e393a4a4fb1350e96b53e0f7c8b6e5d2a93c0867f85be"
+  },
+  "allocationProfile": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g61-same-runtime-r86b6awi/baseline-physical-profile/selfhost-58989-thread-1-Idtpi5/000004-check.heapprofile",
+    "sha256": "373945698e81e3adc77756fc8481a2d1e5e58c6b3e759e53764b3e4dc18aba68"
+  },
+  "guardian": {
+    "status": "PASS",
+    "reason": "command_exit",
+    "elapsedMs": 59900,
+    "peakRssBytes": 1222311936,
+    "peakFootprintBytes": 1213998720,
+    "timeoutMs": 600000,
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592,
+    "ownedTreeStopped": true,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793724766987-30171bb0ea9f1193.json"
+  },
+  "cpuWeights": {
+    "samples": 41242,
+    "sumUs": 55772334,
+    "minUs": 0,
+    "maxUs": 100250,
+    "zeroIntervals": 36,
+    "removedClippedOrRewrittenSamples": 0,
+    "scope": "Exclusive physical sampled elapsed weights, aggregated by URL/line/column/name across call contexts. Not process CPU, not semantic-completeness or calibration authority."
+  },
+  "exclusivePhysicalFunctions": [
+    {
+      "function": "$Map_bit_go",
+      "line": 170274,
+      "column": 21,
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g60-lexer-cursor-kkoffczh/main-canonical-image/oracle.mjs",
+      "exclusiveMs": 18201.44,
+      "share": 0.32635248867296823,
+      "samples": 13717
+    },
+    {
+      "function": "char_len",
+      "line": 87,
+      "column": 18,
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g60-lexer-cursor-kkoffczh/main-canonical-image/oracle.mjs",
+      "exclusiveMs": 3741.477,
+      "share": 0.06708482022645852,
+      "samples": 2793
+    },
+    {
+      "function": "(garbage collector)",
+      "line": 0,
+      "column": 0,
+      "url": "",
+      "exclusiveMs": 3017.321,
+      "share": 0.05410067651104578,
+      "samples": 2068
+    },
+    {
+      "function": "$checker_core_steps_v1_checker_chunk",
+      "line": 805,
+      "column": 46,
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g60-lexer-cursor-kkoffczh/main-canonical-image/oracle.mjs",
+      "exclusiveMs": 2454.841,
+      "share": 0.04401538942228955,
+      "samples": 1855
+    },
+    {
+      "function": "$checker_core_steps_v1_checker_step_one",
+      "line": 11658,
+      "column": 49,
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g60-lexer-cursor-kkoffczh/main-canonical-image/oracle.mjs",
+      "exclusiveMs": 1880.922,
+      "share": 0.03372500064279182,
+      "samples": 1399
+    },
+    {
+      "function": "$Map_find",
+      "line": 153242,
+      "column": 19,
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g60-lexer-cursor-kkoffczh/main-canonical-image/oracle.mjs",
+      "exclusiveMs": 1317.229,
+      "share": 0.02361796441941985,
+      "samples": 971
+    },
+    {
+      "function": "$Map_get_go",
+      "line": 151570,
+      "column": 21,
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g60-lexer-cursor-kkoffczh/main-canonical-image/oracle.mjs",
+      "exclusiveMs": 1130.221,
+      "share": 0.020264904101018975,
+      "samples": 831
+    },
+    {
+      "function": "$checker_core_steps_v1_checker_step",
+      "line": 360,
+      "column": 45,
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g60-lexer-cursor-kkoffczh/main-canonical-image/oracle.mjs",
+      "exclusiveMs": 1100.459,
+      "share": 0.019731270346333363,
+      "samples": 790
+    },
+    {
+      "function": "nat_divmod",
+      "line": 22,
+      "column": 20,
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g60-lexer-cursor-kkoffczh/main-canonical-image/oracle.mjs",
+      "exclusiveMs": 766.708,
+      "share": 0.013747102640531415,
+      "samples": 583
+    },
+    {
+      "function": "$String_eq",
+      "line": 9408,
+      "column": 20,
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g60-lexer-cursor-kkoffczh/main-canonical-image/oracle.mjs",
+      "exclusiveMs": 646.359,
+      "share": 0.011589240643936473,
+      "samples": 476
+    },
+    {
+      "function": "$Map_bit",
+      "line": 110944,
+      "column": 18,
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g60-lexer-cursor-kkoffczh/main-canonical-image/oracle.mjs",
+      "exclusiveMs": 640.43,
+      "share": 0.011482933455860033,
+      "samples": 480
+    },
+    {
+      "function": "$Map_seek_go",
+      "line": 110726,
+      "column": 22,
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g60-lexer-cursor-kkoffczh/main-canonical-image/oracle.mjs",
+      "exclusiveMs": 558.874,
+      "share": 0.010020631376122793,
+      "samples": 422
+    },
+    {
+      "function": "char_code_at",
+      "line": 96,
+      "column": 22,
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g60-lexer-cursor-kkoffczh/main-canonical-image/oracle.mjs",
+      "exclusiveMs": 488.242,
+      "share": 0.00875419701818468,
+      "samples": 361
+    },
+    {
+      "function": "$___bend2_selfhost_index_lookup_find",
+      "line": 116648,
+      "column": 46,
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g60-lexer-cursor-kkoffczh/main-canonical-image/oracle.mjs",
+      "exclusiveMs": 486.924,
+      "share": 0.0087305652297069,
+      "samples": 367
+    },
+    {
+      "function": "$Map_ins_go",
+      "line": 184555,
+      "column": 21,
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g60-lexer-cursor-kkoffczh/main-canonical-image/oracle.mjs",
+      "exclusiveMs": 394.322,
+      "share": 0.0070702079636832125,
+      "samples": 292
+    },
+    {
+      "function": "string_cmp",
+      "line": 103,
+      "column": 20,
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g60-lexer-cursor-kkoffczh/main-canonical-image/oracle.mjs",
+      "exclusiveMs": 315.662,
+      "share": 0.005659831270464671,
+      "samples": 240
+    },
+    {
+      "function": "f",
+      "line": 169,
+      "column": 13,
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g60-lexer-cursor-kkoffczh/main-canonical-image/oracle.mjs",
+      "exclusiveMs": 302.378,
+      "share": 0.005421648661861632,
+      "samples": 172
+    },
+    {
+      "function": "$Map_set_go",
+      "line": 55450,
+      "column": 21,
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g60-lexer-cursor-kkoffczh/main-canonical-image/oracle.mjs",
+      "exclusiveMs": 285.455,
+      "share": 0.005118218649411373,
+      "samples": 215
+    },
+    {
+      "function": "$checker_core_steps_v1_checker_pure_arena_get_word",
+      "line": 125166,
+      "column": 60,
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g60-lexer-cursor-kkoffczh/main-canonical-image/oracle.mjs",
+      "exclusiveMs": 279.081,
+      "share": 0.0050039325949672465,
+      "samples": 207
+    },
+    {
+      "function": "$Map_diff",
+      "line": 170258,
+      "column": 19,
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g60-lexer-cursor-kkoffczh/main-canonical-image/oracle.mjs",
+      "exclusiveMs": 274.538,
+      "share": 0.004922476437869715,
+      "samples": 210
+    },
+    {
+      "function": "$Map_bit_go_rec",
+      "line": 184884,
+      "column": 25,
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g60-lexer-cursor-kkoffczh/main-canonical-image/oracle.mjs",
+      "exclusiveMs": 256.583,
+      "share": 0.004600542627461135,
+      "samples": 199
+    },
+    {
+      "function": "$Map_put_go",
+      "line": 184341,
+      "column": 21,
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g60-lexer-cursor-kkoffczh/main-canonical-image/oracle.mjs",
+      "exclusiveMs": 251.462,
+      "share": 0.004508722909104001,
+      "samples": 178
+    },
+    {
+      "function": "$Map_diff_fin",
+      "line": 184838,
+      "column": 23,
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g60-lexer-cursor-kkoffczh/main-canonical-image/oracle.mjs",
+      "exclusiveMs": 218.701,
+      "share": 0.003921316974111215,
+      "samples": 167
+    },
+    {
+      "function": "$___bend2_selfhost_checker_arena_reserve_words",
+      "line": 162558,
+      "column": 56,
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g60-lexer-cursor-kkoffczh/main-canonical-image/oracle.mjs",
+      "exclusiveMs": 152.581,
+      "share": 0.002735782942130412,
+      "samples": 94
+    }
+  ],
+  "statisticalAllocationFunctions": [
+    {
+      "function": "$Map_bit_go",
+      "line": 170274,
+      "column": 21,
+      "sampledSelfSizeBytes": 72545134512,
+      "shareOfStatisticalEstimate": 0.458547238817423
+    },
+    {
+      "function": "$checker_core_steps_v1_checker_chunk",
+      "line": 805,
+      "column": 46,
+      "sampledSelfSizeBytes": 9013610880,
+      "shareOfStatisticalEstimate": 0.05697372275345354
+    },
+    {
+      "function": "$Map_find",
+      "line": 153242,
+      "column": 19,
+      "sampledSelfSizeBytes": 5561676320,
+      "shareOfStatisticalEstimate": 0.03515454670926817
+    },
+    {
+      "function": "$Map_get_go",
+      "line": 151570,
+      "column": 21,
+      "sampledSelfSizeBytes": 5377197672,
+      "shareOfStatisticalEstimate": 0.03398848401974102
+    },
+    {
+      "function": "$Map_bit",
+      "line": 110944,
+      "column": 18,
+      "sampledSelfSizeBytes": 4307577224,
+      "shareOfStatisticalEstimate": 0.02722756881416064
+    },
+    {
+      "function": "$Map_seek_go",
+      "line": 110726,
+      "column": 22,
+      "sampledSelfSizeBytes": 3036734808,
+      "shareOfStatisticalEstimate": 0.01919475882974371
+    },
+    {
+      "function": "$checker_core_steps_v1_checker_pure_arena_get_word",
+      "line": 125166,
+      "column": 60,
+      "sampledSelfSizeBytes": 1791029248,
+      "shareOfStatisticalEstimate": 0.011320835254303588
+    },
+    {
+      "function": "$Map_ins_go",
+      "line": 184555,
+      "column": 21,
+      "sampledSelfSizeBytes": 1564509968,
+      "shareOfStatisticalEstimate": 0.009889039847463048
+    },
+    {
+      "function": "run_clo",
+      "line": 168,
+      "column": 17,
+      "sampledSelfSizeBytes": 1396738992,
+      "shareOfStatisticalEstimate": 0.008828583921424635
+    },
+    {
+      "function": "$Map_put_go",
+      "line": 184341,
+      "column": 21,
+      "sampledSelfSizeBytes": 1073769096,
+      "shareOfStatisticalEstimate": 0.006787138205896285
+    },
+    {
+      "function": "$checker_core_steps_v1_checker_step_group_13",
+      "line": 28639,
+      "column": 54,
+      "sampledSelfSizeBytes": 771794592,
+      "shareOfStatisticalEstimate": 0.004878401308047457
+    },
+    {
+      "function": "$checker_core_steps_v1_checker_body_arena_words_cons",
+      "line": 71137,
+      "column": 62,
+      "sampledSelfSizeBytes": 755046400,
+      "shareOfStatisticalEstimate": 0.004772538423535006
+    },
+    {
+      "function": "$Map_diff",
+      "line": 170258,
+      "column": 19,
+      "sampledSelfSizeBytes": 725618024,
+      "shareOfStatisticalEstimate": 0.004586525941120369
+    },
+    {
+      "function": "$checker_core_steps_v1_checker_pure_arena_get_node",
+      "line": 116252,
+      "column": 60,
+      "sampledSelfSizeBytes": 687886800,
+      "shareOfStatisticalEstimate": 0.004348032364689826
+    },
+    {
+      "function": "$___bend2_selfhost_checker_arena_get_node",
+      "line": 128380,
+      "column": 51,
+      "sampledSelfSizeBytes": 645940224,
+      "shareOfStatisticalEstimate": 0.004082894161665838
+    }
+  ],
+  "statisticalAllocationEstimateTotal": 158206458072,
+  "allocationCaveat": "Statistical estimates including collected objects; NOT exact allocated/live bytes. Profiles are excluded from the unprofiled timing cohort.",
+  "decision": "Test new pure Map.bit cursor walk without recursively rebuilding the returned String prefix. G58 owner-local Arena reads and scheduler transport not repeated."
+}

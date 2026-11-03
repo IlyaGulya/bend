@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "version": "G61D0",
+  "status": "PROSPECTIVE_CURRENT_BACKEND_PROFILE",
+  "repository": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g61-same-runtime-r86b6awi/repository",
+  "branch": "selfhost/g61-same-runtime-r86b6awi",
+  "parent": "98fe4321",
+  "baselineImage": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g60-lexer-cursor-kkoffczh/main-canonical-image/oracle.mjs",
+    "sha256": "47e376fce5a3b18db1bc35fc3f8a42e7b2e0eccc2f791899004c1a6f0c4ffa33"
+  },
+  "baselineProducer": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g60-lexer-cursor-kkoffczh/main-canonical-image/receipt.json",
+    "sha256": "5575e176f3c4eb546d2d064165073325fe909d1527014b4702ab8f9dfcf2329f"
+  },
+  "compilerSource": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g60-lexer-cursor-kkoffczh/main-compiler-source.corpus.json",
+    "sha256": "4dcdf7518b43970eb0a3df0de930078b8c11000168880383fe56a9d5ec8fe636"
+  },
+  "workload": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/main-complete.corpus.json",
+    "sha256": "1a269e15bf70257b019ab572c003b6eb130b4e3f63ad507783525e28d307b0e4"
+  },
+  "command": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g61-same-runtime-r86b6awi/repository/evals/selfhost_corpus_run.ts",
+    "--canonical-oracle",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/main-complete.corpus.json",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g60-lexer-cursor-kkoffczh/main-canonical-image/oracle.mjs",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g60-lexer-cursor-kkoffczh/main-canonical-image/receipt.json",
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g61-same-runtime-r86b6awi/baseline-profile-check"
+  ],
+  "cwd": "/Users/ilyagulya/Projects/My/bend",
+  "environment": {
+    "SELFHOST_CPU_PROFILE_DIR": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g61-same-runtime-r86b6awi/baseline-physical-profile"
+  },
+  "purpose": "Diagnostic profile of actual G60 main canonical JS17-module check-only path before selecting a NEW optimization; not throughput, acceptance or a switch to another backend. G58 arena-owner read fusion and scheduler transport already failed and will not be rerun unchanged.",
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000,
+    "workerStackMiB": 256,
+    "oldGenerationMiB": 6144,
+    "youngGenerationMiB": 128,
+    "parserFuelPerModule": 8000000,
+    "chunkQuantum": 64,
+    "oneHeavyLane": true
+  },
+  "nextDecision": "Select exactly one source-backed new hypothesis from the observed current-backend profile; freeze candidate/control images, same canonical producer/Node/workload, order and thresholds before unprofiled timing. No profile samples in timing cohort.",
+  "acceptedCompiler": "G24R12 unchanged",
+  "artifactPolicy": "Raw profiles, images, AST transports and bulk logs outsideGit. Source/protocol/compact receipts only."
+}

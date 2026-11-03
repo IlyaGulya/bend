@@ -1,0 +1,118 @@
+{
+  "schemaVersion": 1,
+  "version": "G61R1",
+  "status": "PROSPECTIVE_NEW_MAP_BIT_SOURCE_CANDIDATE",
+  "profile": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g61-same-runtime-r86b6awi/repository/checkpoints/local2039g61-profile.json",
+    "sha256": "744e836b12a316908bae62fc8b422345e9e4b42a9c64dfebbba635084d66ec5c"
+  },
+  "baselineImage": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g60-lexer-cursor-kkoffczh/main-canonical-image/oracle.mjs",
+    "sha256": "47e376fce5a3b18db1bc35fc3f8a42e7b2e0eccc2f791899004c1a6f0c4ffa33"
+  },
+  "baselineProducer": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g60-lexer-cursor-kkoffczh/main-canonical-image/receipt.json",
+    "sha256": "5575e176f3c4eb546d2d064165073325fe909d1527014b4702ab8f9dfcf2329f"
+  },
+  "sourceBaseline": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g60-lexer-cursor-kkoffczh/main-compiler-source.corpus.json",
+    "sha256": "4dcdf7518b43970eb0a3df0de930078b8c11000168880383fe56a9d5ec8fe636"
+  },
+  "repository": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g61-same-runtime-r86b6awi/repository",
+  "branch": "selfhost/g61-same-runtime-r86b6awi",
+  "hypothesis": "Map.bit.go currently recursively reconstructs every traversed String prefix, despite returning the original value. Share the original Data String once and compute the bit with a tail-recursive cursor-only walk. Preserve Map.bit public signature/result, presence bit then32MSB-first bits, existing Map.bit.chr off semantics, key/value contents, arbitrary Nat and public backward/irregular MNode behavior. No native/JS backend, scheduler, checker source algorithm or parser/fuel change.",
+  "sourceScope": [
+    "bend2/base.bend Map.bit.go/read helper path only",
+    "Remove obsolete prefix reconstruction helpers after reference search; preserve Map.bit.chr semantics by calling its result projection at the selected character."
+  ],
+  "sameProducer": {
+    "kernel": {
+      "path": "bend2/bend.ts",
+      "sha256": "22b5915cd7cccd23b6aa28849b23a7f1e3549333cdd0954ab48103ddd0777e9e"
+    },
+    "compiler": {
+      "path": "bend2/comp.ts",
+      "sha256": "880a9b3b86f273852a39fc664f8c3d7b71e3860b6d365e4321949fc812b6e7cc"
+    },
+    "producer": {
+      "path": "evals/selfhost_fast.ts",
+      "sha256": "a92d0a19a7a349db93c78e47671250fc6572990db22872df978ee89c4ff43202"
+    },
+    "runtime": "same pinned Node23.11/V8, same canonical JS producer, identical root/emitter/lexer/checker bytes except intended Base bit path",
+    "baseline": "actual G60 current-main canonical image, no historical timing samples reused"
+  },
+  "correctness": "Existing C full-U32 Map.bit/native map boundary and irregular-position fixtures; applicable JS scalar map fixtures and return-key checks; source-to-C and source-to-JS actual output; full canonical all-body image production before performance. Input ASTs/workload remain original G56 immutable trees.",
+  "performance": {
+    "selectedManifest": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/main-complete.corpus.json",
+      "sha256": "1a269e15bf70257b019ab572c003b6eb130b4e3f63ad507783525e28d307b0e4"
+    },
+    "orders": [
+      [
+        "baseline",
+        "candidate"
+      ],
+      [
+        "candidate",
+        "baseline"
+      ],
+      [
+        "baseline",
+        "candidate"
+      ]
+    ],
+    "freshProcesses": true,
+    "pairs": 3,
+    "profiled": false,
+    "exclusions": 0,
+    "retries": 0,
+    "primary": "check user+system process CPU; Node includes helpers on both sides",
+    "secondary": [
+      "check wall",
+      "whole guardian wall",
+      "peak RSS",
+      "peak footprint",
+      "public chunk counts"
+    ],
+    "costFilter": {
+      "allPairCpuRatiosBelow": 1,
+      "geometricCpuRatioAtMost": 0.9,
+      "geometricWallRatioAtMost": 1,
+      "candidateMedianFootprintRatioAtMost": 1.1
+    },
+    "conditionalFull": {
+      "onlyIfCostFilterPasses": true,
+      "manifest": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/full-frozen.corpus.json",
+        "sha256": "60bf820e76a9c336e58c848eec6a40b3f8fbb4b7ac2ae45ffd1abdb1d217ebc6"
+      },
+      "orders": [
+        [
+          "baseline",
+          "candidate"
+        ],
+        [
+          "candidate",
+          "baseline"
+        ]
+      ],
+      "purpose": "same-producer full-source confirmation, not strict12/native/product promotion"
+    },
+    "statistics": "paired log ratios with small-sample Student95 intervals; no stable/qualified speedup unless interval outside2% practical band. Full2pairs remain descriptive, native product/strict12 untouched."
+  },
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000,
+    "workerStackMiB": 256,
+    "oldGenerationMiB": 6144,
+    "youngGenerationMiB": 128,
+    "parserFuelPerModule": 8000000,
+    "chunkQuantum": 64,
+    "oneHeavyLane": true,
+    "imageBuildTimeoutMs": 120000
+  },
+  "acceptedCompiler": "G24R12 unchanged; candidate stays isolated without original full qualification.",
+  "artifactPolicy": "Required source inputs plus compact receipts only inGit; images/C/binaries/profiles/caches/bulklogs remain outside."
+}

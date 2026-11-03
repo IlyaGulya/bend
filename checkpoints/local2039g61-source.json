@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "version": "G61R1",
+  "status": "SOURCE_BEFORE_EXECUTION",
+  "protocol": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g61-same-runtime-r86b6awi/repository/checkpoints/local2039g61-protocol.json",
+    "sha256": "4d506b87de3651066168d968a333bc68f6cb42942785cd03143cccef9252448a"
+  },
+  "compilerCorpus": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g61-same-runtime-r86b6awi/candidate-compiler-source.corpus.json",
+    "sha256": "21039712574809f4131fc6b980bffe8d3ffca95b18102749c38ad1a024abe5e7"
+  },
+  "deltaFromG60MainCompiler": [
+    {
+      "path": "bend2/base.bend",
+      "baselineSha256": "21baec76caf1a6cfd4a544340b291f7bb55bf30cc841f9f5f29e3b12a1a4d614",
+      "candidateSha256": "b21a2c04705c285e2bb75765625259903c5977eee425b979030ef27d118cfb40"
+    }
+  ],
+  "change": "Map.bit.read tail-recursively advances String cursor and projects unchanged Map.bit.chr result. Map.bit.go retains original Data String once and pairs it with the bit. Obsolete go.chr/go.rec prefix builders removed after complete source-reference search; Map.bit public signature and bit ordering/off semantics preserved.",
+  "sourceRestUnchanged": "Root/emitter/checker/lexer/kernel/TScompiler/producer/runtime helper bytes unchanged; only intended Base bit path changes.",
+  "correctness": "Existing full-U32 native Map.bit boundaries and irregular map fixtures plus applicable JS scalar fixtures and actual whole-image validation; no altered expected values or caps.",
+  "acceptedCompiler": "G24R12 unchanged"
+}

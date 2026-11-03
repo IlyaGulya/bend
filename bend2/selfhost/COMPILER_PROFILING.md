@@ -2400,3 +2400,122 @@ with `Own checking failed`, nonzero exit and no signal: an expected semantic
 rejection, not a process fault. Full source/build/runtime identities and all
 preserved failures are in `checkpoints/local2039g60-summary.json`.
 
+### G61: same-runtime portable map-bit reconstruction experiment
+
+G61 starts from G60 main source `98fe4321`, with a new physical profile of the
+actual canonical JS compiler, not a borrowed native-produced-JS hotspot list.
+The original selected 17-module/52-file workload, Node23.11/V8, producer
+kernel/TS compiler, public ABI13, parser fuel8M and quantum64 stay fixed.
+
+#### Diagnostic evidence and source candidate
+
+The actual baseline run completes 1975761 checker chunks. Its checker profile
+has 41242 samples and 55772.334ms of raw time-delta weights. Identical physical
+functions are aggregated across calling contexts by URL/line/column/name;
+exclusive weights are not added to overlapping inclusive stacks.
+`Map.bit.go` accounts for 32.635% of those self weights and 45.855% of the
+statistical allocation self-size estimate. Allocation estimates include
+collected objects: they are neither exact allocated bytes nor live memory.
+All 36 zero-weight intervals are preserved; this is diagnostic hotspot evidence,
+not calibration/semantic-completeness authority or throughput data.
+Raw profiles remain outside Git; `local2039g61-profile.json` records identities.
+
+Source checkpoint `ec8ffab5` changes only `bend2/base.bend` relative to G60's
+complete compiler source closure. `Map.bit.read` tail-recursively advances the
+query cursor and projects the unchanged `Map.bit.chr` bit result.
+`Map.bit.go` shares the original Data String and returns it with that bit,
+instead of recursively rebuilding every traversed prefix. Obsolete
+`go.chr`/`go.rec` builders have no remaining callers and are removed.
+The public `Map.bit` result/signature, presence-bit plus 32 MSB-first bit order,
+arbitrary Nat positions, original key and character-offset semantics stay.
+
+Fresh all-body canonical production checks 12425 definitions/18 modules and
+emits 14746271 bytes, SHA256
+`4f935d9894ca1887c18acd50e2095e8ca3cb6e2bed560bc523efcf109803b8b2`.
+Its actual C full-U32 bit/key fixture, arbitrary/backward-position map readers,
+and JS scalar map/prefix/identity consumers pass all literal outputs.
+The new image accepts the valid source and rejects an unused affine-invalid
+body during checking with no signal; semantic rejection is not a process fault.
+
+#### Prospective cohort and transfer boundary
+
+`local2039g61-protocol.json` freezes three fresh unprofiled pairs in AB/BA/AB
+order; `local2039g61-execution.json` freezes exact images/receipts/commands.
+Both images use byte-identical kernel, TS compiler, image producer and runtime
+helpers. Only the intended compiler Base bit path differs; workload sources
+stay in their separately frozen forest. Existing runtime/memory/deadline/
+stack/fuel/chunk limits are unchanged, with one heavy job at a time.
+The primary metric is checker user+system process CPU, equally scoped on both
+sides; phase wall, whole guardian wall and memory are retained separately.
+No profile, old timing, replacement sample, outlier exclusion or retry enters
+the cohort. Paired log-ratio Student95 intervals use the existing analyzer.
+Only the prospectively defined cost-filter pass earns the two full-source
+AB/BA confirmation pairs; it does not earn native/product promotion.
+
+This is deliberately **not automatically a production-backend optimization**.
+The selfhost emitter already lowers `BIR.PrimMapBit` to `$p_map_bit` and has a
+dedicated C helper; those paths can bypass the portable function being changed.
+See `emitter_steps_v1.bend:26100-26101,26533` and the observed G51 intrinsic
+profile. `local2039g61-scope.json` freezes that limitation before timing.
+Any gain here applies to the matched canonical-runtime experiment; G56's
+native-produced-JS budget/transfer qualification, native bootstrap, strict12,
+byte fixedpoint and accepted G24R12 remain unchanged.
+
+#### Three-pair selected outcome
+
+All six frozen processes pass with 263032 expand and 1975761 checker chunks,
+17 modules and 2954 source declarations. Every pair has lower checker process
+CPU, and the original CPU/wall/memory cost filter passes without exclusions,
+retries, replacements or resource-policy changes.
+
+| Selected candidate / baseline | Paired geometric ratio | Paired Student95 interval | 2% practical-band classification |
+| --- | ---: | --- | --- |
+| Checker process CPU | 0.761199 | [0.656011, 0.883255] | improvement |
+| Checker wall | 0.728069 | [0.499708, 1.060787] | inconclusive |
+| Whole guardian wall | 0.749105 | [0.506233, 1.108496] | inconclusive |
+| Peak physical footprint | 0.921850 | [0.852597, 0.996727] | inconclusive |
+
+The process-CPU interval clears the practical improvement band; wall/memory
+point estimates must not be promoted to qualified stable effects.
+The exact source/runtime/producer/workload cohort and complete per-cell
+CPU/wall/memory remain in `local2039g61-selected.json` (checkpoint `95ae61d9`).
+The prospectively earned full-source AB/BA cells are separately frozen in
+`local2039g61-full-execution.json`; selected results are not their substitute
+and do not establish whole-rebuild or production-intrinsic speedup.
+
+#### Earned full-source confirmation and final decision
+
+Both frozen AB/BA pairs pass the original full-source workload: 18 modules,
+13059 source declarations, 1072965 expand and 10409462 checker chunks per
+process. All ten selected/full processes retain identical Node/runtime,
+ABI13, worker heap/stack, parser/chunk code and 600s/8GiB policy. No checks,
+output patches, source samples, observations or failed attempts are excluded.
+
+| Full source, two pairs | Baseline median | Candidate median | Paired geometric ratio | Paired Student95 interval |
+| --- | ---: | ---: | ---: | --- |
+| Checker process CPU, seconds | 231.847 | 188.589 | 0.813414 | [0.796641, 0.830539] |
+| Checker wall, seconds | 246.231 | 195.692 | 0.795638 | [0.450991, 1.403662] |
+| Whole guardian wall, seconds | 260.445 | 207.440 | 0.796883 | [0.553495, 1.147297] |
+
+Checker CPU is lower in both full pairs, confirming that the selected
+canonical-source direction transfers to the original full workload. This is
+the prospectively earned **two-pair descriptive confirmation**, not a
+replacement for strict12 or native/product acceptance. Broad wall/footprint
+intervals do not establish a stable wall-time or memory effect.
+Every exact command, observed CPU/wall/memory, source identity, semantic
+consumer output, runtime and cap is retained in `local2039g61-full.json` and
+`local2039g61-summary.json`. The latter records the ten-process policy checks.
+
+The candidate image itself was produced under the original120s/8GiB build
+caps: guardian74.606s, not a paired build comparison. Neither historical G60
+build timing nor profiled timing enters this result. Emitted-byte fixedpoint
+is **NOT_RUN**. A faster checker is not evidence of a faster image producer,
+C toolchain, native bootstrap or release compiler.
+
+Decision: **canonical CPU win confirmed; source remains isolated and not
+product-qualified** under the pre-timing protocol. Main retains the compact
+receipts and documentation, not the `Map.bit` algorithm cutover. The source
+is reproducible from `selfhost/g61-same-runtime-r86b6awi` / `ec8ffab5`.
+Accepted G24R12, G56 native transfer/budget qualification and frozen historical
+runtime helpers remain unchanged.
+

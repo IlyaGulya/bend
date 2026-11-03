@@ -1,0 +1,816 @@
+{
+  "schemaVersion": 1,
+  "version": "G61R1",
+  "status": "SELECTED_SAME_RUNTIME_COHORT_COMPLETE",
+  "sourceCheckpoint": "ec8ffab5",
+  "protocolCheckpoint": "1f718813",
+  "executionCheckpoint": "f3e16bf5",
+  "timingRows": [
+    {
+      "pair": 1,
+      "order": [
+        "baseline",
+        "candidate"
+      ],
+      "role": "baseline",
+      "command": [
+        "/usr/bin/env",
+        "-u",
+        "SELFHOST_CPU_PROFILE_DIR",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g61-same-runtime-r86b6awi/repository/evals/selfhost_corpus_run.ts",
+        "--canonical-oracle",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/main-complete.corpus.json",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g60-lexer-cursor-kkoffczh/main-canonical-image/oracle.mjs",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g60-lexer-cursor-kkoffczh/main-canonical-image/receipt.json",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g61-same-runtime-r86b6awi/selected-p1-baseline"
+      ],
+      "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g61-same-runtime-r86b6awi/repository",
+      "report": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g61-same-runtime-r86b6awi/selected-p1-baseline/report.json",
+        "sha256": "140e95f97589b21cc2653aa5176253d9838894862d327131d789a24169bb7529"
+      },
+      "request": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g61-same-runtime-r86b6awi/selected-p1-baseline/request.json",
+        "sha256": "c6816d33834950b156c9e15b2368db67ca38a310e17b01e16f56455621a4f74f"
+      },
+      "status": "PASS",
+      "stepCounts": {
+        "expand": 263032,
+        "check": 1975761
+      },
+      "phases": [
+        {
+          "phase": "startup",
+          "elapsedMs": 123.05525,
+          "userCpuMs": 122.804,
+          "systemCpuMs": 11.518,
+          "memoryEnd": {
+            "rss": 298516480,
+            "heapTotal": 38748160,
+            "heapUsed": 35600080,
+            "external": 19067490,
+            "arrayBuffers": 8599438
+          }
+        },
+        {
+          "phase": "load-parse",
+          "elapsedMs": 1137.4130420000001,
+          "userCpuMs": 2091.588,
+          "systemCpuMs": 138.673,
+          "memoryEnd": {
+            "rss": 743636992,
+            "heapTotal": 409845760,
+            "heapUsed": 269435168,
+            "external": 10493131,
+            "arrayBuffers": 25039
+          }
+        },
+        {
+          "phase": "expand",
+          "elapsedMs": 1244.819542,
+          "userCpuMs": 1513.244,
+          "systemCpuMs": 40.959,
+          "memoryEnd": {
+            "rss": 671744000,
+            "heapTotal": 468566016,
+            "heapUsed": 296722456,
+            "external": 10493131,
+            "arrayBuffers": 25039
+          }
+        },
+        {
+          "phase": "check",
+          "elapsedMs": 54596.419625,
+          "userCpuMs": 52040.603,
+          "systemCpuMs": 1273.022,
+          "memoryEnd": {
+            "rss": 955056128,
+            "heapTotal": 870776832,
+            "heapUsed": 637238448,
+            "external": 10493131,
+            "arrayBuffers": 25039
+          }
+        }
+      ],
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "elapsedMs": 57622,
+        "peakRssBytes": 1109770240,
+        "peakFootprintBytes": 1172815992,
+        "timeoutMs": 600000,
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592,
+        "ownedTreeStopped": true,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793725712234-bf085e49a5c87f89.json"
+      }
+    },
+    {
+      "pair": 1,
+      "order": [
+        "baseline",
+        "candidate"
+      ],
+      "role": "candidate",
+      "command": [
+        "/usr/bin/env",
+        "-u",
+        "SELFHOST_CPU_PROFILE_DIR",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g61-same-runtime-r86b6awi/repository/evals/selfhost_corpus_run.ts",
+        "--canonical-oracle",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/main-complete.corpus.json",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g61-same-runtime-r86b6awi/candidate-canonical-image/oracle.mjs",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g61-same-runtime-r86b6awi/candidate-canonical-image/receipt.json",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g61-same-runtime-r86b6awi/selected-p1-candidate"
+      ],
+      "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g61-same-runtime-r86b6awi/repository",
+      "report": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g61-same-runtime-r86b6awi/selected-p1-candidate/report.json",
+        "sha256": "381282b2ab6737ddf380b030f28c84dc35f09f6d7962ac424c079b883acb5e96"
+      },
+      "request": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g61-same-runtime-r86b6awi/selected-p1-candidate/request.json",
+        "sha256": "a006a877b381f20d3a216c746db20a385e6db29cbf329d9a6bef9600c8a8dec3"
+      },
+      "status": "PASS",
+      "stepCounts": {
+        "expand": 263032,
+        "check": 1975761
+      },
+      "phases": [
+        {
+          "phase": "startup",
+          "elapsedMs": 115.989959,
+          "userCpuMs": 117.747,
+          "systemCpuMs": 9.481,
+          "memoryEnd": {
+            "rss": 296615936,
+            "heapTotal": 38748160,
+            "heapUsed": 35535720,
+            "external": 10631343,
+            "arrayBuffers": 163291
+          }
+        },
+        {
+          "phase": "load-parse",
+          "elapsedMs": 995.453292,
+          "userCpuMs": 1983.331,
+          "systemCpuMs": 110.688,
+          "memoryEnd": {
+            "rss": 782188544,
+            "heapTotal": 435011584,
+            "heapUsed": 282651408,
+            "external": 10493131,
+            "arrayBuffers": 25039
+          }
+        },
+        {
+          "phase": "expand",
+          "elapsedMs": 1354.1012090000002,
+          "userCpuMs": 1555.503,
+          "systemCpuMs": 55.63,
+          "memoryEnd": {
+            "rss": 845824000,
+            "heapTotal": 496615424,
+            "heapUsed": 310037944,
+            "external": 10493131,
+            "arrayBuffers": 25039
+          }
+        },
+        {
+          "phase": "check",
+          "elapsedMs": 34134.185875,
+          "userCpuMs": 38070.018,
+          "systemCpuMs": 655.448,
+          "memoryEnd": {
+            "rss": 917815296,
+            "heapTotal": 760152064,
+            "heapUsed": 493551536,
+            "external": 10493131,
+            "arrayBuffers": 25039
+          }
+        }
+      ],
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "elapsedMs": 37047,
+        "peakRssBytes": 1055342592,
+        "peakFootprintBytes": 1042618216,
+        "timeoutMs": 600000,
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592,
+        "ownedTreeStopped": true,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793725770388-e430d4e3af684266.json"
+      }
+    },
+    {
+      "pair": 2,
+      "order": [
+        "candidate",
+        "baseline"
+      ],
+      "role": "candidate",
+      "command": [
+        "/usr/bin/env",
+        "-u",
+        "SELFHOST_CPU_PROFILE_DIR",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g61-same-runtime-r86b6awi/repository/evals/selfhost_corpus_run.ts",
+        "--canonical-oracle",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/main-complete.corpus.json",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g61-same-runtime-r86b6awi/candidate-canonical-image/oracle.mjs",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g61-same-runtime-r86b6awi/candidate-canonical-image/receipt.json",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g61-same-runtime-r86b6awi/selected-p2-candidate"
+      ],
+      "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g61-same-runtime-r86b6awi/repository",
+      "report": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g61-same-runtime-r86b6awi/selected-p2-candidate/report.json",
+        "sha256": "ec72b86b35b979ca1f0cb859d81046466393f9b9ee76ea6ef4106711c5b9a470"
+      },
+      "request": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g61-same-runtime-r86b6awi/selected-p2-candidate/request.json",
+        "sha256": "a006a877b381f20d3a216c746db20a385e6db29cbf329d9a6bef9600c8a8dec3"
+      },
+      "status": "PASS",
+      "stepCounts": {
+        "expand": 263032,
+        "check": 1975761
+      },
+      "phases": [
+        {
+          "phase": "startup",
+          "elapsedMs": 117.03579099999996,
+          "userCpuMs": 119.985,
+          "systemCpuMs": 9.548,
+          "memoryEnd": {
+            "rss": 298680320,
+            "heapTotal": 38748160,
+            "heapUsed": 35604656,
+            "external": 11639735,
+            "arrayBuffers": 1171683
+          }
+        },
+        {
+          "phase": "load-parse",
+          "elapsedMs": 1043.630584,
+          "userCpuMs": 2055.022,
+          "systemCpuMs": 125.021,
+          "memoryEnd": {
+            "rss": 789217280,
+            "heapTotal": 419577856,
+            "heapUsed": 141159560,
+            "external": 10493131,
+            "arrayBuffers": 25039
+          }
+        },
+        {
+          "phase": "expand",
+          "elapsedMs": 1176.0003749999998,
+          "userCpuMs": 1481.977,
+          "systemCpuMs": 29.603,
+          "memoryEnd": {
+            "rss": 657915904,
+            "heapTotal": 451821568,
+            "heapUsed": 300417944,
+            "external": 10493131,
+            "arrayBuffers": 25039
+          }
+        },
+        {
+          "phase": "check",
+          "elapsedMs": 33769.698417,
+          "userCpuMs": 37225.144,
+          "systemCpuMs": 648.226,
+          "memoryEnd": {
+            "rss": 899973120,
+            "heapTotal": 766902272,
+            "heapUsed": 433664928,
+            "external": 10493131,
+            "arrayBuffers": 25039
+          }
+        }
+      ],
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "elapsedMs": 36577,
+        "peakRssBytes": 1036894208,
+        "peakFootprintBytes": 1124049624,
+        "timeoutMs": 600000,
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592,
+        "ownedTreeStopped": true,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793725807829-e4161943198d9118.json"
+      }
+    },
+    {
+      "pair": 2,
+      "order": [
+        "candidate",
+        "baseline"
+      ],
+      "role": "baseline",
+      "command": [
+        "/usr/bin/env",
+        "-u",
+        "SELFHOST_CPU_PROFILE_DIR",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g61-same-runtime-r86b6awi/repository/evals/selfhost_corpus_run.ts",
+        "--canonical-oracle",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/main-complete.corpus.json",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g60-lexer-cursor-kkoffczh/main-canonical-image/oracle.mjs",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g60-lexer-cursor-kkoffczh/main-canonical-image/receipt.json",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g61-same-runtime-r86b6awi/selected-p2-baseline"
+      ],
+      "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g61-same-runtime-r86b6awi/repository",
+      "report": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g61-same-runtime-r86b6awi/selected-p2-baseline/report.json",
+        "sha256": "e7632f56b137f7cbbbd1c03b2ebcd1c5dbecf39ee9d502abf231aea58a397adb"
+      },
+      "request": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g61-same-runtime-r86b6awi/selected-p2-baseline/request.json",
+        "sha256": "c6816d33834950b156c9e15b2368db67ca38a310e17b01e16f56455621a4f74f"
+      },
+      "status": "PASS",
+      "stepCounts": {
+        "expand": 263032,
+        "check": 1975761
+      },
+      "phases": [
+        {
+          "phase": "startup",
+          "elapsedMs": 124.742458,
+          "userCpuMs": 127.38,
+          "systemCpuMs": 10.508,
+          "memoryEnd": {
+            "rss": 298139648,
+            "heapTotal": 38748160,
+            "heapUsed": 35604832,
+            "external": 19067490,
+            "arrayBuffers": 8599438
+          }
+        },
+        {
+          "phase": "load-parse",
+          "elapsedMs": 1262.5293339999998,
+          "userCpuMs": 2412.171,
+          "systemCpuMs": 180.142,
+          "memoryEnd": {
+            "rss": 658817024,
+            "heapTotal": 426393600,
+            "heapUsed": 193877064,
+            "external": 10493131,
+            "arrayBuffers": 25039
+          }
+        },
+        {
+          "phase": "expand",
+          "elapsedMs": 1099.49225,
+          "userCpuMs": 1396.291,
+          "systemCpuMs": 27.975,
+          "memoryEnd": {
+            "rss": 692207616,
+            "heapTotal": 468074496,
+            "heapUsed": 220553288,
+            "external": 10493131,
+            "arrayBuffers": 25039
+          }
+        },
+        {
+          "phase": "check",
+          "elapsedMs": 46307.909374999996,
+          "userCpuMs": 49839.236,
+          "systemCpuMs": 952.033,
+          "memoryEnd": {
+            "rss": 973176832,
+            "heapTotal": 865468416,
+            "heapUsed": 619057744,
+            "external": 10493131,
+            "arrayBuffers": 25039
+          }
+        }
+      ],
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "elapsedMs": 49289,
+        "peakRssBytes": 1119633408,
+        "peakFootprintBytes": 1197096024,
+        "timeoutMs": 600000,
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592,
+        "ownedTreeStopped": true,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793725844889-64ed30d6802bfbe9.json"
+      }
+    },
+    {
+      "pair": 3,
+      "order": [
+        "baseline",
+        "candidate"
+      ],
+      "role": "baseline",
+      "command": [
+        "/usr/bin/env",
+        "-u",
+        "SELFHOST_CPU_PROFILE_DIR",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g61-same-runtime-r86b6awi/repository/evals/selfhost_corpus_run.ts",
+        "--canonical-oracle",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/main-complete.corpus.json",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g60-lexer-cursor-kkoffczh/main-canonical-image/oracle.mjs",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g60-lexer-cursor-kkoffczh/main-canonical-image/receipt.json",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g61-same-runtime-r86b6awi/selected-p3-baseline"
+      ],
+      "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g61-same-runtime-r86b6awi/repository",
+      "report": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g61-same-runtime-r86b6awi/selected-p3-baseline/report.json",
+        "sha256": "b5467b828f080f86be7a3c547c84b3a3d11991a4c20a815fe9882293332d50a0"
+      },
+      "request": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g61-same-runtime-r86b6awi/selected-p3-baseline/request.json",
+        "sha256": "c6816d33834950b156c9e15b2368db67ca38a310e17b01e16f56455621a4f74f"
+      },
+      "status": "PASS",
+      "stepCounts": {
+        "expand": 263032,
+        "check": 1975761
+      },
+      "phases": [
+        {
+          "phase": "startup",
+          "elapsedMs": 122.44191700000005,
+          "userCpuMs": 124.807,
+          "systemCpuMs": 9.462,
+          "memoryEnd": {
+            "rss": 298303488,
+            "heapTotal": 38748160,
+            "heapUsed": 35558776,
+            "external": 10631343,
+            "arrayBuffers": 163291
+          }
+        },
+        {
+          "phase": "load-parse",
+          "elapsedMs": 1258.0093749999999,
+          "userCpuMs": 2118.768,
+          "systemCpuMs": 151.86,
+          "memoryEnd": {
+            "rss": 748044288,
+            "heapTotal": 412041216,
+            "heapUsed": 157652392,
+            "external": 10493131,
+            "arrayBuffers": 25039
+          }
+        },
+        {
+          "phase": "expand",
+          "elapsedMs": 1116.7773750000001,
+          "userCpuMs": 1377.58,
+          "systemCpuMs": 31.708,
+          "memoryEnd": {
+            "rss": 689143808,
+            "heapTotal": 468926464,
+            "heapUsed": 317505336,
+            "external": 10493131,
+            "arrayBuffers": 25039
+          }
+        },
+        {
+          "phase": "check",
+          "elapsedMs": 44694.231958,
+          "userCpuMs": 49058.964,
+          "systemCpuMs": 834.095,
+          "memoryEnd": {
+            "rss": 876855296,
+            "heapTotal": 829620224,
+            "heapUsed": 589676048,
+            "external": 10493131,
+            "arrayBuffers": 25039
+          }
+        }
+      ],
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "elapsedMs": 47847,
+        "peakRssBytes": 1037549568,
+        "peakFootprintBytes": 1123316304,
+        "timeoutMs": 600000,
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592,
+        "ownedTreeStopped": true,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793725894554-7b0b14f7c7e82ae3.json"
+      }
+    },
+    {
+      "pair": 3,
+      "order": [
+        "baseline",
+        "candidate"
+      ],
+      "role": "candidate",
+      "command": [
+        "/usr/bin/env",
+        "-u",
+        "SELFHOST_CPU_PROFILE_DIR",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g61-same-runtime-r86b6awi/repository/evals/selfhost_corpus_run.ts",
+        "--canonical-oracle",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/main-complete.corpus.json",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g61-same-runtime-r86b6awi/candidate-canonical-image/oracle.mjs",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g61-same-runtime-r86b6awi/candidate-canonical-image/receipt.json",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g61-same-runtime-r86b6awi/selected-p3-candidate"
+      ],
+      "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g61-same-runtime-r86b6awi/repository",
+      "report": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g61-same-runtime-r86b6awi/selected-p3-candidate/report.json",
+        "sha256": "ff33a6f69d23be65762a35b840d2b7fb6650ba19c08d8fba03de9fb1e93b1977"
+      },
+      "request": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g61-same-runtime-r86b6awi/selected-p3-candidate/request.json",
+        "sha256": "a006a877b381f20d3a216c746db20a385e6db29cbf329d9a6bef9600c8a8dec3"
+      },
+      "status": "PASS",
+      "stepCounts": {
+        "expand": 263032,
+        "check": 1975761
+      },
+      "phases": [
+        {
+          "phase": "startup",
+          "elapsedMs": 133.12483399999996,
+          "userCpuMs": 129.8,
+          "systemCpuMs": 10.303,
+          "memoryEnd": {
+            "rss": 298139648,
+            "heapTotal": 38748160,
+            "heapUsed": 35582632,
+            "external": 18607367,
+            "arrayBuffers": 8139315
+          }
+        },
+        {
+          "phase": "load-parse",
+          "elapsedMs": 1338.633541,
+          "userCpuMs": 2241.549,
+          "systemCpuMs": 158.753,
+          "memoryEnd": {
+            "rss": 670285824,
+            "heapTotal": 439091200,
+            "heapUsed": 278178696,
+            "external": 10493131,
+            "arrayBuffers": 25039
+          }
+        },
+        {
+          "phase": "expand",
+          "elapsedMs": 1467.19625,
+          "userCpuMs": 1665.064,
+          "systemCpuMs": 68.66,
+          "memoryEnd": {
+            "rss": 756400128,
+            "heapTotal": 521928704,
+            "heapUsed": 338848648,
+            "external": 10493131,
+            "arrayBuffers": 25039
+          }
+        },
+        {
+          "phase": "check",
+          "elapsedMs": 37833.007584,
+          "userCpuMs": 39858.427,
+          "systemCpuMs": 770.211,
+          "memoryEnd": {
+            "rss": 717406208,
+            "heapTotal": 760938496,
+            "heapUsed": 532240024,
+            "external": 10493131,
+            "arrayBuffers": 25039
+          }
+        }
+      ],
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "elapsedMs": 42156,
+        "peakRssBytes": 944504832,
+        "peakFootprintBytes": 1054218136,
+        "timeoutMs": 600000,
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592,
+        "ownedTreeStopped": true,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793725943009-b6e5988ad63ea204.json"
+      }
+    }
+  ],
+  "statistics": {
+    "pairs": [
+      {
+        "pair": 1,
+        "order": [
+          "baseline",
+          "candidate"
+        ],
+        "baseline": {
+          "checkerCpuMs": 53313.625,
+          "checkerWallMs": 54596.419625,
+          "pipelineMs": 57103.241666,
+          "guardianMs": 57622,
+          "footprint": 1172815992,
+          "rss": 1109770240,
+          "checkChunks": 1975761
+        },
+        "candidate": {
+          "checkerCpuMs": 38725.46599999999,
+          "checkerWallMs": 34134.185875,
+          "pipelineMs": 36601.285917,
+          "guardianMs": 37047,
+          "footprint": 1042618216,
+          "rss": 1055342592,
+          "checkChunks": 1975761
+        }
+      },
+      {
+        "pair": 2,
+        "order": [
+          "candidate",
+          "baseline"
+        ],
+        "baseline": {
+          "checkerCpuMs": 50791.269,
+          "checkerWallMs": 46307.909374999996,
+          "pipelineMs": 48796.2765,
+          "guardianMs": 49289,
+          "footprint": 1197096024,
+          "rss": 1119633408,
+          "checkChunks": 1975761
+        },
+        "candidate": {
+          "checkerCpuMs": 37873.37,
+          "checkerWallMs": 33769.698417,
+          "pipelineMs": 36110.605125,
+          "guardianMs": 36577,
+          "footprint": 1124049624,
+          "rss": 1036894208,
+          "checkChunks": 1975761
+        }
+      },
+      {
+        "pair": 3,
+        "order": [
+          "baseline",
+          "candidate"
+        ],
+        "baseline": {
+          "checkerCpuMs": 49893.059,
+          "checkerWallMs": 44694.231958,
+          "pipelineMs": 47193.4675,
+          "guardianMs": 47847,
+          "footprint": 1123316304,
+          "rss": 1037549568,
+          "checkChunks": 1975761
+        },
+        "candidate": {
+          "checkerCpuMs": 40628.638000000006,
+          "checkerWallMs": 37833.007584,
+          "pipelineMs": 40775.788875000006,
+          "guardianMs": 42156,
+          "footprint": 1054218136,
+          "rss": 944504832,
+          "checkChunks": 1975761
+        }
+      }
+    ],
+    "metrics": {
+      "checkerCpuMs": {
+        "n": 3,
+        "logRatios": [
+          -0.3196945072216454,
+          -0.29347624313452697,
+          -0.20540870747632714
+        ],
+        "meanLog": -0.2728598192774998,
+        "varianceLog": 0.0035840887053461947,
+        "geometricMeanRatio": 0.7611994856441215,
+        "ci95": [
+          0.6560105976817632,
+          0.8832550251359802
+        ],
+        "baselineMedian": 50791.269,
+        "variantMedian": 38725.46599999999,
+        "direction2pct": "improvement"
+      },
+      "checkerWallMs": {
+        "n": 3,
+        "logRatios": [
+          -0.46966890553502627,
+          -0.3157488714791429,
+          -0.16666251622061862
+        ],
+        "meanLog": -0.3173600977449293,
+        "varianceLog": 0.022955165028898265,
+        "geometricMeanRatio": 0.7280685320790158,
+        "ci95": [
+          0.49970824588064733,
+          1.0607865525002773
+        ],
+        "baselineMedian": 46307.909374999996,
+        "variantMedian": 34134.185875,
+        "direction2pct": "inconclusive"
+      },
+      "pipelineMs": {
+        "n": 3,
+        "logRatios": [
+          -0.44477751264992477,
+          -0.301067415746233,
+          -0.14616698724326782
+        ],
+        "meanLog": -0.2973373052131419,
+        "varianceLog": 0.022302496764351736,
+        "geometricMeanRatio": 0.7427934220080685,
+        "ci95": [
+          0.5125695141545248,
+          1.076423885038396
+        ],
+        "baselineMedian": 48796.2765,
+        "variantMedian": 36601.285917,
+        "direction2pct": "inconclusive"
+      },
+      "guardianMs": {
+        "n": 3,
+        "logRatios": [
+          -0.44171706242028314,
+          -0.2982813048494711,
+          -0.12663139693703646
+        ],
+        "meanLog": -0.2888765880689302,
+        "varianceLog": 0.024886080671546747,
+        "geometricMeanRatio": 0.7491046481494845,
+        "ci95": [
+          0.5062334620018709,
+          1.1084960122155836
+        ],
+        "baselineMedian": 49289,
+        "variantMedian": 37047,
+        "direction2pct": "inconclusive"
+      },
+      "footprint": {
+        "n": 3,
+        "logRatios": [
+          -0.11767262289621183,
+          -0.06296074394658566,
+          -0.0634859070796597
+        ],
+        "meanLog": -0.08137309130748573,
+        "varianceLog": 0.000988310944249778,
+        "geometricMeanRatio": 0.9218496931698853,
+        "ci95": [
+          0.852597288591085,
+          0.9967271397282009
+        ],
+        "baselineMedian": 1172815992,
+        "variantMedian": 1054218136,
+        "direction2pct": "inconclusive"
+      },
+      "rss": {
+        "n": 3,
+        "logRatios": [
+          -0.05028755694001991,
+          -0.0767714107567734,
+          -0.09395622448630572
+        ],
+        "meanLog": -0.07367173072769968,
+        "varianceLog": 0.0004839441435289878,
+        "geometricMeanRatio": 0.928976598265069,
+        "ci95": [
+          0.8795722169822502,
+          0.9811559567957052
+        ],
+        "baselineMedian": 1109770240,
+        "variantMedian": 1036894208,
+        "direction2pct": "inconclusive"
+      }
+    },
+    "costFilterPass": true,
+    "scope": "Same canonical producer/Node/source workload; not native/product qualification"
+  },
+  "exclusions": 0,
+  "retries": 0,
+  "fullFollowup": "Required by frozen protocol iff costFilterPass; no native-transfer/acceptance claim."
+}

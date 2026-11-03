@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "version": "G61R1",
+  "status": "PORTABLE_SOURCE_OPTIMIZATION_SCOPE_FROZEN_BEFORE_TIMING",
+  "evidence": "Current emitter_steps_v1.bend BIR.PrimMapBit lowers to $p_map_bit (lines26100-26101); primitive runtime at26533 computes bits and returns original key without portable Map.bit.go. C emitter has bend_map_bit likewise.",
+  "consequence": "The measured canonical JS path executes portable Map.bit.go and has real headroom; native/selfhost JS already has a dedicated primitive. A canonical win here is NOT automatically a production-backend gain. Source correctness/portability and measured canonical algorithm improvement are the only claims; native/product acceptance remains unchanged.",
+  "timingProtocolUnchanged": true,
+  "currentCandidate": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g61-same-runtime-r86b6awi/candidate-canonical-image/oracle.mjs",
+    "sha256": "4f935d9894ca1887c18acd50e2095e8ca3cb6e2bed560bc523efcf109803b8b2"
+  },
+  "producer": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g61-same-runtime-r86b6awi/candidate-canonical-image/receipt.json",
+    "sha256": "4aaaeaf6a017c653db4840416dd9e6a999ef33967f10922fce96525d62b24676"
+  }
+}
