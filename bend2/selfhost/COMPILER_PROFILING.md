@@ -54,12 +54,14 @@ The clean driver omits per-step stage attribution, whose CPU probes are
 measurable overhead on this small workload. Phase CPU/heap profiling remains
 available through the opt-in above and is never throughput evidence.
 
-The same canonical development control is **not eligible for the complete
+The G53 canonical development control was **not eligible for the complete
 compiler-root workload** under this worker policy: its recursive `String.to_list`
 overflowed during own parsing, before expansion/checking. This was a control
 failure, not a G53 regression. Do not hide it with a larger stack, host parsing
-or replayed ASTs. Full comparisons use genuine native-produced images from
-the same authenticated C seed; the quick corpus only rejects hypotheses early.
+or replayed ASTs. G60 below removes that lexer conversion in the actual source
+and exercises a newly emitted image on the original full workload. Historical
+comparisons still require genuine native-produced images from the same C seed;
+canonical development observations do not replace that qualification.
 
 G52 descriptor elision was rejected after three samples per variant: checker
 median 10,432.685 versus control 10,481.490 ms (0.47%, inside variability).
@@ -2267,4 +2269,134 @@ Exact commands, report identities, phase times, CPU scopes, memory, source/build
 provenance and negative smoke outcomes are retained in
 `checkpoints/local2039g59-summary.json`; the earlier source and prospective-order
 receipts remain separate historical checkpoints.
+
+### G60: stack-safe source lexing enables a real rebuild-and-check loop
+
+The existing canonical JS producer was already cheaper than C-native
+construction, but its own parser could not handle the full root. G60 fixes the
+source blocker rather than increasing the worker stack or replaying parsed data.
+The isolated experiment starts from the exact frozen G50 compiler closure and
+changes only `bend2/selfhost/lexer.bend`; source checkpoint `ca886d5a`.
+
+#### Source and admission changes
+
+`Lexer.tokens(String)` now scans its original String cursor directly. Scanner
+and one-character lookahead helpers consume `SNil`/`SCon` instead of first
+allocating the whole file as `List<Char>` through recursive `String.to_list`.
+Token reverse buffers remain lists; token kinds/text, stop/reprocessing rules,
+UTF-16 offsets and line/column arithmetic are unchanged. All input-cursor helper
+callers migrate together; the public `tokens` and compiler ABI13 are unchanged.
+See `lexer.bend:78-81,107-220,275-287` and `comp.ts:333-341,4097-4106`.
+
+`selfhost_corpus_run.ts --canonical-oracle` is an explicit **development** lane:
+
+```sh
+bun --smol evals/selfhost_fast.ts \
+  --repository="$REPO" --source="$COMPILER_ROOT" --exports="$ABI13" \
+  --node="$NODE" --out="$IMAGE_DIR" \
+  --memory-mib=8192 --rss-mib=8192 --poll-ms=10 --timeout-ms=120000
+bun --smol evals/selfhost_corpus_run.ts --canonical-oracle \
+  "$CORPUS" "$IMAGE_DIR/oracle.mjs" "$IMAGE_DIR/receipt.json" "$NODE" "$RUN_DIR"
+```
+
+`ABI13` is the ordinary manifest's comma-joined exports; all output directories
+must be fresh. `selfhost_fast` still loads and validates every filled source
+body using the canonical TS kernel, then emits the actual changed compiler.
+The new image performs its **own** parse/expand/check of the complete workload.
+No old executable is substituted for the newly edited parser/checker.
+
+The previous `candidate_host --candidate-oracle` validation is shared in
+`evals/selfhost_oracle.mjs`, not duplicated or relaxed. Both consumers require
+the matching successful, emitted, fully checked `selfhost-fast-ts-oracle`
+receipt, current image hash and every loaded compiler-source pin. Native,
+acceptance and fixedpoint labels must be false. The corpus mode additionally
+requires ABI13, pins the shared authenticator and loaded compiler inputs, and
+labels the request as canonical development production. Conflicting producer
+modes fail before output. Existing native-produced-JS and native-executable
+interfaces retain their original contracts.
+
+Compiler-build input and measurement workload are different identity roles.
+Changing the compiler lexer requires new producer-source authority; it does
+**not** change the separately frozen old G56 workload forest or manifest.
+The old workload manifests and frozen throughput/runtime helpers stay unchanged.
+
+#### Actual source and main-integration results
+
+Isolated canonical production checked 12473 definitions in 18 modules and emitted
+14811356 bytes, SHA256
+`35f521d4fa3aea3a88a765ac9167391a9852975edcba6e6cae2d390d974be931`.
+
+| Workload | Build guardian ms | Workload guardian ms | Sum of guarded execution costs ms | Checker chunks |
+| --- | ---: | ---: | ---: | ---: |
+| Isolated G50 + new lexer: selected 17 modules / 52 files | 34629 | 54981 | 89610 | 1975761 |
+| Same isolated image: original full 18 modules / 53 files | 34629 | 290038 | 324667 | 10409462 |
+| Integrated main: selected 17 modules / 52 files | 44602 | 66467 | 111069 | 1975761 |
+
+The full observation reuses that same newly emitted image; the table explicitly
+adds its measured production cost rather than claiming a second fresh build.
+Main source checkpoint `5ec18b73` also ran build → corpus as one uninterrupted
+`&&` command: observed outer wall112.20s, including orchestration beyond the
+guardian sum. It freshly checked12426 definitions/18 modules and emitted
+14746503 bytes from main's existing emitter snapshot, deliberately not replaced
+by the isolated G50 emitter. These are distinct source/producer identities,
+not paired performance samples.
+These are individual observations, not paired algorithm speedups or a stable
+latency guarantee. Canonical producer/runtime layouts differ from native
+production. G56's native-produced-JS 45s budget and unresolved performance
+transfer qualification are not rescued by this new lane.
+
+Build peak footprint was 3247019256 bytes; selected/full run peaks were
+1161724192 / 2607058928 bytes. Build keeps the existing 3072MiB Node heap,
+256MiB worker stack and 120000ms guard. Workload runs retain the existing
+256MiB stack, 6144/128MiB heap policy, 8M parser fuel per module, quantum64,
+8GiB RSS/footprint, 10ms sampling and 600000ms deadline. No manual GC or
+profiling is used. Node phase CPU remains process-wide, including helpers.
+
+The historical G50 C construction was 271420ms: validation2542ms,
+TS C generation170689ms and LLVM split4/max3 backend94827ms. This is context,
+not a paired comparison with canonical JS production. Prior G42 deferred C text
+and G41 split8 outcomes remain rejected; neither experiment is repeated here.
+The bounded evidence points to using the cheaper explicit development backend
+for early rejection, not to a new proven C-codegen optimization.
+
+#### Behavior and tooling compatibility
+
+The changed lexer compiled to both JS and C and reproduced all six literal
+lines of `tests/selfhost/lexer.bend`, including Unicode/UTF-16 marks, escaped
+quotes, malformed quote EOF, token boundaries and comment/name EOF. The actual
+new compiler also used the shared oracle admission to emit a Unicode consumer
+whose JS returned the existing five-scalar literal result.
+Eight actual CLI rejection cases covered false native labels, check-only
+authority, wrong ABI/image/source pins, wrong producer modes and mixed flags;
+none created an output directory.
+
+Running the existing diagnostic suites exposed independent stale contracts:
+the token-provenance default used display key `lexer.Token`, while the actual
+normalized type is `lexer:Token`; operator fixtures used no-longer-supported
+bare numeric operators and removed `u32_to_term`/old literal decoding.
+G60 uses current canonical keys and compact literal APIs and annotates the
+same 11 operator / 8 continuation inputs. It neither deletes cases nor changes
+their expected AST equality. Failed executions remain recorded, not relabelled.
+The namespace diagnosis directly observed `Unknown` with the old key and
+`Same` with the actual key on the identity graph.
+
+Source, actual commands, runtime/limits, hashes, CPU/memory, preserved failures
+and final integration evidence are in `checkpoints/local2039g60-*.json`.
+This is source bug repair and development-iteration tooling, not a native
+bootstrap, byte-fixedpoint, strict12 or product-acceptance claim. G24R12 remains
+the accepted compiler; G58 optimizations are not promoted.
+
+#### Final main compatibility proof
+
+The integrated nine-file relevant suite passed112 tests,604 assertions, zero
+failures. This includes the current-lexer literal/parser observations, token
+provenance, all11 operator and8 continuation comparisons, runtime authentication,
+corpus statistics/CPU attribution and source-oracle tests.
+The old native-produced-JS interface and native-executable mode both passed on
+the original valid fixture. The old JS request is byte-identical to its G59
+request; no frozen driver/helper or historical receipt was rewritten.
+Canonical mode rejected an actual unused affine-invalid body during checking,
+with `Own checking failed`, nonzero exit and no signal: an expected semantic
+rejection, not a process fault. Full source/build/runtime identities and all
+preserved failures are in `checkpoints/local2039g60-summary.json`.
 
