@@ -1,0 +1,596 @@
+{
+  "schemaVersion": 1,
+  "version": "G58",
+  "status": "BOTH_EXPERIMENTS_MEASURED_LARGE_ACCELERATION_FILTER_FAILED_NOT_PROMOTED",
+  "acceptedCompiler": "G24R12 unchanged",
+  "compilerSourceIntegratedIntoMain": false,
+  "scope": "Two independent source-level checker acceleration experiments, actual same-seed native-produced JS compiler images, original G56 real-source input and unchanged driver/runtime/caps. Finite semantic smoke passes; performance screening only, not accepted product or universal speedup proof.",
+  "protocol": {
+    "path": "checkpoints/local2039g58-protocol.json",
+    "sha256": "99f0d746743cf4ee2222383c2626a84bcd809ff647083fa59513987947015867"
+  },
+  "protocolCheckpoint": "247d51cd",
+  "frozenExecution": {
+    "path": "checkpoints/local2039g58-execution.json",
+    "sha256": "e445ef8c176062229c7015a7701aa1aa4356806266346ef0c6d859599be8fd0f"
+  },
+  "executionCheckpoint": "462a311d",
+  "baseline": {
+    "sourceCheckpoint": "19d1f046",
+    "nativeImage": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g50-combined-native-v2.json.mjs",
+      "sha256": "273b0022813e17908020c0ee58fd4e02da4f3dc756ce58e3389093440863c3fe"
+    },
+    "producer": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g50-combined-native-v2.json",
+      "sha256": "255477ed64fc5c3040b64b0e8bd6cd6128ffb1ad147725b3ffe2d1dd9f8453bc"
+    },
+    "nativeConsumers": {
+      "passed": 69,
+      "report": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/baseline-native-targets.json",
+        "sha256": "69bcdea8719ed30d7fee221165ec99d554995e1e77a0b7a9f4d9c47c14b37bf7"
+      }
+    }
+  },
+  "experiments": {
+    "G58A": {
+      "branch": "selfhost/g58a-arena-vin3knc9",
+      "finalEvidenceCommit": "32f92ec5",
+      "worktree": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/arena-read/repository",
+      "completeReceipt": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/arena-read/repository/checkpoints/local2039g58a-final-measured.json",
+        "sha256": "960c9f6ebbe4f5e60534eb060699b514d26c341912eee3a55c802aa139c0b851"
+      },
+      "nativeImage": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/g58a-native-v2-producer.json.mjs",
+        "sha256": "ed272e1ce0af509669d0b34d8add837ed366979f5b946430600e5d88e26b9132"
+      },
+      "nativeProducer": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/g58a-native-v2-producer.json",
+        "sha256": "2264c667120dfcc2e3b5ca75704bbcab1ddeb0bfa25334d65dbc4aa57920f2f2"
+      },
+      "canonicalDefinitionsAdmitted": 12477,
+      "nativeConsumersPassed": 71,
+      "sourceCAndJsProgramsPassed": 6,
+      "schedulerLiteralObservationsPerTarget": null,
+      "statistics": {
+        "candidate": "G58A",
+        "pairs": [
+          {
+            "pair": 1,
+            "order": [
+              "baseline",
+              "variant"
+            ],
+            "baseline": {
+              "checkerWallMs": 121581.677791,
+              "checkerCpuMs": 94065.365,
+              "pipelineMs": 137692.783375,
+              "chunks": 1975761,
+              "rss": 1001914368,
+              "footprint": 1140232600
+            },
+            "variant": {
+              "checkerWallMs": 93448.508583,
+              "checkerCpuMs": 89164.98000000001,
+              "pipelineMs": 105855.270125,
+              "chunks": 1975761,
+              "rss": 1008828416,
+              "footprint": 1125208664
+            },
+            "wallRatio": 0.7686068351815216,
+            "cpuRatio": 0.9479044704711453
+          },
+          {
+            "pair": 2,
+            "order": [
+              "variant",
+              "baseline"
+            ],
+            "baseline": {
+              "checkerWallMs": 156861.768458,
+              "checkerCpuMs": 95204.001,
+              "pipelineMs": 167814.4125,
+              "chunks": 1975761,
+              "rss": 1090371584,
+              "footprint": 1274001800
+            },
+            "variant": {
+              "checkerWallMs": 148658.54087499998,
+              "checkerCpuMs": 94887.783,
+              "pipelineMs": 156525.779333,
+              "chunks": 1975761,
+              "rss": 1037844480,
+              "footprint": 1137039880
+            },
+            "wallRatio": 0.9477040985598957,
+            "cpuRatio": 0.996678521945732
+          }
+        ],
+        "metrics": {
+          "checkerWallMs": {
+            "n": 2,
+            "logRatios": [
+              -0.26317570786267497,
+              -0.05371295777133227
+            ],
+            "meanLog": -0.15844433281700362,
+            "varianceLog": 0.021937321837914144,
+            "geometricMeanRatio": 0.8534704727655658,
+            "ci95": [
+              0.22555694449352903,
+              3.2293922473469916
+            ],
+            "baselineMedian": 139221.72312450001,
+            "variantMedian": 121053.524729
+          },
+          "checkerCpuMs": {
+            "n": 2,
+            "logRatios": [
+              -0.053501551349912316,
+              -0.0033270064074306114
+            ],
+            "meanLog": -0.028414278878671463,
+            "varianceLog": 0.0012587424800925581,
+            "geometricMeanRatio": 0.9719856102715374,
+            "ci95": [
+              0.7066793166882599,
+              1.3368949738084617
+            ],
+            "baselineMedian": 94634.683,
+            "variantMedian": 92026.3815
+          },
+          "pipelineMs": {
+            "n": 2,
+            "logRatios": [
+              -0.26295221108863936,
+              -0.06963796069909212
+            ],
+            "meanLog": -0.16629508589386574,
+            "varianceLog": 0.018685199701836283,
+            "geometricMeanRatio": 0.8467963196691766,
+            "ci95": [
+              0.24797178540221884,
+              2.8917161113396816
+            ],
+            "baselineMedian": 152753.5979375,
+            "variantMedian": 131190.524729
+          },
+          "chunks": {
+            "n": 2,
+            "logRatios": [
+              0,
+              0
+            ],
+            "meanLog": 0,
+            "varianceLog": 0,
+            "geometricMeanRatio": 1,
+            "ci95": [
+              1,
+              1
+            ],
+            "baselineMedian": 1975761,
+            "variantMedian": 1975761
+          },
+          "rss": {
+            "n": 2,
+            "logRatios": [
+              0.006877135459575257,
+              -0.04937259397022845
+            ],
+            "meanLog": -0.021247729255326597,
+            "varianceLog": 0.0015820160304630627,
+            "geometricMeanRatio": 0.9789764134293122,
+            "ci95": [
+              0.6848139944792082,
+              1.3994965432617452
+            ],
+            "baselineMedian": 1046142976,
+            "variantMedian": 1023336448
+          },
+          "footprint": {
+            "n": 2,
+            "logRatios": [
+              -0.013263779113424867,
+              -0.11373468111038543
+            ],
+            "meanLog": -0.06349923011190514,
+            "varianceLog": 0.005047201074041427,
+            "geometricMeanRatio": 0.9384748418209939,
+            "ci95": [
+              0.4956916814519662,
+              1.776779925277574
+            ],
+            "baselineMedian": 1207117200,
+            "variantMedian": 1131124272
+          }
+        },
+        "passesPrespecifiedCostFilter": false
+      },
+      "largeEffectCostFilter": "FAIL",
+      "performanceQualification": "INCONCLUSIVE",
+      "compilerSourceIntegratedIntoMain": false
+    },
+    "G58B": {
+      "branch": "selfhost/g58b-scheduler-vin3knc9",
+      "finalEvidenceCommit": "75d74af3",
+      "worktree": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/scheduler/repository",
+      "completeReceipt": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/scheduler/repository/checkpoints/local2039g58b-final-measured.json",
+        "sha256": "4771969a6420baa8b3e65a844a226a96b7762e4fd6af2ee66bcccfda6ec5fe42"
+      },
+      "nativeImage": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/g58b-native-producer-v2.json.mjs",
+        "sha256": "e6f1c2ed6a33779dd3b7eb05d044294bc104c0c0c7917873e093fd35d0026a2b"
+      },
+      "nativeProducer": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/g58b-native-producer-v2.json",
+        "sha256": "6f994bb7cec17872c0f35cc9ab0b01677dd98f544c58ba3160c84be2ba8e5138"
+      },
+      "canonicalDefinitionsAdmitted": 12474,
+      "nativeConsumersPassed": 69,
+      "sourceCAndJsProgramsPassed": 2,
+      "schedulerLiteralObservationsPerTarget": 49,
+      "statistics": {
+        "candidate": "G58B",
+        "pairs": [
+          {
+            "pair": 1,
+            "order": [
+              "variant",
+              "baseline"
+            ],
+            "baseline": {
+              "checkerWallMs": 156753.61258299998,
+              "checkerCpuMs": 98519.575,
+              "pipelineMs": 165538.33875,
+              "chunks": 1975761,
+              "rss": 1101742080,
+              "footprint": 1300089928
+            },
+            "variant": {
+              "checkerWallMs": 120246.58833299999,
+              "checkerCpuMs": 91085.747,
+              "pipelineMs": 129425.174875,
+              "chunks": 1975761,
+              "rss": 1004584960,
+              "footprint": 1120067376
+            },
+            "wallRatio": 0.767105691228202,
+            "cpuRatio": 0.9245446602870547
+          },
+          {
+            "pair": 2,
+            "order": [
+              "baseline",
+              "variant"
+            ],
+            "baseline": {
+              "checkerWallMs": 123455.67233400002,
+              "checkerCpuMs": 94594.96,
+              "pipelineMs": 132420.221625,
+              "chunks": 1975761,
+              "rss": 1043333120,
+              "footprint": 1166350832
+            },
+            "variant": {
+              "checkerWallMs": 147901.68116699997,
+              "checkerCpuMs": 92243.09,
+              "pipelineMs": 157476.40945900002,
+              "chunks": 1975761,
+              "rss": 1024196608,
+              "footprint": 1125569664
+            },
+            "wallRatio": 1.1980144643889923,
+            "cpuRatio": 0.9751374703261145
+          }
+        ],
+        "metrics": {
+          "checkerWallMs": {
+            "n": 2,
+            "logRatios": [
+              -0.2651306888967064,
+              0.18066557340083111
+            ],
+            "meanLog": -0.04223255774793763,
+            "varianceLog": 0.09936715373922743,
+            "geometricMeanRatio": 0.9586468139030673,
+            "ci95": [
+              0.05644876607020192,
+              16.28031536887083
+            ],
+            "baselineMedian": 140104.6424585,
+            "variantMedian": 134074.13474999997
+          },
+          "checkerCpuMs": {
+            "n": 2,
+            "logRatios": [
+              -0.07845392181815278,
+              -0.025176822716908444
+            ],
+            "meanLog": -0.05181537226753061,
+            "varianceLog": 0.001419224644321905,
+            "geometricMeanRatio": 0.9495041554600145,
+            "ci95": [
+              0.6768603962371977,
+              1.331970589870197
+            ],
+            "baselineMedian": 96557.2675,
+            "variantMedian": 91664.4185
+          },
+          "pipelineMs": {
+            "n": 2,
+            "logRatios": [
+              -0.2460999081123218,
+              0.17329530268734755
+            ],
+            "meanLog": -0.03640230271248712,
+            "varianceLog": 0.08794617142084954,
+            "geometricMeanRatio": 0.9642522941283099,
+            "ci95": [
+              0.06714753875617167,
+              13.846858782240188
+            ],
+            "baselineMedian": 148979.2801875,
+            "variantMedian": 143450.792167
+          },
+          "chunks": {
+            "n": 2,
+            "logRatios": [
+              0,
+              0
+            ],
+            "meanLog": 0,
+            "varianceLog": 0,
+            "geometricMeanRatio": 1,
+            "ci95": [
+              1,
+              1
+            ],
+            "baselineMedian": 1975761,
+            "variantMedian": 1975761
+          },
+          "rss": {
+            "n": 2,
+            "logRatios": [
+              -0.09231815506152315,
+              -0.018512003223412787
+            ],
+            "meanLog": -0.05541507914246797,
+            "varianceLog": 0.0027236740245751008,
+            "geometricMeanRatio": 0.9460923632339244,
+            "ci95": [
+              0.5919618331750416,
+              1.512075119722923
+            ],
+            "baselineMedian": 1072537600,
+            "variantMedian": 1014390784
+          },
+          "footprint": {
+            "n": 2,
+            "logRatios": [
+              -0.14904459681910795,
+              -0.03559065225328029
+            ],
+            "meanLog": -0.09231762453619412,
+            "varianceLog": 0.006435898768772947,
+            "geometricMeanRatio": 0.9118154885741568,
+            "ci95": [
+              0.44348018876809303,
+              1.8747342187104832
+            ],
+            "baselineMedian": 1233220380,
+            "variantMedian": 1122818520
+          }
+        },
+        "passesPrespecifiedCostFilter": false
+      },
+      "largeEffectCostFilter": "FAIL",
+      "performanceQualification": "INCONCLUSIVE",
+      "compilerSourceIntegratedIntoMain": false
+    }
+  },
+  "runtime": {
+    "os": "Darwin25.6.0",
+    "arch": "arm64",
+    "bun": "1.4.3 c6da4a4d3",
+    "node": {
+      "execPath": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "versions": {
+        "node": "23.11.0",
+        "acorn": "8.14.1",
+        "ada": "3.2.1",
+        "amaro": "0.4.1",
+        "ares": "1.34.4",
+        "brotli": "1.1.0",
+        "cjs_module_lexer": "2.1.0",
+        "cldr": "46.0",
+        "icu": "76.1",
+        "llhttp": "9.2.1",
+        "modules": "131",
+        "napi": "10",
+        "nbytes": "0.1.1",
+        "ncrypto": "0.0.1",
+        "nghttp2": "1.64.0",
+        "openssl": "3.0.16",
+        "simdjson": "3.12.2",
+        "simdutf": "6.0.3",
+        "sqlite": "3.49.1",
+        "tz": "2025a",
+        "undici": "6.21.2",
+        "unicode": "16.0",
+        "uv": "1.50.0",
+        "uvwasi": "0.0.21",
+        "v8": "12.9.202.28-node.14",
+        "zlib": "1.3.0.1-motley-788cb3c",
+        "zstd": "1.5.6"
+      },
+      "execArgv": [
+        "--experimental-strip-types",
+        "--max-old-space-size=6144",
+        "--max-semi-space-size=128"
+      ],
+      "heapLimitBytes": 6845104128
+    },
+    "nodeBinary": {
+      "path": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "sha256": "ead5889f15f4e17b37f941c7d9e92b624396786bd74d8155ef470f6381f032c5"
+    },
+    "throughputLimits": {
+      "memoryMiB": 8192,
+      "rssMiB": 8192,
+      "pollMs": 10,
+      "timeoutMs": 600000
+    },
+    "throughputWorkerPolicy": {
+      "stackMiB": 256,
+      "oldGenerationMiB": 6144,
+      "youngGenerationMiB": 128
+    },
+    "parserFuelPerModule": 8000000,
+    "abi": 13,
+    "quantum": 64,
+    "oneHeavyLane": true,
+    "profiling": false,
+    "phaseCpuScope": "Node process-wide CPU; includes worker/helper threads, excludes child processes",
+    "sourceSmokeWorkerOldGenerationMiB": 3072,
+    "sourceGenerationAndCanonicalAdmissionDeadlineMs": 120000,
+    "sameSeedNativeProductionDeadlineMs": 300000
+  },
+  "evaluationInput": {
+    "manifest": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/main-complete.corpus.json",
+      "sha256": "1a269e15bf70257b019ab572c003b6eb130b4e3f63ad507783525e28d307b0e4"
+    },
+    "declarations": 2954,
+    "bendModules": 17,
+    "foreignAlternatives": 35,
+    "files": 52,
+    "nativeWorldCompilerSourceFilesPerCandidate": 53,
+    "freshOwnImageParseExpandCheckEveryCell": true,
+    "astReplay": false,
+    "hostParsingCheckingReplacement": false,
+    "imagePatches": 0,
+    "sourceChecksExcluded": 0
+  },
+  "timing": {
+    "rawStatistics": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/paired-stats.json",
+      "sha256": "d5167a765a11f482813e83edc3467cc20c3220d334c1b4fb708919dad3a75a85"
+    },
+    "statisticsInput": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/paired-stats-input.json",
+      "sha256": "0b7f36453d6be423ef1c07f143581fe21bb0e1cf14034d0411a2dee5ac2ed8a3"
+    },
+    "statisticsCommand": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "-e",
+      "import {readFileSync,writeFileSync} from \"node:fs\";import {pairedStats} from \"/Users/ilyagulya/Projects/My/bend/evals/selfhost_corpus_calibration.ts\";const groups=JSON.parse(readFileSync(\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/paired-stats-input.json\",\"utf8\"));const out=groups.map(g=>{const metrics=Object.fromEntries([\"checkerWallMs\",\"checkerCpuMs\",\"pipelineMs\",\"chunks\",\"rss\",\"footprint\"].map(k=>[k,pairedStats(g.pairs.map(p=>p.baseline[k]),g.pairs.map(p=>p.variant[k]))]));return {...g,metrics,passesPrespecifiedCostFilter:g.pairs.every(p=>p.cpuRatio<1)&&metrics.checkerCpuMs.geometricMeanRatio<=0.90&&metrics.checkerWallMs.geometricMeanRatio<=1.00};});writeFileSync(\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/paired-stats.json\",JSON.stringify(out,null,2)+\"\\n\",{flag:\"wx\"});"
+    ],
+    "authentication": {
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/selfhost_corpus_calibration.ts",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/authenticated-pilot-plan.json",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/authenticated-pilot.json"
+      ],
+      "exitCode": 0,
+      "stdout": "{\"status\":\"INCONCLUSIVE\",\"report\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/authenticated-pilot.json\",\"qualification\":[{\"corpus\":\"tail-complete\",\"status\":\"INCONCLUSIVE\",\"checkerDirectionQualified\":false,\"checkerMagnitudeQualified\":false,\"reasons\":[\"Requires resolved G53 and operational G55/G55B holdout comparisons with selection frozen before responses\"],\"scope\":\"Representative checker screening qualification not established; retain narrower matrix observations.\"}]}\n",
+      "stderr": "",
+      "plan": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/authenticated-pilot-plan.json",
+        "sha256": "028a91c199f0f68cdaa77a9eb53b77bbee300c7e860c8f084b6a1e76734ca813"
+      },
+      "output": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/authenticated-pilot.json",
+        "sha256": "e20d28453f2e27be26c06451192d58d2119ceb93a2bd5efbeae1c6cc5947b5cc"
+      },
+      "cellsAuthenticatedPASS": 8,
+      "cellsInvalidRejected": 0,
+      "performanceQualification": "INCONCLUSIVE"
+    },
+    "allScheduledScreenCellsCompletedPASS": 8,
+    "retriesReplacementsOrExclusions": 0,
+    "checkerChunksEveryCell": 1975761,
+    "baselineTemporalDrift": {
+      "identicalRequestSha256": "9ec69eec07998676464f69caef232c0f96df7141905c2773726b6d18e969297c",
+      "earlierG56MainSmoke": {
+        "report": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/main-complete-native/report.json",
+          "sha256": "c5734fec1a4edf2b9701698f83cf2e8760e6c0969e77eb6896ab7d2769b30eba"
+        },
+        "pipelineElapsedMs": 88089.500125,
+        "checkerProcessCpuMs": 78198.066
+      },
+      "currentControls": {
+        "pipelineMsRange": [
+          132420.221625,
+          167814.4125
+        ],
+        "checkerProcessCpuMsRange": [
+          94065.365,
+          98519.575
+        ]
+      },
+      "cause": "NOT_MEASURED; no thermal/load/scheduling/JIT attribution claimed"
+    }
+  },
+  "decision": {
+    "prespecifiedGeometricCpuRatioRequired": 0.9,
+    "alsoBothIndividualCpuRatiosBelow1AndGeometricWallAtMost1Required": true,
+    "passingCandidates": [],
+    "fullFollowupsLaunched": 0,
+    "conditionalFullCellsNOT_RUN": 12,
+    "reason": "Neither candidate reaches the predeclared large-effect cost filter. This rejects extra full-run expense and promotion, not a statistical proof of regression or absence of a smaller benefit. All paired95% intervals include1.",
+    "noCompilerCutover": true
+  },
+  "failedVersionsRetained": {
+    "G58A_v1": {
+      "sourceCheckpoint": "1aeeb933/f0efe071",
+      "status": "REJECTED_BEFORE_NATIVE_SOURCE_ADMISSION",
+      "admission": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/arena-fast-image/receipt.json",
+        "sha256": "c966febecc55c30c6c1cbd9dea0e97b866c4ef950ba35ffc49a5173e181c99d7"
+      },
+      "sourceGrammarFix": "4b8c4fc0",
+      "boundedRegressionFix": "94a17465",
+      "rawFactoringInitialFailure": "artifact://31111",
+      "capturedFactoringDiagnostic": {
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "-e",
+          "import {readFileSync,writeFileSync} from \"node:fs\";import {normalizeNativeMatchSource} from \"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/arena-read/repository/evals/native_match_source.ts\";const p=\"tests/reg/checker_arena_bound.bend\";const s=readFileSync(p,\"utf8\");const n=await normalizeNativeMatchSource(p,s);writeFileSync(\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/arena-bound-native-match-fixture.bend\",n.source,{flag:\"wx\"});console.log(JSON.stringify({helpers:n.extractions.length,owners:[...new Set(n.extractions.map(x=>x.owner))]}));"
+        ],
+        "exitCode": 1,
+        "stdout": "",
+        "stderr": "45 |   const oracle=await sourceOracle(file,source);\n46 |   if(!oracle.accepted){\n47 |     const error=oracle.error;\n48 |     const diagnostic=error&&typeof error==='object'&&'$'in error&&error.$==='Err'\n49 |       ?B.err_show(error as B.Err):String(error);\n50 |     throw Error('Native match source parse '+file+': '+diagnostic);\n               ^\nerror: Native match source parse tests/reg/checker_arena_bound.bend: Error:\n- expected : a nat literal up to 4294967295n (got 4294967296n)\n- observed : ','\nLocation:\n50 |   (arena, a) = expect_bound(Arena.empty(), 0, True{}, 0n)\n51>|   (arena, +id) = Arena.put_node(arena, Arena.TermVar{0, 4294967296n, Arena.empty_span()})\n   |                                                                    ^\n52 |   (arena, b) = expect_bound(arena, id, False{}, 4294967298n)\n      at normalizeNativeMatchSource (/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/arena-read/repository/evals/native_match_source.ts:50:11)\n\nBun v1.4.3 (macOS arm64)\n"
+      }
+    },
+    "G58B_coordinate_v1": {
+      "report": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/g58b-native-producer.json",
+        "sha256": "b8fe9fbe8ed5f3cfb8992b295903614fe6755ab98df9a32192103e106649ccf1"
+      },
+      "status": "FAILED_REPOSITORY_CWD_CHECK_BEFORE_COMPILER_PHASES",
+      "fixedCheckpoint": "f6febc30",
+      "sourceCapsAndChecksUnchanged": true
+    }
+  },
+  "notRun": [
+    "Full original-source throughput: no candidate passes frozen screen filter",
+    "Full unchanged-target emission byte comparison",
+    "Candidate own-source stage1/stage2 byte-fixedpoint",
+    "New candidate native executable/AOT builds",
+    "Original product/cluster matrices and strict12 acceptance",
+    "Thermal/load/scheduling/JIT causal diagnosis"
+  ],
+  "byteFixedpoint": {
+    "status": "NOT_RUN",
+    "claimed": false
+  },
+  "artifactPolicy": "Required source/canonical generated Bend input books, regression inputs and compact exact receipts are committed on each experiment branch. Generated compiler images, AST transports, caches, profiles and raw/bulk logs stay outside Git."
+}

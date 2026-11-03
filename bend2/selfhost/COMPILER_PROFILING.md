@@ -2074,3 +2074,102 @@ than claiming complete syntax authority. `checkpoints/local2039g56-summary.json`
 records exact executed commands, frozen source/runtime hashes, timing/memory,
 the descriptive pilot, rejected evidence and unrun byte-fixedpoint status.
 
+
+### G58: profile-local arena reads and checker scheduler transport
+
+Two independent worktrees start from `19d1f046`, whose complete53-file native
+source closure matches G50. The isolated emitter is restored from the frozen
+G50 input, without touching main's different shared emitter. Source selection
+and the bounded cost-filter protocol are committed before timing in
+`local2039g58-protocol.json`; exact native images, correctness references and
+eight ordered screening commands are frozen in `local2039g58-execution.json`.
+Neither canonical development images nor historical full controls are mixed
+into the new same-producer timing cohorts.
+
+**G58A** keeps the Arena owner split across count, optional trust-bit4 and bound
+reads, reconstructing its fourteen lanes once on return. Source/trusted live
+reads remove one/two intermediate Arena/Pair reconstructions; primitive array
+loads, encoded Nat bounds, missing/live-count guards and source/transient
+ownership are unchanged. Pattern metadata and word/node descriptor reads are
+not optimized. Parameter-first helper factoring preserves the original
+canonical module namespaces and53-file source world.
+
+**G58B** transfers typed progress/stack directly between chunk ticks and
+materializes Run at yield/completion. Every original advance still consumes
+one tick, including Bound and Finished/StackMore; zero fuel does not inspect
+progress or call a continuation. Public chunk/step/start/inspect and callable
+pop/advance contracts remain; quantum64 and ABI13 are unchanged. Only checker
+uses the fused loop: template/emitter/trace scheduler generation stays on the
+original branch. The driver admission requires the exact new
+`checker_chunk_state` recursion/state metadata for checker, not a permissive
+fallback. This explicitly re-evaluates G26's rejected transport idea against
+G50; it is not a novel algorithm or an inherited accepted speedup.
+
+| Observed correctness evidence | G58A | G58B |
+| --- | ---: | ---: |
+| Canonical all-body definitions admitted | 12477 | 12474 |
+| Native producer source modules | 18 | 18 |
+| Actual native checker/emitter consumers passed | 71 | 69 |
+| Source-development C/JS programs passed | 6 | 2 |
+| Native producer guardian ms | 109247 | 117626 |
+| Native producer peak footprint B | 1774111240 | 1774275032 |
+
+The scheduler program checks49 literal observations per backend, retaining the
+original15 and adding fuel0/1/63/64/65 residual states, all progress cases,
+heterogeneous results, affine captures and nested resumptions. Arena programs
+exercise bounds/certification, growth/rewind and directional overlapping copies.
+Wide-Nat narrowing checks inspect a bounded prefix instead of attempting a
+linear2^32-step equality walk; exact small bounds remain separately checked.
+These source-development C/JS executions are not relabelled as native-produced
+compiler performance or self-fixedpoint proof.
+
+Rejected setup evidence remains: G58A's first source form used computed tuple
+matches, and its initial wide-Nat fixture used literals above the parser's
+U32 syntax limit. Existing AST-native match factoring and computed Nat values
+fix source admission without changing checks or caps. G58B's first producer
+launch used the seed checkout as cwd and was rejected before compilation;
+the corrected launch uses the candidate checkout, with a fresh report path.
+Both real native producers subsequently finish parse/expand/check/emit.
+
+The two-pair AB/BA screen is only a cost filter: full followup requires both
+CPU ratios below1, geometric CPU ratio<=0.90 and wall ratio<=1.00. All samples,
+failures and missing cells stay visible; two pairs cannot qualify a speedup.
+Original resource/runtime policies and accepted G24R12 remain unchanged.
+
+#### Paired screen outcome: no full-source candidate
+
+All8 fresh processes pass and authenticate, with identical1,975,761 checker
+chunks and unchanged expansion counts. Each candidate has two complete
+opposite-order pairs. Ratios below1 favor the candidate; intervals are paired
+Student95%, not a significance claim from the point estimates.
+
+| Candidate | Checker process CPU ratio [95% CI] | Checker wall ratio [95% CI] |
+| --- | ---: | ---: |
+| G58A arena reads | 0.972 [0.707,1.337] | 0.853 [0.226,3.229] |
+| G58B scheduler transport | 0.950 [0.677,1.332] | 0.959 [0.056,16.280] |
+
+Neither meets the predeclared CPU ratio<=0.90 cost filter. All12 conditional
+full-source cells remain **NOT_RUN**; no extra samples, replacements, outlier
+exclusions or relaxed threshold select a winner. This is not evidence of a
+regression or proof that a smaller benefit is absent. Full target emission,
+candidate-self byte-fixedpoint, strict12 and product gates are not claimed.
+Compiler changes stay in their isolated branches; accepted G24R12 is unchanged.
+
+The unchanged baseline request
+`9ec69eec07998676464f69caef232c0f96df7141905c2773726b6d18e969297c`
+also shows substantial temporal cost drift:
+
+| Identical baseline request observation | Earlier G56 main smoke | Current G58 controls |
+| --- | ---: | ---: |
+| Pipeline ms | 88089.500125 | 132420–167814 |
+| Checker process CPU ms | 78198.066 | 94065–98520 |
+
+Input/image/runtime-option identity does not explain that timing change.
+Host load, scheduling, thermal state and JIT causes were not measured; none is
+asserted. Large wall-only point improvements must not be called compiler wins.
+Exact per-cell CPU/wall/memory, source/runtime hashes, rejected versions,
+commands and conditional unrun schedules are in the branch receipts
+`checkpoints/local2039g58a-final-measured.json`,
+`checkpoints/local2039g58b-final-measured.json`; main keeps
+`checkpoints/local2039g58-summary.json`.
+
