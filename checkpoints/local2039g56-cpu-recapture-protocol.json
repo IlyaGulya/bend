@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "kind": "g56-single-invalid-profile-recapture",
+  "status": "PROSPECTIVELY_FROZEN",
+  "sourceCheckpoint": "9a2a13ab",
+  "purpose": "One fresh diagnostic capture because original V8 profile contains negative raw sample intervals; not a timing replacement or added throughput sample.",
+  "rejectedProfile": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/complete-profiles/selfhost-59367-thread-1-UAiJqP/000004-check.cpuprofile",
+    "sha256": "36502577566ae3cda94543966c56dd6e5cfff81f3069b5b39844e5e90d6b4b7d"
+  },
+  "invalidSamples": {
+    "side": "complete",
+    "samples": 44229,
+    "badCount": 2,
+    "badSamples": [
+      {
+        "index": 906,
+        "sample": 3373,
+        "delta": -42,
+        "missingNode": false
+      },
+      {
+        "index": 6605,
+        "sample": 15043,
+        "delta": -42,
+        "missingNode": false
+      }
+    ]
+  },
+  "rejectedAnalyses": [
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/complete-physical-cpu-v2.json",
+      "sha256": "3714cb15a2b5455fe0bf3ce51e82e80f8289c51bb2b516ecdb3cdcf7c14947b2"
+    }
+  ],
+  "maximumAdditionalCaptures": 1,
+  "invalidDataPolicy": "Retain original raw profile, both invalid sample records and failed analyses. Never clip, sort, normalize, remove or otherwise repair profile samples. If fresh capture is invalid, CPU coverage remains inconclusive.",
+  "image": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g50-combined-native-v2.json.mjs",
+    "sha256": "273b0022813e17908020c0ee58fd4e02da4f3dc756ce58e3389093440863c3fe"
+  },
+  "sourceManifest": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/main-complete.corpus.json",
+    "sha256": "1a269e15bf70257b019ab572c003b6eb130b4e3f63ad507783525e28d307b0e4"
+  },
+  "limits": {
+    "rssMiB": 8192,
+    "footprintMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000,
+    "workerStackMiB": 256,
+    "oldHeapMiB": 6144,
+    "youngHeapMiB": 128,
+    "parseFuelPerModule": 8000000,
+    "abi": 13,
+    "checkQuantum": 64
+  },
+  "acceptanceEvidence": false,
+  "excludedFromAllTimingCohorts": true
+}
