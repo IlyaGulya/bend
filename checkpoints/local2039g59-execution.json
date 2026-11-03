@@ -1,0 +1,199 @@
+{
+  "schemaVersion": 1,
+  "version": "G59 execution",
+  "sourceCheckpoint": "12e136e6",
+  "protocolCheckpoint": "51aef66c",
+  "nativeBuild": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g50-combined-jb80lebe/qualified-native/build.json",
+    "sha256": "1523ea5a406c720a0e137a980bf6747b400a78b238c94f44f53c1ccbe385d3a3"
+  },
+  "nativeBuildCorpus": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g50-combined-jb80lebe/repository/checkpoints/local2039g50-qualified.corpus.json",
+    "sha256": "23089273bc4e0cd2890fc3ca6fa664c3ee9093dd4068eb8947cd51d76ea52d7a"
+  },
+  "nativeBinary": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g50-combined-jb80lebe/qualified-native/native",
+    "sha256": "44fe762976bfd371206634570f9310e326ffb271a21609c099378c6a92683c6b"
+  },
+  "nativeProducedJSImage": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g50-combined-native-v2.json.mjs",
+    "sha256": "273b0022813e17908020c0ee58fd4e02da4f3dc756ce58e3389093440863c3fe"
+  },
+  "nativeJSProducer": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g50-combined-native-v2.json",
+    "sha256": "255477ed64fc5c3040b64b0e8bd6cd6128ffb1ad147725b3ffe2d1dd9f8453bc"
+  },
+  "sameCompilerRootBytes": {
+    "sha256": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed",
+    "scope": "C native binary includes its host bridge; native-produced JS and C have different codegen/runtime paths, not an algorithm speedup comparison."
+  },
+  "selectedManifest": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/main-complete.corpus.json",
+    "sha256": "1a269e15bf70257b019ab572c003b6eb130b4e3f63ad507783525e28d307b0e4"
+  },
+  "schedule": [
+    {
+      "pair": 1,
+      "order": [
+        "native",
+        "js"
+      ],
+      "mode": "native",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g59-native-iteration-qv9ec_vt/repository/evals/selfhost_corpus_run.ts",
+        "--native-executable",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/main-complete.corpus.json",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g50-combined-jb80lebe/qualified-native/build.json",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g50-combined-jb80lebe/repository/checkpoints/local2039g50-qualified.corpus.json",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g59-native-iteration-qv9ec_vt/cost-p1-native"
+      ],
+      "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g59-native-iteration-qv9ec_vt/repository",
+      "status": "NOT_STARTED"
+    },
+    {
+      "pair": 1,
+      "order": [
+        "native",
+        "js"
+      ],
+      "mode": "js",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g59-native-iteration-qv9ec_vt/repository/evals/selfhost_corpus_run.ts",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/main-complete.corpus.json",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g50-combined-native-v2.json.mjs",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g50-combined-native-v2.json",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g59-native-iteration-qv9ec_vt/cost-p1-js"
+      ],
+      "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g59-native-iteration-qv9ec_vt/repository",
+      "status": "NOT_STARTED"
+    },
+    {
+      "pair": 2,
+      "order": [
+        "js",
+        "native"
+      ],
+      "mode": "js",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g59-native-iteration-qv9ec_vt/repository/evals/selfhost_corpus_run.ts",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/main-complete.corpus.json",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g50-combined-native-v2.json.mjs",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g50-combined-native-v2.json",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g59-native-iteration-qv9ec_vt/cost-p2-js"
+      ],
+      "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g59-native-iteration-qv9ec_vt/repository",
+      "status": "NOT_STARTED"
+    },
+    {
+      "pair": 2,
+      "order": [
+        "js",
+        "native"
+      ],
+      "mode": "native",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g59-native-iteration-qv9ec_vt/repository/evals/selfhost_corpus_run.ts",
+        "--native-executable",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/main-complete.corpus.json",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g50-combined-jb80lebe/qualified-native/build.json",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g50-combined-jb80lebe/repository/checkpoints/local2039g50-qualified.corpus.json",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g59-native-iteration-qv9ec_vt/cost-p2-native"
+      ],
+      "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g59-native-iteration-qv9ec_vt/repository",
+      "status": "NOT_STARTED"
+    }
+  ],
+  "nativeSourceChangesRequireMatchingRebuild": true,
+  "reusedArtifactsComparisonExcludesImageBuildCost": true,
+  "historicalNativeBuildCost": {
+    "wholeGuardianMs": 271420,
+    "scope": "Retained earlier full build, not newly measured or included in paired reused-artifact costs."
+  },
+  "noJSOptimizationQualification": true,
+  "negativeAndAuthSmokeEvidence": [
+    {
+      "name": "wrong-producer-kind",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g59-native-iteration-qv9ec_vt/repository/evals/selfhost_corpus_run.ts",
+        "--native-executable",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g59-native-iteration-qv9ec_vt/valid.corpus.json",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g50-combined-native-v2.json",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g50-combined-jb80lebe/repository/checkpoints/local2039g50-qualified.corpus.json",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g59-native-iteration-qv9ec_vt/reject-wrong-producer-kind"
+      ],
+      "exitCode": 1,
+      "stdout": "",
+      "stderr": "110 | \n111 | /** Complete authentication of a native stage0 build and its workload corpus. */\n112 | export function authenticateNativeSeedBuild(reportPath, options) {\n113 |   const reportFile = realpathSync(reportPath), report = JSON.parse(readFileSync(reportFile, 'utf8'));\n114 |   const limits = options.limits;\n115 |   if (report.status !== 'NATIVE_EXECUTABLE_BUILT_NOT_YET_RUN') throw Error('Native stage0 build did not complete');\n                                                                           ^\nerror: Native stage0 build did not complete\n      at authenticateNativeSeedBuild (/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g59-native-iteration-qv9ec_vt/repository/evals/native_seed_runtime.mjs:115:70)\n      at runNative (/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g59-native-iteration-qv9ec_vt/repository/evals/selfhost_corpus_run.ts:91:12)\n      at /private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g59-native-iteration-qv9ec_vt/repository/evals/selfhost_corpus_run.ts:16:59\n\nBun v1.4.3 (macOS arm64)\n",
+      "outputCreated": false
+    },
+    {
+      "name": "wrong-build-corpus",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g59-native-iteration-qv9ec_vt/repository/evals/selfhost_corpus_run.ts",
+        "--native-executable",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g59-native-iteration-qv9ec_vt/valid.corpus.json",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g50-combined-jb80lebe/qualified-native/build.json",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g59-native-iteration-qv9ec_vt/valid.corpus.json",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g59-native-iteration-qv9ec_vt/reject-wrong-build-corpus"
+      ],
+      "exitCode": 1,
+      "stdout": "",
+      "stderr": "127 |   if (hashPath(realpathSync(report.cPath)) !== report.cSha256)\n128 |     throw Error('Native stage0 generated C drift');\n129 |   if (report.kernelSha256 !== hashPath(resolve('bend2/bend.ts')) || report.compilerSha256 !== hashPath(resolve('bend2/comp.ts')))\n130 |     throw Error('Native stage0 kernel/compiler identity drift');\n131 |   if (realpathSync(report.source) !== options.root || report.sourceSha256 !== hashPath(options.root))\n132 |     throw Error('Native stage0 did not validate this exact compiler root');\n                ^\nerror: Native stage0 did not validate this exact compiler root\n      at authenticateNativeSeedBuild (/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g59-native-iteration-qv9ec_vt/repository/evals/native_seed_runtime.mjs:132:11)\n      at runNative (/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g59-native-iteration-qv9ec_vt/repository/evals/selfhost_corpus_run.ts:91:12)\n      at /private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g59-native-iteration-qv9ec_vt/repository/evals/selfhost_corpus_run.ts:16:59\n\nBun v1.4.3 (macOS arm64)\n",
+      "outputCreated": false
+    },
+    {
+      "name": "missing-foreign",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g59-native-iteration-qv9ec_vt/repository/evals/selfhost_corpus_run.ts",
+        "--native-executable",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g59-native-iteration-qv9ec_vt/missing-foreign.corpus.json",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g50-combined-jb80lebe/qualified-native/build.json",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g50-combined-jb80lebe/repository/checkpoints/local2039g50-qualified.corpus.json",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g59-native-iteration-qv9ec_vt/reject-missing-foreign"
+      ],
+      "exitCode": 1,
+      "stdout": "",
+      "stderr": "68 |   const identity = (rows: any[]) => rows.map(row => {\n69 |     const path = realpathSync(resolve(repository, row.path));\n70 |     return [path, row.sha256, row.external === true ? null : row.namespace, row.external === true];\n71 |   }).sort((a, b) => String(a[0]).localeCompare(String(b[0])));\n72 |   if (JSON.stringify(identity(manifest.files)) !== JSON.stringify(identity(actual.files)))\n73 |     throw Error('Manifest differs from complete source closure, namespaces or foreign alternatives');\n               ^\nerror: Manifest differs from complete source closure, namespaces or foreign alternatives\n      at checkedCorpus (/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g59-native-iteration-qv9ec_vt/repository/evals/selfhost_corpus_run.ts:73:11)\n      at runNative (/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g59-native-iteration-qv9ec_vt/repository/evals/selfhost_corpus_run.ts:84:48)\n      at /private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g59-native-iteration-qv9ec_vt/repository/evals/selfhost_corpus_run.ts:16:59\n\nBun v1.4.3 (macOS arm64)\n",
+      "outputCreated": false
+    }
+  ],
+  "actualUnusedAffineBodyRejected": {
+    "command": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g59-native-iteration-qv9ec_vt/repository/evals/selfhost_corpus_run.ts",
+      "--native-executable",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g59-native-iteration-qv9ec_vt/affine-duplicate.corpus.json",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g50-combined-jb80lebe/qualified-native/build.json",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g50-combined-jb80lebe/repository/checkpoints/local2039g50-qualified.corpus.json",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g59-native-iteration-qv9ec_vt/native-affine-negative"
+    ],
+    "exitCode": 2,
+    "report": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g59-native-iteration-qv9ec_vt/native-affine-negative/report.json",
+      "sha256": "18da335430f4366399cf4af8ff0b31f7ddc567e894edd7562ebfa5dc31487038"
+    },
+    "failurePhase": "check"
+  },
+  "validSource": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g59-native-iteration-qv9ec_vt/native-positive-smoke/report.json",
+    "sha256": "326613e5fbe2f19774ce5e7f7372c17cc21c92bb14b01af0e7d7f1015dff6f00"
+  },
+  "frozenThroughputAndNativeRuntimeHelpersChanged": false
+}

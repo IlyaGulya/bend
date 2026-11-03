@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "version": "G59 native corpus mode main integration",
+  "status": "SOURCE_CHECKPOINT_BEFORE_MAIN_RUNTIME_SMOKE",
+  "sourceCheckpoint": "12e136e6",
+  "experimentBranch": "selfhost/g59-native-iteration-qv9ec_vt",
+  "protocolCheckpoint": "51aef66c",
+  "executionCheckpoint": "e15e1739",
+  "mainSource": {
+    "path": "evals/selfhost_corpus_run.ts",
+    "sha256": "633a4799e4438bfa412b118407ee74640c94396bb6a5ffd8c98cae843c8a6218"
+  },
+  "scope": "Explicit native-executable check-only workflow; existing JS interface and frozen throughput/native runtime helper bytes unchanged. No language/compiler algorithm change or G58 promotion.",
+  "nativeBuild": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g50-combined-jb80lebe/qualified-native/build.json",
+    "sha256": "1523ea5a406c720a0e137a980bf6747b400a78b238c94f44f53c1ccbe385d3a3"
+  },
+  "nativeBuildCorpus": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g50-combined-jb80lebe/repository/checkpoints/local2039g50-qualified.corpus.json",
+    "sha256": "23089273bc4e0cd2890fc3ca6fa664c3ee9093dd4068eb8947cd51d76ea52d7a"
+  },
+  "alreadyExercised": {
+    "nativeRepresentativeProbe": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g59-native-iteration-qv9ec_vt/existing-native-check-probe.json",
+      "sha256": "f63b5b2c9c4b50f4d4daeb2a663f9460b5b935c21b7cd5582f708d2a0a4130d2"
+    },
+    "nativeValidSource": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g59-native-iteration-qv9ec_vt/native-positive-smoke/report.json",
+      "sha256": "326613e5fbe2f19774ce5e7f7372c17cc21c92bb14b01af0e7d7f1015dff6f00"
+    },
+    "nativeRelativeManifest": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g59-native-iteration-qv9ec_vt/native-relative-smoke/report.json",
+      "sha256": "576774fd9db589c3eee38d9c753e27af1ad6e5fbbe7ee30203b05ffe3cf69b47"
+    },
+    "nativeUnusedAffineBodyFailure": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g59-native-iteration-qv9ec_vt/native-affine-negative/report.json",
+      "sha256": "18da335430f4366399cf4af8ff0b31f7ddc567e894edd7562ebfa5dc31487038"
+    },
+    "wrongProducerWrongBuildCorpusMissingForeignRejectedBeforeOutput": 3
+  },
+  "mainNativeFullAndJSRuntimeSmoke": "NOT_RUN yet; required before final delivery",
+  "acceptedCompiler": "G24R12 unchanged"
+}

@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "version": "G59 explicit native executable corpus mode",
+  "sourceParent": "51aef66c",
+  "status": "SOURCE_BEFORE_NATIVE_MODE_SMOKE",
+  "changedSource": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g59-native-iteration-qv9ec_vt/repository/evals/selfhost_corpus_run.ts",
+    "sha256": "633a4799e4438bfa412b118407ee74640c94396bb6a5ffd8c98cae843c8a6218"
+  },
+  "existingJSModeContractUnchanged": true,
+  "newUsage": "bun evals/selfhost_corpus_run.ts --native-executable MANIFEST BUILD BUILD-CORPUS FRESH-DIR",
+  "authentication": "Existing authenticateNativeSeedBuild authenticates complete compiled root/source/body/event/kernel/compiler/artifact/C/input/corpus identity at the original build repository coordinate. Existing native_compiler_experiment --phase=check executes it over the separately authenticated workload.",
+  "relativeManifestHandling": "Only ordinary file manifest paths are canonicalized via existing corpusFor; no source rewriting, AST/cache replay or namespace changes.",
+  "reports": "Unmodified backend-specific native report retained; not a JS throughput report or equivalently scoped CPU counter.",
+  "runtimePolicies": "Build authentication retains600000ms; existing native run retains300000ms,8GiB RSS/footprint,10ms,threads1,gpuoff,8M parser fuel/module,quantum64. No C V8-heap claim.",
+  "frozenThroughputAndNativeRuntimeHelpersChanged": false,
+  "probe": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g59-native-iteration-qv9ec_vt/existing-native-check-probe.json",
+    "sha256": "f63b5b2c9c4b50f4d4daeb2a663f9460b5b935c21b7cd5582f708d2a0a4130d2"
+  },
+  "probeCommand": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g59-native-iteration-qv9ec_vt/repository/evals/native_compiler_experiment.ts",
+    "--mode=run",
+    "--corpus=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/main-complete.corpus.json",
+    "--build=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g50-combined-jb80lebe/qualified-native/build.json",
+    "--report=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g59-native-iteration-qv9ec_vt/existing-native-check-probe.json",
+    "--phase=check",
+    "--threads=1"
+  ],
+  "probeCwd": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g56-tail-complete-input",
+  "probeWholeGuardianMs": 24394,
+  "probeCheckerChunks": 1975761,
+  "nativeBuild": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g50-combined-jb80lebe/qualified-native/build.json",
+    "sha256": "1523ea5a406c720a0e137a980bf6747b400a78b238c94f44f53c1ccbe385d3a3"
+  },
+  "nativeBuildCorpus": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g50-combined-jb80lebe/repository/checkpoints/local2039g50-qualified.corpus.json",
+    "sha256": "23089273bc4e0cd2890fc3ca6fa664c3ee9093dd4068eb8947cd51d76ea52d7a"
+  },
+  "sourceSmokeInputs": {
+    "valid": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g59-native-iteration-qv9ec_vt/repository/checkpoints/local2039g59-input/valid.bend",
+      "sha256": "0710e68f2f0e69ed487eac473bc0122b05ca3c30855e1cafd820dadc1bd70fcc"
+    },
+    "affineDuplicate": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g59-native-iteration-qv9ec_vt/repository/checkpoints/local2039g59-input/affine-duplicate.bend",
+      "sha256": "8c553f3ebce76a02fc9be0d6aae5aca0ad9abb94750de7f8e8bd65d4f6fcc44e"
+    }
+  },
+  "compilerAlgorithmChanges": false,
+  "acceptedCompiler": "G24R12 unchanged"
+}
