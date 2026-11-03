@@ -1,0 +1,142 @@
+{
+  "schemaVersion": 1,
+  "version": "G58",
+  "status": "PROSPECTIVELY_FROZEN_EXPERIMENT_NOT_ACCEPTANCE",
+  "sourceParent": "18b703fc",
+  "exactG50SourceBaselineCheckpoint": "19d1f046",
+  "baselineImage": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g50-combined-native-v2.json.mjs",
+    "sha256": "273b0022813e17908020c0ee58fd4e02da4f3dc756ce58e3389093440863c3fe"
+  },
+  "baselineProducer": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g50-combined-native-v2.json",
+    "sha256": "255477ed64fc5c3040b64b0e8bd6cd6128ffb1ad147725b3ffe2d1dd9f8453bc"
+  },
+  "worktrees": {
+    "G58A": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/arena-read/repository",
+    "G58B": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/scheduler/repository"
+  },
+  "sourceContracts": {
+    "G58A": "Pure arena read/copy reconstruction and redundant metadata walks; canonical checker/arena source only. Preserve missing/OOB/transient/bounds/diagnostics.",
+    "G58B": "Scheduler chunk progress fusion: avoid intermediate RunState allocation while preserving exactly one original transition per fuel tick, quantum64 and public ABI. Generator source only."
+  },
+  "measurement": {
+    "selectedManifest": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/main-complete.corpus.json",
+      "sha256": "1a269e15bf70257b019ab572c003b6eb130b4e3f63ad507783525e28d307b0e4"
+    },
+    "fullManifest": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/full-frozen.corpus.json",
+      "sha256": "60bf820e76a9c336e58c848eec6a40b3f8fbb4b7ac2ae45ffd1abdb1d217ebc6"
+    },
+    "driver": {
+      "path": "evals/selfhost_corpus_run.ts",
+      "sha256": "80509b753c995ed7901e7111d0b83823741b73b460ebc3ba811b1a951f9abe13"
+    },
+    "unchangedThroughputDriver": {
+      "path": "evals/selfhost_throughput.mjs",
+      "sha256": "1a806befee02216a9499f6b4dcde7e2326e01f0a5b96bbd36b75295344c50317"
+    },
+    "node": {
+      "path": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "sha256": "ead5889f15f4e17b37f941c7d9e92b624396786bd74d8155ef470f6381f032c5"
+    },
+    "nodeFlags": [
+      "--experimental-strip-types",
+      "--max-old-space-size=6144",
+      "--max-semi-space-size=128"
+    ],
+    "limits": {
+      "memoryMiB": 8192,
+      "rssMiB": 8192,
+      "pollMs": 10,
+      "timeoutMs": 600000
+    },
+    "workerPolicy": {
+      "stackMiB": 256,
+      "oldGenerationMiB": 6144,
+      "youngGenerationMiB": 128
+    },
+    "parserFuelPerModule": 8000000,
+    "abi": 13,
+    "quantum": 64,
+    "oneHeavyLane": true,
+    "profiling": false,
+    "freshOwnImageParseExpandCheck": true
+  },
+  "requiredBeforeTiming": [
+    "Committed source and behavioral regression inputs",
+    "Fresh canonical owned/CPS source generation where applicable",
+    "All-body canonical source admission",
+    "Same existing G44D1 LLVM21 split/O1 native seed producer completes parse/expand/check/emit",
+    "Actual native checker/emitter behavioral consumer suite and applicable arena/scheduler literal-output fixtures pass"
+  ],
+  "screeningPilot": {
+    "pairsPerCandidate": 2,
+    "interleavedPairSchedule": [
+      {
+        "candidate": "G58A",
+        "pair": 1,
+        "order": [
+          "baseline",
+          "variant"
+        ]
+      },
+      {
+        "candidate": "G58B",
+        "pair": 1,
+        "order": [
+          "variant",
+          "baseline"
+        ]
+      },
+      {
+        "candidate": "G58A",
+        "pair": 2,
+        "order": [
+          "variant",
+          "baseline"
+        ]
+      },
+      {
+        "candidate": "G58B",
+        "pair": 2,
+        "order": [
+          "baseline",
+          "variant"
+        ]
+      }
+    ],
+    "unavailableCandidatePolicy": "Keep its cells NOT_RUN; do not fabricate or replace samples. Independent runnable candidate can proceed in its original slots.",
+    "triggerFullFollowup": "Both checker-process-CPU paired ratios below1; geometric mean CPU ratio<=0.90; geometric mean checker-wall ratio<=1.00; no guardian or correctness failure. This is a cost filter, not significance or qualification.",
+    "pairedUncertainty": "Retain all raw ratios and Student95% intervals; n2 cannot qualify performance transfer or product promotion.",
+    "noOutlierRemovalOrRetries": true
+  },
+  "fullFollowup": {
+    "onlyForPassingPilot": true,
+    "maximumPairs": 3,
+    "order": [
+      [
+        "baseline",
+        "variant"
+      ],
+      [
+        "variant",
+        "baseline"
+      ],
+      [
+        "baseline",
+        "variant"
+      ]
+    ],
+    "earlyRejection": "After first complete full pair, stop if checker-process-CPU ratio>=1; retain partial schedule explicitly.",
+    "requiresForRetainedWinner": [
+      "Actual full original-source native check",
+      "Unchanged target emission byte comparison, separately from any candidate-self fixedpoint",
+      "If full effect remains promising, own-source byte-fixedpoint and existing semantic gates before integration claims"
+    ],
+    "productPromotion": "Never infer original strict12, cluster/product matrices or accepted-compiler cutover from these limited pilots."
+  },
+  "artifactPolicy": "Required source inputs and compact receipts only in Git; generated images, profiles, AST transports, caches and bulk logs outside Git.",
+  "acceptedCompiler": "G24R12 unchanged"
+}
