@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "version": "G60D1",
+  "status": "PROSPECTIVE_SOURCE_CURSOR_EXPERIMENT",
+  "baseline": "Exact53-file G50 frozen source closure from G56 full input; not rejected G58A/B algorithms.",
+  "baselineManifest": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/full-frozen.corpus.json",
+    "sha256": "60bf820e76a9c336e58c848eec6a40b3f8fbb4b7ac2ae45ffd1abdb1d217ebc6"
+  },
+  "branch": "selfhost/g60-lexer-cursor-kkoffczh",
+  "repository": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g60-lexer-cursor-kkoffczh/repository",
+  "baselineSourceReplacements": [
+    {
+      "path": "checkpoints/emitter_steps_v1.bend",
+      "checkoutBefore": "7f7c8d2e57a3fcd3925b4286a8300668ae91b7e11a26317cea6da2df5c9ea425",
+      "G50FrozenBaseline": "b292b8a767c27d46497915e12f2bd91012bc5fd280d6b537ca90d1dd214d2bb0"
+    }
+  ],
+  "hypothesis": "Consume source String directly in Lexer scanner/lookahead rather than allocate non-tail-recursive String.to_list for the whole file. Preserve every token/type/text/UTF16 mark/state transition and existing13-function parser/checker/emitter ABI. This may enable canonical JS development compilation and whole-corpus checking under unchanged stack/fuel, without pretending canonical production is native.",
+  "knownFailure": "Prior unchanged canonical full-root control overflowed in String.to_list; no rerun of that failed control, no larger stack or host parser/AST replay. G60 changes this exact input path.",
+  "sourceScope": "Only lexer input cursor/lookahead/helper rest parameter representations; token rev List<Char> accumulators unchanged. No compiler algorithm claims or accepted release cutover.",
+  "plans": {
+    "compile": "Fresh selfhost_fast.ts canonical all-body source validation and JS emission of the full compiler root; source changes committed first.",
+    "run": "Existing frozen selfhost_throughput.mjs JS check-only path, own new image parser, immutable G56 selected52-file corpus then original full53-file corpus if selected passes.",
+    "correctness": "Existing lexer fixture and parser token/Unicode regression suites; independent literal boundary cases and actual large-source token/parse checks. No synthetic corpus replacement.",
+    "promotion": "No native bootstrap/product/strict12 or performance-transfer claim; only an explicitly marked development-lane utility if full path succeeds."
+  },
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "imageBuildTimeoutMs": 120000,
+    "throughputTimeoutMs": 600000,
+    "parserFuelPerModule": 8000000,
+    "quantum": 64,
+    "workerStackMiB": 256,
+    "oldGenerationMiB": 6144,
+    "youngGenerationMiB": 128,
+    "oneHeavyLane": true
+  },
+  "upfrontCosts": "Record source preparation, new image production and actual new-image corpus check separately and combined; no old binary substituted for changed compiler. Historical native271420ms construction and G58A109247ms native-produced JS are context only, not paired evidence.",
+  "acceptedCompiler": "G24R12 unchanged",
+  "artifactPolicy": "Generated images/C/binaries/AST transports and bulk logs/profiles remain outsideGit; required ordinary source inputs and compact receipts only."
+}

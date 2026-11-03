@@ -27,6 +27,7 @@ import {
  runCEmitterSteps,runCLibraryEmitterSteps,
 } from './checker_core_step_runtime.mjs';
 import {createStageProfile,createStepAttribution,stageParentDeclaration,loadStageManifests} from './compiler_stage_profile.mjs';
+import {authenticateSourceOracle} from './selfhost_oracle.mjs';
 
 const ROOT=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 
@@ -135,18 +136,10 @@ if(o.candidateBuild!==undefined){
  sourceTag=sourceFileTagFromRoot(readFileSync(build.sourcePath,'utf8'),'compiled');
 }
 if(o.candidateOracle!==undefined){
- const oracle=objectOf(JSON.parse(readFileSync(o.candidateOracle,'utf8')));
- if(!oracle||oracle.kind!=='selfhost-fast-ts-oracle'||oracle.status!=='FAST_ORACLE_PASS'||
-  oracle.nativeCompiler!==false||oracle.acceptanceEvidence!==false||oracle.byteFixedpointClaim!==false||
-  oracle.checkOnly!==false||typeof oracle.output!=='string'||realpathSync(oracle.output)!==realpathSync(o.candidate)||
-  oracle.outputSha256!==fileSha(o.candidate)||typeof oracle.source!=='string'||
-  typeof oracle.checkedDefinitions!=='number'||oracle.checkedDefinitions<1)
-  fail('candidate-oracle is not this fully checked canonical source image');
- const pins=objectOf(oracle.loadedInputs);
- if(!pins||Object.keys(pins).length===0||pins[oracle.source]!==fileSha(oracle.source))
-  fail('candidate-oracle lacks its exact source input');
- for(const[path,hash]of Object.entries(pins))if(fileSha(path)!==hash)fail('candidate-oracle source input changed: '+path);
- sourceTag=sourceFileTagFromRoot(readFileSync(oracle.source,'utf8'),'compiled');
+ try{
+  const oracle=authenticateSourceOracle(o.candidateOracle,o.candidate);
+  sourceTag=sourceFileTagFromRoot(readFileSync(oracle.source,'utf8'),'compiled');
+ }catch(error){fail(error instanceof Error?error.message:String(error));}
 }
 if(o.sourceTag!==undefined&&o.sourceTag!==sourceTag)fail('--source-tag differs from the compiler image carrier ('+sourceTag+')');
 if(o.stageProfile!==undefined){

@@ -1,0 +1,109 @@
+{
+  "schemaVersion": 1,
+  "version": "G60",
+  "status": "EXPLICIT_CANONICAL_MODE_FULL_ORIGINAL_SOURCE_PASS",
+  "sourceCheckpoint": "ca886d5a",
+  "harnessCheckpoint": "a60a347b",
+  "command": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g60-lexer-cursor-kkoffczh/repository/evals/selfhost_corpus_run.ts",
+    "--canonical-oracle",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/full-frozen.corpus.json",
+    "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g60-lexer-cursor-kkoffczh/canonical-image/oracle.mjs",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g60-lexer-cursor-kkoffczh/canonical-image/receipt.json",
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g60-lexer-cursor-kkoffczh/full-check"
+  ],
+  "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g60-lexer-cursor-kkoffczh/repository",
+  "manifest": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/full-frozen.corpus.json",
+    "sha256": "60bf820e76a9c336e58c848eec6a40b3f8fbb4b7ac2ae45ffd1abdb1d217ebc6"
+  },
+  "request": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g60-lexer-cursor-kkoffczh/full-check/request.json",
+    "sha256": "3c587ea6c81a4c6a3a03d6777e28e2956e1979f1afb33dd53c9d8644ab4d22a4"
+  },
+  "report": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g60-lexer-cursor-kkoffczh/full-check/report.json",
+    "sha256": "8a85dc11809eb6fef648bd859495e670eede40d409aa1e36c3fb198239bf6668"
+  },
+  "result": {
+    "status": "PASS",
+    "modules": 18,
+    "sourceDeclarations": 13059,
+    "stepCounts": {
+      "expand": 1072965,
+      "check": 10409462
+    },
+    "phases": [
+      {
+        "phase": "startup",
+        "elapsedMs": 117.08549999999997,
+        "userCpuMs": 117.459,
+        "systemCpuMs": 9.997,
+        "memoryEnd": {
+          "rss": 297107456,
+          "heapTotal": 38813696,
+          "heapUsed": 35725656,
+          "external": 18636929,
+          "arrayBuffers": 8168877
+        }
+      },
+      {
+        "phase": "load-parse",
+        "elapsedMs": 4410.42475,
+        "userCpuMs": 5938.121,
+        "systemCpuMs": 295.933,
+        "memoryEnd": {
+          "rss": 1034108928,
+          "heapTotal": 804995072,
+          "heapUsed": 570605152,
+          "external": 10493131,
+          "arrayBuffers": 25039
+        }
+      },
+      {
+        "phase": "expand",
+        "elapsedMs": 4754.142250000001,
+        "userCpuMs": 4923.623,
+        "systemCpuMs": 99.42,
+        "memoryEnd": {
+          "rss": 1071382528,
+          "heapTotal": 956776448,
+          "heapUsed": 725311056,
+          "external": 10493131,
+          "arrayBuffers": 25039
+        }
+      },
+      {
+        "phase": "check",
+        "elapsedMs": 279639.7805,
+        "userCpuMs": 232954.969,
+        "systemCpuMs": 7985.761,
+        "memoryEnd": {
+          "rss": 985284608,
+          "heapTotal": 2191327232,
+          "heapUsed": 2030898248,
+          "external": 10486368,
+          "arrayBuffers": 25039
+        }
+      }
+    ],
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "elapsedMs": 290038,
+      "peakRssBytes": 2025455616,
+      "peakFootprintBytes": 2607058928,
+      "timeoutMs": 600000,
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592,
+      "ownedTreeStopped": true,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793722306636-0d13245d2b868a1e.json"
+    }
+  },
+  "buildPlusFullGuardianMs": 324667,
+  "interpretation": "Previous canonical own-parser full-source stack blocker is removed by actual G60 String-cursor lexer. No stack/fuel/heap/guardian increase; no host parser or AST replay. No algorithm comparison/native/bootstrap/fixedpoint/acceptance claim. Workload old frozen G50 and compiler new G60 are separate identity roles.",
+  "harnessFollowup": "Reject conflicting producer flags explicitly; body/driver/helpers unchanged; smoke coverage follows."
+}

@@ -1,0 +1,147 @@
+{
+  "schemaVersion": 1,
+  "version": "G60D1",
+  "status": "SOURCE_CURSOR_ACTUAL_REBUILD_AND_SELECTED_CORPUS_PASS",
+  "sourceCheckpoint": "ca886d5a",
+  "sourceManifest": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g60-lexer-cursor-kkoffczh/compiler-source.corpus.json",
+    "sha256": "35d704e58dd1a79798d5ae60c2e31ec78cece49f543592e19d324c989dc1927e"
+  },
+  "compileCommand": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "/Users/ilyagulya/Projects/My/bend/evals/selfhost_fast.ts",
+    "--repository=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g60-lexer-cursor-kkoffczh/repository",
+    "--source=checkpoints/local2039g49-compiler-root.bend",
+    "--exports=parsed_module,parse_with_fuel,expand_modules_start,template_step,check_expanded_start,inspect_checked_start,checker_step,emit_modules_start,emit_library_start,emitter_step,emit_c_modules_start,emit_c_library_start,c_emitter_step",
+    "--node=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+    "--out=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g60-lexer-cursor-kkoffczh/canonical-image",
+    "--memory-mib=8192",
+    "--rss-mib=8192",
+    "--poll-ms=10",
+    "--timeout-ms=120000"
+  ],
+  "compileCwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g60-lexer-cursor-kkoffczh/repository",
+  "compileReceipt": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g60-lexer-cursor-kkoffczh/canonical-image/receipt.json",
+    "sha256": "0b637784fb7cc7838534f71e942b07118ebd36e697f439aed361e71832679274"
+  },
+  "compileGuardian": {
+    "status": "PASS",
+    "reason": "command_exit",
+    "elapsedMs": 34629,
+    "peakRssBytes": 2865577984,
+    "peakFootprintBytes": 3247019256,
+    "timeoutMs": 120000,
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592,
+    "ownedTreeStopped": true,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793721792030-25358a3c652d3220.json"
+  },
+  "image": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g60-lexer-cursor-kkoffczh/canonical-image/oracle.mjs",
+    "sha256": "35f521d4fa3aea3a88a765ac9167391a9852975edcba6e6cae2d390d974be931"
+  },
+  "imageProduction": "canonical TS source validation/emission; NOT native, NOT acceptance",
+  "corpusCommand": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+    "js",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g60-lexer-cursor-kkoffczh/selected-check/request.json",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g60-lexer-cursor-kkoffczh/selected-check/report.json"
+  ],
+  "corpusCwd": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g56-tail-complete-input",
+  "workloadManifest": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/main-complete.corpus.json",
+    "sha256": "1a269e15bf70257b019ab572c003b6eb130b4e3f63ad507783525e28d307b0e4"
+  },
+  "request": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g60-lexer-cursor-kkoffczh/selected-check/request.json",
+    "sha256": "8674c2a607b2e0228bfd495ee13fabcf19c43da37b29f0c0b9680bec71440071"
+  },
+  "report": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g60-lexer-cursor-kkoffczh/selected-check/report.json",
+    "sha256": "2eec6dfbb37372a7058f9f0ff904f06ad6906be5c6cab0d83d53c64a2e26f2d9"
+  },
+  "result": {
+    "status": "PASS",
+    "modules": 17,
+    "sourceDeclarations": 2954,
+    "stepCounts": {
+      "expand": 263032,
+      "check": 1975761
+    },
+    "phases": [
+      {
+        "phase": "startup",
+        "elapsedMs": 268.09299999999996,
+        "userCpuMs": 131.823,
+        "systemCpuMs": 13.757,
+        "memoryEnd": {
+          "rss": 316997632,
+          "heapTotal": 44843008,
+          "heapUsed": 34913856,
+          "external": 139394032,
+          "arrayBuffers": 25039
+        }
+      },
+      {
+        "phase": "load-parse",
+        "elapsedMs": 1490.378375,
+        "userCpuMs": 2282.852,
+        "systemCpuMs": 134.154,
+        "memoryEnd": {
+          "rss": 776880128,
+          "heapTotal": 411844608,
+          "heapUsed": 177619400,
+          "external": 10493131,
+          "arrayBuffers": 25039
+        }
+      },
+      {
+        "phase": "expand",
+        "elapsedMs": 1544.7324160000003,
+        "userCpuMs": 1487.623,
+        "systemCpuMs": 40.253,
+        "memoryEnd": {
+          "rss": 805453824,
+          "heapTotal": 470302720,
+          "heapUsed": 202492872,
+          "external": 10493131,
+          "arrayBuffers": 25039
+        }
+      },
+      {
+        "phase": "check",
+        "elapsedMs": 50543.395542,
+        "userCpuMs": 51518.433,
+        "systemCpuMs": 1187.597,
+        "memoryEnd": {
+          "rss": 941522944,
+          "heapTotal": 874184704,
+          "heapUsed": 697556696,
+          "external": 10493131,
+          "arrayBuffers": 25039
+        }
+      }
+    ],
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "elapsedMs": 54981,
+      "peakRssBytes": 1094615040,
+      "peakFootprintBytes": 1161724192,
+      "timeoutMs": 600000,
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592,
+      "ownedTreeStopped": true,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793721965121-21d0c8aac21a3741.json"
+    }
+  },
+  "observedCombinedGuardedMs": 89610,
+  "limitsChanged": false,
+  "claim": "One real changed-compiler build plus fresh own-image17-module workload completed. Not paired compiler speedup, native bootstrap,45s JS budget rescue or performance-transfer qualification.",
+  "fullOriginalCorpusAndLexerTargetExecution": "NOT_RUN at this historical checkpoint; required before utility integration",
+  "nextSourceWork": "Explicit canonical-oracle corpus admission sharing the existing candidate_host oracle validator, without modifying frozen throughput/native helpers."
+}

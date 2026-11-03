@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "status": "LEGACY_OPERATOR_ADAPTER_MIGRATED_TO_CURRENT_KERNEL_API",
+  "beforeCommand": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "test",
+    "evals/parser_canonical_literals.test.ts",
+    "evals/parser_float.test.ts",
+    "evals/parser_operator_chain.test.ts",
+    "evals/parser_full_token_provenance.test.ts",
+    "evals/native_seed_runtime.test.ts",
+    "evals/selfhost_corpus_calibration.test.ts",
+    "evals/selfhost_corpus_cpu.test.ts",
+    "evals/bootstrap_source_oracle.test.ts",
+    "evals/parser_continuation.test.ts"
+  ],
+  "beforeExitCode": 1,
+  "beforeRawLog": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g60-lexer-cursor-kkoffczh/existing-tests-after.txt",
+    "sha256": "8d9fb66961fac8f7c726d0b51c2a7cbe176a9493dedd8fcb6f4474a7f8075829"
+  },
+  "observed": "After canonical namespace and annotated grammar corrections:93pass,2fail,2errors; both operator/continuation harness entries called removed B.u32_to_term. No failed target was retried unchanged.",
+  "change": "Use current compact B.Lit(String), demand literal layers with B.lit_step, observe compact Nat/String/U32 values and canonical constructor names via B.name_key; no removed API shim, no parser/source/compiler algorithm change. Same public AST comparisons and19operator+continuation cases retained.",
+  "source": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g60-lexer-cursor-kkoffczh/repository/evals/parser_operator_differential.ts",
+    "sha256": "c0bc2a9fcb9f5c93d96941b541f6a4ceeeb1f750666ba96e5592f631fe5afb5f"
+  }
+}

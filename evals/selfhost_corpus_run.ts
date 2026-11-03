@@ -2,6 +2,7 @@
 /** Fresh real-source checker screen, never full compiler acceptance.
  * bun evals/selfhost_corpus_run.ts MANIFEST IMAGE NATIVE-RECEIPT NODE FRESH-DIR
  * bun evals/selfhost_corpus_run.ts --native-executable MANIFEST BUILD BUILD-CORPUS FRESH-DIR
+ * bun evals/selfhost_corpus_run.ts --canonical-oracle MANIFEST IMAGE ORACLE-RECEIPT NODE FRESH-DIR
  * JS uses the unchanged guarded throughput driver; C uses the existing native
  * compiler CLI's check phase. Both retain their raw, backend-specific reports.
  */
@@ -9,8 +10,13 @@ import {spawn} from 'node:child_process';
 import {existsSync, mkdirSync, readFileSync, realpathSync, writeFileSync} from 'node:fs';
 import {dirname, resolve} from 'node:path';
 import {ABI, authenticateNativeSeedBuild, corpusFor, hashPath, workloadRows} from './native_seed_runtime.mjs';
+import {authenticateSourceOracle} from './selfhost_oracle.mjs';
 
 const args = process.argv.slice(2);
+const canonical = args[0] === '--canonical-oracle';
+if (canonical && args[1] === '--native-executable')
+  throw Error('Compiler producer modes are mutually exclusive');
+if (canonical) args.shift();
 if (!process.versions.bun)
   throw Error('Run the corpus screen with Bun');
 if (args[0] === '--native-executable') process.exit(await runNative(args.slice(1)));
@@ -21,8 +27,11 @@ const manifestFile = realpathSync(manifestPath), image = realpathSync(imagePath)
 const receiptFile = realpathSync(receiptPath), node = realpathSync(nodePath), out = resolve(outputPath);
 if (existsSync(out)) throw Error('Use a fresh output directory: ' + out);
 const {manifest, repository, root} = checkedCorpus(manifestFile);
-const receipt = JSON.parse(readFileSync(receiptFile, 'utf8')), imageSha256 = hashPath(image);
-if (receipt.status !== 'NATIVE_FULL_COMPILE_PASS' || receipt.result?.result !== 'EmitSuccess'
+const receipt = canonical ? authenticateSourceOracle(receiptFile, image) : JSON.parse(readFileSync(receiptFile, 'utf8'));
+const imageSha256 = canonical ? receipt.outputSha256 : hashPath(image);
+if (canonical && JSON.stringify(receipt.exports) !== JSON.stringify(ABI))
+  throw Error('Canonical corpus oracle must export the complete compiler ABI');
+if (!canonical && (receipt.status !== 'NATIVE_FULL_COMPILE_PASS' || receipt.result?.result !== 'EmitSuccess'
   || realpathSync(receipt.output) !== image || receipt.outputSha256 !== imageSha256
   || JSON.stringify(receipt.exports) !== JSON.stringify(ABI)
   || !Array.isArray(receipt.command) || receipt.command.at(-2) !== 'compile' || realpathSync(receipt.command.at(-1)) !== image
@@ -31,18 +40,26 @@ if (receipt.status !== 'NATIVE_FULL_COMPILE_PASS' || receipt.result?.result !== 
   || receipt.guardian?.reportPhase !== 'complete' || receipt.guardian?.exitCode !== 0
   || receipt.guardian?.supervisorExitCode !== 0 || receipt.guardian?.commandExitCode !== 0 || receipt.guardian?.commandSignal !== 0
   || receipt.boundary?.cachedAst !== false || receipt.boundary?.hostParsing !== false
-  || receipt.boundary?.hostChecking !== false || receipt.boundary?.checksExcluded !== 0 || receipt.boundary?.outputPatches !== 0)
+  || receipt.boundary?.hostChecking !== false || receipt.boundary?.checksExcluded !== 0 || receipt.boundary?.outputPatches !== 0))
   throw Error('Image lacks its matching successful unpatched native producer receipt');
 const driver = realpathSync(resolve(import.meta.dir, 'selfhost_throughput.mjs'));
 const files = ['selfhost_throughput.mjs', 'checker_core_step_runtime.mjs', 'selfhost_cpu_profile.mjs', 'native_seed_runtime.mjs', 'heavy_gate.ts']
   .map(name => realpathSync(resolve(import.meta.dir, name)));
+if (canonical) files.push(realpathSync(resolve(import.meta.dir, 'selfhost_oracle.mjs')));
 const pins = Object.fromEntries([...files, image, receiptFile, manifestFile, node].map(file => [file, hashPath(file)]));
+if (canonical) Object.assign(pins, receipt.loadedInputs);
 const inputs = Object.fromEntries(manifest.files.map((row: any) => [realpathSync(resolve(repository, row.path)), row.sha256]));
-const request = {
+const request: Record<string, unknown> = {
   schemaVersion: 1, repository, root, image, node, exports: ABI, pins, inputs,
   limits: {memoryMiB: 8192, rssMiB: 8192, pollMs: 10, timeoutMs: 600000},
   stopAfter: 'check',
-  scope: 'Frozen real-source corpus; fresh native-produced own-image parse/expand/check. Checker screen only, not emission, fixedpoint or product acceptance.',
+  scope: canonical
+    ? 'DEVELOPMENT canonical TS-produced compiler; fresh own-image parse/expand/check on the frozen source workload. Not native production, emitted-byte fixedpoint, performance-transfer qualification or product acceptance.'
+    : 'Frozen real-source corpus; fresh native-produced own-image parse/expand/check. Checker screen only, not emission, fixedpoint or product acceptance.',
+};
+if (canonical) request.producer = {
+  kind: receipt.kind, receipt: receiptFile, source: receipt.source,
+  nativeCompiler: false, acceptanceEvidence: false, byteFixedpointClaim: false,
 };
 mkdirSync(out, {recursive: true});
 const requestFile = resolve(out, 'request.json'), reportFile = resolve(out, 'report.json');

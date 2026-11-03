@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "version": "G60",
+  "status": "SOURCE_INTEGRATION_BEFORE_MAIN_BUILD_AND_RUN",
+  "sourceBranch": "selfhost/g60-lexer-cursor-kkoffczh",
+  "compilerSourceCheckpoint": "ca886d5a",
+  "selectedEvidenceCheckpoint": "398b336e",
+  "fullCorpusEvidenceCheckpoint": "13fda751",
+  "harnessSourceCheckpoint": "a60a347b",
+  "toolingMigrations": [
+    "c3f6e452",
+    "e545cd7c",
+    "6f07c89e"
+  ],
+  "mainSource": {
+    "bend2/selfhost/lexer.bend": {
+      "path": "bend2/selfhost/lexer.bend",
+      "sha256": "db129431989584b4faa5ac2b65bbcf1fea5036218884d5e4c2b7cd6bb8b643d7"
+    },
+    "evals/selfhost_oracle.mjs": {
+      "path": "evals/selfhost_oracle.mjs",
+      "sha256": "7438077b409d731a5b85f100a544fd97f9f0e9238103838123fc5655d67e68ec"
+    },
+    "evals/selfhost_corpus_run.ts": {
+      "path": "evals/selfhost_corpus_run.ts",
+      "sha256": "d6f326e8bbeeedae45e7a36bccda40304dd5e4e1e8bbb1c15415185e472760a3"
+    },
+    "evals/candidate_host.ts": {
+      "path": "evals/candidate_host.ts",
+      "sha256": "bd534e464e6b211c03673673270088c3a3dcd26e6393f01754f2c4218ff9df57"
+    },
+    "evals/parser_full_token_provenance.ts": {
+      "path": "evals/parser_full_token_provenance.ts",
+      "sha256": "5887bb46daf2f50eb389196a9763f6c93ceac2f72fc3cef2e461538ba4a72379"
+    },
+    "evals/parser_operator_differential.ts": {
+      "path": "evals/parser_operator_differential.ts",
+      "sha256": "989f9acce20418a0379df63b4eef1d0889776a070fe81012e85d227cdf07e204"
+    }
+  },
+  "mainCompilerSourceManifest": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g60-lexer-cursor-kkoffczh/main-compiler-source.corpus.json",
+    "sha256": "4dcdf7518b43970eb0a3df0de930078b8c11000168880383fe56a9d5ec8fe636"
+  },
+  "mainEmitterPreserved": {
+    "path": "checkpoints/emitter_steps_v1.bend",
+    "sha256": "7f7c8d2e57a3fcd3925b4286a8300668ae91b7e11a26317cea6da2df5c9ea425"
+  },
+  "scope": "Land actual String-cursor lexer and explicit canonical-oracle dev mode plus shared existing oracle admission; current language diagnostic compatibility fixes; no native acceptance/promotion. Main existing emitter snapshot is preserved, NOT replaced by G50 frozen emitter used in isolated experiment. A fresh main canonical image and unchanged G56 selected source run are required next.",
+  "alreadyObserved": {
+    "fullFrozenCorpus": "PASS18modules13059declarations10409462checkerchunks",
+    "lexerJSTokens": "Literal expected6lines PASS",
+    "lexerCTokens": "Literal expected6lines PASS",
+    "ownImageUnicodeJS": "(5n,[0,233,65536,128512,1114111]) PASS",
+    "authBoundaryRejections": 8,
+    "operatorComparisons": 11,
+    "continuationComparisons": 8
+  },
+  "remainingAtThisHistoricalCheckpoint": [
+    "fresh main build+selected workload continuous command",
+    "main default-native JS/native-executable compatibility and expected invalid source rejection",
+    "complete9-file relevant suite after integration"
+  ],
+  "acceptedCompiler": "G24R12 unchanged"
+}

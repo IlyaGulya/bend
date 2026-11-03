@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "version": "G60",
+  "status": "SHARED_CANONICAL_ORACLE_ADMISSION_BEFORE_FULL_RUN",
+  "priorCompilerCheckpoint": "ca886d5a",
+  "priorSelectedEvidence": "398b336e",
+  "canonicalImage": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g60-lexer-cursor-kkoffczh/canonical-image/oracle.mjs",
+    "sha256": "35f521d4fa3aea3a88a765ac9167391a9852975edcba6e6cae2d390d974be931"
+  },
+  "producerReceipt": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g60-lexer-cursor-kkoffczh/canonical-image/receipt.json",
+    "sha256": "0b637784fb7cc7838534f71e942b07118ebd36e697f439aed361e71832679274"
+  },
+  "files": {
+    "evals/selfhost_oracle.mjs": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g60-lexer-cursor-kkoffczh/repository/evals/selfhost_oracle.mjs",
+      "sha256": "7438077b409d731a5b85f100a544fd97f9f0e9238103838123fc5655d67e68ec"
+    },
+    "evals/selfhost_corpus_run.ts": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g60-lexer-cursor-kkoffczh/repository/evals/selfhost_corpus_run.ts",
+      "sha256": "845e101500bffe2046cdca235c714e378b9ace80c1a07ceae4c940044f57ca59"
+    },
+    "evals/candidate_host.ts": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g60-lexer-cursor-kkoffczh/repository/evals/candidate_host.ts",
+      "sha256": "bd534e464e6b211c03673673270088c3a3dcd26e6393f01754f2c4218ff9df57"
+    }
+  },
+  "contract": "Extract the existing candidate_host --candidate-oracle checks unchanged into one shared authenticator. Add explicit --canonical-oracle corpus mode; unchanged old native default/native-executable modes and frozen runtime helpers. Canonical source pins and helper additionally pinned only in canonical requests. Separate workload forest remains immutable G56, so workload manifest identity is unchanged.",
+  "plannedFullRun": "Original53-file18-module frozen G50 source, own changed G60 image parser; original8Mfuel/quantum64/256MiBworker/6144MiBheap/128MiByoung/8GiB/600s."
+}

@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "version": "G60D1",
+  "status": "SOURCE_BEFORE_EXECUTION",
+  "protocol": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g60-lexer-cursor-kkoffczh/repository/checkpoints/local2039g60-protocol.json",
+    "sha256": "97c50e2c83deb0e38db96d406d161855c4520348efccd66b92763008b8a3c7ea"
+  },
+  "corpus": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g60-lexer-cursor-kkoffczh/compiler-source.corpus.json",
+    "sha256": "35d704e58dd1a79798d5ae60c2e31ec78cece49f543592e19d324c989dc1927e"
+  },
+  "sourceDeltaFromFrozenG50": [
+    {
+      "path": "bend2/selfhost/lexer.bend",
+      "baselineSha256": "342901897b30afc8ec7587718b1eb0b30150d46b01c1ea498ce369af26d1394d",
+      "candidateSha256": "db129431989584b4faa5ac2b65bbcf1fea5036218884d5e4c2b7cd6bb8b643d7"
+    }
+  ],
+  "shape": {
+    "files": 53,
+    "bendModules": 18,
+    "foreignAlternatives": 35,
+    "ABI": [
+      "parsed_module",
+      "parse_with_fuel",
+      "expand_modules_start",
+      "template_step",
+      "check_expanded_start",
+      "inspect_checked_start",
+      "checker_step",
+      "emit_modules_start",
+      "emit_library_start",
+      "emitter_step",
+      "emit_c_modules_start",
+      "emit_c_library_start",
+      "c_emitter_step"
+    ]
+  },
+  "seam": "Unchanged public Lexer.tokens(String), parser ABI13 and existing literal token regression fixture; input-only helper cursor signatures migrated atomically. No external callers found across bend2/evals/tests.",
+  "codeIntelligence": "No language servers configured; explicit exact helper-caller search returned no matches.",
+  "knownRedEvidence": "Prior canonical full-source String.to_list stack overflow documented at COMPILER_PROFILING.md57-62; unchanged failed target not rerun."
+}

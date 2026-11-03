@@ -15,23 +15,39 @@ const artifact=process.argv.find(a=>a.startsWith('--artifact='))?.slice(11)??'ch
 const report=process.argv.find(a=>a.startsWith('--report='))?.slice(9)??'checkpoints/operator-'+layer+'.json';
 const continuation=process.argv.includes('--continuation');
 const continuationSources:Record<string,string>={
- 'local-add-tuple':'def f(x: Nat, y: Nat) -> Nat & Bool:\n  bits = x + y\n  (bits, True{})\n',
+ 'local-add-tuple':'def f(x: Nat, y: Nat) -> Nat & Bool:\n  bits = (x + y : Nat)\n  (bits, True{})\n',
  'local-simple-tuple':'def f(x: Nat, y: Nat) -> Nat & Bool:\n  bits = x\n  (bits, True{})\n',
- 'local-add-variable':'def f(x: Nat, y: Nat) -> Nat:\n  bits = x + y\n  bits\n',
- 'local-chain-tuple':'def f(x: Nat, y: Nat) -> Nat & Bool:\n  bits = x * 1n + y - 1n\n  (bits, True{})\n',
- 'local-add-parenthesized':'def f(x: Nat, y: Nat) -> Nat:\n  bits = x + y\n  (bits)\n',
- 'local-add-list':'def f(x: Nat, y: Nat) -> List<&2, Nat>:\n  bits = x + y\n  [bits]\n',
- 'same-line-call':'def f(g: Nat -> Nat, x: Nat, y: Nat) -> Nat:\n  g(x + y)\n',
- 'blank-line-tuple':'def f(x: Nat, y: Nat) -> Nat & Bool:\n  bits = x + y\n\n  (bits, True{})\n',
+ 'local-add-variable':'def f(x: Nat, y: Nat) -> Nat:\n  bits = (x + y : Nat)\n  bits\n',
+ 'local-chain-tuple':'def f(x: Nat, y: Nat) -> Nat & Bool:\n  bits = (x * 1n + y - 1n : Nat)\n  (bits, True{})\n',
+ 'local-add-parenthesized':'def f(x: Nat, y: Nat) -> Nat:\n  bits = (x + y : Nat)\n  (bits)\n',
+ 'local-add-list':'def f(x: Nat, y: Nat) -> List<&2, Nat>:\n  bits = (x + y : Nat)\n  [bits]\n',
+ 'same-line-call':'def f(g: Nat -> Nat, x: Nat, y: Nat) -> Nat:\n  g((x + y : Nat))\n',
+ 'blank-line-tuple':'def f(x: Nat, y: Nat) -> Nat & Bool:\n  bits = (x + y : Nat)\n\n  (bits, True{})\n',
 };
-const expressions=continuation?Object.keys(continuationSources):['x * 1n + y','x + y','x + y + z','x * y','x * y * z','x * y + z','x + y * z','x - y + z','x + y - z','(x * y) + z','x * (y + z)'];
+const expressions=continuation?Object.keys(continuationSources):['(x * 1n + y : Nat)','(x + y : Nat)','(x + y + z : Nat)','(x * y : Nat)','(x * y * z : Nat)','(x * y + z : Nat)','(x + y * z : Nat)','(x - y + z : Nat)','(x + y - z : Nat)','((x * y : Nat) + z : Nat)','(x * (y + z : Nat) : Nat)'];
 const rows:any[]=[];let book:B.Book|undefined,fuel:B.HTerm=B.Ctr('FeedbackFuelEnd',[]);
 if(layer!=='compiled'){book=await canonicalSourceBook(await Bun.file(parserPath).text(), resolve(parserPath));await installCompiledLexerABI(book);if(layer==='generated')for(let i=0;i<2000000;i++)fuel=B.Ctr('FeedbackFuelCell',[fuel]);}
-function closed(source:string):B.HTerm{let out=B.Ctr('SNil',[]);for(const c of Array.from(source).reverse())out=B.Ctr('SCon',[B.Ctr('Chr',[B.term_higher(B.u32_to_term(c.codePointAt(0)!))]),out]);return out;}
-function ctor(t:B.HTerm){const value=B.term_wnf(book!,t);if(value.$!=='Ctr')throw Error('Expected constructor '+value.$);return value;}
-function nat(t:B.HTerm){let n=0;for(;;){const v=ctor(t);if(v.k==='Zero')return n;if(v.k!=='Succ')throw Error('Bad Nat');n++;t=v.x[0]!;}}
-function string(t:B.HTerm){let out='';for(;;){const v=ctor(t);if(v.k==='SNil')return out;let word=ctor(ctor(v.x[0]!).x[0]!).x[0]!,code=0,bit=1;for(;;){const w=ctor(word);if(w.k==='WNil')break;if(ctor(w.x[0]!).k==='True')code+=bit;bit*=2;word=w.x[1]!;}out+=String.fromCodePoint(code);t=v.x[1]!;}}
-function decode(t:B.HTerm):Value{const v=ctor(t),tag=v.k.split('.').at(-1)!;if(tag==='Zero'||tag==='Succ')return nat(t);if(tag==='True'||tag==='False')return tag==='True';if(tag==='SNil'||tag==='SCon')return string(t);if(tag==='Nil'||tag==='Con'){const list:Value[]=[];while(true){const c=ctor(t);if(c.k==='Nil')return list;list.push(decode(c.x[0]!));t=c.x[1]!;}}return {tag,fields:v.x.map(decode)};}
+function closed(source:string):B.HTerm{return B.Lit('String',source);}
+function ctor(t:B.HTerm){const raw=B.term_wnf(book!,t),value=raw.$==='Lit'?B.lit_step(raw):raw;if(value.$!=='Ctr')throw Error('Expected constructor '+value.$);return value;}
+function nat(t:B.HTerm){let n=0;for(;;){const raw=B.term_wnf(book!,t);if(raw.$==='Lit'&&raw.k==='Nat')return n+raw.v;const v=ctor(raw);if(v.k==='Zero')return n;if(v.k!=='Succ')throw Error('Bad Nat');n++;t=v.x[0]!;}}
+function string(t:B.HTerm){
+ let out='';
+ for(;;){
+  const raw=B.term_wnf(book!,t);if(raw.$==='Lit'&&raw.k==='String')return out+raw.v;
+  const v=ctor(raw);if(v.k==='SNil')return out;if(v.k!=='SCon')throw Error('Bad String');
+  const c=ctor(v.x[0]!);if(c.k!=='Chr')throw Error('Bad Char');
+  const code=B.u32_from_term(B.term_lower(B.term_snf(book!,c.x[0]!)));
+  if(code===null)throw Error('Bad character Word');
+  out+=String.fromCodePoint(code);t=v.x[1]!;
+ }
+}
+function decode(t:B.HTerm):Value{
+ const raw=B.term_wnf(book!,t);if(raw.$==='Lit')return raw.v;
+ const v=ctor(raw),tag=B.name_key(v.k).split('.').at(-1)!;
+ if(tag==='Zero'||tag==='Succ')return nat(t);if(tag==='True'||tag==='False')return tag==='True';if(tag==='SNil'||tag==='SCon')return string(t);
+ if(tag==='Nil'||tag==='Con'){const list:Value[]=[];while(true){const c=ctor(t);if(c.k==='Nil')return list;list.push(decode(c.x[0]!));t=c.x[1]!;}}
+ return {tag,fields:v.x.map(decode)};
+}
 function native(x:any):Value{if(x?.$==='$NativeNat')return Number(x.value);if(typeof x!=='object'||x===null)return x;if(x.$==='Nil'||x.$==='Con'){const out:Value[]=[];while(x.$==='Con'){out.push(native(x.head));x=x.tail;}return out;}return {tag:x.$.split('.').at(-1),fields:Object.entries(x).filter(([k])=>k!=='$').map(([,v])=>native(v))};}
 const trace:any[]=[];
 if(book&&layer==='canonical'&&process.argv.includes('--trace')){
@@ -51,7 +67,7 @@ const lines=worker?createInterface({input:Readable.fromWeb(worker.stdout as any)
 const fixtureDir=mkdtempSync(join(tmpdir(),'bend-operator-differential-'));
 try{for(const [id,expression] of expressions.entries()){
  trace.length=0;
- const source=continuation?continuationSources[expression]!:id===0?'def f(x: Nat, y: Nat) -> Nat:\n  x * 1n + y\n':`def f(x: Nat, y: Nat, z: Nat) -> Nat:\n  ${expression}\n`;
+ const source=continuation?continuationSources[expression]!:id===0?'def f(x: Nat, y: Nat) -> Nat:\n  (x * 1n + y : Nat)\n':`def f(x: Nat, y: Nat, z: Nat) -> Nat:\n  ${expression}\n`;
  const file=join(fixtureDir,'source.bend');writeFileSync(file,source);const oracle=await sourceOracle(file,source),environment=oracle.normalizationBook();
  const expected=normalizeCoreBook(environment,oracle.declarations.map(d=>d.key),oracle.imports.map(i=>({path:i.path,alias:i.alias})),file,dirname(file)+'/').semantic;
  let result:any;
@@ -60,7 +76,7 @@ try{for(const [id,expression] of expressions.entries()){
  const accepted=result.tag==='ParseSuccess',actual=accepted?canonicalCore(result.fields[0],environment,source).semantic:undefined;
  if(actual)actual.imports=normalizeImports(oracle.imports.map(i=>({path:i.path,alias:i.alias})));
  const row={expression,source,stage0Accepted:oracle.accepted,accepted,expected,actual,failure:accepted?undefined:result,semanticParity:accepted&&JSON.stringify(expected)===JSON.stringify(actual)};rows.push(row);console.log(JSON.stringify({layer,expression,accepted,semanticParity:row.semanticParity}));
- if(book&&!continuation){let scope:B.HTerm=B.Ctr('Nil',[]);for(let i=2;i>=0;i--){let n=B.Ctr('Zero',[]);for(let j=0;j<i;j++)n=B.Ctr('Succ',[n]);scope=B.Ctr('Con',[B.Ctr('Scope',[closed(['x','y','z'][i]!),n]),scope]);}const tokens=B.App(B.Ref('lexer.tokens'),closed(expression+'\n'));let n=B.Ctr('Zero',[]);for(let i=0;i<3;i++)n=B.Ctr('Succ',[n]);let value=[closed(file),tokens,scope,n,B.Ctr('Zero',[])].reduce((f,a)=>B.App(f,a),B.Ref(layer==='generated'?'step_parse_term':'parse_term'));if(layer==='generated'){const complete=ctor([fuel,value,B.Ctr('Nil',[])].reduce((f,a)=>B.App(f,a),B.Ref('feedback_drive')));value=ctor(complete.x[0]!).x[0]!;}row['expressionCursor' as keyof typeof row]=decode(value) as any;}
+ if(book&&!continuation){let scope:B.HTerm=B.Ctr('Nil',[]);for(let i=2;i>=0;i--){let n=B.Ctr('Zero',[]);for(let j=0;j<i;j++)n=B.Ctr('Succ',[n]);scope=B.Ctr('Con',[B.Ctr('Scope',[closed(['x','y','z'][i]!),n]),scope]);}const tokens=B.App(B.Ref('lexer:tokens'),closed(expression+'\n'));let n=B.Ctr('Zero',[]);for(let i=0;i<3;i++)n=B.Ctr('Succ',[n]);let value=[closed(file),tokens,scope,n,B.Ctr('Zero',[])].reduce((f,a)=>B.App(f,a),B.Ref(layer==='generated'?'step_parse_term':'parse_term'));if(layer==='generated'){const complete=ctor([fuel,value,B.Ctr('Nil',[])].reduce((f,a)=>B.App(f,a),B.Ref('feedback_drive')));value=ctor(complete.x[0]!).x[0]!;}row['expressionCursor' as keyof typeof row]=decode(value) as any;}
  if(process.argv.includes('--trace'))(row as any).trace=trace.slice();
  writeFileSync(report,JSON.stringify({layer,parserPath,artifact,rows,trace:process.argv.includes('--trace')?trace:undefined},null,2)+'\n');Bun.gc(true);
  if(process.argv.includes('--minimal-only'))break;

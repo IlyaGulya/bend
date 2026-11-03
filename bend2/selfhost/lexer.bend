@@ -75,10 +75,10 @@ def quote_class_flags(is_quote: Bool, is_escape: Bool, newline: Bool) -> QuoteCl
             case True{}: QuoteNewline{}
             case False{}: QuoteOther{}
 
-def quote_class(cs: List<&2, Char>, quote: Char) -> QuoteClass:
+def quote_class(cs: String, quote: Char) -> QuoteClass:
   match cs:
-    case Nil{}: QuoteOther{}
-    case +c <> _: quote_class_flags(Char.is_eq(c, quote), char_is(c, 92), char_is(c, 10))
+    case SNil{}: QuoteOther{}
+    case SCon{+c, _}: quote_class_flags(Char.is_eq(c, quote), char_is(c, 92), char_is(c, 10))
 def end_tokens(mark: Mark, acc: List<&2, Token>) -> List<&2, Token>:
   match mark:
     case Pos{+offset, line, col}:
@@ -104,37 +104,37 @@ def normal_acc_newline(+c: Char, +mark: Mark, +after: Mark, +acc: List<&2, Token
 def normal_acc(+c: Char, +mark: Mark, +after: Mark, +acc: List<&2, Token>) -> List<&2, Token>:
   normal_acc_newline(c, mark, after, acc, char_is(c, 10))
 
-def normal_mode_quote(+c: Char, mark: Mark, rest: List<&2, Char>, quoted: Bool) -> ScanMode:
+def normal_mode_quote(+c: Char, mark: Mark, rest: String, quoted: Bool) -> ScanMode:
   match quoted:
     case True{}: ScanQuoted{c, mark, [c], False{}, quote_class(rest, c)}
     case False{}: ScanNormal{}
 
-def normal_mode_digit(+c: Char, mark: Mark, rest: List<&2, Char>, digit: Bool) -> ScanMode:
+def normal_mode_digit(+c: Char, mark: Mark, rest: String, digit: Bool) -> ScanMode:
   match digit:
     case True{}: ScanNumber{mark, [c], False{}, False{}}
     case False{}: normal_mode_quote(c, mark, rest, Bool.or(char_is(c, 34), char_is(c, 39)))
 
-def normal_mode_name(+c: Char, mark: Mark, rest: List<&2, Char>, name: Bool) -> ScanMode:
+def normal_mode_name(+c: Char, mark: Mark, rest: String, name: Bool) -> ScanMode:
   match name:
     case True{}: ScanName{mark, [c]}
     case False{}: normal_mode_digit(c, mark, rest, Char.is_digit(c))
 
-def normal_mode_space(+c: Char, mark: Mark, rest: List<&2, Char>, space: Bool) -> ScanMode:
+def normal_mode_space(+c: Char, mark: Mark, rest: String, space: Bool) -> ScanMode:
   match space:
     case True{}: ScanNormal{}
     case False{}: normal_mode_name(c, mark, rest, name_head(c))
 
-def normal_mode_comment(+c: Char, mark: Mark, rest: List<&2, Char>, comment: Bool) -> ScanMode:
+def normal_mode_comment(+c: Char, mark: Mark, rest: String, comment: Bool) -> ScanMode:
   match comment:
     case True{}: ScanComment{}
     case False{}: normal_mode_space(c, mark, rest, Char.is_space(c))
 
-def normal_mode_newline(+c: Char, mark: Mark, rest: List<&2, Char>, newline: Bool) -> ScanMode:
+def normal_mode_newline(+c: Char, mark: Mark, rest: String, newline: Bool) -> ScanMode:
   match newline:
     case True{}: ScanNormal{}
     case False{}: normal_mode_comment(c, mark, rest, char_is(c, 35))
 
-def normal_mode(+c: Char, mark: Mark, rest: List<&2, Char>) -> ScanMode:
+def normal_mode(+c: Char, mark: Mark, rest: String) -> ScanMode:
   normal_mode_newline(c, mark, rest, char_is(c, 10))
 
 # A stop branch decides the next accumulator and mode without recursing, so the
@@ -142,11 +142,11 @@ def normal_mode(+c: Char, mark: Mark, rest: List<&2, Char>) -> ScanMode:
 type ScanNext is Data:
   ScanNext{acc: List<&2, Token>, mode: ScanMode}
 
-def scan_number_plain(+c: Char, +rest: List<&2, Char>, +beg: Mark, +rev: List<&2, Char>, +mark: Mark, +after: Mark, +acc: List<&2, Token>) -> ScanNext:
+def scan_number_plain(+c: Char, +rest: String, +beg: Mark, +rev: List<&2, Char>, +mark: Mark, +after: Mark, +acc: List<&2, Token>) -> ScanNext:
   +number_token = token(NumberToken{}, String.from_list(List.reverse(&2, Char, rev)), beg, mark)
   ScanNext{normal_acc(c, mark, after, number_token <> acc), normal_mode(c, mark, rest)}
 
-def scan_number_flags(+c: Char, rest: List<&2, Char>, beg: Mark, rev: List<&2, Char>, mark: Mark, after: Mark, acc: List<&2, Token>, suffix: Bool, decimal: Bool, exponent_mark: Bool) -> ScanNext:
+def scan_number_flags(+c: Char, rest: String, beg: Mark, rev: List<&2, Char>, mark: Mark, after: Mark, acc: List<&2, Token>, suffix: Bool, decimal: Bool, exponent_mark: Bool) -> ScanNext:
   match suffix:
     case True{}:
       ScanNext{token(NumberToken{}, String.from_list(List.reverse(&2, Char, c <> rev)), beg, after) <> acc, ScanNormal{}}
@@ -160,23 +160,23 @@ def scan_number_flags(+c: Char, rest: List<&2, Char>, beg: Mark, rev: List<&2, C
               ScanNext{acc, ScanAfterExponent{beg, rev, c}}
             case False{}:
               scan_number_plain(c, rest, beg, rev, mark, after, acc)
-def scan_number_stop(+c: Char, rest: List<&2, Char>, beg: Mark, rev: List<&2, Char>, +fraction: Bool, +exponent: Bool, mark: Mark, after: Mark, acc: List<&2, Token>) -> ScanNext:
+def scan_number_stop(+c: Char, rest: String, beg: Mark, rev: List<&2, Char>, +fraction: Bool, +exponent: Bool, mark: Mark, after: Mark, acc: List<&2, Token>) -> ScanNext:
   scan_number_flags(c, rest, beg, rev, mark, after, acc,
     Bool.and(Bool.not(fraction), Bool.and(Bool.not(exponent), char_is(c, 110))),
     Bool.and(Bool.not(fraction), Bool.and(Bool.not(exponent), char_is(c, 46))),
     Bool.and(fraction, Bool.and(Bool.not(exponent), Bool.or(char_is(c, 101), char_is(c, 69)))))
 
 
-def scan_after_dot_plain(+d: Char, +rest: List<&2, Char>, +beg: Mark, +rev: List<&2, Char>, +dot: Char, +dot_beg: Mark, +mark: Mark, +after: Mark, +acc: List<&2, Token>) -> ScanNext:
+def scan_after_dot_plain(+d: Char, +rest: String, +beg: Mark, +rev: List<&2, Char>, +dot: Char, +dot_beg: Mark, +mark: Mark, +after: Mark, +acc: List<&2, Token>) -> ScanNext:
   +dot_token = token(SymbolToken{}, SCon{dot, SNil{}}, dot_beg, mark)
   +number_token = token(NumberToken{}, String.from_list(List.reverse(&2, Char, rev)), beg, dot_beg)
   ScanNext{normal_acc(d, mark, after, dot_token <> number_token <> acc), normal_mode(d, mark, rest)}
 
-def scan_exponent_plain(+d: Char, +rest: List<&2, Char>, +beg: Mark, +rev: List<&2, Char>, +marker: Char, +mark: Mark, +after: Mark, +acc: List<&2, Token>) -> ScanNext:
+def scan_exponent_plain(+d: Char, +rest: String, +beg: Mark, +rev: List<&2, Char>, +marker: Char, +mark: Mark, +after: Mark, +acc: List<&2, Token>) -> ScanNext:
   +exponent_token = token(NumberToken{}, String.from_list(List.reverse(&2, Char, marker <> rev)), beg, mark)
   ScanNext{normal_acc(d, mark, after, exponent_token <> acc), normal_mode(d, mark, rest)}
 
-def scan_exponent_sign_plain(+d: Char, +rest: List<&2, Char>, +beg: Mark, +rev: List<&2, Char>, +marker: Char, +sign: Char, +mark: Mark, +after: Mark, +acc: List<&2, Token>) -> ScanNext:
+def scan_exponent_sign_plain(+d: Char, +rest: String, +beg: Mark, +rev: List<&2, Char>, +marker: Char, +sign: Char, +mark: Mark, +after: Mark, +acc: List<&2, Token>) -> ScanNext:
   +exponent_token = token(NumberToken{}, String.from_list(List.reverse(&2, Char, sign <> (marker <> rev))), beg, mark)
   ScanNext{normal_acc(d, mark, after, exponent_token <> acc), normal_mode(d, mark, rest)}
 
@@ -187,24 +187,24 @@ def scan_comment(+c: Char, mark: Mark, after: Mark, acc: List<&2, Token>, newlin
     case True{}: ScanNext{token(NewlineToken{}, SCon{c, SNil{}}, mark, after) <> acc, ScanNormal{}}
     case False{}: ScanNext{acc, ScanComment{}}
 
-def scan_name(+c: Char, rest: List<&2, Char>, +beg: Mark, rev: List<&2, Char>, +mark: Mark, +after: Mark, acc: List<&2, Token>, continuing: Bool) -> ScanNext:
+def scan_name(+c: Char, rest: String, +beg: Mark, rev: List<&2, Char>, +mark: Mark, +after: Mark, acc: List<&2, Token>, continuing: Bool) -> ScanNext:
   match continuing:
     case True{}: ScanNext{acc, ScanName{beg, c <> rev}}
     case False{}:
       name_token = token(NameToken{}, String.from_list(List.reverse(&2, Char, rev)), beg, mark)
       ScanNext{normal_acc(c, mark, after, name_token <> acc), normal_mode(c, mark, rest)}
 
-def scan_number(+c: Char, rest: List<&2, Char>, beg: Mark, rev: List<&2, Char>, fraction: Bool, exponent: Bool, mark: Mark, after: Mark, acc: List<&2, Token>, digit: Bool) -> ScanNext:
+def scan_number(+c: Char, rest: String, beg: Mark, rev: List<&2, Char>, fraction: Bool, exponent: Bool, mark: Mark, after: Mark, acc: List<&2, Token>, digit: Bool) -> ScanNext:
   match digit:
     case True{}: ScanNext{acc, ScanNumber{beg, c <> rev, fraction, exponent}}
     case False{}: scan_number_stop(c, rest, beg, rev, fraction, exponent, mark, after, acc)
 
-def scan_after_dot(+c: Char, rest: List<&2, Char>, beg: Mark, rev: List<&2, Char>, dot: Char, dot_beg: Mark, mark: Mark, after: Mark, acc: List<&2, Token>, digit: Bool) -> ScanNext:
+def scan_after_dot(+c: Char, rest: String, beg: Mark, rev: List<&2, Char>, dot: Char, dot_beg: Mark, mark: Mark, after: Mark, acc: List<&2, Token>, digit: Bool) -> ScanNext:
   match digit:
     case True{}: ScanNext{acc, ScanNumber{beg, c <> (dot <> rev), True{}, False{}}}
     case False{}: scan_after_dot_plain(c, rest, beg, rev, dot, dot_beg, mark, after, acc)
 
-def scan_after_exponent(+c: Char, rest: List<&2, Char>, beg: Mark, rev: List<&2, Char>, marker: Char, mark: Mark, after: Mark, acc: List<&2, Token>, sign: Bool, digit: Bool) -> ScanNext:
+def scan_after_exponent(+c: Char, rest: String, beg: Mark, rev: List<&2, Char>, marker: Char, mark: Mark, after: Mark, acc: List<&2, Token>, sign: Bool, digit: Bool) -> ScanNext:
   match sign:
     case True{}: ScanNext{acc, ScanAfterExponentSign{beg, rev, marker, c}}
     case False{}:
@@ -212,12 +212,12 @@ def scan_after_exponent(+c: Char, rest: List<&2, Char>, beg: Mark, rev: List<&2,
         case True{}: ScanNext{acc, ScanNumber{beg, c <> (marker <> rev), True{}, True{}}}
         case False{}: scan_exponent_plain(c, rest, beg, rev, marker, mark, after, acc)
 
-def scan_after_exponent_sign(+c: Char, rest: List<&2, Char>, beg: Mark, rev: List<&2, Char>, marker: Char, sign: Char, mark: Mark, after: Mark, acc: List<&2, Token>, digit: Bool) -> ScanNext:
+def scan_after_exponent_sign(+c: Char, rest: String, beg: Mark, rev: List<&2, Char>, marker: Char, sign: Char, mark: Mark, after: Mark, acc: List<&2, Token>, digit: Bool) -> ScanNext:
   match digit:
     case True{}: ScanNext{acc, ScanNumber{beg, c <> (sign <> (marker <> rev)), True{}, True{}}}
     case False{}: scan_exponent_sign_plain(c, rest, beg, rev, marker, sign, mark, after, acc)
 
-def scan_char(+c: Char, +rest: List<&2, Char>, +mark: Mark, +after: Mark, acc: List<&2, Token>, mode: ScanMode) -> ScanNext:
+def scan_char(+c: Char, +rest: String, +mark: Mark, +after: Mark, acc: List<&2, Token>, mode: ScanMode) -> ScanNext:
   match mode:
     case ScanNormal{}:
       ScanNext{normal_acc(c, mark, after, acc), normal_mode(c, mark, rest)}
@@ -272,10 +272,10 @@ def scan_next_mode(next: ScanNext) -> ScanMode:
   match next:
     case ScanNext{_, mode}: mode
 
-def scan(cs: List<&2, Char>, +mark: Mark, acc: List<&2, Token>, mode: ScanMode) -> List<&2, Token>:
+def scan(cs: String, +mark: Mark, acc: List<&2, Token>, mode: ScanMode) -> List<&2, Token>:
   match cs:
-    case Nil{}: scan_end(mark, acc, mode)
-    case +c <> +rest:
+    case SNil{}: scan_end(mark, acc, mode)
+    case SCon{+c, +rest}:
       +after = advance(mark, c)
       +next = scan_char(c, rest, mark, after, acc, mode)
       scan(rest, after, scan_next_acc(next), scan_next_mode(next))
@@ -284,5 +284,5 @@ law tokens:
   List<&2, Token>
 
 def tokens(source):
-  scan(String.to_list(source), Pos{0n, 1n, 1n}, Nil{}, ScanNormal{})
+  scan(source, Pos{0n, 1n, 1n}, Nil{}, ScanNormal{})
 

@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "status": "ACTUAL_PREEXISTING_TOOLING_CONTRACTS_FOUND_DURING_G60_SMOKE",
+  "before": {
+    "command": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "test",
+      "evals/parser_canonical_literals.test.ts",
+      "evals/parser_float.test.ts",
+      "evals/parser_operator_chain.test.ts",
+      "evals/parser_full_token_provenance.test.ts",
+      "evals/native_seed_runtime.test.ts",
+      "evals/selfhost_corpus_calibration.test.ts",
+      "evals/selfhost_corpus_cpu.test.ts",
+      "evals/bootstrap_source_oracle.test.ts"
+    ],
+    "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g60-lexer-cursor-kkoffczh/repository",
+    "exitCode": 1,
+    "elapsedMs": 18902.747959131375,
+    "reportedPass": 70,
+    "reportedFail": 24,
+    "reportedError": 1,
+    "expectCalls": 530,
+    "rawLog": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g60-lexer-cursor-kkoffczh/existing-tests-before.txt",
+      "sha256": "90835a71e0444a188ac68e5f9e35afb245910bc34165a4b03e2816afbff69042"
+    }
+  },
+  "diagnosis": {
+    "tokenProvenance": {
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "-e",
+        "import * as B from \"./bend2/bend.ts\";import {readParserGraph} from \"./evals/parser_full_graph.ts\";import {analyzeTokenProvenance} from \"./evals/parser_full_token_provenance.ts\";const g=await readParserGraph(\"import Base\\nimport ./lexer.bend as Lexer\\ndef identity(tokens: List<&2, Lexer.Token>) -> List<&2, Lexer.Token>:\\n  tokens\\n\");const s=g.signatures.get(\"identity\");const T=B.term_lower(B.term_wnf(g.parserBook,B.term_higher(s.parameters[0][3])));console.log(JSON.stringify({parameterType:T,defaultResult:analyzeTokenProvenance(g).relationOf(\"identity\",0,[]),colonElementResult:analyzeTokenProvenance(g,{tokenElement:\"lexer:Token\"}).relationOf(\"identity\",0,[])},(k,v)=>k===\"s\"?undefined:v));"
+      ],
+      "exitCode": 0,
+      "stdout": "{\"parameterType\":{\"$\":\"ADT\",\"k\":\"List\",\"x\":[{\"$\":\"Qua\",\"q\":{\"$\":\"Many\"}},{\"$\":\"Ref\",\"k\":\"lexer:Token\"}],\"r\":[]},\"defaultResult\":\"Unknown\",\"colonElementResult\":\"Same\"}\n",
+      "stderr": ""
+    },
+    "cause": "Actual normalized token element is lexer:Token, but analyzer default still lexer.Token; explicit current key returns Same for the actual identity graph. Graph uses canonical TS AST parsing, independent of own-image Lexer scanner representation.",
+    "operatorFixtures": "Positive differential fixtures still use bare numeric operators. Current native sourceOracle fails with explicit requirement to write (a + b : Nat); fixture migration adds explicit Nat annotations, preserves all11operator cases and8continuation cases including parenthesized precedence."
+  },
+  "changes": [
+    "Analyzer default uses current canonical lexer:Token key; no compatibility alias.",
+    "Migrate all positive operator/continuation fixture inputs to current annotated grammar; no removal/narrowing/re-pinning expected AST behavior."
+  ],
+  "compilerSourceImageChanged": false,
+  "validation": "Pending post-change execution at this source checkpoint; old failures preserved, not relabelled."
+}

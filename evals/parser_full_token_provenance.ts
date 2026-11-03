@@ -72,7 +72,7 @@ function callableOwners(v:Value,owners=new Set<string>()):Set<string>{
 function eventKey(e:Event):string{return e.caller+':'+e.callee+':'+e.offset+':'+e.args.map(key).join('|')+':'+e.bindings.map(([i,v])=>i+'='+key(v)).join('|');}
 function eventValue(v:Value):Value{v=bounded(v);if(v.kind==='token')return v;if(v.kind==='ctor'&&tokens(v).length)return{...v,fields:v.fields.map(eventValue)};return unknown;}
 export function analyzeTokenProvenance(graph:ParserGraph,options?:{tokenElement?:string}):TokenProvenanceAnalysis{
- const element=options?.tokenElement??'lexer.Token';
+ const element=options?.tokenElement??'lexer:Token';
  // Closed generated-source Data invariants: infer each local constructor
  // separately, then validate against every production before exposing facts.
  // No field names, function names or parser offsets participate.
