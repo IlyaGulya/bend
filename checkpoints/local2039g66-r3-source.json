@@ -1,0 +1,1250 @@
+{
+  "schemaVersion": 1,
+  "version": "G66R3",
+  "status": "NATIVE_MATCH_COMPATIBLE_REGRESSION_SOURCE_FROZEN_BEFORE_PREFLIGHT",
+  "protocolCheckpoint": "74a38aad",
+  "actualCompilerSourceCheckpoint": "c8abb25b",
+  "actualCompilerSourceManifest": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r2-source.corpus.json",
+    "sha256": "8a9065f080c0c171ed6c50f684a41236c8c07b4af5f82ba346d85802c773ead2"
+  },
+  "actualCompilerInputsUnchanged": true,
+  "fixtureNormalization": {
+    "command": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+      "--memory-mib=8192",
+      "--rss-mib=8192",
+      "--poll-ms=10",
+      "--timeout-ms=120000",
+      "--",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/normalize-regressions.mts",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-regression-inputs.json",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-normalized-regressions.json"
+    ],
+    "driverSource": "import {readFileSync,writeFileSync} from 'node:fs';\nimport {normalizeNativeMatchSource} from './repository/evals/native_match_source.ts';\nconst files=JSON.parse(readFileSync(process.argv[2],'utf8'));const rows=[];\nfor(const file of files){const before=readFileSync(file,'utf8');const normalized=await normalizeNativeMatchSource(file,before);rows.push({file,before,source:normalized.source,extractions:normalized.extractions});console.log(JSON.stringify({file,extractions:normalized.extractions.length}));}\nwriteFileSync(process.argv[3],JSON.stringify({schemaVersion:1,rows},null,2)+'\\n',{flag:'wx'});\n",
+    "driver": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/normalize-regressions.mts",
+      "sha256": "fd5f8fb5df502d7af380d9952f070880de4c3f64c42f4921335606f1d5057bcb"
+    },
+    "output": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-normalized-regressions.json",
+      "sha256": "b2b97d001854faf8eb0b392fa24ef7539994893ea6248f6a25d1ece2700900f5"
+    },
+    "rows": [
+      {
+        "path": "tests/reg/checker_arena_closed.bend",
+        "beforeSha256": "6117587f737a1b8007a93358b83de1600f2ab48be6324ed10d892046e6941e56",
+        "afterSha256": "66220a95430212bc483cf022d2c6778663ba8410fc3c1d8cc78a0b80618f2f1b",
+        "extractions": [
+          {
+            "owner": "source_witness",
+            "helper": "native_match_source_witness_0",
+            "kind": "local",
+            "captures": [
+              19,
+              22,
+              25,
+              28,
+              31,
+              35,
+              38,
+              41,
+              45
+            ],
+            "producers": 1
+          },
+          {
+            "owner": "source_witness",
+            "helper": "native_match_source_witness_1",
+            "kind": "local",
+            "captures": [
+              12,
+              19,
+              22,
+              25,
+              28,
+              31,
+              35,
+              38,
+              41
+            ],
+            "producers": 1
+          },
+          {
+            "owner": "source_witness",
+            "helper": "native_match_source_witness_2",
+            "kind": "local",
+            "captures": [
+              7,
+              12,
+              19,
+              22,
+              25,
+              28,
+              31,
+              35,
+              38
+            ],
+            "producers": 1
+          },
+          {
+            "owner": "source_witness",
+            "helper": "native_match_source_witness_3",
+            "kind": "local",
+            "captures": [
+              7,
+              12,
+              19,
+              22,
+              25,
+              28,
+              31,
+              35
+            ],
+            "producers": 1
+          },
+          {
+            "owner": "source_witness",
+            "helper": "native_match_source_witness_4",
+            "kind": "local",
+            "captures": [
+              7,
+              12,
+              19,
+              22,
+              25,
+              28,
+              31
+            ],
+            "producers": 1
+          },
+          {
+            "owner": "source_witness",
+            "helper": "native_match_source_witness_5",
+            "kind": "local",
+            "captures": [
+              7,
+              12,
+              19,
+              22,
+              25,
+              28
+            ],
+            "producers": 1
+          },
+          {
+            "owner": "source_witness",
+            "helper": "native_match_source_witness_6",
+            "kind": "local",
+            "captures": [
+              7,
+              12,
+              14,
+              19,
+              22,
+              25
+            ],
+            "producers": 1
+          },
+          {
+            "owner": "source_witness",
+            "helper": "native_match_source_witness_7",
+            "kind": "local",
+            "captures": [
+              7,
+              12,
+              14,
+              19,
+              22
+            ],
+            "producers": 1
+          },
+          {
+            "owner": "source_witness",
+            "helper": "native_match_source_witness_8",
+            "kind": "local",
+            "captures": [
+              4,
+              7,
+              12,
+              14,
+              19
+            ],
+            "producers": 1
+          },
+          {
+            "owner": "source_witness",
+            "helper": "native_match_source_witness_9",
+            "kind": "local",
+            "captures": [
+              4,
+              7,
+              12,
+              14
+            ],
+            "producers": 1
+          },
+          {
+            "owner": "source_witness",
+            "helper": "native_match_source_witness_10",
+            "kind": "local",
+            "captures": [
+              4,
+              7
+            ],
+            "producers": 1
+          },
+          {
+            "owner": "source_witness",
+            "helper": "native_match_source_witness_11",
+            "kind": "local",
+            "captures": [
+              4
+            ],
+            "producers": 1
+          },
+          {
+            "owner": "source_witness",
+            "helper": "native_match_source_witness_12",
+            "kind": "local",
+            "captures": [],
+            "producers": 1
+          }
+        ]
+      },
+      {
+        "path": "tests/reg/checker_arena_bound.bend",
+        "beforeSha256": "1cf567212073ab4b07b42bcde43863d838347906548b906c6992a2e5c3561758",
+        "afterSha256": "134dd3bf2c494128bf071ffc388df9aa9071f153d1230c1fe8ebd4da8e3ab6e5",
+        "extractions": [
+          {
+            "owner": "ranges",
+            "helper": "native_match_ranges_0",
+            "kind": "local",
+            "captures": [
+              19,
+              22,
+              25,
+              28,
+              31,
+              42
+            ],
+            "producers": 1
+          },
+          {
+            "owner": "ranges",
+            "helper": "native_match_ranges_1",
+            "kind": "local",
+            "captures": [
+              19,
+              22,
+              25,
+              28,
+              31,
+              39
+            ],
+            "producers": 1
+          },
+          {
+            "owner": "ranges",
+            "helper": "native_match_ranges_2",
+            "kind": "local",
+            "captures": [
+              19,
+              22,
+              25,
+              28,
+              31
+            ],
+            "producers": 1
+          },
+          {
+            "owner": "ranges",
+            "helper": "native_match_ranges_3",
+            "kind": "local",
+            "captures": [
+              19,
+              22,
+              25,
+              28,
+              31
+            ],
+            "producers": 1
+          },
+          {
+            "owner": "ranges",
+            "helper": "native_match_ranges_4",
+            "kind": "local",
+            "captures": [
+              19,
+              22,
+              25,
+              28,
+              31
+            ],
+            "producers": 1
+          },
+          {
+            "owner": "ranges",
+            "helper": "native_match_ranges_5",
+            "kind": "local",
+            "captures": [
+              19,
+              22,
+              25,
+              28
+            ],
+            "producers": 1
+          },
+          {
+            "owner": "ranges",
+            "helper": "native_match_ranges_6",
+            "kind": "local",
+            "captures": [
+              16,
+              19,
+              22,
+              25
+            ],
+            "producers": 1
+          },
+          {
+            "owner": "ranges",
+            "helper": "native_match_ranges_7",
+            "kind": "local",
+            "captures": [
+              13,
+              16,
+              19,
+              22
+            ],
+            "producers": 1
+          },
+          {
+            "owner": "ranges",
+            "helper": "native_match_ranges_8",
+            "kind": "local",
+            "captures": [
+              13,
+              16,
+              19
+            ],
+            "producers": 1
+          },
+          {
+            "owner": "ranges",
+            "helper": "native_match_ranges_9",
+            "kind": "local",
+            "captures": [
+              13,
+              16
+            ],
+            "producers": 1
+          },
+          {
+            "owner": "ranges",
+            "helper": "native_match_ranges_10",
+            "kind": "local",
+            "captures": [
+              13
+            ],
+            "producers": 1
+          },
+          {
+            "owner": "ranges",
+            "helper": "native_match_ranges_11",
+            "kind": "local",
+            "captures": [
+              7
+            ],
+            "producers": 1
+          },
+          {
+            "owner": "ranges",
+            "helper": "native_match_ranges_12",
+            "kind": "local",
+            "captures": [
+              4,
+              7
+            ],
+            "producers": 1
+          },
+          {
+            "owner": "ranges",
+            "helper": "native_match_ranges_13",
+            "kind": "local",
+            "captures": [
+              4
+            ],
+            "producers": 1
+          },
+          {
+            "owner": "ranges",
+            "helper": "native_match_ranges_14",
+            "kind": "local",
+            "captures": [],
+            "producers": 1
+          }
+        ]
+      },
+      {
+        "path": "tests/reg/checker_arena_names.bend",
+        "beforeSha256": "23dbe07800e6e0f282acf8eaef7031c5481151ecd0dbe45ec1e460ce8a639eb0",
+        "afterSha256": "6643d819f51f175069e992db7ad897bb7c6f6e79ea74731b5a2742d2f769f307",
+        "extractions": [
+          {
+            "owner": "prefix",
+            "helper": "native_match_prefix_0",
+            "kind": "local",
+            "captures": [
+              31,
+              34,
+              37,
+              40,
+              43,
+              46,
+              49,
+              52,
+              55,
+              58
+            ],
+            "producers": 1
+          },
+          {
+            "owner": "prefix",
+            "helper": "native_match_prefix_1",
+            "kind": "local",
+            "captures": [
+              19,
+              31,
+              34,
+              37,
+              40,
+              43,
+              46,
+              49,
+              52,
+              55
+            ],
+            "producers": 1
+          },
+          {
+            "owner": "prefix",
+            "helper": "native_match_prefix_2",
+            "kind": "local",
+            "captures": [
+              19,
+              31,
+              34,
+              37,
+              40,
+              43,
+              46,
+              49,
+              52
+            ],
+            "producers": 1
+          },
+          {
+            "owner": "prefix",
+            "helper": "native_match_prefix_3",
+            "kind": "local",
+            "captures": [
+              19,
+              31,
+              34,
+              37,
+              40,
+              43,
+              46,
+              49
+            ],
+            "producers": 1
+          },
+          {
+            "owner": "prefix",
+            "helper": "native_match_prefix_4",
+            "kind": "local",
+            "captures": [
+              19,
+              31,
+              34,
+              37,
+              40,
+              43,
+              46
+            ],
+            "producers": 1
+          },
+          {
+            "owner": "prefix",
+            "helper": "native_match_prefix_5",
+            "kind": "local",
+            "captures": [
+              19,
+              31,
+              34,
+              37,
+              40,
+              43
+            ],
+            "producers": 1
+          },
+          {
+            "owner": "prefix",
+            "helper": "native_match_prefix_6",
+            "kind": "local",
+            "captures": [
+              19,
+              31,
+              34,
+              37,
+              40
+            ],
+            "producers": 1
+          },
+          {
+            "owner": "prefix",
+            "helper": "native_match_prefix_7",
+            "kind": "local",
+            "captures": [
+              19,
+              31,
+              34,
+              37
+            ],
+            "producers": 1
+          },
+          {
+            "owner": "prefix",
+            "helper": "native_match_prefix_8",
+            "kind": "local",
+            "captures": [
+              7,
+              19,
+              31,
+              34
+            ],
+            "producers": 1
+          },
+          {
+            "owner": "prefix",
+            "helper": "native_match_prefix_9",
+            "kind": "local",
+            "captures": [
+              7,
+              13,
+              19,
+              31
+            ],
+            "producers": 1
+          },
+          {
+            "owner": "prefix",
+            "helper": "native_match_prefix_10",
+            "kind": "local",
+            "captures": [
+              7,
+              13,
+              19,
+              25
+            ],
+            "producers": 1
+          },
+          {
+            "owner": "prefix",
+            "helper": "native_match_prefix_11",
+            "kind": "local",
+            "captures": [
+              7,
+              13,
+              19,
+              25
+            ],
+            "producers": 1
+          },
+          {
+            "owner": "prefix",
+            "helper": "native_match_prefix_12",
+            "kind": "local",
+            "captures": [
+              7,
+              13,
+              19
+            ],
+            "producers": 1
+          },
+          {
+            "owner": "prefix",
+            "helper": "native_match_prefix_13",
+            "kind": "local",
+            "captures": [
+              7,
+              13,
+              19
+            ],
+            "producers": 1
+          },
+          {
+            "owner": "prefix",
+            "helper": "native_match_prefix_14",
+            "kind": "local",
+            "captures": [
+              7,
+              13
+            ],
+            "producers": 1
+          },
+          {
+            "owner": "prefix",
+            "helper": "native_match_prefix_15",
+            "kind": "local",
+            "captures": [
+              7,
+              13
+            ],
+            "producers": 1
+          },
+          {
+            "owner": "prefix",
+            "helper": "native_match_prefix_16",
+            "kind": "local",
+            "captures": [
+              7
+            ],
+            "producers": 1
+          },
+          {
+            "owner": "prefix",
+            "helper": "native_match_prefix_17",
+            "kind": "local",
+            "captures": [
+              7
+            ],
+            "producers": 1
+          },
+          {
+            "owner": "prefix",
+            "helper": "native_match_prefix_18",
+            "kind": "local",
+            "captures": [],
+            "producers": 1
+          },
+          {
+            "owner": "prefix",
+            "helper": "native_match_prefix_19",
+            "kind": "local",
+            "captures": [],
+            "producers": 1
+          }
+        ]
+      }
+    ],
+    "guardOutputArtifact": "artifact://31450",
+    "observedElapsedMs": 238,
+    "observedPeakFootprintBytes": 124322512,
+    "scope": "Authentic native-match AST source factoring only; preserved three new assertion sets and expected #| output. No image production or sourceChecker substitution."
+  },
+  "preflight": {
+    "cells": [
+      {
+        "id": "r3-source-0",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository/bend2/main.ts",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository/tests/reg/checker_handle_layout.bend"
+        ],
+        "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository",
+        "expectedStdout": "255\n"
+      },
+      {
+        "id": "r3-source-1",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository/bend2/main.ts",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository/tests/reg/checker_arena_closed.bend"
+        ],
+        "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository",
+        "expectedStdout": "1001\nsource-witness:1\n"
+      },
+      {
+        "id": "r3-source-2",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository/bend2/main.ts",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository/tests/reg/checker_arena_bound.bend"
+        ],
+        "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository",
+        "expectedStdout": "10101\nsource-ranges:1\n"
+      },
+      {
+        "id": "r3-source-3",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository/bend2/main.ts",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository/tests/reg/checker_arena_names.bend"
+        ],
+        "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository",
+        "expectedStdout": "0\nsource-prefix:1\n"
+      },
+      {
+        "id": "r3-source-4",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository/bend2/main.ts",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository/tests/reg/checker_arena_memo.bend"
+        ],
+        "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository",
+        "expectedStdout": "255\n"
+      },
+      {
+        "id": "r3-source-5",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository/bend2/main.ts",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository/tests/reg/checker_arena_generation.bend"
+        ],
+        "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository",
+        "expectedStdout": "7\n"
+      },
+      {
+        "id": "r3-source-6",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository/bend2/main.ts",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository/tests/reg/checker_arena_quantities.bend"
+        ],
+        "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository",
+        "expectedStdout": "2102210\n"
+      },
+      {
+        "id": "r3-source-7",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository/bend2/main.ts",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository/evals/checker_arena_growth_smoke.bend"
+        ],
+        "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository",
+        "expectedStdout": "mixed-growth-rewind:1\nreserved:1\n"
+      },
+      {
+        "id": "r3-source-8",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository/bend2/main.ts",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository/evals/checker_word_range_smoke.bend"
+        ],
+        "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository",
+        "expectedStdout": "source-overlap:1\ntransient-reverse-overlap:1\nsource-to-transient:1\ntransient-to-source:1\nreverse-source:1\nreverse-destination:1\nnonzero-offset:1\nempty-invalid-handles:1\n"
+      },
+      {
+        "id": "r3-js-emit-0",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository/bend2/main.ts",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository/tests/reg/checker_handle_layout.bend",
+          "-o",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-preflight-0.js"
+        ],
+        "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository"
+      },
+      {
+        "id": "r3-js-run-0",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-preflight-0.js"
+        ],
+        "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository",
+        "expectedStdout": "255\n"
+      },
+      {
+        "id": "r3-js-emit-1",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository/bend2/main.ts",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository/tests/reg/checker_arena_closed.bend",
+          "-o",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-preflight-1.js"
+        ],
+        "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository"
+      },
+      {
+        "id": "r3-js-run-1",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-preflight-1.js"
+        ],
+        "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository",
+        "expectedStdout": "1001\nsource-witness:1\n"
+      },
+      {
+        "id": "r3-js-emit-2",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository/bend2/main.ts",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository/tests/reg/checker_arena_bound.bend",
+          "-o",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-preflight-2.js"
+        ],
+        "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository"
+      },
+      {
+        "id": "r3-js-run-2",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-preflight-2.js"
+        ],
+        "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository",
+        "expectedStdout": "10101\nsource-ranges:1\n"
+      },
+      {
+        "id": "r3-js-emit-3",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository/bend2/main.ts",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository/tests/reg/checker_arena_names.bend",
+          "-o",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-preflight-3.js"
+        ],
+        "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository"
+      },
+      {
+        "id": "r3-js-run-3",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-preflight-3.js"
+        ],
+        "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository",
+        "expectedStdout": "0\nsource-prefix:1\n"
+      },
+      {
+        "id": "r3-js-emit-8",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository/bend2/main.ts",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository/evals/checker_word_range_smoke.bend",
+          "-o",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-preflight-8.js"
+        ],
+        "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository"
+      },
+      {
+        "id": "r3-js-run-8",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-preflight-8.js"
+        ],
+        "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository",
+        "expectedStdout": "source-overlap:1\ntransient-reverse-overlap:1\nsource-to-transient:1\ntransient-to-source:1\nreverse-source:1\nreverse-destination:1\nnonzero-offset:1\nempty-invalid-handles:1\n"
+      },
+      {
+        "id": "r3-c-emit-0",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository/bend2/main.ts",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository/tests/reg/checker_handle_layout.bend",
+          "-o",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-preflight-0.c"
+        ],
+        "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository"
+      },
+      {
+        "id": "r3-c-compile-0",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000",
+          "--",
+          "/usr/bin/clang",
+          "-std=c11",
+          "-O3",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-preflight-0.c",
+          "-lpthread",
+          "-lm",
+          "-o",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-preflight-0"
+        ],
+        "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository"
+      },
+      {
+        "id": "r3-c-run-0",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000",
+          "--",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-preflight-0"
+        ],
+        "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository",
+        "expectedStdout": "255\n"
+      },
+      {
+        "id": "r3-c-emit-1",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository/bend2/main.ts",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository/tests/reg/checker_arena_closed.bend",
+          "-o",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-preflight-1.c"
+        ],
+        "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository"
+      },
+      {
+        "id": "r3-c-compile-1",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000",
+          "--",
+          "/usr/bin/clang",
+          "-std=c11",
+          "-O3",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-preflight-1.c",
+          "-lpthread",
+          "-lm",
+          "-o",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-preflight-1"
+        ],
+        "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository"
+      },
+      {
+        "id": "r3-c-run-1",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000",
+          "--",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-preflight-1"
+        ],
+        "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository",
+        "expectedStdout": "1001\nsource-witness:1\n"
+      },
+      {
+        "id": "r3-c-emit-8",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository/bend2/main.ts",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository/evals/checker_word_range_smoke.bend",
+          "-o",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-preflight-8.c"
+        ],
+        "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository"
+      },
+      {
+        "id": "r3-c-compile-8",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000",
+          "--",
+          "/usr/bin/clang",
+          "-std=c11",
+          "-O3",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-preflight-8.c",
+          "-lpthread",
+          "-lm",
+          "-o",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-preflight-8"
+        ],
+        "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository"
+      },
+      {
+        "id": "r3-c-run-8",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000",
+          "--",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-preflight-8"
+        ],
+        "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository",
+        "expectedStdout": "source-overlap:1\ntransient-reverse-overlap:1\nsource-to-transient:1\ntransient-to-source:1\nreverse-source:1\nreverse-destination:1\nnonzero-offset:1\nempty-invalid-handles:1\n"
+      }
+    ],
+    "plan": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-preflight-plan.json",
+      "sha256": "1985c8f78d2dc3c0d7d3e4125d0cfa9580c2896817a8ff206130a87baed9b57e"
+    },
+    "fixtures": [
+      {
+        "path": "tests/reg/checker_handle_layout.bend",
+        "expectedStdout": "255\n"
+      },
+      {
+        "path": "tests/reg/checker_arena_closed.bend",
+        "expectedStdout": "1001\nsource-witness:1\n"
+      },
+      {
+        "path": "tests/reg/checker_arena_bound.bend",
+        "expectedStdout": "10101\nsource-ranges:1\n"
+      },
+      {
+        "path": "tests/reg/checker_arena_names.bend",
+        "expectedStdout": "0\nsource-prefix:1\n"
+      },
+      {
+        "path": "tests/reg/checker_arena_memo.bend",
+        "expectedStdout": "255\n"
+      },
+      {
+        "path": "tests/reg/checker_arena_generation.bend",
+        "expectedStdout": "7\n"
+      },
+      {
+        "path": "tests/reg/checker_arena_quantities.bend",
+        "expectedStdout": "2102210\n"
+      },
+      {
+        "path": "evals/checker_arena_growth_smoke.bend",
+        "expectedStdout": "mixed-growth-rewind:1\nreserved:1\n"
+      },
+      {
+        "path": "evals/checker_word_range_smoke.bend",
+        "expectedStdout": "source-overlap:1\ntransient-reverse-overlap:1\nsource-to-transient:1\ntransient-to-source:1\nreverse-source:1\nreverse-destination:1\nnonzero-offset:1\nempty-invalid-handles:1\n"
+      }
+    ],
+    "controllerSource": "import {readFileSync,writeFileSync,existsSync} from 'node:fs';\nconst plan=JSON.parse(readFileSync(process.argv[2],'utf8'));\nconst result={schemaVersion:1,status:'RUNNING',cells:[]};\nfor(const cell of plan.cells){\n if(cell.report&&existsSync(cell.report))throw Error('Existing report '+cell.report);\n console.log('START '+cell.id+' '+new Date().toISOString());\n const started=performance.now();\n const child=Bun.spawn(cell.command,{cwd:cell.cwd,stdout:'pipe',stderr:'pipe'});\n const [exitCode,stdout,stderr]=await Promise.all([child.exited,new Response(child.stdout).text(),new Response(child.stderr).text()]);\n const guardLine=stderr.split('\\n').find(x=>x.startsWith('HEAVY_GATE '));\n const guardian=guardLine?JSON.parse(guardLine.slice(11)):null;\n const passed=exitCode===0&&(!guardian||guardian.status==='PASS')&&(cell.expectedStdout===undefined||stdout===cell.expectedStdout);\n result.cells.push({...cell,exitCode,elapsedMs:performance.now()-started,stdout,stderr,guardian,passed});\n writeFileSync(plan.output,JSON.stringify(result,null,2)+'\\n');\n console.log('FINISH '+cell.id+' '+(passed?'PASS':'FAIL')+' '+new Date().toISOString());\n if(!passed){result.status='FAILED_CELL_RETAINED';writeFileSync(plan.output,JSON.stringify(result,null,2)+'\\n');process.exit(exitCode||1);}\n}\nresult.status='ALL_CELLS_FINISHED';writeFileSync(plan.output,JSON.stringify(result,null,2)+'\\n');console.log(JSON.stringify({status:result.status,cells:result.cells.length,output:plan.output}));\n"
+  },
+  "production": {
+    "request": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-source-generation-request.json",
+      "sha256": "1d91416f3fa2c21e31e5a4dca76f6d5e9a6d196cdbe100ed3b39cf87bdc11b29"
+    },
+    "command": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+      "js",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-source-generation-request.json",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-source-generation.json"
+    ],
+    "actualProducerImage": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs",
+      "sha256": "4636c05aa8c75e72212cb03949937e25561942bc00da250f876f37f001b9fc18"
+    },
+    "noDirectNativeProductionClaim": true
+  },
+  "checks": "NOT_RUN_YET",
+  "mainAlgorithmCutover": false
+}

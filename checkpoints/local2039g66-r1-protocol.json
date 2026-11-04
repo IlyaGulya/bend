@@ -1,0 +1,116 @@
+{
+  "schemaVersion": 1,
+  "version": "G66R1",
+  "status": "PROSPECTIVE_INTERNAL_HANDLE_LAYOUT_EXPERIMENT_NOT_ACCEPTED",
+  "baselineCheckpoint": "3a99cd73",
+  "diagnosisCheckpoint": "c9eea9bc",
+  "sourceBranch": "selfhost/g66-scalar-id-t_3rtcm8",
+  "sourceWorktree": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository",
+  "layout": {
+    "node": "(rawOffset<<1)|owner; rawOffset<2^31, owner bit0; logical U32 operations unchanged",
+    "tape": "(rawOffset<<2)|(reverse<<1)|owner; rawOffset<2^30, reverse bit1, owner bit0",
+    "decodeNode": "logical >>1",
+    "decodeTape": "logical >>2",
+    "rangeIndex": "encodedStart +/- (logicalOffset<<2)",
+    "nodeHandleHelper": "IR.arena_node_handle(rawOffset): source-owned encoded node; U32.shl(rawOffset)",
+    "tapeHandleHelper": "IR.arena_tape_handle(rawOffset): source-owned forward encoded tape; U32.shln(rawOffset,2)",
+    "fullCapacityPreserved": true,
+    "rawArenaPoolApiPreserved": true,
+    "rawNameIdsPreserved": true,
+    "genericU32RepresentationChanged": false,
+    "foreignAbiChanged": false
+  },
+  "migration": "Checker wrappers/direct source packers must encode raw returned pool offsets; source/transient tape builders scale cursor arithmetic; Arena metadata child-handle queries decode but all raw pool get/put/count APIs remain raw. Explicit owner rejection replaces high-bit ordering accidents. Case-prefix name ids remain raw. All readback/frontend/lowering decode node handles at raw Arena boundary. Source-witness sentinel stays an OFFSET upper bound2^31 and compares decoded offsets. Counts, limits, epochs and capacity remain logical/raw.",
+  "runtime": {
+    "bun": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "node": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+    "release": "2.0.39",
+    "releaseCommit": "a3efe8a3801f423827424227172eed9802c5e6cb",
+    "os": "darwin25.6.0 arm64",
+    "helperFiles": {
+      "selfhost_throughput.mjs": {
+        "path": "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+        "sha256": "1a806befee02216a9499f6b4dcde7e2326e01f0a5b96bbd36b75295344c50317"
+      },
+      "checker_core_step_runtime.mjs": {
+        "path": "/Users/ilyagulya/Projects/My/bend/evals/checker_core_step_runtime.mjs",
+        "sha256": "00cd400ac0452a3681bf6491db08be51f9ae3a33ff2baf88654a9763eb5073ed"
+      },
+      "selfhost_cpu_profile.mjs": {
+        "path": "/Users/ilyagulya/Projects/My/bend/evals/selfhost_cpu_profile.mjs",
+        "sha256": "5d5fc8d329a3b600522c58eeac59c49c515109bc7f48845d8177cb520129a1c0"
+      },
+      "native_seed_runtime.mjs": {
+        "path": "/Users/ilyagulya/Projects/My/bend/evals/native_seed_runtime.mjs",
+        "sha256": "7f81a9b9013853355910b93bf59586b2acbcda4de7bcaa08d7942ebf45c0147a"
+      },
+      "heavy_gate.ts": {
+        "path": "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+        "sha256": "e72f2b81970be76734df918e35b1a4289d0fb194039e5ca20e9785e5ac0ee015"
+      },
+      "heavy_gate_native.c": {
+        "path": "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate_native.c",
+        "sha256": "1ff233edacdbf13c6ffd4a8bf38cbf153629e8c76be4860deec8a5b591d3fa8b"
+      }
+    }
+  },
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "nativeProductionTimeoutMs": 300000,
+    "sourcePreflightTimeoutMs": 120000,
+    "throughputTimeoutMs": 600000,
+    "workerStackMiB": 256,
+    "oldGenerationMiB": 6144,
+    "youngGenerationMiB": 128,
+    "parserFuelPerModule": 8000000,
+    "oneHeavyLane": true,
+    "chunkQuantum": 64,
+    "abi": 13
+  },
+  "noMidFlightBuilds": true,
+  "verificationOrder": [
+    "Completed source version and53-file input manifest checkpoint before runtime checks",
+    "Cheap canonical source +actual JS+C semantic fixtures: existing arena metadata/growth/word-range boundaries and new full-capacity representation invariant",
+    "Generate complete real compiler image from its whole frozen candidate source using unchanged actual A own byte-fixed image; no generated-image patch or AST replay",
+    "Candidate own parser/checker/emitter consumers69, five stack/capture roots, native Map fixtures and changed raw/IR consumer boundaries; actual own-emitted JS andC binaries",
+    "Only after all semantics pass: nine fresh unprofiled selected17module2954declaration cells inABC,CAB,BCA order; AunchangedMain,BG63,CnewCandidate. One heavy lane; no retries/exclusions/old timing reuse.",
+    "If selected filter passes: conditional six fresh full-source A/B/C cells and candidate-own exact byte fixedpoint. Do not claim acceptance until actual full confirmation.",
+    "If selected filter fails: explicitly reject; conditional full timing and candidateownfixedpoint NOT_RUN_NOT_EARNED. A separate same-prefix numeric snapshot may confirm or refute the intended mechanism, not qualify performance."
+  ],
+  "selectedCorpus": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/main-complete.corpus.json",
+    "sha256": "1a269e15bf70257b019ab572c003b6eb130b4e3f63ad507783525e28d307b0e4"
+  },
+  "fullCorpus": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/full-frozen.corpus.json",
+    "sha256": "60bf820e76a9c336e58c848eec6a40b3f8fbb4b7ac2ae45ffd1abdb1d217ebc6"
+  },
+  "selectedFrozenWork": {
+    "moduleCount": 17,
+    "sourceDeclarations": 2954,
+    "stepCounts": {
+      "expand": 263032,
+      "check": 1975761
+    }
+  },
+  "costFilter": {
+    "cpuGeometricCOverAAtMost": 0.97,
+    "cpuGeometricCOverBAtMost": 1.02,
+    "everyCpuPairCOverALessThan": 1,
+    "wallGeometricCOverAAtMost": 1,
+    "medianPeakFootprintCOverAAtMost": 1,
+    "geometricPeakFootprintCOverBAtMost": 0.95,
+    "inference": "Report paired Student95 intervals and existing2percent practical band; CPU point alone is not qualified proof."
+  },
+  "risks": [
+    "Low-bit INTERNAL handle re-encoding is a full-domain bijection, not the forbidden global tagging of arbitrary U32.",
+    "Arena raw offsets and IR encoded handles now differ; every crossing must migrate, including metadata children in fixtures.",
+    "Owner-major ordering no longer holds; source-only witness/range gates must reject transient explicitly before decoded bounds comparisons.",
+    "Value representability can reduce sticky Double-field feedback but does not prove clean RAM or CPU benefit; broad Smi configurations may differ.",
+    "Snapshot fields include NaN in some cells. No semantic bug is claimed from snapshot values alone."
+  ],
+  "acceptedG24R12": "UNCHANGED_UNTIL_QUALIFIED_CUTOVER",
+  "priorG65RejectedCodeCarried": false
+}

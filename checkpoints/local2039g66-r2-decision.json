@@ -1,0 +1,116 @@
+{
+  "schemaVersion": 1,
+  "version": "G66R2",
+  "status": "REJECTED_NEW_FIXTURE_COMPUTED_MATCH_SYNTAX",
+  "sourceCheckpoint": "c8abb25b",
+  "protocolCheckpoint": "b4ce37c5",
+  "preflight": {
+    "schemaVersion": 1,
+    "status": "FAILED_CELL_RETAINED",
+    "cells": [
+      {
+        "id": "r2-source-0",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository/bend2/main.ts",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository/tests/reg/checker_handle_layout.bend"
+        ],
+        "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository",
+        "expectedStdout": "255\n",
+        "exitCode": 0,
+        "elapsedMs": 236.727459,
+        "stdout": "255\n",
+        "stderr": "HEAVY_GATE {\"status\":\"PASS\",\"reason\":\"command_exit\",\"commandExitCode\":0,\"commandSignal\":0,\"peakRssBytes\":100401152,\"peakFootprintBytes\":78381728,\"elapsedMs\":175,\"timeoutMs\":120000,\"reportPhase\":\"complete\",\"ownedTreeStopped\":true,\"supervisorExitCode\":0,\"command\":[\"/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun\",\"--smol\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository/bend2/main.ts\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository/tests/reg/checker_handle_layout.bend\"],\"label\":\"heavy command\",\"exitCode\":0,\"reportPath\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793816776119-491e45722347e963.json\",\"memoryLimitBytes\":8589934592,\"rssLimitBytes\":8589934592}\n",
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "commandExitCode": 0,
+          "commandSignal": 0,
+          "peakRssBytes": 100401152,
+          "peakFootprintBytes": 78381728,
+          "elapsedMs": 175,
+          "timeoutMs": 120000,
+          "reportPhase": "complete",
+          "ownedTreeStopped": true,
+          "supervisorExitCode": 0,
+          "command": [
+            "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+            "--smol",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository/bend2/main.ts",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository/tests/reg/checker_handle_layout.bend"
+          ],
+          "label": "heavy command",
+          "exitCode": 0,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793816776119-491e45722347e963.json",
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592
+        },
+        "passed": true
+      },
+      {
+        "id": "r2-source-1",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository/bend2/main.ts",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository/tests/reg/checker_arena_closed.bend"
+        ],
+        "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository",
+        "expectedStdout": "1001\nsource-witness:1\n",
+        "exitCode": 1,
+        "elapsedMs": 159.20104199999997,
+        "stdout": "",
+        "stderr": "SOME PROOFS FAIL\nError:\n- message  : a parameter or field scrutinee (a match cannot scrutinize a computed value: give it its own def)\nLocation:\n50 | def source_witness() -> Bool:\n51>|   Tuple{arena, +first} = Arena.put_node(Arena.empty(), Arena.TermVar{0, 0n, Arena.empty_span()})\n   |                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n52 |   Tuple{arena, +second} = Arena.put_node(arena, Arena.TermVar{0, 0n, Arena.empty_span()})\nHEAVY_GATE {\"status\":\"FAIL\",\"reason\":\"command_exit\",\"commandExitCode\":1,\"commandSignal\":0,\"peakRssBytes\":75153408,\"peakFootprintBytes\":57197240,\"elapsedMs\":106,\"timeoutMs\":120000,\"reportPhase\":\"complete\",\"ownedTreeStopped\":true,\"supervisorExitCode\":1,\"command\":[\"/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun\",\"--smol\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository/bend2/main.ts\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository/tests/reg/checker_arena_closed.bend\"],\"label\":\"heavy command\",\"exitCode\":1,\"reportPath\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793816776350-5ecb106cca384467.json\",\"memoryLimitBytes\":8589934592,\"rssLimitBytes\":8589934592}\n",
+        "guardian": {
+          "status": "FAIL",
+          "reason": "command_exit",
+          "commandExitCode": 1,
+          "commandSignal": 0,
+          "peakRssBytes": 75153408,
+          "peakFootprintBytes": 57197240,
+          "elapsedMs": 106,
+          "timeoutMs": 120000,
+          "reportPhase": "complete",
+          "ownedTreeStopped": true,
+          "supervisorExitCode": 1,
+          "command": [
+            "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+            "--smol",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository/bend2/main.ts",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository/tests/reg/checker_arena_closed.bend"
+          ],
+          "label": "heavy command",
+          "exitCode": 1,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793816776350-5ecb106cca384467.json",
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592
+        },
+        "passed": false
+      }
+    ]
+  },
+  "fullRangeInvariant": "PASS_SOURCE_255",
+  "reason": "First new source-witness regression uses computed Tuple constructor destructuring in source_witness; current Bend requires parameter/field scrutinee and its own helper def. No compiler production or timing attempted.",
+  "nextCorrection": "Normalize the three newly authored arena regressions through existing authentic normalizeNativeMatchSource AST producer, preserving assertions and #| outputs. Do not alter compiler algorithms or53-file corpus; do not weaken the witness/range/name cases.",
+  "compilerProduction": "NOT_RUN_NOT_EARNED",
+  "unprofiledTiming": "NOT_RUN_NOT_EARNED",
+  "ownFixedpoint": "NOT_RUN_NOT_EARNED",
+  "mainAlgorithmCutover": false
+}

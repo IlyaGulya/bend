@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "version": "G66R1",
+  "status": "REJECTED_CANONICAL_SOURCE_PREFLIGHT_WRONG_SHIFT_COUNT_KIND",
+  "sourceCheckpoint": "912f8866",
+  "protocolCheckpoint": "1b19e90b",
+  "execution": {
+    "schemaVersion": 1,
+    "status": "FAILED_CELL_RETAINED",
+    "cells": [
+      {
+        "id": "r1-source-0",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository/bend2/main.ts",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository/tests/reg/checker_handle_layout.bend"
+        ],
+        "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository",
+        "expectedStdout": "255\n",
+        "exitCode": 1,
+        "elapsedMs": 241.126833,
+        "stdout": "",
+        "stderr": "SOME PROOFS FAIL\nError:\n- expected : Nat\n- observed : U32\nContext:\n- offset : U32\nLocation: arena_tape_handle\n93 | def arena_tape_handle(offset: U32) -> U32:\n94>|   U32.shln(offset, 2)\n   |                    ^\n95 | \nHEAVY_GATE {\"status\":\"FAIL\",\"reason\":\"command_exit\",\"commandExitCode\":1,\"commandSignal\":0,\"peakRssBytes\":95158272,\"peakFootprintBytes\":71795408,\"elapsedMs\":167,\"timeoutMs\":120000,\"reportPhase\":\"complete\",\"ownedTreeStopped\":true,\"supervisorExitCode\":1,\"command\":[\"/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun\",\"--smol\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository/bend2/main.ts\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository/tests/reg/checker_handle_layout.bend\"],\"label\":\"heavy command\",\"exitCode\":1,\"reportPath\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793816195780-5c2d792157f2756b.json\",\"memoryLimitBytes\":8589934592,\"rssLimitBytes\":8589934592}\n",
+        "guardian": {
+          "status": "FAIL",
+          "reason": "command_exit",
+          "commandExitCode": 1,
+          "commandSignal": 0,
+          "peakRssBytes": 95158272,
+          "peakFootprintBytes": 71795408,
+          "elapsedMs": 167,
+          "timeoutMs": 120000,
+          "reportPhase": "complete",
+          "ownedTreeStopped": true,
+          "supervisorExitCode": 1,
+          "command": [
+            "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+            "--smol",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository/bend2/main.ts",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository/tests/reg/checker_handle_layout.bend"
+          ],
+          "label": "heavy command",
+          "exitCode": 1,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793816195780-5c2d792157f2756b.json",
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592
+        },
+        "passed": false
+      }
+    ]
+  },
+  "executionFile": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r1-preflight-execution.json",
+    "sha256": "bd573bfbb90b076e3d657641c44fe0f5567eeb52fe66fce8f48c60531cb4b688"
+  },
+  "compilerProduction": "NOT_RUN_NOT_EARNED",
+  "unprofiledTiming": "NOT_RUN_NOT_EARNED",
+  "candidateOwnFixedpoint": "NOT_RUN_NOT_EARNED",
+  "reason": "First real source fixture fails before execution:IR.arena_tape_handle passes U32 literal2 to U32.shln, whose count isNat. Fix requires2n; correspondingshrn/range shifts also requireNat. No failed check rerun.",
+  "additionalSourceClosureFinding": "Actual compiler root imports frozen checker_core_steps_v1.bend andemitter_steps_v1.bend, not canonicalchecker.bend/backend_lower.bend/lower_catalog.bend directly. R2 must genuinely regenerate both stepped source inputs from changed canonical sources before producing image; R1 had not yet attempted image production or claimed benefit.",
+  "acceptedG24R12": "UNCHANGED",
+  "mainAlgorithmCutover": false
+}

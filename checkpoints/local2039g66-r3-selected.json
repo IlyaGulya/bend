@@ -1,0 +1,937 @@
+{
+  "schemaVersion": 1,
+  "version": "G66R3",
+  "status": "NINE_FRESH_COMPLETE_CHECKS_COST_FILTER_FAIL",
+  "semanticsCheckpoint": "040fa4de",
+  "executionPlan": "checkpoints/local2039g66-r3-execution.json",
+  "image": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-source-generation.json.output.mjs",
+    "sha256": "e48b1926c1c2abe03b9492892d4ac1785e302b94cee541189fce3214d8e86d92"
+  },
+  "selectedCorpus": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/main-complete.corpus.json",
+    "sha256": "1a269e15bf70257b019ab572c003b6eb130b4e3f63ad507783525e28d307b0e4"
+  },
+  "executionFile": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-selected-execution.json",
+    "sha256": "80f279161ecfad55ad24e7396645f8242bd7a21b950e053048d76487e28f4f28"
+  },
+  "rows": [
+    {
+      "id": "r3-selected-1-A",
+      "role": "A",
+      "triad": 1,
+      "order": "ABC",
+      "checkerCpuMs": 71810.765,
+      "checkerUserCpuMs": 70594.999,
+      "checkerSystemCpuMs": 1215.766,
+      "checkerWallMs": 60502.8155,
+      "footprintBytes": 1104485592,
+      "rssBytes": 1059241984,
+      "moduleCount": 17,
+      "sourceDeclarations": 2954,
+      "stepCounts": {
+        "expand": 263032,
+        "check": 1975761
+      },
+      "strictBaselineCounterMatch": true,
+      "report": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-selected-1-A.json",
+        "sha256": "0d2151957dccc24c8545e90fc3fa5c4aa4f388ee4482d95b3d354c1cdf0fccf0"
+      },
+      "request": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-selected-A-request.json",
+        "sha256": "eb92f4e7adc33cc2ff1813bfa566df573e54ce24983a3147a24073303d24c8ef"
+      },
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+        "js",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-selected-A-request.json",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-selected-1-A.json"
+      ],
+      "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository"
+    },
+    {
+      "id": "r3-selected-1-B",
+      "role": "B",
+      "triad": 1,
+      "order": "ABC",
+      "checkerCpuMs": 69036.221,
+      "checkerUserCpuMs": 68190.349,
+      "checkerSystemCpuMs": 845.872,
+      "checkerWallMs": 57600.330458,
+      "footprintBytes": 1123213872,
+      "rssBytes": 1102479360,
+      "moduleCount": 17,
+      "sourceDeclarations": 2954,
+      "stepCounts": {
+        "expand": 263032,
+        "check": 1975761
+      },
+      "strictBaselineCounterMatch": true,
+      "report": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-selected-1-B.json",
+        "sha256": "ad1ff11a68ee1ae238155e3cda5b8fa30e080e1208e0afbf707e04af7c3c54ad"
+      },
+      "request": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-selected-B-request.json",
+        "sha256": "1d3dbb2c2a8d819a92f7f071524d8c57d6b8f9a44540e9576bde92725fabb555"
+      },
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+        "js",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-selected-B-request.json",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-selected-1-B.json"
+      ],
+      "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository"
+    },
+    {
+      "id": "r3-selected-1-C",
+      "role": "C",
+      "triad": 1,
+      "order": "ABC",
+      "checkerCpuMs": 71865.348,
+      "checkerUserCpuMs": 70776.772,
+      "checkerSystemCpuMs": 1088.576,
+      "checkerWallMs": 59217.8645,
+      "footprintBytes": 1112691864,
+      "rssBytes": 1083654144,
+      "moduleCount": 17,
+      "sourceDeclarations": 2954,
+      "stepCounts": {
+        "expand": 263032,
+        "check": 1975982
+      },
+      "strictBaselineCounterMatch": false,
+      "report": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-selected-1-C.json",
+        "sha256": "f0cf25622940147e3a522a8765ed0204c6a21dbd77c76280133a3a145b5c1900"
+      },
+      "request": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-selected-C-request.json",
+        "sha256": "4a60ad92740854274fcbaf5ca4b38d64c90756da3004b8ab1311dc8f462829aa"
+      },
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+        "js",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-selected-C-request.json",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-selected-1-C.json"
+      ],
+      "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository"
+    },
+    {
+      "id": "r3-selected-2-C",
+      "role": "C",
+      "triad": 2,
+      "order": "CAB",
+      "checkerCpuMs": 65215.024000000005,
+      "checkerUserCpuMs": 64479.457,
+      "checkerSystemCpuMs": 735.567,
+      "checkerWallMs": 53947.251958999994,
+      "footprintBytes": 1087277904,
+      "rssBytes": 1120894976,
+      "moduleCount": 17,
+      "sourceDeclarations": 2954,
+      "stepCounts": {
+        "expand": 263032,
+        "check": 1975982
+      },
+      "strictBaselineCounterMatch": false,
+      "report": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-selected-2-C.json",
+        "sha256": "212d54be577189ca1c69bd1c10798938b66dfb01c6c8e9cba81310a49b09de55"
+      },
+      "request": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-selected-C-request.json",
+        "sha256": "4a60ad92740854274fcbaf5ca4b38d64c90756da3004b8ab1311dc8f462829aa"
+      },
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+        "js",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-selected-C-request.json",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-selected-2-C.json"
+      ],
+      "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository"
+    },
+    {
+      "id": "r3-selected-2-A",
+      "role": "A",
+      "triad": 2,
+      "order": "CAB",
+      "checkerCpuMs": 65496.979999999996,
+      "checkerUserCpuMs": 64766.772,
+      "checkerSystemCpuMs": 730.208,
+      "checkerWallMs": 55782.671334000006,
+      "footprintBytes": 1387862928,
+      "rssBytes": 1177026560,
+      "moduleCount": 17,
+      "sourceDeclarations": 2954,
+      "stepCounts": {
+        "expand": 263032,
+        "check": 1975761
+      },
+      "strictBaselineCounterMatch": true,
+      "report": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-selected-2-A.json",
+        "sha256": "8eac81f371256a53b2eb092d8ed47e08fdaa2787bfa1639b0aef1258ebd1fbac"
+      },
+      "request": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-selected-A-request.json",
+        "sha256": "eb92f4e7adc33cc2ff1813bfa566df573e54ce24983a3147a24073303d24c8ef"
+      },
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+        "js",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-selected-A-request.json",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-selected-2-A.json"
+      ],
+      "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository"
+    },
+    {
+      "id": "r3-selected-2-B",
+      "role": "B",
+      "triad": 2,
+      "order": "CAB",
+      "checkerCpuMs": 62619.935000000005,
+      "checkerUserCpuMs": 62034.819,
+      "checkerSystemCpuMs": 585.116,
+      "checkerWallMs": 52483.293832999996,
+      "footprintBytes": 1590388360,
+      "rssBytes": 1409236992,
+      "moduleCount": 17,
+      "sourceDeclarations": 2954,
+      "stepCounts": {
+        "expand": 263032,
+        "check": 1975761
+      },
+      "strictBaselineCounterMatch": true,
+      "report": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-selected-2-B.json",
+        "sha256": "cde2b026e0869f2701889f336272a74761c41d31dbf8900d282f788732589a55"
+      },
+      "request": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-selected-B-request.json",
+        "sha256": "1d3dbb2c2a8d819a92f7f071524d8c57d6b8f9a44540e9576bde92725fabb555"
+      },
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+        "js",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-selected-B-request.json",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-selected-2-B.json"
+      ],
+      "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository"
+    },
+    {
+      "id": "r3-selected-3-B",
+      "role": "B",
+      "triad": 3,
+      "order": "BCA",
+      "checkerCpuMs": 72618.90100000001,
+      "checkerUserCpuMs": 71666.623,
+      "checkerSystemCpuMs": 952.278,
+      "checkerWallMs": 68991.64595899999,
+      "footprintBytes": 1104753296,
+      "rssBytes": 1080049664,
+      "moduleCount": 17,
+      "sourceDeclarations": 2954,
+      "stepCounts": {
+        "expand": 263032,
+        "check": 1975761
+      },
+      "strictBaselineCounterMatch": true,
+      "report": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-selected-3-B.json",
+        "sha256": "fb99825215987b33c00e4814a8d4bc47c8c4fd30ec5f5c4ecc173643f926946b"
+      },
+      "request": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-selected-B-request.json",
+        "sha256": "1d3dbb2c2a8d819a92f7f071524d8c57d6b8f9a44540e9576bde92725fabb555"
+      },
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+        "js",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-selected-B-request.json",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-selected-3-B.json"
+      ],
+      "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository"
+    },
+    {
+      "id": "r3-selected-3-C",
+      "role": "C",
+      "triad": 3,
+      "order": "BCA",
+      "checkerCpuMs": 62038.687,
+      "checkerUserCpuMs": 61473.78,
+      "checkerSystemCpuMs": 564.907,
+      "checkerWallMs": 52112.147874999995,
+      "footprintBytes": 1474742888,
+      "rssBytes": 1597177856,
+      "moduleCount": 17,
+      "sourceDeclarations": 2954,
+      "stepCounts": {
+        "expand": 263032,
+        "check": 1975982
+      },
+      "strictBaselineCounterMatch": false,
+      "report": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-selected-3-C.json",
+        "sha256": "0025277947d95778570487119886befe442dba95eb79a6db937277e025c413f9"
+      },
+      "request": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-selected-C-request.json",
+        "sha256": "4a60ad92740854274fcbaf5ca4b38d64c90756da3004b8ab1311dc8f462829aa"
+      },
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+        "js",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-selected-C-request.json",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-selected-3-C.json"
+      ],
+      "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository"
+    },
+    {
+      "id": "r3-selected-3-A",
+      "role": "A",
+      "triad": 3,
+      "order": "BCA",
+      "checkerCpuMs": 66885.616,
+      "checkerUserCpuMs": 66080.453,
+      "checkerSystemCpuMs": 805.163,
+      "checkerWallMs": 55775.358958,
+      "footprintBytes": 1135623488,
+      "rssBytes": 1209155584,
+      "moduleCount": 17,
+      "sourceDeclarations": 2954,
+      "stepCounts": {
+        "expand": 263032,
+        "check": 1975761
+      },
+      "strictBaselineCounterMatch": true,
+      "report": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-selected-3-A.json",
+        "sha256": "df8c77084596444334bbab80160d43a4370c36982bf8b3f7782febd8f1133f11"
+      },
+      "request": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-selected-A-request.json",
+        "sha256": "eb92f4e7adc33cc2ff1813bfa566df573e54ce24983a3147a24073303d24c8ef"
+      },
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+        "js",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-selected-A-request.json",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-selected-3-A.json"
+      ],
+      "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository"
+    }
+  ],
+  "statistics": {
+    "schemaVersion": 1,
+    "triads": [
+      {
+        "A": {
+          "id": "r3-selected-1-A",
+          "role": "A",
+          "triad": 1,
+          "order": "ABC",
+          "checkerCpuMs": 71810.765,
+          "checkerUserCpuMs": 70594.999,
+          "checkerSystemCpuMs": 1215.766,
+          "checkerWallMs": 60502.8155,
+          "footprintBytes": 1104485592,
+          "rssBytes": 1059241984,
+          "moduleCount": 17,
+          "sourceDeclarations": 2954,
+          "stepCounts": {
+            "expand": 263032,
+            "check": 1975761
+          },
+          "strictBaselineCounterMatch": true,
+          "report": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-selected-1-A.json",
+            "sha256": "0d2151957dccc24c8545e90fc3fa5c4aa4f388ee4482d95b3d354c1cdf0fccf0"
+          },
+          "request": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-selected-A-request.json",
+            "sha256": "eb92f4e7adc33cc2ff1813bfa566df573e54ce24983a3147a24073303d24c8ef"
+          },
+          "command": [
+            "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+            "--smol",
+            "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+            "js",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-selected-A-request.json",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-selected-1-A.json"
+          ],
+          "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository"
+        },
+        "B": {
+          "id": "r3-selected-1-B",
+          "role": "B",
+          "triad": 1,
+          "order": "ABC",
+          "checkerCpuMs": 69036.221,
+          "checkerUserCpuMs": 68190.349,
+          "checkerSystemCpuMs": 845.872,
+          "checkerWallMs": 57600.330458,
+          "footprintBytes": 1123213872,
+          "rssBytes": 1102479360,
+          "moduleCount": 17,
+          "sourceDeclarations": 2954,
+          "stepCounts": {
+            "expand": 263032,
+            "check": 1975761
+          },
+          "strictBaselineCounterMatch": true,
+          "report": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-selected-1-B.json",
+            "sha256": "ad1ff11a68ee1ae238155e3cda5b8fa30e080e1208e0afbf707e04af7c3c54ad"
+          },
+          "request": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-selected-B-request.json",
+            "sha256": "1d3dbb2c2a8d819a92f7f071524d8c57d6b8f9a44540e9576bde92725fabb555"
+          },
+          "command": [
+            "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+            "--smol",
+            "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+            "js",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-selected-B-request.json",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-selected-1-B.json"
+          ],
+          "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository"
+        },
+        "C": {
+          "id": "r3-selected-1-C",
+          "role": "C",
+          "triad": 1,
+          "order": "ABC",
+          "checkerCpuMs": 71865.348,
+          "checkerUserCpuMs": 70776.772,
+          "checkerSystemCpuMs": 1088.576,
+          "checkerWallMs": 59217.8645,
+          "footprintBytes": 1112691864,
+          "rssBytes": 1083654144,
+          "moduleCount": 17,
+          "sourceDeclarations": 2954,
+          "stepCounts": {
+            "expand": 263032,
+            "check": 1975982
+          },
+          "strictBaselineCounterMatch": false,
+          "report": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-selected-1-C.json",
+            "sha256": "f0cf25622940147e3a522a8765ed0204c6a21dbd77c76280133a3a145b5c1900"
+          },
+          "request": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-selected-C-request.json",
+            "sha256": "4a60ad92740854274fcbaf5ca4b38d64c90756da3004b8ab1311dc8f462829aa"
+          },
+          "command": [
+            "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+            "--smol",
+            "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+            "js",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-selected-C-request.json",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-selected-1-C.json"
+          ],
+          "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository"
+        }
+      },
+      {
+        "A": {
+          "id": "r3-selected-2-A",
+          "role": "A",
+          "triad": 2,
+          "order": "CAB",
+          "checkerCpuMs": 65496.979999999996,
+          "checkerUserCpuMs": 64766.772,
+          "checkerSystemCpuMs": 730.208,
+          "checkerWallMs": 55782.671334000006,
+          "footprintBytes": 1387862928,
+          "rssBytes": 1177026560,
+          "moduleCount": 17,
+          "sourceDeclarations": 2954,
+          "stepCounts": {
+            "expand": 263032,
+            "check": 1975761
+          },
+          "strictBaselineCounterMatch": true,
+          "report": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-selected-2-A.json",
+            "sha256": "8eac81f371256a53b2eb092d8ed47e08fdaa2787bfa1639b0aef1258ebd1fbac"
+          },
+          "request": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-selected-A-request.json",
+            "sha256": "eb92f4e7adc33cc2ff1813bfa566df573e54ce24983a3147a24073303d24c8ef"
+          },
+          "command": [
+            "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+            "--smol",
+            "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+            "js",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-selected-A-request.json",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-selected-2-A.json"
+          ],
+          "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository"
+        },
+        "B": {
+          "id": "r3-selected-2-B",
+          "role": "B",
+          "triad": 2,
+          "order": "CAB",
+          "checkerCpuMs": 62619.935000000005,
+          "checkerUserCpuMs": 62034.819,
+          "checkerSystemCpuMs": 585.116,
+          "checkerWallMs": 52483.293832999996,
+          "footprintBytes": 1590388360,
+          "rssBytes": 1409236992,
+          "moduleCount": 17,
+          "sourceDeclarations": 2954,
+          "stepCounts": {
+            "expand": 263032,
+            "check": 1975761
+          },
+          "strictBaselineCounterMatch": true,
+          "report": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-selected-2-B.json",
+            "sha256": "cde2b026e0869f2701889f336272a74761c41d31dbf8900d282f788732589a55"
+          },
+          "request": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-selected-B-request.json",
+            "sha256": "1d3dbb2c2a8d819a92f7f071524d8c57d6b8f9a44540e9576bde92725fabb555"
+          },
+          "command": [
+            "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+            "--smol",
+            "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+            "js",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-selected-B-request.json",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-selected-2-B.json"
+          ],
+          "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository"
+        },
+        "C": {
+          "id": "r3-selected-2-C",
+          "role": "C",
+          "triad": 2,
+          "order": "CAB",
+          "checkerCpuMs": 65215.024000000005,
+          "checkerUserCpuMs": 64479.457,
+          "checkerSystemCpuMs": 735.567,
+          "checkerWallMs": 53947.251958999994,
+          "footprintBytes": 1087277904,
+          "rssBytes": 1120894976,
+          "moduleCount": 17,
+          "sourceDeclarations": 2954,
+          "stepCounts": {
+            "expand": 263032,
+            "check": 1975982
+          },
+          "strictBaselineCounterMatch": false,
+          "report": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-selected-2-C.json",
+            "sha256": "212d54be577189ca1c69bd1c10798938b66dfb01c6c8e9cba81310a49b09de55"
+          },
+          "request": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-selected-C-request.json",
+            "sha256": "4a60ad92740854274fcbaf5ca4b38d64c90756da3004b8ab1311dc8f462829aa"
+          },
+          "command": [
+            "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+            "--smol",
+            "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+            "js",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-selected-C-request.json",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-selected-2-C.json"
+          ],
+          "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository"
+        }
+      },
+      {
+        "A": {
+          "id": "r3-selected-3-A",
+          "role": "A",
+          "triad": 3,
+          "order": "BCA",
+          "checkerCpuMs": 66885.616,
+          "checkerUserCpuMs": 66080.453,
+          "checkerSystemCpuMs": 805.163,
+          "checkerWallMs": 55775.358958,
+          "footprintBytes": 1135623488,
+          "rssBytes": 1209155584,
+          "moduleCount": 17,
+          "sourceDeclarations": 2954,
+          "stepCounts": {
+            "expand": 263032,
+            "check": 1975761
+          },
+          "strictBaselineCounterMatch": true,
+          "report": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-selected-3-A.json",
+            "sha256": "df8c77084596444334bbab80160d43a4370c36982bf8b3f7782febd8f1133f11"
+          },
+          "request": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-selected-A-request.json",
+            "sha256": "eb92f4e7adc33cc2ff1813bfa566df573e54ce24983a3147a24073303d24c8ef"
+          },
+          "command": [
+            "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+            "--smol",
+            "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+            "js",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-selected-A-request.json",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-selected-3-A.json"
+          ],
+          "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository"
+        },
+        "B": {
+          "id": "r3-selected-3-B",
+          "role": "B",
+          "triad": 3,
+          "order": "BCA",
+          "checkerCpuMs": 72618.90100000001,
+          "checkerUserCpuMs": 71666.623,
+          "checkerSystemCpuMs": 952.278,
+          "checkerWallMs": 68991.64595899999,
+          "footprintBytes": 1104753296,
+          "rssBytes": 1080049664,
+          "moduleCount": 17,
+          "sourceDeclarations": 2954,
+          "stepCounts": {
+            "expand": 263032,
+            "check": 1975761
+          },
+          "strictBaselineCounterMatch": true,
+          "report": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-selected-3-B.json",
+            "sha256": "fb99825215987b33c00e4814a8d4bc47c8c4fd30ec5f5c4ecc173643f926946b"
+          },
+          "request": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-selected-B-request.json",
+            "sha256": "1d3dbb2c2a8d819a92f7f071524d8c57d6b8f9a44540e9576bde92725fabb555"
+          },
+          "command": [
+            "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+            "--smol",
+            "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+            "js",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-selected-B-request.json",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-selected-3-B.json"
+          ],
+          "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository"
+        },
+        "C": {
+          "id": "r3-selected-3-C",
+          "role": "C",
+          "triad": 3,
+          "order": "BCA",
+          "checkerCpuMs": 62038.687,
+          "checkerUserCpuMs": 61473.78,
+          "checkerSystemCpuMs": 564.907,
+          "checkerWallMs": 52112.147874999995,
+          "footprintBytes": 1474742888,
+          "rssBytes": 1597177856,
+          "moduleCount": 17,
+          "sourceDeclarations": 2954,
+          "stepCounts": {
+            "expand": 263032,
+            "check": 1975982
+          },
+          "strictBaselineCounterMatch": false,
+          "report": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-selected-3-C.json",
+            "sha256": "0025277947d95778570487119886befe442dba95eb79a6db937277e025c413f9"
+          },
+          "request": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-selected-C-request.json",
+            "sha256": "4a60ad92740854274fcbaf5ca4b38d64c90756da3004b8ab1311dc8f462829aa"
+          },
+          "command": [
+            "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+            "--smol",
+            "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+            "js",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-selected-C-request.json",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-selected-3-C.json"
+          ],
+          "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository"
+        }
+      }
+    ],
+    "C_over_A": {
+      "checkerCpuMs": {
+        "n": 3,
+        "logRatios": [
+          0.0007598062264661458,
+          -0.004314162872350103,
+          -0.07522576222385087
+        ],
+        "meanLog": -0.02626003962324494,
+        "varianceLog": 0.0018046677829535534,
+        "geometricMeanRatio": 0.9740817568188423,
+        "ci95": [
+          0.8765253600613961,
+          1.082496083057792
+        ],
+        "baselineMedian": 66885.616,
+        "variantMedian": 65215.024000000005,
+        "direction": "inconclusive"
+      },
+      "checkerWallMs": {
+        "n": 3,
+        "logRatios": [
+          -0.021466639573355262,
+          -0.03345651799191237,
+          -0.06793408995237202
+        ],
+        "meanLog": -0.04095241583921322,
+        "varianceLog": 0.0005819473495844732,
+        "geometricMeanRatio": 0.9598748036981111,
+        "ci95": [
+          0.9040426659182392,
+          1.0191550393682574
+        ],
+        "baselineMedian": 55782.671334000006,
+        "variantMedian": 53947.251958999994,
+        "direction": "inconclusive"
+      },
+      "footprintBytes": {
+        "n": 3,
+        "logRatios": [
+          0.007402483234573846,
+          -0.24408786524799075,
+          0.2613018326351432
+        ],
+        "meanLog": 0.00820548354057544,
+        "varianceLog": 0.06385517028871994,
+        "geometricMeanRatio": 1.0082392407889882,
+        "ci95": [
+          0.5381996465876548,
+          1.888790476010084
+        ],
+        "baselineMedian": 1135623488,
+        "variantMedian": 1112691864,
+        "direction": "inconclusive"
+      },
+      "rssBytes": {
+        "n": 3,
+        "logRatios": [
+          0.022785253880614986,
+          -0.048863941946624516,
+          0.278315980323274
+        ],
+        "meanLog": 0.08407909741908814,
+        "varianceLog": 0.029579376825923327,
+        "geometricMeanRatio": 1.0877149258496634,
+        "ci95": [
+          0.7095252445674516,
+          1.6674864904030404
+        ],
+        "baselineMedian": 1177026560,
+        "variantMedian": 1120894976,
+        "direction": "inconclusive"
+      },
+      "medianFootprintRatio": 0.9798070185740998
+    },
+    "C_over_B": {
+      "checkerCpuMs": {
+        "n": 3,
+        "logRatios": [
+          0.04016289251195052,
+          0.04060619394497822,
+          -0.15746705798058783
+        ],
+        "meanLog": -0.025565990507886365,
+        "varianceLog": 0.013048467829368741,
+        "geometricMeanRatio": 0.97475805206436,
+        "ci95": [
+          0.7339394340298234,
+          1.294593553649682
+        ],
+        "baselineMedian": 69036.221,
+        "variantMedian": 65215.024000000005,
+        "direction": "inconclusive"
+      },
+      "checkerWallMs": {
+        "n": 3,
+        "logRatios": [
+          0.02769495676725778,
+          0.02751184734254724,
+          -0.28058733804133845
+        ],
+        "meanLog": -0.07512684464384448,
+        "varianceLog": 0.03166051914262161,
+        "geometricMeanRatio": 0.9276258144996289,
+        "ci95": [
+          0.5962236208361796,
+          1.4432330784199692
+        ],
+        "baselineMedian": 57600.330458,
+        "variantMedian": 53947.251958999994,
+        "direction": "inconclusive"
+      },
+      "footprintBytes": {
+        "n": 3,
+        "logRatios": [
+          -0.009411922429628974,
+          -0.38030100106311426,
+          0.2888616128724419
+        ],
+        "meanLog": -0.033617103540100446,
+        "varianceLog": 0.11238406906670959,
+        "geometricMeanRatio": 0.966941672308295,
+        "ci95": [
+          0.4204655187776082,
+          2.2236691378749844
+        ],
+        "baselineMedian": 1123213872,
+        "variantMedian": 1112691864,
+        "direction": "inconclusive"
+      },
+      "rssBytes": {
+        "n": 3,
+        "logRatios": [
+          -0.017222810317273123,
+          -0.22892096557294245,
+          0.3912312065843328
+        ],
+        "meanLog": 0.048362476898039075,
+        "varianceLog": 0.09937325158218294,
+        "geometricMeanRatio": 1.0495510243824595,
+        "ci95": [
+          0.47963722056058583,
+          2.2966469355626793
+        ],
+        "baselineMedian": 1102479360,
+        "variantMedian": 1120894976,
+        "direction": "inconclusive"
+      },
+      "medianFootprintRatio": 0.9906322310805649
+    },
+    "B_over_A": {
+      "checkerCpuMs": {
+        "n": 3,
+        "logRatios": [
+          -0.03940308628548451,
+          -0.04492035681732825,
+          0.08224129575673689
+        ],
+        "meanLog": -0.0006940491153586229,
+        "varianceLog": 0.0051663136403204525,
+        "geometricMeanRatio": 0.9993061916810172,
+        "ci95": [
+          0.8358997435573287,
+          1.1946562640182579
+        ],
+        "baselineMedian": 66885.616,
+        "variantMedian": 69036.221,
+        "direction": "inconclusive"
+      },
+      "checkerWallMs": {
+        "n": 3,
+        "logRatios": [
+          -0.049161596340613026,
+          -0.06096836533445948,
+          0.21265324808896635
+        ],
+        "meanLog": 0.034174428804631285,
+        "varianceLog": 0.023925866648366267,
+        "geometricMeanRatio": 1.0347650838241038,
+        "ci95": [
+          0.7046375616130186,
+          1.5195596105470546
+        ],
+        "baselineMedian": 55782.671334000006,
+        "variantMedian": 57600.330458,
+        "direction": "inconclusive"
+      },
+      "footprintBytes": {
+        "n": 3,
+        "logRatios": [
+          0.016814405664202815,
+          0.13621313581512348,
+          -0.027559780237298537
+        ],
+        "meanLog": 0.04182258708067591,
+        "varianceLog": 0.007174448861397841,
+        "geometricMeanRatio": 1.0427094722085017,
+        "ci95": [
+          0.8448559500243367,
+          1.2868975396362108
+        ],
+        "baselineMedian": 1135623488,
+        "variantMedian": 1123213872,
+        "direction": "inconclusive"
+      },
+      "rssBytes": {
+        "n": 3,
+        "logRatios": [
+          0.040008064197888035,
+          0.18005702362631776,
+          -0.11291522626105885
+        ],
+        "meanLog": 0.035716620521048986,
+        "varianceLog": 0.021471997167641473,
+        "geometricMeanRatio": 1.036362121117131,
+        "ci95": [
+          0.720152571800836,
+          1.49141513637951
+        ],
+        "baselineMedian": 1177026560,
+        "variantMedian": 1102479360,
+        "direction": "inconclusive"
+      },
+      "medianFootprintRatio": 0.9890724204534945
+    },
+    "costGate": {
+      "cpuCAatMostPoint97": false,
+      "cpuCBatMost1Point02": true,
+      "everyCpuCAfaster": false,
+      "wallCAatMost1": true,
+      "medianFootCAatMost1": true,
+      "geometricFootCBatMostPoint95": false
+    },
+    "costGatePassed": false
+  },
+  "statisticsCommand": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/compare-three-way.ts",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-selected-triads.json",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-stats-thresholds.json"
+  ],
+  "statisticsSource": "import {readFileSync} from 'node:fs';\nimport {pairedStats,classifyRatio,median} from \"/Users/ilyagulya/Projects/My/bend/evals/selfhost_corpus_calibration.ts\";\nconst triads=JSON.parse(readFileSync(process.argv[2]!,'utf8'));\nconst protocol=JSON.parse(readFileSync(process.argv[3]!,'utf8')),limit=protocol.selected.costGate;\nconst result:any={schemaVersion:1,triads};\nfor(const [variant,baseline] of [['C','A'],['C','B'],['B','A']]){\n const comparison:any={};\n for(const metric of ['checkerCpuMs','checkerWallMs','footprintBytes','rssBytes']){\n  const a=triads.map((t:any)=>t[baseline][metric]),c=triads.map((t:any)=>t[variant][metric]);\n  const statistics=pairedStats(a,c);comparison[metric]={...statistics,direction:classifyRatio(statistics.ci95,.02)};\n }\n comparison.medianFootprintRatio=median(triads.map((t:any)=>t[variant].footprintBytes))!/median(triads.map((t:any)=>t[baseline].footprintBytes))!;\n result[variant+'_over_'+baseline]=comparison;\n}\nresult.costGate={cpuCAatMostPoint97:result.C_over_A.checkerCpuMs.geometricMeanRatio<=limit.geometricCpu_C_over_A_atMost,cpuCBatMost1Point02:result.C_over_B.checkerCpuMs.geometricMeanRatio<=limit.geometricCpu_C_over_B_atMost,everyCpuCAfaster:triads.every((t:any)=>t.C.checkerCpuMs/t.A.checkerCpuMs<limit.everyCpuPair_C_over_A_below),wallCAatMost1:result.C_over_A.checkerWallMs.geometricMeanRatio<=limit.geometricWall_C_over_A_atMost,medianFootCAatMost1:result.C_over_A.medianFootprintRatio<=limit.medianFootprint_C_over_A_atMost,geometricFootCBatMostPoint95:result.C_over_B.footprintBytes.geometricMeanRatio<=limit.geometricFootprint_C_over_B_atMost};\nresult.costGatePassed=Object.values(result.costGate).every(Boolean);\nconsole.log(JSON.stringify(result,null,2));\n",
+  "strictBaselineSchedulerCounterMatch": false,
+  "counterDifference": {
+    "baselineAAndB": {
+      "expand": 263032,
+      "check": 1975761
+    },
+    "candidateC": {
+      "expand": 263032,
+      "check": 1975982
+    },
+    "additionalCandidateCheckerChunks": 221,
+    "scope": "Same52input files,17modules2954parsed declarations and ExpandSuccess/CheckSuccess in every process. Candidate regenerated CPS has221 additional scheduler chunks. This is not silently changed to the baseline count; old exact-counter validator failed. Observational ratios retain every process; no strict counter-equivalence or qualified gain claimed."
+  },
+  "otherPolicies": "All request hashes, full source root hash,workerstack256/old6144/young128,8GiBphysical+RSS/600s/10ms guard, Node23.11,process termination, complete check,no excluded checks or output patches validated.",
+  "mainAlgorithmCutover": false
+}

@@ -2925,3 +2925,119 @@ remain unchanged because there is no algorithm cutover. Temporary controllers
 and analysis scripts are removed after proof; exact invocations/source receipts
 remain reproducible.
 
+### G66: full-capacity handle encoding removes boxes, not the qualified RAM target
+
+Completed and rejected. Main retains evidence only; accepted G24R12, Base,
+compiler algorithms, runtime helpers, API13 and pins are unchanged.
+`checkpoints/local2039g66-index.json` identifies every source checkpoint and
+compact receipt. The isolated source branch is
+`selfhost/g66-scalar-id-t_3rtcm8`, closed at `5d1f4579`.
+
+#### Numeric values establish the field-representation mechanism
+
+G66D0 ran the unchanged actual own byte-fixed compiler on the same frozen
+17-module/2954-declaration source. Its numeric-exposed snapshot at checker
+chunk1000000 observes732353 real HeapNumber nodes. Of those,716458 currently
+hold nonnegative signed32-range values and15118 hold high-bit U32 values.
+The values are not an allocation-traffic estimate.
+
+In this Node23.11.0/V8 build, a Double property stores a mutable HeapNumber
+box even after a small value replaces its earlier value:
+[actual Double-field stores](https://raw.githubusercontent.com/nodejs/node/v23.11.0/deps/v8/src/objects/js-objects-inl.h).
+With [numeric snapshot exposure](https://nodejs.org/download/release/v23.11.0/docs/api/v8.html#v8writeheapsnapshotfilenameoptions),
+the formerly hidden references acquire their real property names; artificial
+`smi number` entries have zero size and are not allocated objects.
+The [property extractor](https://raw.githubusercontent.com/nodejs/node/v23.11.0/deps/v8/src/profiler/heap-snapshot-generator.cc)
+and the observed value edges agree. G65's hidden-edge count alone did not
+establish this mechanism.
+
+#### One internal encoding experiment, not global U32 tagging
+
+The experimental node handle is `(offset << 1) | owner`; the tape cursor is
+`(offset << 2) | (reverse << 1) | owner`. These retain all31 node-offset bits
+and30 tape-offset bits. Ordinary U32 values and foreign boundaries do not change.
+Raw Arena get/put/count/reserve interfaces and raw name IDs remain raw;
+packing, publication, region selection, bounds/witness gates, reversed traversal,
+frontend reads, readback and lowering migrate at their actual boundaries.
+Source-only gates explicitly reject transient handles instead of relying on
+old owner-major numeric order. Constructor-tree comparisons use decoded offsets.
+
+The real compiler root imports frozen stepped sources, not the canonical
+checker/lowering bodies directly. The actual owned-source, checker-step and
+emitter-step generators were therefore run in that order, with no trace flags.
+The resulting53-file compiler closure is checkpointed at `c8abb25b`.
+R1 is explicitly rejected for U32-versus-Nat shift counts before expensive
+production. R2 passes the full-capacity source invariant but is rejected for
+computed Tuple matches in newly authored regression fixtures. R3 uses the
+existing authentic native-match AST producer to factor those fixture bodies;
+their witness/range/name assertions and expected output remain intact.
+The old out-of-range `tag-wrap` assertion was deleted, not re-pinned to the
+new representation's incidental carry behavior.
+
+Actual complete production by the unchanged own byte-fixed A image passes:
+18modules,13048declarations, expand1070650/check10386985/emit1285627.
+The guard records338740ms and3173495416B peak physical footprint; the returned
+image is31831720B, SHA256
+`e48b1926c1c2abe03b9492892d4ac1785e302b94cee541189fce3214d8e86d92`.
+This is setup, not paired performance. The native receipt is an ancestor,
+not a claim that the new image was directly C-produced.
+
+Semantic proof includes9 canonical-source fixtures,5 actual default-stack
+JS programs and3 actual C binaries. The real new image then passes69 own
+parser/checker/emitter cases,17 own-emitted default-stack JS programs and5
+own-emitted C binaries. A separate direct probe exercises inspection, discards
+the original CheckedProgram, rechecks the reconstructed AST, emits its library
+and passes28 actual runtime assertions. It does not hide bad readback by
+forwarding the original owner to the emitter; there is no AST replay.
+
+#### Nine fresh clean checks fail the unchanged cost filter
+
+Orders are ABC/CAB/BCA; A is unchanged main, B is G63, C is actual G66R3.
+Every process checks the identical52 frozen input files,17modules and2954
+declarations, with no excluded checks, image patches, repeated/excluded samples
+or reused timings. Node23.11.0, worker stack256MiB, old6144MiB/young128MiB,
+8GiB physical-footprint/RSS limits,600s/10ms guard, parser fuel8M/module,
+quantum64, API13 and one heavy lane remain fixed.
+
+All actual checks pass. A/B record expand263032/check1975761; C records
+expand263032/check1975982. The additional221 C scheduler chunks are retained:
+the old exact-counter validator fails, and no counter equivalence is claimed.
+The observational comparisons below retain every process on the same complete
+source rather than silently replacing the candidate count.
+
+| Metric, geometric ratio [paired Student95 interval] | C / unchanged main | C / G63 |
+|---|---|---|
+| Checker process CPU | 0.974082 [0.876525, 1.082496] | 0.974758 [0.733939, 1.294594] |
+| Checker wall | 0.959875 [0.904043, 1.019155] | 0.927626 [0.596224, 1.443233] |
+| Peak physical footprint | 1.008239 [0.538200, 1.888790] | 0.966942 [0.420466, 2.223669] |
+| Peak RSS | 1.087715 [0.709525, 1.667486] | 1.049551 [0.479637, 2.296647] |
+
+Every comparison is inconclusive at the existing2% practical band. The CPU
+minimum, every-pair-faster requirement and G63 geometric-footprint requirement
+fail. No qualified speedup or preserved-speed memory improvement is accepted.
+Conditional six full-source timing cells and actual candidate-own byte
+fixedpoint remain **NOT_RUN_NOT_EARNED**, not failed runs or forgotten work.
+
+#### Post-rejection mechanism proof does not reverse that decision
+
+The separate numeric snapshot observes real HeapNumber nodes falling from732353
+to802. All13 inspected migrated field pairs, including occurrence `term/ty`,
+binding `ty`, symbol `signature` and descriptor tape starts, have zero real
+HeapNumber property references and Smi-valued stores after migration.
+The box-removal mechanism works. This does not measure total allocated traffic,
+exclusive retained bytes or an unperturbed process-memory peak.
+Both snapshots stop at chunk1000000, but C's additional scheduler chunks mean
+identical logical prefix progress is not certified; absolute data-graph sizes
+must not be presented as a same-state retention comparison.
+
+The failed clean filter is immutable. The next DOD hypothesis is reducing the
+number, width or lifetime of descriptor/occurrence/list records, not another
+encoding-only tweak; no such change or measured gain is implemented here.
+Rejected source, regenerated Bend inputs, regression fixtures and frozen probes
+remain in the experimental checkpoints. Main keeps this journal and22 compact
+JSON receipts only. Compiler images, AST transports, caches, profiles, snapshots
+and bulk outputs stay outside Git. Temporary controllers, normalizer/extractor
+drivers and analysis scripts were removed after proof; their exact source and
+invocations remain in the receipts. Current main FIR laws and the explicitly
+historical incremental-research baseline remain intentionally unchanged.
+

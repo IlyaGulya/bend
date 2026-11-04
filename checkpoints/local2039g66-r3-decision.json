@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "version": "G66R3",
+  "status": "REJECTED_CPU_MINIMUM_PAIR_CONSISTENCY_AND_G63_MEMORY_FILTER",
+  "sourceCheckpoint": "334e61a2",
+  "compilerSourceCheckpoint": "c8abb25b",
+  "actualProductionCheckpoint": "8031214a",
+  "semanticsCheckpoint": "040fa4de",
+  "costGate": {
+    "cpuCAatMostPoint97": false,
+    "cpuCBatMost1Point02": true,
+    "everyCpuCAfaster": false,
+    "wallCAatMost1": true,
+    "medianFootCAatMost1": true,
+    "geometricFootCBatMostPoint95": false
+  },
+  "costGatePassed": false,
+  "strictBaselineSchedulerCounterMatch": false,
+  "mainAlgorithmCutover": false,
+  "acceptedG24R12": "UNCHANGED",
+  "conditionalFullSourceTiming": "NOT_RUN_NOT_EARNED",
+  "candidateOwnVersionByteFixedpoint": "NOT_RUN_NOT_EARNED",
+  "noDroppedOrRetriedTimingSamples": true,
+  "scope": "Point CPU ratioC/A=.9740817568 misses prospectiveminimum3percent; firstpairC/A>1. G63 geometric footprint ratio misses<=.95. Paired95 intervals inconclusive. No qualified CPU/RAM improvement or new selfhost-green claim.",
+  "postRejectionDiagnostics": "Separate numeric field snapshot and direct inspection/readback roundtrip may establish mechanism/correctness only; they cannot reverse this cost decision."
+}

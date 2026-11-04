@@ -1,0 +1,5516 @@
+{
+  "schemaVersion": 1,
+  "version": "G66D1",
+  "status": "ACTUAL_BOX_REMOVAL_AND_READBACK_RECHECK_CONSUMERS_CONFIRMED_COST_REJECTION_UNCHANGED",
+  "protocolCheckpoint": "11d32085",
+  "priorMeasuredRejectionCheckpoint": "e675f811",
+  "image": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-source-generation.json.output.mjs",
+    "sha256": "e48b1926c1c2abe03b9492892d4ac1785e302b94cee541189fce3214d8e86d92"
+  },
+  "observations": {
+    "schemaVersion": 1,
+    "status": "ALL_CELLS_FINISHED",
+    "cells": [
+      {
+        "id": "G66D1-direct-readback-recheck-consumers",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--experimental-strip-types",
+          "--max-old-space-size=6144",
+          "--max-semi-space-size=128",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository/evals/selfhost_ir_readback_probe.mjs",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/d1-readback-request.json",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/d1-readback.json"
+        ],
+        "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository",
+        "report": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/d1-readback.json",
+        "exitCode": 0,
+        "elapsedMs": 1925.485,
+        "stdout": "{\"status\":\"PASS_ACTUAL_INSPECTION_RECHECK_AND_LIBRARY_CONSUMERS\",\"rows\":28,\"artifact\":{\"path\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/d1-readback-consumer.mjs\",\"sha256\":\"bf40b06c0b532f02449c14323c699d0eecd850043992ad4a2c9ba3f21d29a0a4\",\"bytes\":74464}}\n",
+        "stderr": "HEAVY_GATE {\"status\":\"PASS\",\"reason\":\"command_exit\",\"commandExitCode\":0,\"commandSignal\":0,\"peakRssBytes\":543866880,\"peakFootprintBytes\":456941488,\"elapsedMs\":1813,\"timeoutMs\":120000,\"reportPhase\":\"complete\",\"ownedTreeStopped\":true,\"supervisorExitCode\":0,\"command\":[\"/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node\",\"--experimental-strip-types\",\"--max-old-space-size=6144\",\"--max-semi-space-size=128\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository/evals/selfhost_ir_readback_probe.mjs\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/d1-readback-request.json\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/d1-readback.json\"],\"label\":\"heavy command\",\"exitCode\":0,\"reportPath\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793820279242-5bc58bb147ea2f8b.json\",\"memoryLimitBytes\":8589934592,\"rssLimitBytes\":8589934592}\n",
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "commandExitCode": 0,
+          "commandSignal": 0,
+          "peakRssBytes": 543866880,
+          "peakFootprintBytes": 456941488,
+          "elapsedMs": 1813,
+          "timeoutMs": 120000,
+          "reportPhase": "complete",
+          "ownedTreeStopped": true,
+          "supervisorExitCode": 0,
+          "command": [
+            "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+            "--experimental-strip-types",
+            "--max-old-space-size=6144",
+            "--max-semi-space-size=128",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository/evals/selfhost_ir_readback_probe.mjs",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/d1-readback-request.json",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/d1-readback.json"
+          ],
+          "label": "heavy command",
+          "exitCode": 0,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793820279242-5bc58bb147ea2f8b.json",
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592
+        },
+        "passed": true
+      },
+      {
+        "id": "G66D1-numeric-box-mechanism",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=600000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--experimental-strip-types",
+          "--max-old-space-size=6144",
+          "--max-semi-space-size=128",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository/evals/selfhost_numeric_ownership_probe.mjs",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/d1-candidate-request.json",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/d1-candidate.json"
+        ],
+        "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository",
+        "report": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/d1-candidate.json",
+        "exitCode": 0,
+        "elapsedMs": 53108.095208,
+        "stdout": "{\"status\":\"SNAPSHOT_PREFIX_ONLY_NOT_FULL_CHECK\",\"kind\":\"snapshot\",\"moduleCount\":17,\"sourceDeclarations\":2954,\"stepCounts\":{\"expand\":263032},\"samples\":[],\"snapshot\":{\"path\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/d1-candidate.json.heapsnapshot\",\"step\":1000000}}\n",
+        "stderr": "HEAVY_GATE {\"status\":\"PASS\",\"reason\":\"command_exit\",\"commandExitCode\":0,\"commandSignal\":0,\"peakRssBytes\":2444066816,\"peakFootprintBytes\":2485464744,\"elapsedMs\":53042,\"timeoutMs\":600000,\"reportPhase\":\"complete\",\"ownedTreeStopped\":true,\"supervisorExitCode\":0,\"command\":[\"/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node\",\"--experimental-strip-types\",\"--max-old-space-size=6144\",\"--max-semi-space-size=128\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository/evals/selfhost_numeric_ownership_probe.mjs\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/d1-candidate-request.json\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/d1-candidate.json\"],\"label\":\"heavy command\",\"exitCode\":0,\"reportPath\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793820281123-7d72bcc1b8ddb4a0.json\",\"memoryLimitBytes\":8589934592,\"rssLimitBytes\":8589934592}\n",
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "commandExitCode": 0,
+          "commandSignal": 0,
+          "peakRssBytes": 2444066816,
+          "peakFootprintBytes": 2485464744,
+          "elapsedMs": 53042,
+          "timeoutMs": 600000,
+          "reportPhase": "complete",
+          "ownedTreeStopped": true,
+          "supervisorExitCode": 0,
+          "command": [
+            "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+            "--experimental-strip-types",
+            "--max-old-space-size=6144",
+            "--max-semi-space-size=128",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository/evals/selfhost_numeric_ownership_probe.mjs",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/d1-candidate-request.json",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/d1-candidate.json"
+          ],
+          "label": "heavy command",
+          "exitCode": 0,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793820281123-7d72bcc1b8ddb4a0.json",
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592
+        },
+        "passed": true
+      }
+    ]
+  },
+  "executionFile": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/d1-execution.json",
+    "sha256": "0dfec98e690f1264abb8e4226f6cef8f370d70dc8048777037dfdcac19c5d7cb"
+  },
+  "readback": {
+    "request": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/d1-readback-request.json",
+      "sha256": "e1a0ad9fe03af3ce6b37407f7e50c2c6f152031af26681feb027e43bf1dfbdea"
+    },
+    "report": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/d1-readback.json",
+      "sha256": "7445cdafadd63b7ef5eb395596ecf5b0620aeb24c267d886ec22722c8b7f06d9"
+    },
+    "observed": {
+      "schemaVersion": 1,
+      "status": "PASS_ACTUAL_INSPECTION_RECHECK_AND_LIBRARY_CONSUMERS",
+      "diagnosticOnly": true,
+      "acceptanceEvidence": false,
+      "performanceEvidence": false,
+      "stages": [
+        {
+          "phase": "own-parse",
+          "status": "ParseSuccess"
+        },
+        {
+          "phase": "own-expand",
+          "status": "ExpandSuccess"
+        },
+        {
+          "phase": "own-check",
+          "status": "CheckSuccess"
+        },
+        {
+          "phase": "own-inspection",
+          "status": "Inspection"
+        },
+        {
+          "phase": "own-readback-recheck",
+          "status": "CheckSuccess"
+        },
+        {
+          "phase": "own-readback-library-emission",
+          "status": "EmitSuccess"
+        }
+      ],
+      "image": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-source-generation.json.output.mjs",
+      "imageSha256": "e48b1926c1c2abe03b9492892d4ac1785e302b94cee541189fce3214d8e86d92",
+      "source": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository/checkpoints/local2039g66-readback.bend",
+      "sourceSha256": "932163e5486d1d620e93cc8840f6b6b978b87227e95b27a4b07fb2dbc4e1d7e1",
+      "outputPatches": 0,
+      "astReplay": false,
+      "compilerBootstrapGreen": false,
+      "selfhostGreen": false,
+      "artifact": {
+        "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/d1-readback-consumer.mjs",
+        "sha256": "bf40b06c0b532f02449c14323c699d0eecd850043992ad4a2c9ba3f21d29a0a4",
+        "bytes": 74464
+      },
+      "runtimeRows": [
+        {
+          "name": "zero-nullary",
+          "observed": "BitZero",
+          "expected": "BitZero",
+          "passed": true
+        },
+        {
+          "name": "one-nullary",
+          "observed": "BitOne",
+          "expected": "BitOne",
+          "passed": true
+        },
+        {
+          "name": "positional-noncommutative",
+          "observed": [
+            "BitOne",
+            "BitZero"
+          ],
+          "expected": [
+            "BitOne",
+            "BitZero"
+          ],
+          "passed": true
+        },
+        {
+          "name": "positional-reversed-input",
+          "observed": [
+            "BitZero",
+            "BitOne"
+          ],
+          "expected": [
+            "BitZero",
+            "BitOne"
+          ],
+          "passed": true
+        },
+        {
+          "name": "pack-one-argument-is-curried-function",
+          "observed": "function",
+          "expected": "function",
+          "passed": true
+        },
+        {
+          "name": "pack-curried-second-argument",
+          "observed": [
+            "BitOne",
+            "BitZero"
+          ],
+          "expected": [
+            "BitOne",
+            "BitZero"
+          ],
+          "passed": true
+        },
+        {
+          "name": "returned-curried-function",
+          "observed": "function",
+          "expected": "function",
+          "passed": true
+        },
+        {
+          "name": "higher-order-positional-call",
+          "observed": [
+            "BitOne",
+            "BitZero"
+          ],
+          "expected": [
+            "BitOne",
+            "BitZero"
+          ],
+          "passed": true
+        },
+        {
+          "name": "over-applied-returned-function",
+          "observed": [
+            "BitOne",
+            "BitZero"
+          ],
+          "expected": [
+            "BitOne",
+            "BitZero"
+          ],
+          "passed": true
+        },
+        {
+          "name": "live-host-callback",
+          "observed": [
+            "BitZero",
+            "BitOne"
+          ],
+          "expected": [
+            "BitZero",
+            "BitOne"
+          ],
+          "passed": true
+        },
+        {
+          "name": "live-host-callback-evaluated-once",
+          "observed": 1,
+          "expected": 1,
+          "passed": true
+        },
+        {
+          "name": "erased-kind-and-type-effective-one-argument",
+          "observed": "BitOne",
+          "expected": "BitOne",
+          "passed": true
+        },
+        {
+          "name": "ordinary-type-reference-erasure-in-bend-application",
+          "observed": "BitZero",
+          "expected": "BitZero",
+          "passed": true
+        },
+        {
+          "name": "actual-template-specialization",
+          "observed": "BitOne",
+          "expected": "BitOne",
+          "passed": true
+        },
+        {
+          "name": "erased-expression-keeps-second-live-argument",
+          "observed": "BitOne",
+          "expected": "BitOne",
+          "passed": true
+        },
+        {
+          "name": "erased-expression-not-evaluated",
+          "observed": 0,
+          "expected": 0,
+          "passed": true
+        },
+        {
+          "name": "shared-local-value",
+          "observed": [
+            "BitOne",
+            "BitOne"
+          ],
+          "expected": [
+            "BitOne",
+            "BitOne"
+          ],
+          "passed": true
+        },
+        {
+          "name": "shared-local-evaluated-once",
+          "observed": 1,
+          "expected": 1,
+          "passed": true
+        },
+        {
+          "name": "unused-local-result",
+          "observed": "BitZero",
+          "expected": "BitZero",
+          "passed": true
+        },
+        {
+          "name": "unused-live-local-still-evaluated",
+          "observed": 1,
+          "expected": 1,
+          "passed": true
+        },
+        {
+          "name": "ordered-local-values",
+          "observed": [
+            "BitOne",
+            "BitZero"
+          ],
+          "expected": [
+            "BitOne",
+            "BitZero"
+          ],
+          "passed": true
+        },
+        {
+          "name": "local-evaluation-order",
+          "observed": [
+            "first",
+            "second"
+          ],
+          "expected": [
+            "first",
+            "second"
+          ],
+          "passed": true
+        },
+        {
+          "name": "named-over-application-value",
+          "observed": [
+            "BitOne",
+            "BitZero"
+          ],
+          "expected": [
+            "BitOne",
+            "BitZero"
+          ],
+          "passed": true
+        },
+        {
+          "name": "named-over-application-order",
+          "observed": [
+            "callee",
+            "argument"
+          ],
+          "expected": [
+            "callee",
+            "argument"
+          ],
+          "passed": true
+        },
+        {
+          "name": "generic-over-application-value",
+          "observed": [
+            "BitOne",
+            "BitZero"
+          ],
+          "expected": [
+            "BitOne",
+            "BitZero"
+          ],
+          "passed": true
+        },
+        {
+          "name": "generic-over-application-order",
+          "observed": [
+            "callee",
+            "argument",
+            "apply"
+          ],
+          "expected": [
+            "callee",
+            "argument",
+            "apply"
+          ],
+          "passed": true
+        },
+        {
+          "name": "constructor-eliminator-first-arm",
+          "observed": "BitOne",
+          "expected": "BitOne",
+          "passed": true
+        },
+        {
+          "name": "constructor-eliminator-default-chain",
+          "observed": "BitZero",
+          "expected": "BitZero",
+          "passed": true
+        }
+      ],
+      "artifactExecutedUnchanged": true
+    },
+    "fixture": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository/checkpoints/local2039g66-readback.bend",
+      "sha256": "932163e5486d1d620e93cc8840f6b6b978b87227e95b27a4b07fb2dbc4e1d7e1"
+    },
+    "probe": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository/evals/selfhost_ir_readback_probe.mjs",
+      "sha256": "374a6635088e3a9c8366f3dc3d8b4e0690a78b1dd5f79bfd0793c228bb9e796f"
+    },
+    "originalOwnerForwardedToEmitter": false,
+    "astReplay": false
+  },
+  "numericSnapshot": {
+    "request": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/d1-candidate-request.json",
+      "sha256": "667ac205b8327f7e8129077d0a3aaf02e4a855b23496149cde056c994d3644ab"
+    },
+    "report": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/d1-candidate.json",
+      "sha256": "f7e24cf1437f6e7ebe54c0b53643c988053a54554a4769d1ea50960fdb70b968"
+    },
+    "snapshot": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/d1-candidate.json.heapsnapshot",
+      "sha256": "0ce7c0eca8144cd5b7b4a394c69dc5dc72d95a01be37d18fda603841ce6796d6",
+      "bytes": 469816547
+    },
+    "observedPrefix": {
+      "schemaVersion": 1,
+      "status": "SNAPSHOT_PREFIX_ONLY_NOT_FULL_CHECK",
+      "diagnosticOnly": true,
+      "acceptanceEvidence": false,
+      "performanceEvidence": false,
+      "kind": "snapshot",
+      "image": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-source-generation.json.output.mjs",
+      "imageSha256": "e48b1926c1c2abe03b9492892d4ac1785e302b94cee541189fce3214d8e86d92",
+      "request": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/d1-candidate-request.json",
+      "requestSha256": "667ac205b8327f7e8129077d0a3aaf02e4a855b23496149cde056c994d3644ab",
+      "runtime": {
+        "versions": {
+          "node": "23.11.0",
+          "acorn": "8.14.1",
+          "ada": "3.2.1",
+          "amaro": "0.4.1",
+          "ares": "1.34.4",
+          "brotli": "1.1.0",
+          "cjs_module_lexer": "2.1.0",
+          "cldr": "46.0",
+          "icu": "76.1",
+          "llhttp": "9.2.1",
+          "modules": "131",
+          "napi": "10",
+          "nbytes": "0.1.1",
+          "ncrypto": "0.0.1",
+          "nghttp2": "1.64.0",
+          "openssl": "3.0.16",
+          "simdjson": "3.12.2",
+          "simdutf": "6.0.3",
+          "sqlite": "3.49.1",
+          "tz": "2025a",
+          "undici": "6.21.2",
+          "unicode": "16.0",
+          "uv": "1.50.0",
+          "uvwasi": "0.0.21",
+          "v8": "12.9.202.28-node.14",
+          "zlib": "1.3.0.1-motley-788cb3c",
+          "zstd": "1.5.6"
+        },
+        "execArgv": [
+          "--experimental-strip-types",
+          "--max-old-space-size=6144",
+          "--max-semi-space-size=128"
+        ],
+        "heapLimitBytes": 6845104128
+      },
+      "workerPolicy": {
+        "stackMiB": 256,
+        "oldGenerationMiB": 6144,
+        "youngGenerationMiB": 128
+      },
+      "samplingIntervalBytes": 1048576,
+      "phases": [
+        {
+          "phase": "startup",
+          "elapsedMs": 719.7817500000001,
+          "memory": {
+            "rss": 485605376,
+            "heapTotal": 90505216,
+            "heapUsed": 78139440,
+            "external": 34937219,
+            "arrayBuffers": 31856739
+          },
+          "heapStatistics": {
+            "total_heap_size": 90505216,
+            "total_heap_size_executable": 524288,
+            "total_physical_size": 88276992,
+            "total_available_size": 6766783512,
+            "used_heap_size": 78142816,
+            "heap_size_limit": 6845104128,
+            "malloced_memory": 7880880,
+            "peak_malloced_memory": 283156480,
+            "does_zap_garbage": 0,
+            "number_of_native_contexts": 1,
+            "number_of_detached_contexts": 0,
+            "total_global_handles_size": 8192,
+            "used_global_handles_size": 3584,
+            "external_memory": 34937259
+          },
+          "spaces": [
+            {
+              "space_name": "read_only_space",
+              "space_size": 0,
+              "space_used_size": 0,
+              "space_available_size": 0,
+              "physical_space_size": 0
+            },
+            {
+              "space_name": "new_space",
+              "space_size": 16777216,
+              "space_used_size": 5662456,
+              "space_available_size": 2725640,
+              "physical_space_size": 14319616
+            },
+            {
+              "space_name": "old_space",
+              "space_size": 31686656,
+              "space_used_size": 31279064,
+              "space_available_size": 384720,
+              "physical_space_size": 31719424
+            },
+            {
+              "space_name": "code_space",
+              "space_size": 524288,
+              "space_used_size": 160800,
+              "space_available_size": 363424,
+              "physical_space_size": 524288
+            },
+            {
+              "space_name": "shared_space",
+              "space_size": 0,
+              "space_used_size": 0,
+              "space_available_size": 0,
+              "physical_space_size": 0
+            },
+            {
+              "space_name": "trusted_space",
+              "space_size": 2686976,
+              "space_used_size": 2385864,
+              "space_available_size": 300520,
+              "physical_space_size": 2883584
+            },
+            {
+              "space_name": "shared_trusted_space",
+              "space_size": 0,
+              "space_used_size": 0,
+              "space_available_size": 0,
+              "physical_space_size": 0
+            },
+            {
+              "space_name": "new_large_object_space",
+              "space_size": 0,
+              "space_used_size": 0,
+              "space_available_size": 8388608,
+              "physical_space_size": 0
+            },
+            {
+              "space_name": "large_object_space",
+              "space_size": 36634624,
+              "space_used_size": 36504296,
+              "space_available_size": 0,
+              "physical_space_size": 36634624
+            },
+            {
+              "space_name": "code_large_object_space",
+              "space_size": 0,
+              "space_used_size": 0,
+              "space_available_size": 0,
+              "physical_space_size": 0
+            },
+            {
+              "space_name": "shared_large_object_space",
+              "space_size": 0,
+              "space_used_size": 0,
+              "space_available_size": 0,
+              "physical_space_size": 0
+            },
+            {
+              "space_name": "shared_trusted_large_object_space",
+              "space_size": 0,
+              "space_used_size": 0,
+              "space_available_size": 0,
+              "physical_space_size": 0
+            },
+            {
+              "space_name": "trusted_large_object_space",
+              "space_size": 2195456,
+              "space_used_size": 2172024,
+              "space_available_size": 0,
+              "physical_space_size": 2195456
+            }
+          ]
+        },
+        {
+          "phase": "load-parse",
+          "elapsedMs": 3759.033333,
+          "userCpuMs": 5078.497,
+          "systemCpuMs": 206.261,
+          "memory": {
+            "rss": 726892544,
+            "heapTotal": 480559104,
+            "heapUsed": 317826664,
+            "external": 3105555,
+            "arrayBuffers": 25035
+          },
+          "heapStatistics": {
+            "total_heap_size": 480559104,
+            "total_heap_size_executable": 9846784,
+            "total_physical_size": 459898880,
+            "total_available_size": 6526129832,
+            "used_heap_size": 317826888,
+            "heap_size_limit": 6845104128,
+            "malloced_memory": 1065064,
+            "peak_malloced_memory": 283156480,
+            "does_zap_garbage": 0,
+            "number_of_native_contexts": 1,
+            "number_of_detached_contexts": 0,
+            "total_global_handles_size": 8192,
+            "used_global_handles_size": 3584,
+            "external_memory": 3105555
+          },
+          "spaces": [
+            {
+              "space_name": "read_only_space",
+              "space_size": 0,
+              "space_used_size": 0,
+              "space_available_size": 0,
+              "physical_space_size": 0
+            },
+            {
+              "space_name": "new_space",
+              "space_size": 268435456,
+              "space_used_size": 111821560,
+              "space_available_size": 22387976,
+              "physical_space_size": 247545856
+            },
+            {
+              "space_name": "old_space",
+              "space_size": 152010752,
+              "space_used_size": 150182448,
+              "space_available_size": 866304,
+              "physical_space_size": 152043520
+            },
+            {
+              "space_name": "code_space",
+              "space_size": 9699328,
+              "space_used_size": 7860288,
+              "space_available_size": 1837856,
+              "physical_space_size": 9699328
+            },
+            {
+              "space_name": "shared_space",
+              "space_size": 0,
+              "space_used_size": 0,
+              "space_available_size": 0,
+              "physical_space_size": 0
+            },
+            {
+              "space_name": "trusted_space",
+              "space_size": 10551296,
+              "space_used_size": 8276368,
+              "space_available_size": 2273656,
+              "physical_space_size": 10747904
+            },
+            {
+              "space_name": "shared_trusted_space",
+              "space_size": 0,
+              "space_used_size": 0,
+              "space_available_size": 0,
+              "physical_space_size": 0
+            },
+            {
+              "space_name": "new_large_object_space",
+              "space_size": 0,
+              "space_used_size": 0,
+              "space_available_size": 134217728,
+              "physical_space_size": 0
+            },
+            {
+              "space_name": "large_object_space",
+              "space_size": 37519360,
+              "space_used_size": 37382592,
+              "space_available_size": 0,
+              "physical_space_size": 37519360
+            },
+            {
+              "space_name": "code_large_object_space",
+              "space_size": 147456,
+              "space_used_size": 132896,
+              "space_available_size": 0,
+              "physical_space_size": 147456
+            },
+            {
+              "space_name": "shared_large_object_space",
+              "space_size": 0,
+              "space_used_size": 0,
+              "space_available_size": 0,
+              "physical_space_size": 0
+            },
+            {
+              "space_name": "shared_trusted_large_object_space",
+              "space_size": 0,
+              "space_used_size": 0,
+              "space_available_size": 0,
+              "physical_space_size": 0
+            },
+            {
+              "space_name": "trusted_large_object_space",
+              "space_size": 2195456,
+              "space_used_size": 2172024,
+              "space_available_size": 0,
+              "physical_space_size": 2195456
+            }
+          ]
+        },
+        {
+          "phase": "expand",
+          "elapsedMs": 2200.5424170000006,
+          "userCpuMs": 2985.242,
+          "systemCpuMs": 84.053,
+          "memory": {
+            "rss": 753205248,
+            "heapTotal": 495140864,
+            "heapUsed": 322085616,
+            "external": 3105555,
+            "arrayBuffers": 25035
+          },
+          "heapStatistics": {
+            "total_heap_size": 495140864,
+            "total_heap_size_executable": 12206080,
+            "total_physical_size": 495370240,
+            "total_available_size": 6522037656,
+            "used_heap_size": 322085840,
+            "heap_size_limit": 6845104128,
+            "malloced_memory": 1065064,
+            "peak_malloced_memory": 283156480,
+            "does_zap_garbage": 0,
+            "number_of_native_contexts": 1,
+            "number_of_detached_contexts": 0,
+            "total_global_handles_size": 8192,
+            "used_global_handles_size": 3584,
+            "external_memory": 3105555
+          },
+          "spaces": [
+            {
+              "space_name": "read_only_space",
+              "space_size": 0,
+              "space_used_size": 0,
+              "space_available_size": 0,
+              "physical_space_size": 0
+            },
+            {
+              "space_name": "new_space",
+              "space_size": 268435456,
+              "space_used_size": 99907920,
+              "space_available_size": 34301616,
+              "physical_space_size": 268435456
+            },
+            {
+              "space_name": "old_space",
+              "space_size": 164331520,
+              "space_used_size": 162410864,
+              "space_available_size": 1119496,
+              "physical_space_size": 164364288
+            },
+            {
+              "space_name": "code_space",
+              "space_size": 12058624,
+              "space_used_size": 10947744,
+              "space_available_size": 1109408,
+              "physical_space_size": 12058624
+            },
+            {
+              "space_name": "shared_space",
+              "space_size": 0,
+              "space_used_size": 0,
+              "space_available_size": 0,
+              "physical_space_size": 0
+            },
+            {
+              "space_name": "trusted_space",
+              "space_size": 11337728,
+              "space_used_size": 10011040,
+              "space_available_size": 1325200,
+              "physical_space_size": 11534336
+            },
+            {
+              "space_name": "shared_trusted_space",
+              "space_size": 0,
+              "space_used_size": 0,
+              "space_available_size": 0,
+              "physical_space_size": 0
+            },
+            {
+              "space_name": "new_large_object_space",
+              "space_size": 0,
+              "space_used_size": 0,
+              "space_available_size": 134217728,
+              "physical_space_size": 0
+            },
+            {
+              "space_name": "large_object_space",
+              "space_size": 36634624,
+              "space_used_size": 36504296,
+              "space_available_size": 0,
+              "physical_space_size": 36634624
+            },
+            {
+              "space_name": "code_large_object_space",
+              "space_size": 147456,
+              "space_used_size": 132896,
+              "space_available_size": 0,
+              "physical_space_size": 147456
+            },
+            {
+              "space_name": "shared_large_object_space",
+              "space_size": 0,
+              "space_used_size": 0,
+              "space_available_size": 0,
+              "physical_space_size": 0
+            },
+            {
+              "space_name": "shared_trusted_large_object_space",
+              "space_size": 0,
+              "space_used_size": 0,
+              "space_available_size": 0,
+              "physical_space_size": 0
+            },
+            {
+              "space_name": "trusted_large_object_space",
+              "space_size": 2195456,
+              "space_used_size": 2172024,
+              "space_available_size": 0,
+              "physical_space_size": 2195456
+            }
+          ]
+        }
+      ],
+      "boundaries": [
+        {
+          "step": 1000000,
+          "memory": {
+            "rss": 703004672,
+            "heapTotal": 654737408,
+            "heapUsed": 447143928,
+            "external": 3098865,
+            "arrayBuffers": 25035
+          },
+          "heapStatistics": {
+            "total_heap_size": 654737408,
+            "total_heap_size_executable": 62013440,
+            "total_physical_size": 654966784,
+            "total_available_size": 6395855920,
+            "used_heap_size": 447144152,
+            "heap_size_limit": 6845104128,
+            "malloced_memory": 2113640,
+            "peak_malloced_memory": 283156480,
+            "does_zap_garbage": 0,
+            "number_of_native_contexts": 1,
+            "number_of_detached_contexts": 0,
+            "total_global_handles_size": 8192,
+            "used_global_handles_size": 3648,
+            "external_memory": 3098865
+          },
+          "spaces": [
+            {
+              "space_name": "read_only_space",
+              "space_size": 0,
+              "space_used_size": 0,
+              "space_available_size": 0,
+              "physical_space_size": 0
+            },
+            {
+              "space_name": "new_space",
+              "space_size": 268435456,
+              "space_used_size": 85658824,
+              "space_available_size": 48550712,
+              "physical_space_size": 268435456
+            },
+            {
+              "space_name": "old_space",
+              "space_size": 208633856,
+              "space_used_size": 202697512,
+              "space_available_size": 4368464,
+              "physical_space_size": 208666624
+            },
+            {
+              "space_name": "code_space",
+              "space_size": 61865984,
+              "space_used_size": 52317888,
+              "space_available_size": 9540544,
+              "physical_space_size": 61865984
+            },
+            {
+              "space_name": "shared_space",
+              "space_size": 0,
+              "space_used_size": 0,
+              "space_available_size": 0,
+              "physical_space_size": 0
+            },
+            {
+              "space_name": "trusted_space",
+              "space_size": 52756480,
+              "space_used_size": 43937288,
+              "space_available_size": 8810808,
+              "physical_space_size": 52953088
+            },
+            {
+              "space_name": "shared_trusted_space",
+              "space_size": 0,
+              "space_used_size": 0,
+              "space_available_size": 0,
+              "physical_space_size": 0
+            },
+            {
+              "space_name": "new_large_object_space",
+              "space_size": 0,
+              "space_used_size": 0,
+              "space_available_size": 134217728,
+              "physical_space_size": 0
+            },
+            {
+              "space_name": "large_object_space",
+              "space_size": 60702720,
+              "space_used_size": 60228664,
+              "space_available_size": 0,
+              "physical_space_size": 60702720
+            },
+            {
+              "space_name": "code_large_object_space",
+              "space_size": 147456,
+              "space_used_size": 132896,
+              "space_available_size": 0,
+              "physical_space_size": 147456
+            },
+            {
+              "space_name": "shared_large_object_space",
+              "space_size": 0,
+              "space_used_size": 0,
+              "space_available_size": 0,
+              "physical_space_size": 0
+            },
+            {
+              "space_name": "shared_trusted_large_object_space",
+              "space_size": 0,
+              "space_used_size": 0,
+              "space_available_size": 0,
+              "physical_space_size": 0
+            },
+            {
+              "space_name": "trusted_large_object_space",
+              "space_size": 2195456,
+              "space_used_size": 2172024,
+              "space_available_size": 0,
+              "physical_space_size": 2195456
+            }
+          ]
+        }
+      ],
+      "samples": [],
+      "stepCounts": {
+        "expand": 263032
+      },
+      "note": "Actual own parser/expander/checker and unchanged opaque drivers; no image patch, AST replay or replacement checker. Diagnostics are not clean CPU/peak-RAM evidence. Uncollected samples may include garbage not yet collected; they are not strong-retention proof. A heap snapshot can induce GC and pause execution, and is a separate diagnostic prefix.",
+      "moduleCount": 17,
+      "sourceDeclarations": 2954,
+      "activePhase": "check",
+      "snapshot": {
+        "step": 1000000,
+        "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/d1-candidate.json.heapsnapshot",
+        "numericValuesExposed": true,
+        "memoryBefore": {
+          "memory": {
+            "rss": 703086592,
+            "heapTotal": 654737408,
+            "heapUsed": 447150168,
+            "external": 3098865,
+            "arrayBuffers": 25035
+          },
+          "heapStatistics": {
+            "total_heap_size": 654737408,
+            "total_heap_size_executable": 62013440,
+            "total_physical_size": 654966784,
+            "total_available_size": 6395849680,
+            "used_heap_size": 447150392,
+            "heap_size_limit": 6845104128,
+            "malloced_memory": 2113640,
+            "peak_malloced_memory": 283156480,
+            "does_zap_garbage": 0,
+            "number_of_native_contexts": 1,
+            "number_of_detached_contexts": 0,
+            "total_global_handles_size": 8192,
+            "used_global_handles_size": 3648,
+            "external_memory": 3098865
+          },
+          "spaces": [
+            {
+              "space_name": "read_only_space",
+              "space_size": 0,
+              "space_used_size": 0,
+              "space_available_size": 0,
+              "physical_space_size": 0
+            },
+            {
+              "space_name": "new_space",
+              "space_size": 268435456,
+              "space_used_size": 85664040,
+              "space_available_size": 48545496,
+              "physical_space_size": 268435456
+            },
+            {
+              "space_name": "old_space",
+              "space_size": 208633856,
+              "space_used_size": 202698320,
+              "space_available_size": 4367656,
+              "physical_space_size": 208666624
+            },
+            {
+              "space_name": "code_space",
+              "space_size": 61865984,
+              "space_used_size": 52317888,
+              "space_available_size": 9540544,
+              "physical_space_size": 61865984
+            },
+            {
+              "space_name": "shared_space",
+              "space_size": 0,
+              "space_used_size": 0,
+              "space_available_size": 0,
+              "physical_space_size": 0
+            },
+            {
+              "space_name": "trusted_space",
+              "space_size": 52756480,
+              "space_used_size": 43937504,
+              "space_available_size": 8810592,
+              "physical_space_size": 52953088
+            },
+            {
+              "space_name": "shared_trusted_space",
+              "space_size": 0,
+              "space_used_size": 0,
+              "space_available_size": 0,
+              "physical_space_size": 0
+            },
+            {
+              "space_name": "new_large_object_space",
+              "space_size": 0,
+              "space_used_size": 0,
+              "space_available_size": 134217728,
+              "physical_space_size": 0
+            },
+            {
+              "space_name": "large_object_space",
+              "space_size": 60702720,
+              "space_used_size": 60228664,
+              "space_available_size": 0,
+              "physical_space_size": 60702720
+            },
+            {
+              "space_name": "code_large_object_space",
+              "space_size": 147456,
+              "space_used_size": 132896,
+              "space_available_size": 0,
+              "physical_space_size": 147456
+            },
+            {
+              "space_name": "shared_large_object_space",
+              "space_size": 0,
+              "space_used_size": 0,
+              "space_available_size": 0,
+              "physical_space_size": 0
+            },
+            {
+              "space_name": "shared_trusted_large_object_space",
+              "space_size": 0,
+              "space_used_size": 0,
+              "space_available_size": 0,
+              "physical_space_size": 0
+            },
+            {
+              "space_name": "trusted_large_object_space",
+              "space_size": 2195456,
+              "space_used_size": 2172024,
+              "space_available_size": 0,
+              "physical_space_size": 2195456
+            }
+          ]
+        },
+        "implicitGC": true,
+        "notPeakMemoryEvidence": true,
+        "memoryAfter": {
+          "memory": {
+            "rss": 1723482112,
+            "heapTotal": 322584576,
+            "heapUsed": 313284888,
+            "external": 3096987,
+            "arrayBuffers": 25037
+          },
+          "heapStatistics": {
+            "total_heap_size": 322584576,
+            "total_heap_size_executable": 48906240,
+            "total_physical_size": 321519616,
+            "total_available_size": 6531273312,
+            "used_heap_size": 313285112,
+            "heap_size_limit": 6845104128,
+            "malloced_memory": 2113640,
+            "peak_malloced_memory": 283156480,
+            "does_zap_garbage": 0,
+            "number_of_native_contexts": 1,
+            "number_of_detached_contexts": 0,
+            "total_global_handles_size": 8192,
+            "used_global_handles_size": 3648,
+            "external_memory": 3096987
+          },
+          "spaces": [
+            {
+              "space_name": "read_only_space",
+              "space_size": 0,
+              "space_used_size": 0,
+              "space_available_size": 0,
+              "physical_space_size": 0
+            },
+            {
+              "space_name": "new_space",
+              "space_size": 1048576,
+              "space_used_size": 1216,
+              "space_available_size": 1047296,
+              "physical_space_size": 311296
+            },
+            {
+              "space_name": "old_space",
+              "space_size": 173768704,
+              "space_used_size": 167669480,
+              "space_available_size": 4897824,
+              "physical_space_size": 173752320
+            },
+            {
+              "space_name": "code_space",
+              "space_size": 48758784,
+              "space_used_size": 47436896,
+              "space_available_size": 1315936,
+              "physical_space_size": 48726016
+            },
+            {
+              "space_name": "shared_space",
+              "space_size": 0,
+              "space_used_size": 0,
+              "space_available_size": 0,
+              "physical_space_size": 0
+            },
+            {
+              "space_name": "trusted_space",
+              "space_size": 38600704,
+              "space_used_size": 38135392,
+              "space_available_size": 443184,
+              "physical_space_size": 38322176
+            },
+            {
+              "space_name": "shared_trusted_space",
+              "space_size": 0,
+              "space_used_size": 0,
+              "space_available_size": 0,
+              "physical_space_size": 0
+            },
+            {
+              "space_name": "new_large_object_space",
+              "space_size": 0,
+              "space_used_size": 0,
+              "space_available_size": 1048576,
+              "physical_space_size": 0
+            },
+            {
+              "space_name": "large_object_space",
+              "space_size": 58064896,
+              "space_used_size": 57738152,
+              "space_available_size": 0,
+              "physical_space_size": 58064896
+            },
+            {
+              "space_name": "code_large_object_space",
+              "space_size": 147456,
+              "space_used_size": 132896,
+              "space_available_size": 0,
+              "physical_space_size": 147456
+            },
+            {
+              "space_name": "shared_large_object_space",
+              "space_size": 0,
+              "space_used_size": 0,
+              "space_available_size": 0,
+              "physical_space_size": 0
+            },
+            {
+              "space_name": "shared_trusted_large_object_space",
+              "space_size": 0,
+              "space_used_size": 0,
+              "space_available_size": 0,
+              "physical_space_size": 0
+            },
+            {
+              "space_name": "trusted_large_object_space",
+              "space_size": 2195456,
+              "space_used_size": 2172024,
+              "space_available_size": 0,
+              "physical_space_size": 2195456
+            }
+          ]
+        },
+        "sha256": "0ce7c0eca8144cd5b7b4a394c69dc5dc72d95a01be37d18fda603841ce6796d6"
+      },
+      "finalMemory": {
+        "memory": {
+          "rss": 2250522624,
+          "heapTotal": 302809088,
+          "heapUsed": 223043400,
+          "external": 148957240,
+          "arrayBuffers": 145885290
+        },
+        "heapStatistics": {
+          "total_heap_size": 302809088,
+          "total_heap_size_executable": 48906240,
+          "total_physical_size": 301776896,
+          "total_available_size": 6587046960,
+          "used_heap_size": 223043624,
+          "heap_size_limit": 6845104128,
+          "malloced_memory": 2154600,
+          "peak_malloced_memory": 283156480,
+          "does_zap_garbage": 0,
+          "number_of_native_contexts": 1,
+          "number_of_detached_contexts": 0,
+          "total_global_handles_size": 8192,
+          "used_global_handles_size": 4960,
+          "external_memory": 148957240
+        },
+        "spaces": [
+          {
+            "space_name": "read_only_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "new_space",
+            "space_size": 1048576,
+            "space_used_size": 174864,
+            "space_available_size": 873648,
+            "physical_space_size": 294912
+          },
+          {
+            "space_name": "old_space",
+            "space_size": 173244416,
+            "space_used_size": 96393832,
+            "space_available_size": 41066768,
+            "physical_space_size": 173228032
+          },
+          {
+            "space_name": "code_space",
+            "space_size": 48758784,
+            "space_used_size": 47436256,
+            "space_available_size": 1316576,
+            "physical_space_size": 48726016
+          },
+          {
+            "space_name": "shared_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "trusted_space",
+            "space_size": 38600704,
+            "space_used_size": 38133168,
+            "space_available_size": 445408,
+            "physical_space_size": 38371328
+          },
+          {
+            "space_name": "shared_trusted_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "new_large_object_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 1048576,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "large_object_space",
+            "space_size": 38813696,
+            "space_used_size": 38601528,
+            "space_available_size": 0,
+            "physical_space_size": 38813696
+          },
+          {
+            "space_name": "code_large_object_space",
+            "space_size": 147456,
+            "space_used_size": 132896,
+            "space_available_size": 0,
+            "physical_space_size": 147456
+          },
+          {
+            "space_name": "shared_large_object_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "shared_trusted_large_object_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "trusted_large_object_space",
+            "space_size": 2195456,
+            "space_used_size": 2172024,
+            "space_available_size": 0,
+            "physical_space_size": 2195456
+          }
+        ]
+      }
+    },
+    "census": {
+      "schemaVersion": 1,
+      "diagnosticOnly": true,
+      "scope": "Numeric value/owner references in snapshot. Smi/artificial nodes are NOT allocated objects; HeapNumber node identity/type is not itself proof of allocator traffic, in-object layout or causal boxing. Hidden/property views may overlap; do not add rows or call them exclusive retained bytes. Snapshot induces GC and is not peak-memory evidence.",
+      "snapshot": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/d1-candidate.json.heapsnapshot",
+        "sha256": "0ce7c0eca8144cd5b7b4a394c69dc5dc72d95a01be37d18fda603841ce6796d6",
+        "bytes": 469816547
+      },
+      "nodeCount": 4669503,
+      "edgeCount": 21161817,
+      "numberNodeLabels": {
+        "heap number": 802,
+        "smi number": 570207
+      },
+      "numericClassesByNodeLabel": {
+        "heap number": {
+          "nonfinite": 21,
+          "signed32_nonnegative": 605,
+          "above_u32": 26,
+          "u32_high_bit_set": 107,
+          "signed32_negative": 1,
+          "fractional": 39,
+          "below_signed32": 3
+        },
+        "smi number": {
+          "signed32_nonnegative": 570119,
+          "signed32_negative": 88
+        }
+      },
+      "missingValuesByNodeLabel": {},
+      "taggedObjectCounts": {
+        "checker_core_steps_v1.CheckerRunState": 4,
+        "Con": 318314,
+        "../bend2/selfhost/ast.QOne": 33859,
+        "../bend2/selfhost/ast.QMany": 17535,
+        "None": 107586,
+        "../bend2/selfhost/ast.TermQuantity": 8542,
+        "../bend2/selfhost/ast.TermFill": 9608,
+        "../bend2/selfhost/ast.TermRef": 45553,
+        "../bend2/selfhost/ast.SpanOf": 232709,
+        "../bend2/selfhost/ast.TermApp": 22269,
+        "../bend2/selfhost/ast.TermVar": 24375,
+        "Nil": 239602,
+        "../bend2/selfhost/ast.Constructor": 3487,
+        "../bend2/selfhost/ast.Binder": 20193,
+        "../bend2/selfhost/ast.QZero": 4690,
+        "../bend2/selfhost/ast.TermType": 652,
+        "../bend2/selfhost/ast.BodyReply": 8641,
+        "../bend2/selfhost/ast.TermLam": 1245,
+        "../bend2/selfhost/ast.SomeTerm": 2432,
+        "../bend2/selfhost/ast.BodyCase": 6800,
+        "../bend2/selfhost/ast.BodyMatch": 1864,
+        "../bend2/selfhost/ast.DefTerm": 2397,
+        "../bend2/selfhost/ast.Definition": 2459,
+        "../bend2/selfhost/ast.TermAll": 65,
+        "../bend2/selfhost/ast.TermEqual": 22,
+        "../bend2/selfhost/ast.TermCtr": 43139,
+        "../bend2/selfhost/ast.BodyLocal": 1203,
+        "../bend2/selfhost/ast.TermString": 804,
+        "../bend2/selfhost/ast.TermAnn": 400,
+        "../bend2/selfhost/ast.StringLiteralNames": 1130,
+        "../bend2/selfhost/checker_arena.TermVar": 48679,
+        "../bend2/selfhost/checker_arena.BodyReply": 8699,
+        "../bend2/selfhost/checker_arena.BodyCase": 17549,
+        "../bend2/selfhost/checker_arena.BodyMatch": 4494,
+        "../bend2/selfhost/checker_arena.TermRef": 77667,
+        "../bend2/selfhost/checker_arena.TermCtr": 81526,
+        "../bend2/selfhost/checker_arena.TermQuantity": 17610,
+        "../bend2/selfhost/checker_arena.TermFill": 16381,
+        "../bend2/selfhost/checker_arena.BodyLocal": 3320,
+        "../bend2/selfhost/checker_arena.TermQuant": 21331,
+        "../bend2/selfhost/checker_arena.TermString": 1125,
+        "../bend2/selfhost/checker_arena.TermType": 4501,
+        "../bend2/selfhost/checker_arena.TermAnn": 3425,
+        "../bend2/selfhost/checker_arena.TermLam": 8773,
+        "../bend2/selfhost/checker_arena.TermAll": 39043,
+        "../bend2/selfhost/checker_arena.TermBang": 2,
+        "../bend2/selfhost/checker_arena.PatternVar": 37624,
+        "../bend2/selfhost/checker_arena.PatternCtr": 33402,
+        "../bend2/selfhost/checker_arena.Binder": 20257,
+        "../bend2/selfhost/checker_arena.TermApp": 50423,
+        "../bend2/selfhost/checker_ir.Words": 6672,
+        "../bend2/selfhost/checker_ir.SomeTerm": 4410,
+        "../bend2/selfhost/checker_ir.DefTerm": 2398,
+        "../bend2/selfhost/checker_ir.Definition": 2460,
+        "../bend2/selfhost/checker_ir.DefTop": 2455,
+        "../bend2/selfhost/checker_arena.TermEqual": 173,
+        "MLeaf": 51387,
+        "../bend2/selfhost/checker_ir.DefinitionFacts": 1642,
+        "../bend2/selfhost/checker_ir.CheckedBinding": 69775,
+        "../bend2/selfhost/checker_ir.TypedOccurrence": 56583,
+        "Some": 64093,
+        "../bend2/selfhost/ast.PatternCtr": 23619,
+        "../bend2/selfhost/checker_ir.Symbol": 40924,
+        "../bend2/selfhost/checker_ir.ConstructorSymbol": 27688,
+        "../bend2/selfhost/checker_ir.CheckedVariable": 14972,
+        "../bend2/selfhost/checker_ir.CheckedConstructor": 9760,
+        "../bend2/selfhost/checker_ir.DefinitionSymbol": 4934,
+        "../bend2/selfhost/ast.PatternVar": 18392,
+        "../bend2/selfhost/checker_ir.CaseOccurrence": 5386,
+        "../bend2/selfhost/lexer.TokenInfo": 58,
+        "template_steps_v1.TemplateValue": 210,
+        "template_steps_v1.TemplateFinished": 210,
+        "../bend2/selfhost/checker_ir.NoTerm": 3699,
+        "../bend2/selfhost/scope_lookup.ArenaGlobal": 34771,
+        "../bend2/selfhost/scope_lookup.GlobalConstructor": 3203,
+        "../bend2/selfhost/checker_arena.TermAdt": 19508,
+        "FloatScanContinue": 4,
+        "GT": 2,
+        "LT": 2,
+        "FloatScanDone": 1,
+        "Tuple": 432,
+        "FloatParts": 1,
+        "MNode": 51390,
+        "../bend2/selfhost/lexer.NameToken": 6,
+        "TopOwnerNone": 3,
+        "TopOwnerClosed": 2,
+        "Request_pattern_scan": 1,
+        "Kont_312599": 1,
+        "Kont_308948": 1,
+        "Request_parse_terms_until_colon_result": 1,
+        "FeedbackCall": 56,
+        "NoProgress": 151,
+        "FeedbackControl": 77,
+        "Kont_309436": 1,
+        "PatternExpectActionRow0": 1,
+        "Value_4": 1,
+        "FeedbackDone": 19,
+        "PatternExpectActionRow10": 1,
+        "StringCharsText": 1,
+        "Kont_171398": 1,
+        "checker_core_steps_v1.ArenaResult": 549,
+        "checker_core_steps_v1.CheckerValue": 1161,
+        "checker_core_steps_v1.CheckerFinished": 1161,
+        "checker_core_steps_v1.ArenaStore": 333,
+        "checker_core_steps_v1.CheckerDirect": 998,
+        "checker_core_steps_v1.ScalarLiteralNames": 5,
+        "PatternCompletedTextRow23": 1,
+        "Request_parse_local_values_next": 1,
+        "../bend2/selfhost/checker_ir.ScalarOccurrence": 391,
+        "../bend2/selfhost/scope_lookup.GlobalDefinition": 1902,
+        "../bend2/selfhost/checker_ir.FamilySymbol": 8302,
+        "../bend2/selfhost/checker_ir.LocalOccurrence": 1033,
+        "../bend2/selfhost/checker_ir.LocalReferenceOccurrence": 1135,
+        "../bend2/selfhost/checker_ir.ClauseFor": 145,
+        "../bend2/selfhost/checker_ir.LawTop": 78,
+        "../bend2/selfhost/checker_ir.LawDecl": 78,
+        "template_steps_v1.TemplateStackMore": 2,
+        "template_steps_v1.TemplateRunState": 3,
+        "template_steps_v1.TemplateRequest_top_keys": 4,
+        "template_steps_v1.TemplateRequestGroup_0": 57,
+        "template_steps_v1.TemplatePending": 205,
+        "template_steps_v1.TemplateRequest_collect_template_decls": 2,
+        "template_steps_v1.TemplateRequest_has_template_binder": 2,
+        "template_steps_v1.TemplateRequest_collect_template_decl": 1,
+        "template_steps_v1.TemplateRequest_qualify": 1,
+        "../bend2/selfhost/checker_ir.StringOccurrence": 539,
+        "../bend2/selfhost/checker_ir.Constructor": 3487,
+        "checker_core_steps_v1.CheckerRequest_scope_canonical_aliases_filter": 1,
+        "checker_core_steps_v1.CheckerRequestGroup_10": 21,
+        "checker_core_steps_v1.CheckerPending": 677,
+        "../bend2/selfhost/checker_ir.Names": 10086,
+        "../bend2/selfhost/checker_ir.NameCons": 9,
+        "checker_core_steps_v1.CheckerRequest_scope_name_is_in": 1,
+        "../bend2/selfhost/checker_ir.NameNil": 15,
+        "checker_core_steps_v1.CheckerRequest_scope_wildcard_patterns": 2,
+        "checker_core_steps_v1.CheckerRequestGroup_11": 54,
+        "checker_core_steps_v1.CheckerRequest_arena_words_cons": 28,
+        "checker_core_steps_v1.CheckerRequestGroup_14": 66,
+        "checker_core_steps_v1.CheckerRequest_pattern_row_selection_merge_order": 1,
+        "checker_core_steps_v1.PatternRowSelection": 8,
+        "template_steps_v1.TemplateRequest_expand_binders": 4,
+        "template_steps_v1.TemplateRequestGroup_1": 74,
+        "template_steps_v1.TemplateRequest_expand_constructors": 2,
+        "template_steps_v1.TemplateRequest_expand_term": 15,
+        "template_steps_v1.TemplateDirect": 66,
+        "../bend2/selfhost/ast.TermQuant": 148,
+        "template_steps_v1.TemplateRequest_strip_template_decls": 2,
+        "template_steps_v1.TemplateRequest_expand_application": 1,
+        "template_steps_v1.TemplateRequest_expand_stable_terms": 2,
+        "template_steps_v1.TemplateRequest_expand_stable_tail": 1,
+        "template_steps_v1.TemplateRequest_expand_terms": 6,
+        "template_steps_v1.TemplateRequest_expand_clauses": 2,
+        "template_steps_v1.TemplateRequest_expand_application_spine": 1,
+        "template_steps_v1.TemplateRequest_expand_application_template": 1,
+        "template_steps_v1.TemplateRequest_strip_template_definition": 1,
+        "template_steps_v1.TemplateRequest_is_template_instance": 1,
+        "template_steps_v1.TemplateRequest_find_generated_identity": 1,
+        "template_steps_v1.TemplateRequest_strip_instance_or_definition": 1,
+        "template_steps_v1.TemplateRequest_expand_definition": 1,
+        "template_steps_v1.TemplateRequest_expand_optional": 1,
+        "template_steps_v1.TemplateRequest_expand_body": 1,
+        "../bend2/selfhost/ast.DefImports": 60,
+        "template_steps_v1.TemplateRequest_expand_maybe": 1,
+        "../bend2/selfhost/ast.ClauseFor": 145,
+        "../bend2/selfhost/ast.NoTerm": 25,
+        "../bend2/selfhost/ast.TermRefl": 9,
+        "template_steps_v1.TemplateRequest_expand_constructor_stable": 1,
+        "../bend2/selfhost/ast.TermRewrite": 4,
+        "../bend2/selfhost/checker_arena.StringSchemaSaved": 2,
+        "../bend2/selfhost/checker_arena.SubstMemoEmpty": 4,
+        "../bend2/selfhost/checker_arena.ResolutionFrameOpen": 2,
+        "../bend2/selfhost/checker_arena.CtrLeafSaved": 74,
+        "../bend2/selfhost/checker_arena.CasePrefixEmpty": 4,
+        "../bend2/selfhost/checker_arena.CasePrefixSaved": 7,
+        "../bend2/selfhost/loaded_module.LoadedModule": 21,
+        "../bend2/selfhost/ast.Module": 20,
+        "../bend2/selfhost/ast.TypeTop": 403,
+        "../bend2/selfhost/ast.TypeDecl": 403,
+        "../bend2/selfhost/checker_arena.TermMin": 9,
+        "../bend2/selfhost/checker_arena.TermRefl": 10,
+        "../bend2/selfhost/checker_arena.TermRewrite": 12,
+        "../bend2/selfhost/checker_arena.NamePool": 7,
+        "checker_core_steps_v1.CheckerRequest_scalar_closed_word_walk": 1,
+        "checker_core_steps_v1.CheckerRequestGroup_7": 6,
+        "checker_core_steps_v1.ScalarLiteralBit": 2,
+        "checker_core_steps_v1.CheckerRequest_scalar_bits": 1,
+        "checker_core_steps_v1.CheckerRequestGroup_0": 15,
+        "../bend2/selfhost/checker_ir.WordCons": 92,
+        "checker_core_steps_v1.CheckerRequest_scope_constructor_trees_are_closed": 5,
+        "../bend2/selfhost/checker_ir.WordNil": 73,
+        "checker_core_steps_v1.CheckerRequest_pattern_usage_valid_list": 2,
+        "checker_core_steps_v1.CheckerRequestGroup_5": 24,
+        "checker_core_steps_v1.CheckerRequest_literal_symbols": 1,
+        "checker_core_steps_v1.CheckerRequest_checked_symbol": 2,
+        "../bend2/selfhost/lexer.Pos": 3,
+        "../bend2/selfhost/lexer.ScanComment": 2,
+        "../bend2/selfhost/lexer.ScanNext": 13,
+        "../bend2/selfhost/lexer.ScanName": 2,
+        "../bend2/selfhost/lexer.ScanNormal": 7,
+        "../bend2/selfhost/lexer.NewlineToken": 4,
+        "../bend2/selfhost/lexer.SymbolToken": 20,
+        "../bend2/selfhost/lexer.ScanNumber": 3,
+        "../bend2/selfhost/lexer.NumberToken": 2,
+        "../bend2/selfhost/checker_arena.TemplateBinder": 10,
+        "checker_core_steps_v1.CheckerRequest_usage_merge_quantity": 1,
+        "checker_core_steps_v1.CheckerRequestGroup_8": 42,
+        "checker_core_steps_v1.Usage": 4,
+        "checker_core_steps_v1.CheckerRequest_usage_merge": 1,
+        "checker_core_steps_v1.Binding": 17,
+        "checker_core_steps_v1.CheckerRequest_term_usage_map": 12,
+        "checker_core_steps_v1.CheckerRequest_definition_visible_self": 1,
+        "checker_core_steps_v1.CheckerRequest_definition_term_inference": 1,
+        "../bend2/selfhost/checker_arena.ScalarSchemaOpen": 1,
+        "../bend2/selfhost/checker_arena.Arena": 43,
+        "checker_core_steps_v1.DefinitionBodyTyped": 1,
+        "checker_core_steps_v1.CheckerRequest_recursion_terminates_list": 5,
+        "checker_core_steps_v1.CheckerRequestGroup_9": 73,
+        "checker_core_steps_v1.CheckerRequest_arena_publish_occurrence": 3,
+        "checker_core_steps_v1.CheckerRequestGroup_15": 52,
+        "checker_core_steps_v1.CheckerRequest_arena_publish_global": 11,
+        "checker_core_steps_v1.CheckerRequestGroup_16": 16,
+        "checker_core_steps_v1.ScopedState": 6,
+        "checker_core_steps_v1.DefinitionElaborated": 2,
+        "checker_core_steps_v1.CheckerRequest_lower_family_sugar": 1,
+        "checker_core_steps_v1.CheckerRequestGroup_3": 11,
+        "checker_core_steps_v1.CheckerRequest_check_pattern_typed": 2,
+        "checker_core_steps_v1.CheckerRequest_pattern_value": 3,
+        "checker_core_steps_v1.PatternTyped": 2,
+        "checker_core_steps_v1.CheckerRequest_core_shift": 13,
+        "checker_core_steps_v1.CheckerRequestGroup_12": 42,
+        "checker_core_steps_v1.CheckerRequest_core_subst": 13,
+        "checker_core_steps_v1.CheckerRequest_check_pattern_typed_fields": 1,
+        "checker_core_steps_v1.CheckerRequest_core_pattern_list_depth": 15,
+        "checker_core_steps_v1.PatternFieldsTyped": 2,
+        "checker_core_steps_v1.CheckerRequest_core_pattern_depth": 6,
+        "checker_core_steps_v1.CheckerRequest_restore_named_head": 1,
+        "checker_core_steps_v1.CheckerRequest_arena_names_cons": 12,
+        "checker_core_steps_v1.CheckerRequest_arena_put_node": 99,
+        "checker_core_steps_v1.CheckerRequestGroup_13": 104,
+        "checker_core_steps_v1.CheckerRequest_replace_free_term": 2,
+        "checker_core_steps_v1.CheckerRequestGroup_4": 38,
+        "checker_core_steps_v1.CheckerRequest_family_constructor_keys_inner": 2,
+        "checker_core_steps_v1.PatternTypeFailure": 1,
+        "checker_core_steps_v1.PatternRowIndex": 4,
+        "checker_core_steps_v1.CheckerRequest_collect_constructor_field_types_view": 1,
+        "checker_core_steps_v1.CheckerRequest_scope_specialize_pattern_rows_named": 1,
+        "checker_core_steps_v1.CheckerRequest_all_variable_patterns": 2,
+        "checker_core_steps_v1.CheckerRequest_recursion_terminates": 11,
+        "checker_core_steps_v1.CheckerRequest_canonicalize_term": 18,
+        "checker_core_steps_v1.Inferred": 32,
+        "checker_core_steps_v1.CheckerRequest_inherit_law_binders": 1,
+        "checker_core_steps_v1.CheckerRequest_arena_publish_binder": 1,
+        "checker_core_steps_v1.CheckerRequest_arena_publish_binder_view": 1,
+        "checker_core_steps_v1.CheckerRequest_arena_publish_binders_copy": 1,
+        "checker_core_steps_v1.CheckerRequest_shift_terms": 2,
+        "checker_core_steps_v1.CheckerRequest_scope_specialize_pattern_rows": 3,
+        "checker_core_steps_v1.CheckerRequest_arena_words_append": 11,
+        "checker_core_steps_v1.CheckerRequest_matrix_covers": 3,
+        "checker_core_steps_v1.ScrutineeTypes": 2,
+        "checker_core_steps_v1.CheckerRequest_term_usage_map_case": 1,
+        "checker_core_steps_v1.CheckerRequest_application_bangs_valid": 3,
+        "checker_core_steps_v1.CheckerRequest_arena_publish_checked_patterns": 2,
+        "../bend2/selfhost/checker_arena.ResolvedRefSaved": 159,
+        "checker_core_steps_v1.CheckerRequest_whnf": 14,
+        "checker_core_steps_v1.CheckerRequestGroup_2": 64,
+        "checker_core_steps_v1.CheckerRequest_arena_bound_range": 1,
+        "checker_core_steps_v1.CheckerRequest_global_scope_constructor_alias_collision": 2,
+        "checker_core_steps_v1.CheckerRequest_apply_prefix": 6,
+        "checker_core_steps_v1.CheckerRequest_arena_quantities_cons": 2,
+        "checker_core_steps_v1.CheckerRequest_match_branch_body_source": 1,
+        "checker_core_steps_v1.CheckerRequest_match_branch_body": 1,
+        "checker_core_steps_v1.CheckerRequest_term_usage_map_list": 3,
+        "checker_core_steps_v1.CheckerRequest_scope_constructor_lists_equal_open": 2,
+        "checker_core_steps_v1.CheckerRequest_check_binder_usage_map": 1,
+        "checker_core_steps_v1.CheckerRequest_canonicalize_pattern": 1,
+        "checker_core_steps_v1.CheckerRequest_arena_publish_pattern_view": 1,
+        "checker_core_steps_v1.CheckerRequest_arena_publish_pattern": 1,
+        "checker_core_steps_v1.CheckerRequest_arena_publish_patterns_copy": 1,
+        "checker_core_steps_v1.CheckerRequest_usage_get": 3,
+        "../bend2/selfhost/checker_ir.LoadedModule": 18,
+        "checker_core_steps_v1.CheckerRequest_scope_pattern_row_subsumes": 3,
+        "../bend2/selfhost/ast.DefTop": 2457,
+        "checker_core_steps_v1.CheckerRequest_arena_pack_term": 15,
+        "../bend2/selfhost/checker_arena.PatternPool": 4,
+        "checker_core_steps_v1.CheckerStackMore": 590,
+        "MTip": 11,
+        "template_steps_v1.CaptureName": 5834,
+        "checker_core_steps_v1.CheckerRequest_arena_bound_node": 1,
+        "checker_core_steps_v1.CheckerRequest_arena_publication_lookup": 1,
+        "checker_core_steps_v1.CheckerRequest_arena_publication_uncached": 2,
+        "../bend2/selfhost/checker_arena.PublishedTerm": 536,
+        "checker_core_steps_v1.CheckerRequest_canonical_key": 9,
+        "checker_core_steps_v1.CheckerRequestGroup_1": 25,
+        "../bend2/selfhost/scope_lookup.ArenaGlobalBucket": 15948,
+        "../bend2/selfhost/scope_lookup.ArenaGlobalIndex": 25,
+        "../bend2/selfhost/scope_lookup.ArenaGlobalSegment": 16,
+        "../bend2/selfhost/scope_lookup.ArenaVisibleScope": 5,
+        "checker_core_steps_v1.CheckerRequest_binders_type": 1,
+        "../bend2/selfhost/checker_arena.WordPool": 6,
+        "checker_core_steps_v1.CheckerRequest_arena_publish_names": 3,
+        "checker_core_steps_v1.CheckerRequest_arena_copy_word_range": 1,
+        "checker_core_steps_v1.DefinitionSelfValue": 3,
+        "checker_core_steps_v1.CheckerRequest_predeclare_definition_signatures": 2,
+        "../bend2/selfhost/scope_lookup.GlobalFamily": 566,
+        "checker_core_steps_v1.CheckerRequest_predeclare_datatype_headers": 2,
+        "../bend2/selfhost/ast.LawDecl": 77,
+        "../bend2/selfhost/ast.LawTop": 77,
+        "checker_core_steps_v1.CheckerRequest_check_ctr_fields": 2,
+        "checker_core_steps_v1.CheckerRequest_application_argument_bangs_valid": 8,
+        "checker_core_steps_v1.CheckerRequest_application_type_view": 3,
+        "checker_core_steps_v1.CheckerRequest_arena_publish_checked_bindings": 1,
+        "checker_core_steps_v1.CheckerRequest_arena_publish_occurrences": 3,
+        "../bend2/selfhost/checker_ir.Quantities": 6,
+        "checker_core_steps_v1.CheckerRequest_collect_telescope_quantities_view": 1,
+        "../bend2/selfhost/checker_ir.QuantityCons": 3,
+        "checker_core_steps_v1.CheckerRequest_core_subst_terms": 7,
+        "checker_core_steps_v1.CheckerRequest_arena_constructor_owner": 2,
+        "PatternExpectActionRow1": 1,
+        "PatternCompletedTextRow18": 1,
+        "../bend2/selfhost/checker_ir.Module": 18,
+        "PatternScanContext": 2,
+        "PatternExpectActionRow6": 1,
+        "PatternCompleted": 10,
+        "PatternExpectActionRow8": 1,
+        "PatternCompletedTextRow16": 1,
+        "Request_parse_body_scan": 1,
+        "Kont_239509": 1,
+        "Kont_85539": 1,
+        "Kont_296071": 1,
+        "Kont_334657": 1,
+        "Kont_363271": 1,
+        "Kont_331293": 1,
+        "Kont_328193": 1,
+        "Kont_329864": 1,
+        "BodyScanActionRow3": 1,
+        "Value_3": 1,
+        "DefinitionHeaderRow0": 1,
+        "checker_core_steps_v1.CheckerRequest_pattern_row_index_add": 1,
+        "checker_core_steps_v1.CheckerRequest_filter_reachable_constructors": 1,
+        "checker_core_steps_v1.CheckerRequest_pattern_row_index_build": 3,
+        "checker_core_steps_v1.CheckerRequest_matrix_pattern_covered_indexed": 1,
+        "checker_core_steps_v1.CheckerRequest_recursion_terminates_cases": 2,
+        "checker_core_steps_v1.CheckerRequest_replace_order_vars": 2,
+        "checker_core_steps_v1.CheckerRequest_pattern_row_index_empty": 2,
+        "checker_core_steps_v1.CheckerRequest_check_body_pattern_rows": 3,
+        "checker_core_steps_v1.CheckerRequestGroup_6": 9,
+        "checker_core_steps_v1.CheckerRequest_check_body_match_many_rows_result": 1,
+        "checker_core_steps_v1.CheckerRequest_constructor_argument_usage": 1,
+        "checker_core_steps_v1.CheckerRequest_initial_telescope_count": 2,
+        "checker_core_steps_v1.CheckerRequest_infer_scrutinee_types": 1,
+        "checker_core_steps_v1.CheckerRequest_match_scrutinees_valid": 1,
+        "checker_core_steps_v1.CheckerRequest_occurrence_retype": 2,
+        "checker_core_steps_v1.CheckerRequest_term_usage_map_cases": 2,
+        "template_steps_v1.TemplateRequest_imported_from": 1,
+        "template_steps_v1.TemplateRequestGroup_2": 70,
+        "template_steps_v1.TemplateRequest_imported_templates": 2,
+        "template_steps_v1.TemplateRequest_capture_module_names": 5,
+        "PatternCompletedTextOther": 1,
+        "Kont_139772": 1,
+        "Kont_138041": 1,
+        "checker_core_steps_v1.CheckerRequest_arena_publish_top_level": 1,
+        "../bend2/selfhost/checker_arena.Mark": 1,
+        "checker_core_steps_v1.CheckerRequest_family_arity": 1,
+        "checker_core_steps_v1.CheckerRequest_family_quant_prefix": 1,
+        "checker_core_steps_v1.FamilyTerm": 1,
+        "checker_core_steps_v1.CheckerRequest_arena_constructor_trees_word": 1,
+        "checker_core_steps_v1.CheckerRequest_arena_constructor_node_is_tree": 1,
+        "checker_core_steps_v1.CheckerRequest_visible_scope_update": 1,
+        "checker_core_steps_v1.CheckerRequest_check_term_raw": 1,
+        "checker_core_steps_v1.CheckerRequest_infer_adt_arg_check": 1,
+        "checker_core_steps_v1.CheckerRequest_infer_adt_args": 1,
+        "checker_core_steps_v1.CheckerRequest_occurrence_words_equal": 1,
+        "checker_core_steps_v1.CheckerRequest_binders_env": 1,
+        "checker_core_steps_v1.CheckerRequest_fits_kind": 2,
+        "../bend2/selfhost/scope_lookup.ResolvedName": 159,
+        "checker_core_steps_v1.CheckerRequest_check_constructors": 1,
+        "checker_core_steps_v1.CheckerRequest_arena_publish_constructor_decl_list": 2,
+        "checker_core_steps_v1.CheckerRequest_usage_local_env": 1,
+        "FeedbackFuelEnd": 1,
+        "checker_core_steps_v1.CheckerRequest_scope_segment_name_aliases": 1,
+        "checker_core_steps_v1.CheckerRequest_arena_names_append": 2,
+        "checker_core_steps_v1.CheckerRequest_pattern_row_index_segments_complete": 1,
+        "checker_core_steps_v1.CheckerRequest_pattern_row_index_select": 2,
+        "checker_core_steps_v1.CheckerRequest_core_pattern_depth_open": 1,
+        "checker_core_steps_v1.CheckerRequest_core_shift_terms": 4,
+        "checker_core_steps_v1.CheckerRequest_equal_lists_general": 1,
+        "checker_core_steps_v1.CheckerRequest_replace_free_open": 1,
+        "checker_core_steps_v1.CheckerRequest_refine_binding_types": 1,
+        "checker_core_steps_v1.CheckerRequest_whnf_beta_try": 1,
+        "checker_core_steps_v1.CheckerRequest_whnf_beta_body": 1,
+        "checker_core_steps_v1.CheckerRequest_pattern_values": 2,
+        "../bend2/selfhost/checker_arena.SubstMemoSaved": 3406,
+        "checker_core_steps_v1.CheckerRequest_check_datatype_parameters": 1,
+        "checker_core_steps_v1.CheckerRequest_binders_lambda": 1,
+        "../bend2/selfhost/checker_ir.TypeDecl": 404,
+        "checker_core_steps_v1.CheckerRequest_check_type_decl_ir": 1,
+        "checker_core_steps_v1.CheckerRequest_live_field_goal": 1,
+        "checker_core_steps_v1.CheckerRequest_check_live_fields": 1,
+        "../bend2/selfhost/checker_ir.TypeTop": 404,
+        "checker_core_steps_v1.CheckerRequest_arena_release": 1,
+        "Unit": 1,
+        "checker_core_steps_v1.CheckerRequest_check_declarations": 1,
+        "checker_core_steps_v1.CheckerRequest_arena_pack_term_name_result_40": 1,
+        "checker_core_steps_v1.CheckerRequestGroup_17": 13,
+        "checker_core_steps_v1.CheckerRequest_arena_pack_terms_at": 1,
+        "checker_core_steps_v1.CheckerRequest_arena_pack_patterns_length": 1,
+        "checker_core_steps_v1.CheckerRequest_arena_pack_pattern": 1,
+        "checker_core_steps_v1.CheckerRequest_arena_pack_names_length": 1,
+        "checker_core_steps_v1.CheckerRequest_arena_pack_names_at_name_result_31": 1,
+        "checker_core_steps_v1.CheckerRequest_arena_pack_patterns_at": 1,
+        "checker_core_steps_v1.CheckerRequest_arena_pack_patterns_reserve_words_result_29": 1,
+        "checker_core_steps_v1.CheckerRequest_arena_pack_names_reserve_words_result_32": 1,
+        "../bend2/selfhost/checker_ir.DefImports": 60,
+        "checker_core_steps_v1.CheckerRequest_arena_pack_term_name_result_38": 1,
+        "../bend2/selfhost/checker_arena.NodePool": 4,
+        "checker_core_steps_v1.CheckerRequest_arena_pack_maybe_term": 1,
+        "checker_core_steps_v1.CheckerRequest_arena_pack_clause_list": 2,
+        "checker_core_steps_v1.CheckerRequest_arena_pack_pattern_name_result_44": 1,
+        "checker_core_steps_v1.CheckerRequest_arena_pack_term_name_result_37": 1,
+        "../bend2/selfhost/checker_arena.BinderPool": 4,
+        "checker_core_steps_v1.CheckerRequest_metadata_ordinary": 1,
+        "checker_core_steps_v1.CheckerRequest_function_type_of": 2,
+        "checker_core_steps_v1.ApplicationViewValue": 1,
+        "checker_core_steps_v1.CheckerRequest_binders_quantities": 1,
+        "checker_core_steps_v1.CheckerRequest_application_head": 1,
+        "checker_core_steps_v1.CheckerRequest_metadata_sort": 1,
+        "checker_core_steps_v1.CheckerRequest_occurrence_terms": 1,
+        "checker_core_steps_v1.CheckerRequest_equal_raw_identity": 1,
+        "checker_core_steps_v1.CheckerRequest_equal_raw_distinct": 1,
+        "../bend2/selfhost/scope_lookup.ArenaGlobalScope": 3,
+        "checker_core_steps_v1.CheckerRequest_arena_bound_range_loop": 1,
+        "checker_core_steps_v1.CheckerRequest_lookup_binding_head": 1,
+        "../bend2/selfhost/checked_frontend.Diagnostic": 2,
+        "checker_core_steps_v1.InferenceFailure": 4,
+        "checker_core_steps_v1.CheckerRequest_promotion_domain_valid_result": 2,
+        "checker_core_steps_v1.CheckerRequest_promotion_domain_valid": 1,
+        "BraceEqualsActionRow1": 1,
+        "Kont_353513": 1,
+        "Request_parse_law_clause_condition_scan": 1,
+        "DefinitionHeaderRow1": 1,
+        "Kont_130860": 1,
+        "Kont_226950": 1,
+        "Kont_224348": 1,
+        "Kont_357785": 1,
+        "Kont_362397": 1,
+        "Value_0": 1,
+        "Kont_349565": 1,
+        "PatternSingleOutcome": 3,
+        "Kont_301643": 1,
+        "Kont_303223": 1,
+        "Kont_270490": 1,
+        "checker_core_steps_v1.CheckerRequest_application_argument_bangs_valid_terms": 1,
+        "checker_core_steps_v1.CheckerRequest_scope_constructor_lists_equal": 1,
+        "checker_core_steps_v1.CheckerRequest_equal_raw": 4,
+        "checker_core_steps_v1.CheckerRequest_equal_lists": 4,
+        "../bend2/selfhost/ast.ModuleImport": 57,
+        "Kont_307113": 1,
+        "Kont_308366": 1,
+        "Kont_306294": 1,
+        "checker_core_steps_v1.CheckerRequest_global_segments_constructor_candidates": 1,
+        "checker_core_steps_v1.CheckerRequest_global_segments_family_aliases": 1,
+        "checker_core_steps_v1.CheckerRequest_global_segments_has_constructor_owner": 1,
+        "checker_core_steps_v1.CheckerRequest_occurrence_take": 1,
+        "checker_core_steps_v1.CheckerRequest_occurrence_drop": 1,
+        "checker_core_steps_v1.CheckerRequest_binding_quantity_or_one": 1,
+        "checker_core_steps_v1.CheckerRequest_arena_publish_symbols": 1,
+        "checker_core_steps_v1.CheckerRequest_term_usage_map_constructor_args": 1,
+        "checker_core_steps_v1.CasePrefixBuild": 2,
+        "checker_core_steps_v1.CheckerRequest_arena_case_prefix_build": 1,
+        "Request_map_operator_term": 1,
+        "Request_map_operator_terms": 1,
+        "Kont_97825": 1,
+        "Kont_99780": 1,
+        "Value_12": 1,
+        "Value_11": 1,
+        "Kont_99536": 1,
+        "PatternExpectActionRow14": 1,
+        "Kont_282173": 1,
+        "BodyScanActionRow1": 1,
+        "Kont_213361": 1,
+        "Kont_97251": 1,
+        "Kont_93452": 1,
+        "Kont_149840": 1,
+        "PatternExpect": 9,
+        "PatternSingleGoal": 1,
+        "BodyScanActionRow2": 1,
+        "PatternExpectActionRow3": 1,
+        "../bend2/selfhost/ast.TermHole": 2,
+        "Kont_214597": 1,
+        "Kont_215921": 1,
+        "Kont_215020": 1,
+        "Kont_104727": 1,
+        "Request_parse_pattern_tuple": 1,
+        "Kont_140603": 1,
+        "PatternCompletedTextRow19": 1,
+        "PatternExpectActionRow12": 1,
+        "checker_core_steps_v1.CheckerRequest_visible_lookup_key": 1,
+        "checker_core_steps_v1.CheckerRequest_arena_constructor_owner_view": 1,
+        "checker_core_steps_v1.CheckerRequest_global_segments_update": 1,
+        "checker_core_steps_v1.CheckerRequest_visible_lookup_refresh_segments": 2,
+        "checker_core_steps_v1.CheckerRequest_infer_raw": 1,
+        "checker_core_steps_v1.Materialized": 1,
+        "checker_core_steps_v1.CheckerRequest_binder_count": 1,
+        "Kont_239269": 1,
+        "checker_core_steps_v1.CheckerRequest_branch_order_column": 1,
+        "checker_core_steps_v1.CheckerRequest_branch_order_columns": 1,
+        "checker_core_steps_v1.CheckerRequest_replace_free_terms": 1,
+        "checker_core_steps_v1.CheckerRequest_canonicalize_patterns": 1,
+        "checker_core_steps_v1.CheckerRequest_foreign_head": 2,
+        "checker_core_steps_v1.CheckerRequest_check_lambda_body_result": 1,
+        "checker_core_steps_v1.CheckerRequest_use_count_with_expected": 1,
+        "checker_core_steps_v1.CheckerRequest_usage_set": 1,
+        "Request_parse_def_binders_scan": 1,
+        "Request_parse_atom_scan": 1,
+        "Kont_251939": 1,
+        "Kont_251648": 1,
+        "Request_parse_term_tail_at": 1,
+        "Kont_326599": 1,
+        "Kont_325947": 1,
+        "Scope": 1,
+        "Kont_266451": 1,
+        "Kont_242904": 1,
+        "Kont_264079": 1,
+        "Request_parse_term_args_first_result": 1,
+        "Value_9": 1,
+        "Kont_265540": 1,
+        "Request_parse_term_tail": 1,
+        "Kont_342579": 1,
+        "Value_1": 1,
+        "Request_parse_type_constructor_fields_result": 1,
+        "Kont_345467": 1,
+        "Kont_362687": 1,
+        "Kont_344635": 1,
+        "Value_7": 1,
+        "Value_6": 1,
+        "Request_parse_top_result": 1,
+        "checker_core_steps_v1.CheckerRequest_law_signature_scope": 1,
+        "checker_core_steps_v1.CheckerRequest_global_index_build": 1,
+        "checker_core_steps_v1.CheckerRequest_equal_refs": 1,
+        "checker_core_steps_v1.CheckerRequest_scalar_schema_nat": 1,
+        "checker_core_steps_v1.CheckerRequest_global_segments_entries": 1,
+        "PatternFrameOf": 3,
+        "template_steps_v1.TemplateRequest_collect_actual_module": 1,
+        "template_steps_v1.TemplateRequest_collect_actual_binders": 3,
+        "template_steps_v1.TemplateRequest_collect_actual_term": 15,
+        "template_steps_v1.TemplateRequest_collect_actual_modules": 1,
+        "template_steps_v1.TemplateRequest_collect_actual_constructors": 2,
+        "template_steps_v1.TemplateRequest_collect_actual_clauses": 2,
+        "template_steps_v1.TemplateRequest_collect_actual_maybe": 1,
+        "template_steps_v1.TemplateRequest_collect_actual_terms": 7,
+        "template_steps_v1.TemplateRequest_collect_actual_body": 1,
+        "template_steps_v1.TemplateRequest_collect_actual_optional": 1,
+        "template_steps_v1.TemplateRequest_collect_actual_definition": 1,
+        "checker_core_steps_v1.CheckerRequest_scope_pattern_rows_subsume": 1,
+        "checker_core_steps_v1.CheckerRequest_check_body_pattern_vector": 1,
+        "checker_core_steps_v1.CheckerRequest_binder_usage_map": 2,
+        "checker_core_steps_v1.CheckerRequest_usage_pattern_env": 1,
+        "checker_core_steps_v1.CheckerRequest_usage_expected_known": 1,
+        "checker_core_steps_v1.CheckerRequest_case_pattern_rows": 1,
+        "checker_core_steps_v1.CheckerRequest_matrix_covers_constructors": 1,
+        "checker_core_steps_v1.CheckerRequest_law_domain": 1,
+        "checker_core_steps_v1.CheckerRequest_law_type": 1,
+        "checker_core_steps_v1.CheckerRequest_law_quantifier": 1,
+        "checker_core_steps_v1.CheckerRequest_arena_publish_maybe_term": 1,
+        "checker_core_steps_v1.CheckerRequest_arena_publish_clause_list": 2,
+        "checker_core_steps_v1.CheckerRequest_has_string": 1,
+        "template_steps_v1.TemplateDef": 7,
+        "template_steps_v1.TemplateRequest_find_template_match": 1,
+        "template_steps_v1.TemplateRequest_invalid_constructors": 2,
+        "template_steps_v1.TemplateRequest_invalid_definitions": 2,
+        "template_steps_v1.TemplateRequest_invalid_application": 15,
+        "template_steps_v1.TemplateRequest_invalid_binders": 3,
+        "template_steps_v1.TemplateRequest_invalid_terms": 6,
+        "template_steps_v1.TemplateRequest_first_invalid": 11,
+        "template_steps_v1.TemplateRequest_invalid_reference": 1,
+        "template_steps_v1.TemplateRequest_invalid_clauses": 2,
+        "template_steps_v1.TemplateRequest_flatten_application": 1,
+        "template_steps_v1.TemplateRequest_flatten_append": 1,
+        "template_steps_v1.ApplicationSpine": 2,
+        "template_steps_v1.TemplateRequest_invalid_application_spine": 1,
+        "template_steps_v1.TemplateRequest_invalid_application_head": 1,
+        "template_steps_v1.TemplateRequest_invalid_application_parts": 1,
+        "template_steps_v1.TemplateRequest_invalid_definition": 1,
+        "template_steps_v1.TemplateRequest_invalid_def_body": 1,
+        "template_steps_v1.TemplateRequest_invalid_optional": 1,
+        "checker_core_steps_v1.CheckerRequest_whnf_beta_index_normal": 1,
+        "checker_core_steps_v1.CheckerRequest_whnf_beta_index_node": 1,
+        "checker_core_steps_v1.CheckerRequest_whnf_beta_index_name": 1,
+        "checker_core_steps_v1.CheckerRequest_scope_canonical_name_aliases": 1,
+        "checker_core_steps_v1.CheckerRequest_whnf_beta_index_aliases": 1,
+        "checker_core_steps_v1.CheckerRequest_whnf_beta_index_names": 1,
+        "checker_core_steps_v1.CheckerRequest_whnf_beta_cases": 2,
+        "checker_core_steps_v1.CasePrefixSelect": 3,
+        "checker_core_steps_v1.CheckerRequest_scope_constructor_equality_after": 1,
+        "FeedbackKont": 1,
+        "FeedbackResume": 1,
+        "Request_consumed_token_end_before": 1,
+        "Value_5": 1,
+        "Value_16": 1,
+        "PatternExpectActionRow2": 1,
+        "PatternExpectActionRow13": 1,
+        "PatternCaseGoal": 3,
+        "../bend2/selfhost/lexer.QuoteOther": 1,
+        "../bend2/selfhost/lexer.ScanQuoted": 2,
+        "../bend2/selfhost/lexer.QuoteClose": 1,
+        "template_steps_v1.TemplateRequest_has_string": 1,
+        "template_steps_v1.TemplateRequest_template_instance_definition": 1,
+        "template_steps_v1.TemplateRequest_template_instances_for_keys": 2,
+        "template_steps_v1.TemplateRequest_canonical_template_key": 1,
+        "template_steps_v1.TemplateRequest_canonical_template_match": 1,
+        "template_steps_v1.TemplateRequest_strip_canonical_template": 1,
+        "template_steps_v1.TemplateRequest_template_instances": 1,
+        "template_steps_v1.TemplateRequest_template_for_head": 1,
+        "template_steps_v1.TemplateRequest_collect_actual_prefix": 1,
+        "template_steps_v1.TemplateRequest_wrapped_prefix": 1,
+        "template_steps_v1.TemplateRequest_head_key": 1,
+        "template_steps_v1.TemplateRequest_collect_actual_application": 2,
+        "template_steps_v1.TemplateRequest_collect_actual_declarations": 1,
+        "checker_core_steps_v1.CheckerRequest_promotion_domain_inference": 1,
+        "checker_core_steps_v1.CheckerRequest_whnf_beta_selected": 1,
+        "checker_core_steps_v1.CheckerRequest_core_subst_at": 1,
+        "checker_core_steps_v1.CheckerRequest_substitute_many": 3,
+        "checker_core_steps_v1.CheckerRequest_scope_pattern_rows_subsume_other": 1,
+        "checker_core_steps_v1.CheckerRequest_matrix_pattern_covered_constructors": 1,
+        "template_steps_v1.TemplateRequest_generated_modules": 1,
+        "template_steps_v1.TemplateRequestGroup_3": 4,
+        "checker_core_steps_v1.CheckerRequest_term_descend_list": 2,
+        "checker_core_steps_v1.OrderGreater": 4,
+        "Kont_274182": 1,
+        "Kont_272903": 1,
+        "Kont_143942": 1,
+        "checker_core_steps_v1.CheckerRequest_matrix_pattern_covered": 2,
+        "checker_core_steps_v1.CheckerRequest_scope_pattern_rows_subsume_named": 1,
+        "checker_core_steps_v1.CheckerRequest_check_modules_private": 1,
+        "../bend2/selfhost/checker_arena.ScalarSchemaSaved": 1,
+        "BodyScanActionRow4": 1,
+        "checker_core_steps_v1.CheckerRequest_core_shift_open": 1,
+        "checker_core_steps_v1.CheckerRequest_arena_subst_memo_lookup": 1,
+        "checker_core_steps_v1.CheckerRequest_core_subst_open": 1,
+        "checker_core_steps_v1.CheckerRequest_arena_publish_term": 1,
+        "checker_core_steps_v1.CheckerRequest_arena_publish_terms_copy": 1,
+        "checker_core_steps_v1.CheckerRequest_parameter_vars": 1,
+        "checker_core_steps_v1.CheckerRequest_canonicalize_terms": 1,
+        "../bend2/selfhost/scope_lookup.ArenaUnsafeScope": 1,
+        "checker_core_steps_v1.CheckerRequest_global_scope_prepend": 1,
+        "Kont_188249": 1,
+        "../bend2/selfhost/ast.TermTemplate": 1,
+        "../bend2/selfhost/ast.TemplateBinder": 1,
+        "Kont_322498": 1,
+        "Kont_323146": 1,
+        "Kont_347534": 1,
+        "Kont_246785": 1,
+        "Kont_244597": 1,
+        "Kont_209050": 1,
+        "Request_parse_imports_result": 1,
+        "../bend2/selfhost/lexer.QuoteEscape": 1,
+        "checker_core_steps_v1.CheckerRequest_whnf_beta_cases_view": 1,
+        "checker_core_steps_v1.CheckerRequest_whnf_beta_case": 1,
+        "checker_core_steps_v1.CheckerRequest_whnf_beta_pattern_result": 1,
+        "checker_core_steps_v1.CheckerRequest_whnf_patterns": 2,
+        "checker_core_steps_v1.CheckerRequest_whnf_beta_scrutinee": 1,
+        "checker_core_steps_v1.CheckerRequest_whnf_beta_variable": 1,
+        "checker_core_steps_v1.CheckerRequest_whnf_beta_argument": 1,
+        "checker_core_steps_v1.CheckerRequest_arena_case_prefix_index": 1,
+        "checker_core_steps_v1.CheckerRequest_whnf_beta_index": 1,
+        "checker_core_steps_v1.CheckerRequest_equal_match_patterns": 3,
+        "checker_core_steps_v1.CheckerRequest_equal_match_cases": 2,
+        "checker_core_steps_v1.OrderEqual": 3,
+        "checker_core_steps_v1.OrderLess": 1,
+        "checker_core_steps_v1.CheckerRequest_matrix_drop_column": 1,
+        "checker_core_steps_v1.CheckerRequest_metadata_prefix": 1,
+        "SymbolPairMerged": 7,
+        "SymbolTripleMerged": 1,
+        "SymbolCombineMerged": 2,
+        "SymbolCombineSkip": 1,
+        "SymbolCombineScan": 3,
+        "template_steps_v1.TemplateRequest_templates_with_captures": 2,
+        "template_steps_v1.TemplateRequest_invalid_scoped_modules": 1,
+        "Kont_206710": 1,
+        "Kont_82236": 1,
+        "Value_15": 1,
+        "TopOwnerLaw": 1,
+        "FeedbackComplete": 1,
+        "template_steps_v1.TemplateRequest_capture_import_names": 2,
+        "../bend2/selfhost/lexer.ScanAfterDot": 1,
+        "../bend2/selfhost/lexer.ScanAfterExponent": 1,
+        "checker_core_steps_v1.CheckerRequest_local_bindings": 1,
+        "checker_core_steps_v1.CheckerRequest_infer_term_annotation_inner": 1,
+        "checker_core_steps_v1.CheckedLocalEnv": 2,
+        "checker_core_steps_v1.CheckerRequest_local_pattern_quantities_match": 1,
+        "checker_core_steps_v1.CheckerRequest_whnf_beta_index_names_view": 1,
+        "checker_core_steps_v1.CheckerRequest_whnf_beta_index_offset": 1,
+        "template_steps_v1.TemplateRequest_invalid_maybe": 1,
+        "checker_core_steps_v1.CheckerRequest_arena_publish_names_copy": 1,
+        "checker_core_steps_v1.CheckerRequest_quantity_arguments": 1,
+        "checker_core_steps_v1.CheckerRequest_string_schema_fields": 1,
+        "checker_core_steps_v1.CheckerRequest_visible_lookup_merge": 2,
+        "checker_core_steps_v1.CheckerRequest_local_occurrence": 1,
+        "checker_core_steps_v1.CheckerRequest_checked_local_env": 1,
+        "checker_core_steps_v1.CheckerRequest_checked_binding": 1,
+        "StringCharsBackslash": 1,
+        "checker_core_steps_v1.CheckerRequest_constructor_result_possible": 1,
+        "checker_core_steps_v1.CheckerRequest_matrix_variable_column": 1,
+        "checker_core_steps_v1.PatternFieldsFailure": 1,
+        "checker_core_steps_v1.CheckerRequest_recursion_terminates_call_args": 3,
+        "checker_core_steps_v1.CheckerRequest_application_args": 1,
+        "checker_core_steps_v1.CheckerRequest_term_descend_raw": 1,
+        "checker_core_steps_v1.CheckerRequest_term_descend_live": 1,
+        "checker_core_steps_v1.CheckerRequestGroup_18": 2,
+        "Kont_331662": 1,
+        "Value_10": 1,
+        "Value_17": 1,
+        "template_steps_v1.GeneratedRound": 1,
+        "template_steps_v1.TemplateRequest_generate_round_merge": 1,
+        "template_steps_v1.TemplateRequest_generated_for_module_merge": 1,
+        "template_steps_v1.GeneratedBuild": 2,
+        "template_steps_v1.TemplateRequest_generate_round_loaded": 1,
+        "template_steps_v1.TemplateRequest_generated_for_module_match": 1,
+        "template_steps_v1.TemplateRequest_actual_in_catalog_found": 1,
+        "template_steps_v1.TemplateRequest_generated_for_module_here": 1,
+        "template_steps_v1.TemplateRequest_has_template_source_definition": 2,
+        "checker_core_steps_v1.CheckerRequest_recursive_call_decreases": 1,
+        "checker_core_steps_v1.CheckerRequest_term_is_subterm": 3,
+        "template_steps_v1.TemplateRequest_qualify_match": 1,
+        "template_steps_v1.TemplateRequest_collect_templates": 1,
+        "template_steps_v1.TemplateRequest_invalid_template_decls": 2,
+        "template_steps_v1.TemplateRequest_has_late_template_binder": 2,
+        "template_steps_v1.TemplateRequest_invalid_template_decl": 1,
+        "template_steps_v1.TemplateRequest_invalid_template_definitions": 1,
+        "template_steps_v1.TemplateRequest_local_template_match": 1,
+        "template_steps_v1.TemplateRequest_strip_namespace_match": 1,
+        "template_steps_v1.TemplateRequest_capture_declaration_names": 2,
+        "template_steps_v1.TemplateRequest_capture_declared_name": 4,
+        "template_steps_v1.TemplateRequest_capture_constructor_names": 2,
+        "SymbolCombineUnmerged": 4,
+        "SymbolPairUnmerged": 1,
+        "SymbolTripleUnmerged": 1,
+        "checker_core_steps_v1.DeclarationsChecked": 2,
+        "template_steps_v1.TemplateRequest_expand_scoped_modules": 1,
+        "Kont_182168": 1,
+        "../bend2/selfhost/checker_arena.MetadataRead": 1,
+        "../bend2/selfhost/checker_arena.MetadataTables": 1,
+        "checker_core_steps_v1.CheckerRequest_arena_pack_binders_reserve_words_result_30": 1,
+        "checker_core_steps_v1.CheckerRequest_arena_pack_binders_length": 1,
+        "checker_core_steps_v1.CheckerRequest_arena_pack_binder": 1,
+        "checker_core_steps_v1.CheckerRequest_arena_pack_binder_name_result_45": 1,
+        "checker_core_steps_v1.CheckerRequest_arena_pack_binders_at": 1,
+        "checker_core_steps_v1.CheckerRequest_arena_pack_constructor_decl_list": 2,
+        "checker_core_steps_v1.CheckerRequest_arena_pack_top_level_list": 2,
+        "checker_core_steps_v1.CheckerRequest_arena_pack_terms_length": 1,
+        "checker_core_steps_v1.CheckerRequest_arena_pack_terms_reserve_words_result_28": 1,
+        "checker_core_steps_v1.CheckerRequest_arena_pack_modules": 1,
+        "BodyScanActionRow0": 1,
+        "PatternExpectActionRow4": 1,
+        "PatternCompletedTextRow15": 1,
+        "Value_18": 1,
+        "Kont_261611": 1,
+        "Kont_254771": 1,
+        "Request_parse_case_row_indented": 1,
+        "Kont_316227": 1,
+        "Kont_313186": 1,
+        "PatternCaseOutcome": 1,
+        "Kont_317252": 1,
+        "PatternCompletedTextRow17": 1,
+        "Request_literal_pattern_fields": 1,
+        "Kont_136894": 1,
+        "Kont_136385": 1,
+        "Value_14": 1,
+        "Value_13": 1,
+        "Kont_136149": 1,
+        "PatternExpectActionRow9": 1,
+        "BodyScanActionRow6": 1,
+        "Kont_258147": 1,
+        "checker_core_steps_v1.CheckerRequest_import_scope": 1,
+        "checker_core_steps_v1.CheckerRequest_current_scope": 1,
+        "checker_core_steps_v1.CheckerRequest_replace_free_cases": 1,
+        "template_steps_v1.TemplateRequest_generated_declarations": 2,
+        "template_steps_v1.TemplateRequest_visible_templates": 1,
+        "template_steps_v1.TemplateRequest_local_templates": 1,
+        "template_steps_v1.TemplateRequest_scope_capture_names": 1,
+        "checker_core_steps_v1.CheckerRequest_term_usage_map_quantified_list": 2,
+        "../bend2/selfhost/checker_ir.QuantityNil": 1,
+        "checker_core_steps_v1.CheckerRequest_scope_scope_name_aliases": 1,
+        "checker_core_steps_v1.CheckerRequest_visible_lookup_build": 1,
+        "checker_core_steps_v1.CheckerRequest_imported_segments": 1,
+        "checker_core_steps_v1.CheckerRequest_global_scope_constructor_candidates": 1,
+        "checker_core_steps_v1.CheckerRequest_global_scope_family_aliases": 1,
+        "checker_core_steps_v1.CheckerRequest_global_scope_has_constructor_owner": 1,
+        "checker_core_steps_v1.CheckerStackDone": 1,
+        "../bend2/selfhost/ast.TermBang": 1,
+        "../bend2/selfhost/ast.TermMin": 4,
+        "checker_core_steps_v1.CheckerRequest_check_local_pattern_usage_map": 1,
+        "checker_core_steps_v1.CheckerRequest_term_descend_constructor_result": 1,
+        "checker_core_steps_v1.CheckerRequest_string_canonical_names": 1,
+        "checker_core_steps_v1.CheckerRequest_check_string_literal": 1,
+        "checker_core_steps_v1.CheckerRequest_whnf_beta_scrutinee_count": 1,
+        "checker_core_steps_v1.CheckerRequest_whnf_pattern": 1,
+        "checker_core_steps_v1.PatternStuck": 3,
+        "checker_core_steps_v1.CheckerRequest_scope_body_cases_for_names": 1,
+        "checker_core_steps_v1.CheckerRequest_whnf_match_cases_general": 2,
+        "checker_core_steps_v1.PatternValues": 3,
+        "checker_core_steps_v1.PatternMismatch": 3,
+        "checker_core_steps_v1.CheckerRequest_whnf_match_cases": 1,
+        "checker_core_steps_v1.CheckerRequest_scope_body_cases_for_constructor": 1,
+        "template_steps_v1.TemplateRequest_imported_from_match": 1,
+        "../bend2/selfhost/lexer.StringToken": 1,
+        "../bend2/selfhost/lexer.CharToken": 1,
+        "Kont_207865": 1,
+        "../bend2/selfhost/lexer.EndToken": 1,
+        "Kont_365625": 1,
+        "Value_8": 1,
+        "Kont_365172": 1,
+        "EQ": 1,
+        "BraceEqualsActionRow2": 1,
+        "Kont_227357": 1,
+        "Kont_230149": 1,
+        "Kont_299524": 1,
+        "Kont_297632": 1,
+        "Value_2": 1,
+        "Kont_300984": 1
+      },
+      "numericFieldRows": [
+        {
+          "tag": "../bend2/selfhost/ast.SpanOf",
+          "edgeKind": "property",
+          "field": "beg",
+          "targetNumericKind": "smi number",
+          "references": 232707,
+          "classCounts": {
+            "signed32_nonnegative": 232707
+          },
+          "minFinite": 0,
+          "maxFinite": 551010,
+          "exampleValueStrings": [
+            "181597",
+            "181582",
+            "181615",
+            "181701",
+            "11880",
+            "12040",
+            "12076",
+            "12104"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/ast.SpanOf",
+          "edgeKind": "property",
+          "field": "end",
+          "targetNumericKind": "smi number",
+          "references": 232707,
+          "classCounts": {
+            "signed32_nonnegative": 232707
+          },
+          "minFinite": 0,
+          "maxFinite": 551023,
+          "exampleValueStrings": [
+            "181613",
+            "181624",
+            "181710",
+            "11935",
+            "12044",
+            "12097",
+            "12108",
+            "12120"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.TermCtr",
+          "edgeKind": "property",
+          "field": "args_count",
+          "targetNumericKind": "smi number",
+          "references": 81516,
+          "classCounts": {
+            "signed32_nonnegative": 81516
+          },
+          "minFinite": 0,
+          "maxFinite": 14,
+          "exampleValueStrings": [
+            "0",
+            "1",
+            "2",
+            "4",
+            "5",
+            "3",
+            "7",
+            "6"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.TermCtr",
+          "edgeKind": "property",
+          "field": "args_start",
+          "targetNumericKind": "smi number",
+          "references": 81516,
+          "classCounts": {
+            "signed32_nonnegative": 81516
+          },
+          "minFinite": 0,
+          "maxFinite": 2063628,
+          "exampleValueStrings": [
+            "0",
+            "398900",
+            "398896",
+            "398916",
+            "398912",
+            "398888",
+            "398940",
+            "398936"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.TermCtr",
+          "edgeKind": "property",
+          "field": "key_id",
+          "targetNumericKind": "smi number",
+          "references": 81514,
+          "classCounts": {
+            "signed32_nonnegative": 81514
+          },
+          "minFinite": 21,
+          "maxFinite": 16412,
+          "exampleValueStrings": [
+            "125",
+            "126",
+            "127",
+            "213",
+            "214",
+            "374",
+            "212",
+            "21"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.TermRef",
+          "edgeKind": "property",
+          "field": "key_id",
+          "targetNumericKind": "smi number",
+          "references": 77663,
+          "classCounts": {
+            "signed32_nonnegative": 77663
+          },
+          "minFinite": 9,
+          "maxFinite": 13815,
+          "exampleValueStrings": [
+            "27",
+            "342",
+            "343",
+            "9",
+            "344",
+            "345",
+            "18",
+            "337"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_ir.CheckedBinding",
+          "edgeKind": "property",
+          "field": "ty",
+          "targetNumericKind": "smi number",
+          "references": 69767,
+          "classCounts": {
+            "signed32_nonnegative": 69767
+          },
+          "minFinite": 16,
+          "maxFinite": 795498,
+          "exampleValueStrings": [
+            "7794",
+            "344434",
+            "329194",
+            "344920",
+            "7942",
+            "329768",
+            "344896",
+            "344740"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_ir.CheckedBinding",
+          "edgeKind": "property",
+          "field": "type_depth",
+          "targetNumericKind": "smi number",
+          "references": 69767,
+          "classCounts": {
+            "signed32_nonnegative": 69767
+          },
+          "minFinite": 0,
+          "maxFinite": 32,
+          "exampleValueStrings": [
+            "0",
+            "5",
+            "8",
+            "7",
+            "2",
+            "4",
+            "3",
+            "6"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_ir.TypedOccurrence",
+          "edgeKind": "property",
+          "field": "term",
+          "targetNumericKind": "smi number",
+          "references": 56565,
+          "classCounts": {
+            "signed32_nonnegative": 56565
+          },
+          "minFinite": 182,
+          "maxFinite": 795444,
+          "exampleValueStrings": [
+            "7496",
+            "7628",
+            "7882",
+            "7838",
+            "7836",
+            "7824",
+            "7686",
+            "7694"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_ir.TypedOccurrence",
+          "edgeKind": "property",
+          "field": "ty",
+          "targetNumericKind": "smi number",
+          "references": 56565,
+          "classCounts": {
+            "signed32_nonnegative": 56565
+          },
+          "minFinite": 16,
+          "maxFinite": 795522,
+          "exampleValueStrings": [
+            "7482",
+            "344324",
+            "329768",
+            "344904",
+            "344912",
+            "344822",
+            "344614",
+            "344642"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "MNode",
+          "edgeKind": "property",
+          "field": "pos",
+          "targetNumericKind": "smi number",
+          "references": 51363,
+          "classCounts": {
+            "signed32_nonnegative": 51363
+          },
+          "minFinite": 0,
+          "maxFinite": 2903,
+          "exampleValueStrings": [
+            "262",
+            "263",
+            "292",
+            "261",
+            "755",
+            "392",
+            "294",
+            "425"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.TermApp",
+          "edgeKind": "property",
+          "field": "arg_id",
+          "targetNumericKind": "smi number",
+          "references": 50415,
+          "classCounts": {
+            "signed32_nonnegative": 50415
+          },
+          "minFinite": 68,
+          "maxFinite": 795618,
+          "exampleValueStrings": [
+            "231954",
+            "231964",
+            "231974",
+            "231984",
+            "231994",
+            "232004",
+            "232014",
+            "232024"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.TermApp",
+          "edgeKind": "property",
+          "field": "fn_id",
+          "targetNumericKind": "smi number",
+          "references": 50415,
+          "classCounts": {
+            "signed32_nonnegative": 50415
+          },
+          "minFinite": 66,
+          "maxFinite": 795616,
+          "exampleValueStrings": [
+            "231952",
+            "231962",
+            "231972",
+            "231982",
+            "231992",
+            "232002",
+            "232012",
+            "232022"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.TermVar",
+          "edgeKind": "property",
+          "field": "index",
+          "targetNumericKind": "smi number",
+          "references": 48668,
+          "classCounts": {
+            "signed32_nonnegative": 48668
+          },
+          "minFinite": 0,
+          "maxFinite": 51,
+          "exampleValueStrings": [
+            "1",
+            "0",
+            "2",
+            "3",
+            "6",
+            "5",
+            "4",
+            "8"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.TermVar",
+          "edgeKind": "property",
+          "field": "key_id",
+          "targetNumericKind": "smi number",
+          "references": 48667,
+          "classCounts": {
+            "signed32_nonnegative": 48667
+          },
+          "minFinite": 0,
+          "maxFinite": 9433,
+          "exampleValueStrings": [
+            "5",
+            "42",
+            "51",
+            "53",
+            "20",
+            "0",
+            "17",
+            "1"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_ir.Symbol",
+          "edgeKind": "property",
+          "field": "signature",
+          "targetNumericKind": "smi number",
+          "references": 40921,
+          "classCounts": {
+            "signed32_nonnegative": 40921
+          },
+          "minFinite": 327920,
+          "maxFinite": 795522,
+          "exampleValueStrings": [
+            "329190",
+            "328874",
+            "344834",
+            "329158",
+            "329784",
+            "329198",
+            "328850",
+            "328854"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.TermAll",
+          "edgeKind": "property",
+          "field": "index",
+          "targetNumericKind": "smi number",
+          "references": 39035,
+          "classCounts": {
+            "signed32_nonnegative": 39035
+          },
+          "minFinite": 0,
+          "maxFinite": 49,
+          "exampleValueStrings": [
+            "3",
+            "2",
+            "5",
+            "4",
+            "1",
+            "6",
+            "0",
+            "10"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.TermAll",
+          "edgeKind": "property",
+          "field": "body_id",
+          "targetNumericKind": "smi number",
+          "references": 39034,
+          "classCounts": {
+            "signed32_nonnegative": 39034
+          },
+          "minFinite": 1,
+          "maxFinite": 795654,
+          "exampleValueStrings": [
+            "27728",
+            "27730",
+            "27816",
+            "27818",
+            "27832",
+            "27834",
+            "27964",
+            "27966"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.TermAll",
+          "edgeKind": "property",
+          "field": "key_id",
+          "targetNumericKind": "smi number",
+          "references": 39034,
+          "classCounts": {
+            "signed32_nonnegative": 39034
+          },
+          "minFinite": 0,
+          "maxFinite": 8182,
+          "exampleValueStrings": [
+            "57",
+            "1732",
+            "1737",
+            "1492",
+            "1491",
+            "1505",
+            "1504",
+            "1498"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.TermAll",
+          "edgeKind": "property",
+          "field": "ty_id",
+          "targetNumericKind": "smi number",
+          "references": 39034,
+          "classCounts": {
+            "signed32_nonnegative": 39034
+          },
+          "minFinite": 16,
+          "maxFinite": 795514,
+          "exampleValueStrings": [
+            "27722",
+            "27720",
+            "27806",
+            "27804",
+            "27826",
+            "27824",
+            "27954",
+            "27952"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.PatternVar",
+          "edgeKind": "property",
+          "field": "index",
+          "targetNumericKind": "smi number",
+          "references": 37621,
+          "classCounts": {
+            "signed32_nonnegative": 37621
+          },
+          "minFinite": 0,
+          "maxFinite": 54,
+          "exampleValueStrings": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.PatternVar",
+          "edgeKind": "property",
+          "field": "key_id",
+          "targetNumericKind": "smi number",
+          "references": 37620,
+          "classCounts": {
+            "signed32_nonnegative": 37620
+          },
+          "minFinite": 0,
+          "maxFinite": 9334,
+          "exampleValueStrings": [
+            "57",
+            "770",
+            "4",
+            "1835",
+            "8013",
+            "1495",
+            "1509",
+            "1496"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/scope_lookup.ArenaGlobal",
+          "edgeKind": "property",
+          "field": "ty",
+          "targetNumericKind": "smi number",
+          "references": 34742,
+          "classCounts": {
+            "signed32_nonnegative": 34742
+          },
+          "minFinite": 894,
+          "maxFinite": 795656,
+          "exampleValueStrings": [
+            "747350",
+            "747438",
+            "747518",
+            "747590",
+            "747670",
+            "747736",
+            "747986",
+            "748066"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.PatternCtr",
+          "edgeKind": "property",
+          "field": "fields_count",
+          "targetNumericKind": "smi number",
+          "references": 33397,
+          "classCounts": {
+            "signed32_nonnegative": 33397
+          },
+          "minFinite": 0,
+          "maxFinite": 22,
+          "exampleValueStrings": [
+            "9",
+            "8",
+            "1",
+            "2",
+            "10",
+            "3",
+            "4",
+            "5"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.PatternCtr",
+          "edgeKind": "property",
+          "field": "fields_start",
+          "targetNumericKind": "smi number",
+          "references": 33397,
+          "classCounts": {
+            "signed32_nonnegative": 33397
+          },
+          "minFinite": 0,
+          "maxFinite": 2063348,
+          "exampleValueStrings": [
+            "355592",
+            "355636",
+            "355676",
+            "355716",
+            "355756",
+            "355772",
+            "355784",
+            "355824"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.PatternCtr",
+          "edgeKind": "property",
+          "field": "key_id",
+          "targetNumericKind": "smi number",
+          "references": 33397,
+          "classCounts": {
+            "signed32_nonnegative": 33397
+          },
+          "minFinite": 21,
+          "maxFinite": 16409,
+          "exampleValueStrings": [
+            "6061",
+            "6062",
+            "6063",
+            "6064",
+            "6065",
+            "6066",
+            "6067",
+            "6068"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/ast.TermVar",
+          "edgeKind": "property",
+          "field": "index",
+          "targetNumericKind": "smi number",
+          "references": 24372,
+          "classCounts": {
+            "signed32_nonnegative": 24372
+          },
+          "minFinite": 0,
+          "maxFinite": 51,
+          "exampleValueStrings": [
+            "0",
+            "4",
+            "1",
+            "2",
+            "5",
+            "3",
+            "6",
+            "22"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.Binder",
+          "edgeKind": "property",
+          "field": "index",
+          "targetNumericKind": "smi number",
+          "references": 20254,
+          "classCounts": {
+            "signed32_nonnegative": 20254
+          },
+          "minFinite": 0,
+          "maxFinite": 49,
+          "exampleValueStrings": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.Binder",
+          "edgeKind": "property",
+          "field": "key_id",
+          "targetNumericKind": "smi number",
+          "references": 20254,
+          "classCounts": {
+            "signed32_nonnegative": 20254
+          },
+          "minFinite": 0,
+          "maxFinite": 9433,
+          "exampleValueStrings": [
+            "1517",
+            "2",
+            "4",
+            "1732",
+            "1734",
+            "12",
+            "1737",
+            "1738"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.Binder",
+          "edgeKind": "property",
+          "field": "ty_id",
+          "targetNumericKind": "smi number",
+          "references": 20254,
+          "classCounts": {
+            "signed32_nonnegative": 20254
+          },
+          "minFinite": 16,
+          "maxFinite": 415372,
+          "exampleValueStrings": [
+            "216736",
+            "217316",
+            "217866",
+            "218386",
+            "218852",
+            "219456",
+            "219958",
+            "220478"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/ast.Binder",
+          "edgeKind": "property",
+          "field": "index",
+          "targetNumericKind": "smi number",
+          "references": 20190,
+          "classCounts": {
+            "signed32_nonnegative": 20190
+          },
+          "minFinite": 0,
+          "maxFinite": 49,
+          "exampleValueStrings": [
+            "3",
+            "2",
+            "1",
+            "0",
+            "4",
+            "5",
+            "8",
+            "7"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.TermAdt",
+          "edgeKind": "property",
+          "field": "args_count",
+          "targetNumericKind": "smi number",
+          "references": 19500,
+          "classCounts": {
+            "signed32_nonnegative": 19500
+          },
+          "minFinite": 0,
+          "maxFinite": 4,
+          "exampleValueStrings": [
+            "0",
+            "1",
+            "2",
+            "4"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.TermAdt",
+          "edgeKind": "property",
+          "field": "args_start",
+          "targetNumericKind": "smi number",
+          "references": 19500,
+          "classCounts": {
+            "signed32_nonnegative": 19500
+          },
+          "minFinite": 0,
+          "maxFinite": 2063648,
+          "exampleValueStrings": [
+            "0",
+            "655740",
+            "668920",
+            "669028",
+            "273908",
+            "1826896",
+            "1826904",
+            "1826920"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.TermAdt",
+          "edgeKind": "property",
+          "field": "key_id",
+          "targetNumericKind": "smi number",
+          "references": 19500,
+          "classCounts": {
+            "signed32_nonnegative": 19500
+          },
+          "minFinite": 9,
+          "maxFinite": 13816,
+          "exampleValueStrings": [
+            "13800",
+            "24",
+            "16",
+            "62",
+            "52",
+            "32",
+            "12313",
+            "12312"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.TermAdt",
+          "edgeKind": "property",
+          "field": "refs_count",
+          "targetNumericKind": "smi number",
+          "references": 19500,
+          "classCounts": {
+            "signed32_nonnegative": 19500
+          },
+          "minFinite": 0,
+          "maxFinite": 0,
+          "exampleValueStrings": [
+            "0"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.TermAdt",
+          "edgeKind": "property",
+          "field": "refs_start",
+          "targetNumericKind": "smi number",
+          "references": 19500,
+          "classCounts": {
+            "signed32_nonnegative": 19500
+          },
+          "minFinite": 0,
+          "maxFinite": 0,
+          "exampleValueStrings": [
+            "0"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/ast.PatternVar",
+          "edgeKind": "property",
+          "field": "index",
+          "targetNumericKind": "smi number",
+          "references": 18388,
+          "classCounts": {
+            "signed32_nonnegative": 18388
+          },
+          "minFinite": 1,
+          "maxFinite": 54,
+          "exampleValueStrings": [
+            "13",
+            "14",
+            "2",
+            "3",
+            "4",
+            "1",
+            "7",
+            "8"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.BodyCase",
+          "edgeKind": "property",
+          "field": "body_id",
+          "targetNumericKind": "smi number",
+          "references": 17542,
+          "classCounts": {
+            "signed32_nonnegative": 17542
+          },
+          "minFinite": 184,
+          "maxFinite": 795392,
+          "exampleValueStrings": [
+            "12434",
+            "12548",
+            "12570",
+            "12964",
+            "13014",
+            "13156",
+            "13176",
+            "13276"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.BodyCase",
+          "edgeKind": "property",
+          "field": "patterns_count",
+          "targetNumericKind": "smi number",
+          "references": 17542,
+          "classCounts": {
+            "signed32_nonnegative": 17542
+          },
+          "minFinite": 1,
+          "maxFinite": 4,
+          "exampleValueStrings": [
+            "2",
+            "1",
+            "3",
+            "4"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.BodyCase",
+          "edgeKind": "property",
+          "field": "patterns_start",
+          "targetNumericKind": "smi number",
+          "references": 17542,
+          "classCounts": {
+            "signed32_nonnegative": 17542
+          },
+          "minFinite": 164,
+          "maxFinite": 2063340,
+          "exampleValueStrings": [
+            "15264",
+            "15328",
+            "15592",
+            "15892",
+            "15944",
+            "16008",
+            "16312",
+            "16316"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "MLeaf",
+          "edgeKind": "property",
+          "field": "val",
+          "targetNumericKind": "smi number",
+          "references": 16817,
+          "classCounts": {
+            "signed32_nonnegative": 16817
+          },
+          "minFinite": 0,
+          "maxFinite": 16422,
+          "exampleValueStrings": [
+            "8173",
+            "8174",
+            "182",
+            "183",
+            "108",
+            "109",
+            "88",
+            "89"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.TermFill",
+          "edgeKind": "property",
+          "field": "args_count",
+          "targetNumericKind": "smi number",
+          "references": 16375,
+          "classCounts": {
+            "signed32_nonnegative": 16375
+          },
+          "minFinite": 1,
+          "maxFinite": 4,
+          "exampleValueStrings": [
+            "2",
+            "1",
+            "4"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.TermFill",
+          "edgeKind": "property",
+          "field": "args_start",
+          "targetNumericKind": "smi number",
+          "references": 16375,
+          "classCounts": {
+            "signed32_nonnegative": 16375
+          },
+          "minFinite": 95,
+          "maxFinite": 2063540,
+          "exampleValueStrings": [
+            "15864",
+            "26536",
+            "26616",
+            "26664",
+            "26712",
+            "26760",
+            "26804",
+            "26848"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.TermFill",
+          "edgeKind": "property",
+          "field": "head_id",
+          "targetNumericKind": "smi number",
+          "references": 16375,
+          "classCounts": {
+            "signed32_nonnegative": 16375
+          },
+          "minFinite": 150,
+          "maxFinite": 791270,
+          "exampleValueStrings": [
+            "12910",
+            "17506",
+            "17550",
+            "17582",
+            "17616",
+            "17654",
+            "17712",
+            "17754"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_ir.CheckedVariable",
+          "edgeKind": "property",
+          "field": "pattern",
+          "targetNumericKind": "smi number",
+          "references": 14969,
+          "classCounts": {
+            "signed32_nonnegative": 14969
+          },
+          "minFinite": 2,
+          "maxFinite": 49458,
+          "exampleValueStrings": [
+            "674",
+            "692",
+            "716",
+            "722",
+            "720",
+            "698",
+            "696",
+            "650"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_ir.Names",
+          "edgeKind": "property",
+          "field": "count",
+          "targetNumericKind": "smi number",
+          "references": 10056,
+          "classCounts": {
+            "signed32_nonnegative": 10056
+          },
+          "minFinite": 0,
+          "maxFinite": 7,
+          "exampleValueStrings": [
+            "0",
+            "3",
+            "1",
+            "2",
+            "6",
+            "4",
+            "7",
+            "5"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_ir.Names",
+          "edgeKind": "property",
+          "field": "start",
+          "targetNumericKind": "smi number",
+          "references": 10056,
+          "classCounts": {
+            "signed32_nonnegative": 10056
+          },
+          "minFinite": 0,
+          "maxFinite": 2063692,
+          "exampleValueStrings": [
+            "0",
+            "1871460",
+            "1871440",
+            "1871216",
+            "1870656",
+            "1874064",
+            "1871760",
+            "1871720"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_ir.CheckedConstructor",
+          "edgeKind": "property",
+          "field": "pattern",
+          "targetNumericKind": "smi number",
+          "references": 9758,
+          "classCounts": {
+            "signed32_nonnegative": 9758
+          },
+          "minFinite": 0,
+          "maxFinite": 87328,
+          "exampleValueStrings": [
+            "84666",
+            "742",
+            "646",
+            "670",
+            "736",
+            "718",
+            "676",
+            "648"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.TermLam",
+          "edgeKind": "property",
+          "field": "index",
+          "targetNumericKind": "smi number",
+          "references": 8765,
+          "classCounts": {
+            "signed32_nonnegative": 8765
+          },
+          "minFinite": 0,
+          "maxFinite": 53,
+          "exampleValueStrings": [
+            "3",
+            "4",
+            "2",
+            "8",
+            "7",
+            "1",
+            "6",
+            "5"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.TermLam",
+          "edgeKind": "property",
+          "field": "body_id",
+          "targetNumericKind": "smi number",
+          "references": 8764,
+          "classCounts": {
+            "signed32_nonnegative": 8764
+          },
+          "minFinite": 305,
+          "maxFinite": 795646,
+          "exampleValueStrings": [
+            "26630",
+            "26652",
+            "26750",
+            "26928",
+            "27024",
+            "27922",
+            "28062",
+            "232542"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.TermLam",
+          "edgeKind": "property",
+          "field": "key_id",
+          "targetNumericKind": "smi number",
+          "references": 8764,
+          "classCounts": {
+            "signed32_nonnegative": 8764
+          },
+          "minFinite": 0,
+          "maxFinite": 9256,
+          "exampleValueStrings": [
+            "57",
+            "569",
+            "1836",
+            "8012",
+            "2378",
+            "2377",
+            "2382",
+            "2381"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.BodyReply",
+          "edgeKind": "property",
+          "field": "term_id",
+          "targetNumericKind": "smi number",
+          "references": 8693,
+          "classCounts": {
+            "signed32_nonnegative": 8693
+          },
+          "minFinite": 184,
+          "maxFinite": 769494,
+          "exampleValueStrings": [
+            "12432",
+            "12464",
+            "12546",
+            "12568",
+            "12662",
+            "12668",
+            "12674",
+            "12682"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "Con",
+          "edgeKind": "property",
+          "field": "head",
+          "targetNumericKind": "smi number",
+          "references": 7264,
+          "classCounts": {
+            "signed32_nonnegative": 7264
+          },
+          "minFinite": 0,
+          "maxFinite": 126,
+          "exampleValueStrings": [
+            "95",
+            "112",
+            "62",
+            "65",
+            "84",
+            "50",
+            "70",
+            "83"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_ir.Words",
+          "edgeKind": "property",
+          "field": "count",
+          "targetNumericKind": "smi number",
+          "references": 6439,
+          "classCounts": {
+            "signed32_nonnegative": 6439
+          },
+          "minFinite": 0,
+          "maxFinite": 99,
+          "exampleValueStrings": [
+            "4",
+            "5",
+            "7",
+            "1",
+            "2",
+            "6",
+            "10",
+            "8"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_ir.Words",
+          "edgeKind": "property",
+          "field": "start",
+          "targetNumericKind": "smi number",
+          "references": 6438,
+          "classCounts": {
+            "signed32_nonnegative": 6438
+          },
+          "minFinite": 0,
+          "maxFinite": 1086648,
+          "exampleValueStrings": [
+            "401232",
+            "430392",
+            "432552",
+            "432624",
+            "432684",
+            "433724",
+            "433804",
+            "433812"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_ir.CaseOccurrence",
+          "edgeKind": "property",
+          "field": "term",
+          "targetNumericKind": "smi number",
+          "references": 5383,
+          "classCounts": {
+            "signed32_nonnegative": 5383
+          },
+          "minFinite": 311,
+          "maxFinite": 795270,
+          "exampleValueStrings": [
+            "344148",
+            "344712",
+            "344588",
+            "344012",
+            "344020",
+            "344144",
+            "344016",
+            "355876"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_ir.CaseOccurrence",
+          "edgeKind": "property",
+          "field": "ty",
+          "targetNumericKind": "smi number",
+          "references": 5383,
+          "classCounts": {
+            "signed32_nonnegative": 5383
+          },
+          "minFinite": 180,
+          "maxFinite": 794310,
+          "exampleValueStrings": [
+            "344160",
+            "344736",
+            "344622",
+            "344026",
+            "344032",
+            "344168",
+            "344040",
+            "11750"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.BodyMatch",
+          "edgeKind": "property",
+          "field": "cases_count",
+          "targetNumericKind": "smi number",
+          "references": 4487,
+          "classCounts": {
+            "signed32_nonnegative": 4487
+          },
+          "minFinite": 0,
+          "maxFinite": 165,
+          "exampleValueStrings": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "7",
+            "8",
+            "64",
+            "45"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.BodyMatch",
+          "edgeKind": "property",
+          "field": "cases_start",
+          "targetNumericKind": "smi number",
+          "references": 4487,
+          "classCounts": {
+            "signed32_nonnegative": 4487
+          },
+          "minFinite": 0,
+          "maxFinite": 2063260,
+          "exampleValueStrings": [
+            "15260",
+            "15320",
+            "15888",
+            "15940",
+            "16004",
+            "16304",
+            "16600",
+            "16884"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.BodyMatch",
+          "edgeKind": "property",
+          "field": "scrutinees_count",
+          "targetNumericKind": "smi number",
+          "references": 4487,
+          "classCounts": {
+            "signed32_nonnegative": 4487
+          },
+          "minFinite": 1,
+          "maxFinite": 4,
+          "exampleValueStrings": [
+            "2",
+            "1",
+            "3",
+            "4"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.BodyMatch",
+          "edgeKind": "property",
+          "field": "scrutinees_start",
+          "targetNumericKind": "smi number",
+          "references": 4487,
+          "classCounts": {
+            "signed32_nonnegative": 4487
+          },
+          "minFinite": 152,
+          "maxFinite": 2063252,
+          "exampleValueStrings": [
+            "15252",
+            "15316",
+            "15880",
+            "15932",
+            "16000",
+            "16300",
+            "16596",
+            "16880"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.TermType",
+          "edgeKind": "property",
+          "field": "kind_id",
+          "targetNumericKind": "smi number",
+          "references": 4485,
+          "classCounts": {
+            "signed32_nonnegative": 4485
+          },
+          "minFinite": 0,
+          "maxFinite": 795508,
+          "exampleValueStrings": [
+            "20026",
+            "20084",
+            "20220",
+            "20274",
+            "20328",
+            "20514",
+            "20684",
+            "20740"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_ir.SomeTerm",
+          "edgeKind": "property",
+          "field": "term",
+          "targetNumericKind": "smi number",
+          "references": 4401,
+          "classCounts": {
+            "signed32_nonnegative": 4401
+          },
+          "minFinite": 180,
+          "maxFinite": 795648,
+          "exampleValueStrings": [
+            "234480",
+            "252792",
+            "253562",
+            "253646",
+            "253738",
+            "254316",
+            "254338",
+            "254366"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.TermAnn",
+          "edgeKind": "property",
+          "field": "term_id",
+          "targetNumericKind": "smi number",
+          "references": 3416,
+          "classCounts": {
+            "signed32_nonnegative": 3416
+          },
+          "minFinite": 301,
+          "maxFinite": 795632,
+          "exampleValueStrings": [
+            "24516",
+            "27914",
+            "28054",
+            "233056",
+            "233246",
+            "233446",
+            "233452",
+            "233888"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.TermAnn",
+          "edgeKind": "property",
+          "field": "ty_id",
+          "targetNumericKind": "smi number",
+          "references": 3416,
+          "classCounts": {
+            "signed32_nonnegative": 3416
+          },
+          "minFinite": 15,
+          "maxFinite": 795636,
+          "exampleValueStrings": [
+            "24518",
+            "27920",
+            "28060",
+            "233058",
+            "233248",
+            "233448",
+            "233454",
+            "233890"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.SubstMemoSaved",
+          "edgeKind": "property",
+          "field": "depth",
+          "targetNumericKind": "smi number",
+          "references": 3404,
+          "classCounts": {
+            "signed32_nonnegative": 3404
+          },
+          "minFinite": 0,
+          "maxFinite": 5,
+          "exampleValueStrings": [
+            "0",
+            "1",
+            "2",
+            "5",
+            "3",
+            "4"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.SubstMemoSaved",
+          "edgeKind": "property",
+          "field": "epoch",
+          "targetNumericKind": "smi number",
+          "references": 3404,
+          "classCounts": {
+            "signed32_nonnegative": 3404
+          },
+          "minFinite": 1988,
+          "maxFinite": 2081,
+          "exampleValueStrings": [
+            "2039",
+            "2036",
+            "2035",
+            "2050",
+            "2049",
+            "2013",
+            "2012",
+            "2014"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.SubstMemoSaved",
+          "edgeKind": "property",
+          "field": "index",
+          "targetNumericKind": "smi number",
+          "references": 3404,
+          "classCounts": {
+            "signed32_nonnegative": 3404
+          },
+          "minFinite": 0,
+          "maxFinite": 0,
+          "exampleValueStrings": [
+            "0"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.SubstMemoSaved",
+          "edgeKind": "property",
+          "field": "node_id",
+          "targetNumericKind": "smi number",
+          "references": 3404,
+          "classCounts": {
+            "signed32_nonnegative": 3404
+          },
+          "minFinite": 11,
+          "maxFinite": 791328,
+          "exampleValueStrings": [
+            "329632",
+            "329212",
+            "329210",
+            "329634",
+            "329630",
+            "329638",
+            "329206",
+            "329636"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.SubstMemoSaved",
+          "edgeKind": "property",
+          "field": "output_id",
+          "targetNumericKind": "smi number",
+          "references": 3404,
+          "classCounts": {
+            "signed32_nonnegative": 3404
+          },
+          "minFinite": 7,
+          "maxFinite": 791384,
+          "exampleValueStrings": [
+            "1573",
+            "1217",
+            "2929",
+            "2563",
+            "223686",
+            "223650",
+            "1069",
+            "2497"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.SubstMemoSaved",
+          "edgeKind": "property",
+          "field": "value_id",
+          "targetNumericKind": "smi number",
+          "references": 3404,
+          "classCounts": {
+            "signed32_nonnegative": 3404
+          },
+          "minFinite": 25,
+          "maxFinite": 791384,
+          "exampleValueStrings": [
+            "223902",
+            "223824",
+            "224190",
+            "224088",
+            "223686",
+            "223650",
+            "223788",
+            "224076"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.BodyLocal",
+          "edgeKind": "property",
+          "field": "body_id",
+          "targetNumericKind": "smi number",
+          "references": 3314,
+          "classCounts": {
+            "signed32_nonnegative": 3314
+          },
+          "minFinite": 255,
+          "maxFinite": 795638,
+          "exampleValueStrings": [
+            "14170",
+            "14172",
+            "14174",
+            "14176",
+            "14178",
+            "14180",
+            "14182",
+            "14184"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.BodyLocal",
+          "edgeKind": "property",
+          "field": "patterns_count",
+          "targetNumericKind": "smi number",
+          "references": 3314,
+          "classCounts": {
+            "signed32_nonnegative": 3314
+          },
+          "minFinite": 1,
+          "maxFinite": 4,
+          "exampleValueStrings": [
+            "1",
+            "4"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.BodyLocal",
+          "edgeKind": "property",
+          "field": "patterns_start",
+          "targetNumericKind": "smi number",
+          "references": 3314,
+          "classCounts": {
+            "signed32_nonnegative": 3314
+          },
+          "minFinite": 728,
+          "maxFinite": 2063636,
+          "exampleValueStrings": [
+            "19056",
+            "19048",
+            "18260",
+            "17472",
+            "17204",
+            "16936",
+            "16928",
+            "16920"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.BodyLocal",
+          "edgeKind": "property",
+          "field": "values_count",
+          "targetNumericKind": "smi number",
+          "references": 3314,
+          "classCounts": {
+            "signed32_nonnegative": 3314
+          },
+          "minFinite": 1,
+          "maxFinite": 4,
+          "exampleValueStrings": [
+            "1",
+            "4"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.BodyLocal",
+          "edgeKind": "property",
+          "field": "values_start",
+          "targetNumericKind": "smi number",
+          "references": 3314,
+          "classCounts": {
+            "signed32_nonnegative": 3314
+          },
+          "minFinite": 547,
+          "maxFinite": 2063640,
+          "exampleValueStrings": [
+            "19060",
+            "19052",
+            "18264",
+            "17476",
+            "17208",
+            "16940",
+            "16932",
+            "16924"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_ir.DefTerm",
+          "edgeKind": "property",
+          "field": "term",
+          "targetNumericKind": "smi number",
+          "references": 2395,
+          "classCounts": {
+            "signed32_nonnegative": 2395
+          },
+          "minFinite": 1640,
+          "maxFinite": 795444,
+          "exampleValueStrings": [
+            "253552",
+            "253634",
+            "253728",
+            "254282",
+            "254334",
+            "254344",
+            "254402",
+            "254460"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_ir.DefinitionFacts",
+          "edgeKind": "property",
+          "field": "quantity_prefix",
+          "targetNumericKind": "smi number",
+          "references": 1641,
+          "classCounts": {
+            "signed32_nonnegative": 1641
+          },
+          "minFinite": 0,
+          "maxFinite": 2,
+          "exampleValueStrings": [
+            "0",
+            "1",
+            "2"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/ast.TermLam",
+          "edgeKind": "property",
+          "field": "index",
+          "targetNumericKind": "smi number",
+          "references": 1243,
+          "classCounts": {
+            "signed32_nonnegative": 1243
+          },
+          "minFinite": 0,
+          "maxFinite": 53,
+          "exampleValueStrings": [
+            "0",
+            "1",
+            "4",
+            "7",
+            "3",
+            "2",
+            "8",
+            "6"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_ir.LocalReferenceOccurrence",
+          "edgeKind": "property",
+          "field": "term",
+          "targetNumericKind": "smi number",
+          "references": 1132,
+          "classCounts": {
+            "signed32_nonnegative": 1132
+          },
+          "minFinite": 1434,
+          "maxFinite": 238488,
+          "exampleValueStrings": [
+            "34400",
+            "34718",
+            "34686",
+            "109894",
+            "109770",
+            "109836",
+            "107336",
+            "110230"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_ir.LocalReferenceOccurrence",
+          "edgeKind": "property",
+          "field": "ty",
+          "targetNumericKind": "smi number",
+          "references": 1132,
+          "classCounts": {
+            "signed32_nonnegative": 1132
+          },
+          "minFinite": 1490,
+          "maxFinite": 795512,
+          "exampleValueStrings": [
+            "407174",
+            "414996",
+            "413004",
+            "109862",
+            "109738",
+            "109794",
+            "371702",
+            "110168"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_ir.LocalReferenceOccurrence",
+          "edgeKind": "property",
+          "field": "value",
+          "targetNumericKind": "smi number",
+          "references": 1132,
+          "classCounts": {
+            "signed32_nonnegative": 1132
+          },
+          "minFinite": 299,
+          "maxFinite": 795420,
+          "exampleValueStrings": [
+            "414334",
+            "415108",
+            "415028",
+            "553834",
+            "553576",
+            "553702",
+            "547776",
+            "554460"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_ir.LocalOccurrence",
+          "edgeKind": "property",
+          "field": "term",
+          "targetNumericKind": "smi number",
+          "references": 1031,
+          "classCounts": {
+            "signed32_nonnegative": 1031
+          },
+          "minFinite": 305,
+          "maxFinite": 795440,
+          "exampleValueStrings": [
+            "390528",
+            "414362",
+            "412898",
+            "414366",
+            "415118",
+            "415122",
+            "554488",
+            "553586"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_ir.LocalOccurrence",
+          "edgeKind": "property",
+          "field": "ty",
+          "targetNumericKind": "smi number",
+          "references": 1031,
+          "classCounts": {
+            "signed32_nonnegative": 1031
+          },
+          "minFinite": 295,
+          "maxFinite": 795436,
+          "exampleValueStrings": [
+            "390586",
+            "414358",
+            "33320",
+            "415114",
+            "554484",
+            "553582",
+            "553840",
+            "547856"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_ir.StringOccurrence",
+          "edgeKind": "property",
+          "field": "term",
+          "targetNumericKind": "smi number",
+          "references": 537,
+          "classCounts": {
+            "signed32_nonnegative": 537
+          },
+          "minFinite": 1750,
+          "maxFinite": 238470,
+          "exampleValueStrings": [
+            "109660",
+            "109752",
+            "107222",
+            "107236",
+            "109818",
+            "107866",
+            "107328",
+            "107838"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_ir.StringOccurrence",
+          "edgeKind": "property",
+          "field": "ty",
+          "targetNumericKind": "smi number",
+          "references": 537,
+          "classCounts": {
+            "signed32_nonnegative": 537
+          },
+          "minFinite": 19996,
+          "maxFinite": 793130,
+          "exampleValueStrings": [
+            "109654",
+            "372282",
+            "371700",
+            "371702",
+            "107214",
+            "107330",
+            "107840",
+            "107910"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.PublishedTerm",
+          "edgeKind": "property",
+          "field": "epoch",
+          "targetNumericKind": "smi number",
+          "references": 534,
+          "classCounts": {
+            "signed32_nonnegative": 534
+          },
+          "minFinite": 2019,
+          "maxFinite": 2081,
+          "exampleValueStrings": [
+            "2039",
+            "2049",
+            "2055",
+            "2070",
+            "2065",
+            "2071",
+            "2059",
+            "2073"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.PublishedTerm",
+          "edgeKind": "property",
+          "field": "node_id",
+          "targetNumericKind": "smi number",
+          "references": 534,
+          "classCounts": {
+            "signed32_nonnegative": 534
+          },
+          "minFinite": 3,
+          "maxFinite": 11035,
+          "exampleValueStrings": [
+            "7769",
+            "7721",
+            "7825",
+            "7797",
+            "7665",
+            "7675",
+            "7485",
+            "1691"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.PublishedTerm",
+          "edgeKind": "property",
+          "field": "output_id",
+          "targetNumericKind": "smi number",
+          "references": 534,
+          "classCounts": {
+            "signed32_nonnegative": 534
+          },
+          "minFinite": 768526,
+          "maxFinite": 795654,
+          "exampleValueStrings": [
+            "782094",
+            "782046",
+            "782150",
+            "782122",
+            "781990",
+            "782000",
+            "781810",
+            "786810"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_ir.TypeDecl",
+          "edgeKind": "property",
+          "field": "kind",
+          "targetNumericKind": "smi number",
+          "references": 401,
+          "classCounts": {
+            "signed32_nonnegative": 401
+          },
+          "minFinite": 2,
+          "maxFinite": 246952,
+          "exampleValueStrings": [
+            "29246",
+            "29266",
+            "29250",
+            "40742",
+            "40578",
+            "40632",
+            "40652",
+            "40482"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_ir.ScalarOccurrence",
+          "edgeKind": "property",
+          "field": "term",
+          "targetNumericKind": "smi number",
+          "references": 389,
+          "classCounts": {
+            "signed32_nonnegative": 389
+          },
+          "minFinite": 1624,
+          "maxFinite": 524338,
+          "exampleValueStrings": [
+            "11908",
+            "33456",
+            "16158",
+            "16352",
+            "15872",
+            "15598",
+            "15516",
+            "16240"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_ir.ScalarOccurrence",
+          "edgeKind": "property",
+          "field": "ty",
+          "targetNumericKind": "smi number",
+          "references": 389,
+          "classCounts": {
+            "signed32_nonnegative": 389
+          },
+          "minFinite": 4122,
+          "maxFinite": 656160,
+          "exampleValueStrings": [
+            "11836",
+            "405838",
+            "352570",
+            "351410",
+            "352506",
+            "352406",
+            "351632",
+            "87548"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_ir.ScalarOccurrence",
+          "edgeKind": "property",
+          "field": "bits",
+          "targetNumericKind": "heap number",
+          "references": 307,
+          "classCounts": {
+            "signed32_nonnegative": 252,
+            "u32_high_bit_set": 53,
+            "nonfinite": 2
+          },
+          "minFinite": 0,
+          "maxFinite": 4294967295,
+          "exampleValueStrings": [
+            "0",
+            "1",
+            "1073741823",
+            "2147483648",
+            "1073741824",
+            "4294967295",
+            "2147483647",
+            "10"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.TermEqual",
+          "edgeKind": "property",
+          "field": "left_id",
+          "targetNumericKind": "smi number",
+          "references": 166,
+          "classCounts": {
+            "signed32_nonnegative": 166
+          },
+          "minFinite": 3690,
+          "maxFinite": 791106,
+          "exampleValueStrings": [
+            "232414",
+            "345954",
+            "346034",
+            "346116",
+            "346186",
+            "346218",
+            "346276",
+            "346308"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.TermEqual",
+          "edgeKind": "property",
+          "field": "right_id",
+          "targetNumericKind": "smi number",
+          "references": 166,
+          "classCounts": {
+            "signed32_nonnegative": 166
+          },
+          "minFinite": 3692,
+          "maxFinite": 791108,
+          "exampleValueStrings": [
+            "232416",
+            "345980",
+            "346056",
+            "346140",
+            "8442",
+            "346244",
+            "336100",
+            "346316"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.TermEqual",
+          "edgeKind": "property",
+          "field": "ty_id",
+          "targetNumericKind": "smi number",
+          "references": 166,
+          "classCounts": {
+            "signed32_nonnegative": 166
+          },
+          "minFinite": 3694,
+          "maxFinite": 791112,
+          "exampleValueStrings": [
+            "232420",
+            "345984",
+            "346062",
+            "346144",
+            "346190",
+            "346250",
+            "346280",
+            "346322"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.ResolvedRefSaved",
+          "edgeKind": "property",
+          "field": "kind_tag",
+          "targetNumericKind": "smi number",
+          "references": 158,
+          "classCounts": {
+            "signed32_nonnegative": 158
+          },
+          "minFinite": 0,
+          "maxFinite": 2,
+          "exampleValueStrings": [
+            "2",
+            "0"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.ResolvedRefSaved",
+          "edgeKind": "property",
+          "field": "name_id",
+          "targetNumericKind": "smi number",
+          "references": 158,
+          "classCounts": {
+            "signed32_nonnegative": 158
+          },
+          "minFinite": 18,
+          "maxFinite": 16402,
+          "exampleValueStrings": [
+            "7646",
+            "6728",
+            "131",
+            "8024",
+            "8021",
+            "4884",
+            "4879",
+            "6327"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.ResolvedRefSaved",
+          "edgeKind": "property",
+          "field": "serial",
+          "targetNumericKind": "smi number",
+          "references": 158,
+          "classCounts": {
+            "signed32_nonnegative": 158
+          },
+          "minFinite": 1540,
+          "maxFinite": 1583,
+          "exampleValueStrings": [
+            "1556",
+            "1542",
+            "1569",
+            "1572",
+            "1570",
+            "1583",
+            "1581",
+            "1579"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_ir.ClauseFor",
+          "edgeKind": "property",
+          "field": "ty",
+          "targetNumericKind": "smi number",
+          "references": 143,
+          "classCounts": {
+            "signed32_nonnegative": 143
+          },
+          "minFinite": 498,
+          "maxFinite": 34734,
+          "exampleValueStrings": [
+            "34734",
+            "8724",
+            "8718",
+            "8712",
+            "8222",
+            "19550",
+            "19548",
+            "19064"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_ir.ScalarOccurrence",
+          "edgeKind": "property",
+          "field": "bits",
+          "targetNumericKind": "smi number",
+          "references": 84,
+          "classCounts": {
+            "signed32_nonnegative": 84
+          },
+          "minFinite": 0,
+          "maxFinite": 1904214016,
+          "exampleValueStrings": [
+            "0",
+            "10",
+            "9",
+            "32",
+            "97",
+            "57",
+            "48",
+            "13"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_ir.LawDecl",
+          "edgeKind": "property",
+          "field": "body",
+          "targetNumericKind": "smi number",
+          "references": 75,
+          "classCounts": {
+            "signed32_nonnegative": 75
+          },
+          "minFinite": 470,
+          "maxFinite": 34744,
+          "exampleValueStrings": [
+            "34744",
+            "8762",
+            "8354",
+            "19560",
+            "19072",
+            "17198",
+            "7940",
+            "17336"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.CtrLeafSaved",
+          "edgeKind": "property",
+          "field": "key_id",
+          "targetNumericKind": "smi number",
+          "references": 73,
+          "classCounts": {
+            "signed32_nonnegative": 73
+          },
+          "minFinite": 21,
+          "maxFinite": 9443,
+          "exampleValueStrings": [
+            "1017",
+            "213",
+            "2805",
+            "497",
+            "8727",
+            "1240",
+            "8628",
+            "5128"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.CtrLeafSaved",
+          "edgeKind": "property",
+          "field": "output_id",
+          "targetNumericKind": "smi number",
+          "references": 73,
+          "classCounts": {
+            "signed32_nonnegative": 73
+          },
+          "minFinite": 8478,
+          "maxFinite": 163440,
+          "exampleValueStrings": [
+            "34888",
+            "8478",
+            "152989",
+            "13527",
+            "135729",
+            "149726",
+            "132357",
+            "84050"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/ast.TermAll",
+          "edgeKind": "property",
+          "field": "index",
+          "targetNumericKind": "smi number",
+          "references": 62,
+          "classCounts": {
+            "signed32_nonnegative": 62
+          },
+          "minFinite": 0,
+          "maxFinite": 6,
+          "exampleValueStrings": [
+            "2",
+            "5",
+            "4",
+            "3",
+            "1",
+            "6",
+            "0"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "checker_core_steps_v1.ArenaResult",
+          "edgeKind": "property",
+          "field": "value",
+          "targetNumericKind": "smi number",
+          "references": 15,
+          "classCounts": {
+            "signed32_nonnegative": 15
+          },
+          "minFinite": 0,
+          "maxFinite": 2,
+          "exampleValueStrings": [
+            "1",
+            "2",
+            "0"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "checker_core_steps_v1.CheckerRequest_core_shift",
+          "edgeKind": "property",
+          "field": "v_3",
+          "targetNumericKind": "smi number",
+          "references": 13,
+          "classCounts": {
+            "signed32_nonnegative": 13
+          },
+          "minFinite": 0,
+          "maxFinite": 1,
+          "exampleValueStrings": [
+            "1",
+            "0"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "checker_core_steps_v1.CheckerRequest_core_subst",
+          "edgeKind": "property",
+          "field": "v_3",
+          "targetNumericKind": "smi number",
+          "references": 13,
+          "classCounts": {
+            "signed32_nonnegative": 13
+          },
+          "minFinite": 0,
+          "maxFinite": 0,
+          "exampleValueStrings": [
+            "0"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.TermRewrite",
+          "edgeKind": "property",
+          "field": "body_id",
+          "targetNumericKind": "smi number",
+          "references": 12,
+          "classCounts": {
+            "signed32_nonnegative": 12
+          },
+          "minFinite": 3750,
+          "maxFinite": 539654,
+          "exampleValueStrings": [
+            "3750",
+            "3804",
+            "3872",
+            "103062",
+            "539654",
+            "336518"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.TermRewrite",
+          "edgeKind": "property",
+          "field": "equation_id",
+          "targetNumericKind": "smi number",
+          "references": 12,
+          "classCounts": {
+            "signed32_nonnegative": 12
+          },
+          "minFinite": 3728,
+          "maxFinite": 539644,
+          "exampleValueStrings": [
+            "3728",
+            "3790",
+            "3858",
+            "103050",
+            "539644",
+            "336134",
+            "336304",
+            "336504"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.TermRewrite",
+          "edgeKind": "property",
+          "field": "proof_id",
+          "targetNumericKind": "smi number",
+          "references": 12,
+          "classCounts": {
+            "signed32_nonnegative": 12
+          },
+          "minFinite": 3748,
+          "maxFinite": 539652,
+          "exampleValueStrings": [
+            "3748",
+            "3802",
+            "3870",
+            "103060",
+            "539582",
+            "539652",
+            "336024",
+            "336154"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.TemplateBinder",
+          "edgeKind": "property",
+          "field": "index",
+          "targetNumericKind": "smi number",
+          "references": 10,
+          "classCounts": {
+            "signed32_nonnegative": 10
+          },
+          "minFinite": 0,
+          "maxFinite": 0,
+          "exampleValueStrings": [
+            "0"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.TemplateBinder",
+          "edgeKind": "property",
+          "field": "key_id",
+          "targetNumericKind": "smi number",
+          "references": 10,
+          "classCounts": {
+            "signed32_nonnegative": 10
+          },
+          "minFinite": 0,
+          "maxFinite": 0,
+          "exampleValueStrings": [
+            "0"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.TemplateBinder",
+          "edgeKind": "property",
+          "field": "ty_id",
+          "targetNumericKind": "smi number",
+          "references": 10,
+          "classCounts": {
+            "signed32_nonnegative": 10
+          },
+          "minFinite": 0,
+          "maxFinite": 0,
+          "exampleValueStrings": [
+            "0"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "Tuple",
+          "edgeKind": "property",
+          "field": "snd",
+          "targetNumericKind": "smi number",
+          "references": 10,
+          "classCounts": {
+            "signed32_nonnegative": 10
+          },
+          "minFinite": 0,
+          "maxFinite": 2,
+          "exampleValueStrings": [
+            "0",
+            "1",
+            "2"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.TermMin",
+          "edgeKind": "property",
+          "field": "left_id",
+          "targetNumericKind": "smi number",
+          "references": 8,
+          "classCounts": {
+            "signed32_nonnegative": 8
+          },
+          "minFinite": 28,
+          "maxFinite": 329470,
+          "exampleValueStrings": [
+            "28",
+            "56",
+            "102",
+            "126",
+            "328886",
+            "329058",
+            "329302",
+            "329470"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.TermMin",
+          "edgeKind": "property",
+          "field": "right_id",
+          "targetNumericKind": "smi number",
+          "references": 8,
+          "classCounts": {
+            "signed32_nonnegative": 8
+          },
+          "minFinite": 30,
+          "maxFinite": 329472,
+          "exampleValueStrings": [
+            "30",
+            "58",
+            "104",
+            "128",
+            "328888",
+            "329060",
+            "329304",
+            "329472"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "PatternExpect",
+          "edgeKind": "property",
+          "field": "beg",
+          "targetNumericKind": "smi number",
+          "references": 7,
+          "classCounts": {
+            "signed32_nonnegative": 7
+          },
+          "minFinite": 0,
+          "maxFinite": 0,
+          "exampleValueStrings": [
+            "0"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.CasePrefixSaved",
+          "edgeKind": "property",
+          "field": "barrier",
+          "targetNumericKind": "smi number",
+          "references": 6,
+          "classCounts": {
+            "signed32_nonnegative": 6
+          },
+          "minFinite": 64,
+          "maxFinite": 64,
+          "exampleValueStrings": [
+            "64"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.CasePrefixSaved",
+          "edgeKind": "property",
+          "field": "count",
+          "targetNumericKind": "smi number",
+          "references": 6,
+          "classCounts": {
+            "signed32_nonnegative": 6
+          },
+          "minFinite": 64,
+          "maxFinite": 64,
+          "exampleValueStrings": [
+            "64"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.CasePrefixSaved",
+          "edgeKind": "property",
+          "field": "source_generation",
+          "targetNumericKind": "smi number",
+          "references": 6,
+          "classCounts": {
+            "signed32_nonnegative": 6
+          },
+          "minFinite": 0,
+          "maxFinite": 0,
+          "exampleValueStrings": [
+            "0"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.CasePrefixSaved",
+          "edgeKind": "property",
+          "field": "start",
+          "targetNumericKind": "smi number",
+          "references": 6,
+          "classCounts": {
+            "signed32_nonnegative": 6
+          },
+          "minFinite": 1593992,
+          "maxFinite": 2024036,
+          "exampleValueStrings": [
+            "1595716",
+            "1593992",
+            "2007372",
+            "2010708",
+            "2024036",
+            "2009144"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "checker_core_steps_v1.CheckerValue",
+          "edgeKind": "property",
+          "field": "value",
+          "targetNumericKind": "smi number",
+          "references": 5,
+          "classCounts": {
+            "signed32_nonnegative": 5
+          },
+          "minFinite": 0,
+          "maxFinite": 2,
+          "exampleValueStrings": [
+            "2",
+            "0"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "Some",
+          "edgeKind": "property",
+          "field": "value",
+          "targetNumericKind": "smi number",
+          "references": 4,
+          "classCounts": {
+            "signed32_nonnegative": 4
+          },
+          "minFinite": 0,
+          "maxFinite": 7,
+          "exampleValueStrings": [
+            "0",
+            "1",
+            "7"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "checker_core_steps_v1.Binding",
+          "edgeKind": "property",
+          "field": "ty",
+          "targetNumericKind": "smi number",
+          "references": 4,
+          "classCounts": {
+            "signed32_nonnegative": 4
+          },
+          "minFinite": 234468,
+          "maxFinite": 234474,
+          "exampleValueStrings": [
+            "234474",
+            "234472",
+            "234470",
+            "234468"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "checker_core_steps_v1.Binding",
+          "edgeKind": "property",
+          "field": "type_depth",
+          "targetNumericKind": "smi number",
+          "references": 4,
+          "classCounts": {
+            "signed32_nonnegative": 4
+          },
+          "minFinite": 0,
+          "maxFinite": 3,
+          "exampleValueStrings": [
+            "3",
+            "2",
+            "1",
+            "0"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.TermBang",
+          "edgeKind": "property",
+          "field": "term_id",
+          "targetNumericKind": "smi number",
+          "references": 2,
+          "classCounts": {
+            "signed32_nonnegative": 2
+          },
+          "minFinite": 27862,
+          "maxFinite": 401784,
+          "exampleValueStrings": [
+            "27862",
+            "401784"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_ir.Quantities",
+          "edgeKind": "property",
+          "field": "count",
+          "targetNumericKind": "smi number",
+          "references": 2,
+          "classCounts": {
+            "signed32_nonnegative": 2
+          },
+          "minFinite": 0,
+          "maxFinite": 0,
+          "exampleValueStrings": [
+            "0"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_ir.Quantities",
+          "edgeKind": "property",
+          "field": "start",
+          "targetNumericKind": "smi number",
+          "references": 2,
+          "classCounts": {
+            "signed32_nonnegative": 2
+          },
+          "minFinite": 0,
+          "maxFinite": 0,
+          "exampleValueStrings": [
+            "0"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/lexer.Pos",
+          "edgeKind": "property",
+          "field": "col",
+          "targetNumericKind": "smi number",
+          "references": 2,
+          "classCounts": {
+            "signed32_nonnegative": 2
+          },
+          "minFinite": 1,
+          "maxFinite": 1,
+          "exampleValueStrings": [
+            "1"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "SymbolCombineMerged",
+          "edgeKind": "property",
+          "field": "consumed",
+          "targetNumericKind": "smi number",
+          "references": 2,
+          "classCounts": {
+            "signed32_nonnegative": 2
+          },
+          "minFinite": 1,
+          "maxFinite": 2,
+          "exampleValueStrings": [
+            "2",
+            "1"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "checker_core_steps_v1.CheckerRequest_whnf",
+          "edgeKind": "property",
+          "field": "v_3",
+          "targetNumericKind": "smi number",
+          "references": 2,
+          "classCounts": {
+            "signed32_nonnegative": 2
+          },
+          "minFinite": 64,
+          "maxFinite": 64,
+          "exampleValueStrings": [
+            "64"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "checker_core_steps_v1.PatternRowIndex",
+          "edgeKind": "property",
+          "field": "count",
+          "targetNumericKind": "smi number",
+          "references": 2,
+          "classCounts": {
+            "signed32_nonnegative": 2
+          },
+          "minFinite": 0,
+          "maxFinite": 58,
+          "exampleValueStrings": [
+            "0",
+            "58"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.Mark",
+          "edgeKind": "property",
+          "field": "binders",
+          "targetNumericKind": "smi number",
+          "references": 1,
+          "classCounts": {
+            "signed32_nonnegative": 1
+          },
+          "minFinite": 0,
+          "maxFinite": 0,
+          "exampleValueStrings": [
+            "0"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.Mark",
+          "edgeKind": "property",
+          "field": "names",
+          "targetNumericKind": "smi number",
+          "references": 1,
+          "classCounts": {
+            "signed32_nonnegative": 1
+          },
+          "minFinite": 0,
+          "maxFinite": 0,
+          "exampleValueStrings": [
+            "0"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.Mark",
+          "edgeKind": "property",
+          "field": "naturals",
+          "targetNumericKind": "smi number",
+          "references": 1,
+          "classCounts": {
+            "signed32_nonnegative": 1
+          },
+          "minFinite": 0,
+          "maxFinite": 0,
+          "exampleValueStrings": [
+            "0"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.Mark",
+          "edgeKind": "property",
+          "field": "nodes",
+          "targetNumericKind": "smi number",
+          "references": 1,
+          "classCounts": {
+            "signed32_nonnegative": 1
+          },
+          "minFinite": 0,
+          "maxFinite": 0,
+          "exampleValueStrings": [
+            "0"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.Mark",
+          "edgeKind": "property",
+          "field": "patterns",
+          "targetNumericKind": "smi number",
+          "references": 1,
+          "classCounts": {
+            "signed32_nonnegative": 1
+          },
+          "minFinite": 0,
+          "maxFinite": 0,
+          "exampleValueStrings": [
+            "0"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.Mark",
+          "edgeKind": "property",
+          "field": "words",
+          "targetNumericKind": "smi number",
+          "references": 1,
+          "classCounts": {
+            "signed32_nonnegative": 1
+          },
+          "minFinite": 0,
+          "maxFinite": 0,
+          "exampleValueStrings": [
+            "0"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/checker_arena.ResolutionFrameOpen",
+          "edgeKind": "property",
+          "field": "serial",
+          "targetNumericKind": "smi number",
+          "references": 1,
+          "classCounts": {
+            "signed32_nonnegative": 1
+          },
+          "minFinite": 1583,
+          "maxFinite": 1583,
+          "exampleValueStrings": [
+            "1583"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/lexer.Pos",
+          "edgeKind": "property",
+          "field": "line",
+          "targetNumericKind": "smi number",
+          "references": 1,
+          "classCounts": {
+            "signed32_nonnegative": 1
+          },
+          "minFinite": 1,
+          "maxFinite": 1,
+          "exampleValueStrings": [
+            "1"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/lexer.Pos",
+          "edgeKind": "property",
+          "field": "offset",
+          "targetNumericKind": "smi number",
+          "references": 1,
+          "classCounts": {
+            "signed32_nonnegative": 1
+          },
+          "minFinite": 0,
+          "maxFinite": 0,
+          "exampleValueStrings": [
+            "0"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "../bend2/selfhost/scope_lookup.ArenaGlobalScope",
+          "edgeKind": "property",
+          "field": "size",
+          "targetNumericKind": "smi number",
+          "references": 1,
+          "classCounts": {
+            "signed32_nonnegative": 1
+          },
+          "minFinite": 5255,
+          "maxFinite": 5255,
+          "exampleValueStrings": [
+            "5255"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "checker_core_steps_v1.CheckerRequest_check_pattern_typed",
+          "edgeKind": "property",
+          "field": "v_9",
+          "targetNumericKind": "smi number",
+          "references": 1,
+          "classCounts": {
+            "signed32_nonnegative": 1
+          },
+          "minFinite": 0,
+          "maxFinite": 0,
+          "exampleValueStrings": [
+            "0"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "checker_core_steps_v1.CheckerRequest_core_subst_at",
+          "edgeKind": "property",
+          "field": "v_3",
+          "targetNumericKind": "smi number",
+          "references": 1,
+          "classCounts": {
+            "signed32_nonnegative": 1
+          },
+          "minFinite": 0,
+          "maxFinite": 0,
+          "exampleValueStrings": [
+            "0"
+          ],
+          "sameTargetPropertyAliases": {}
+        },
+        {
+          "tag": "checker_core_steps_v1.CheckerRequest_use_count_with_expected",
+          "edgeKind": "property",
+          "field": "v_5",
+          "targetNumericKind": "smi number",
+          "references": 1,
+          "classCounts": {
+            "signed32_nonnegative": 1
+          },
+          "minFinite": 0,
+          "maxFinite": 0,
+          "exampleValueStrings": [
+            "0"
+          ],
+          "sameTargetPropertyAliases": {}
+        }
+      ],
+      "examples": [
+        {
+          "tag": "../bend2/selfhost/ast.SpanOf",
+          "numbers": [
+            {
+              "edgeKind": "property",
+              "field": "beg",
+              "numericKind": "smi number",
+              "value": "181597"
+            },
+            {
+              "edgeKind": "property",
+              "field": "end",
+              "numericKind": "smi number",
+              "value": "181613"
+            }
+          ]
+        },
+        {
+          "tag": "../bend2/selfhost/ast.SpanOf",
+          "numbers": [
+            {
+              "edgeKind": "property",
+              "field": "beg",
+              "numericKind": "smi number",
+              "value": "181582"
+            },
+            {
+              "edgeKind": "property",
+              "field": "end",
+              "numericKind": "smi number",
+              "value": "181613"
+            }
+          ]
+        },
+        {
+          "tag": "../bend2/selfhost/ast.TermVar",
+          "numbers": [
+            {
+              "edgeKind": "property",
+              "field": "index",
+              "numericKind": "smi number",
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "tag": "../bend2/selfhost/ast.SpanOf",
+          "numbers": [
+            {
+              "edgeKind": "property",
+              "field": "beg",
+              "numericKind": "smi number",
+              "value": "181615"
+            },
+            {
+              "edgeKind": "property",
+              "field": "end",
+              "numericKind": "smi number",
+              "value": "181624"
+            }
+          ]
+        },
+        {
+          "tag": "../bend2/selfhost/ast.SpanOf",
+          "numbers": [
+            {
+              "edgeKind": "property",
+              "field": "beg",
+              "numericKind": "smi number",
+              "value": "181582"
+            },
+            {
+              "edgeKind": "property",
+              "field": "end",
+              "numericKind": "smi number",
+              "value": "181624"
+            }
+          ]
+        },
+        {
+          "tag": "../bend2/selfhost/ast.TermVar",
+          "numbers": [
+            {
+              "edgeKind": "property",
+              "field": "index",
+              "numericKind": "smi number",
+              "value": "4"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "boxComparison": {
+    "baselineHeapNumberNodes": 732353,
+    "candidateHeapNumberNodes": 802,
+    "candidateOverBaseline": 0.001095100313646561,
+    "removedObservedNodes": 731551,
+    "targetFields": [
+      {
+        "tag": "TypedOccurrence",
+        "field": "term",
+        "baselineHeapNumberReferences": 56587,
+        "baselineSmiReferences": 0,
+        "candidateHeapNumberReferences": 0,
+        "candidateSmiReferences": 56565
+      },
+      {
+        "tag": "TypedOccurrence",
+        "field": "ty",
+        "baselineHeapNumberReferences": 56587,
+        "baselineSmiReferences": 0,
+        "candidateHeapNumberReferences": 0,
+        "candidateSmiReferences": 56565
+      },
+      {
+        "tag": "CheckedBinding",
+        "field": "ty",
+        "baselineHeapNumberReferences": 69779,
+        "baselineSmiReferences": 0,
+        "candidateHeapNumberReferences": 0,
+        "candidateSmiReferences": 69767
+      },
+      {
+        "tag": "Symbol",
+        "field": "signature",
+        "baselineHeapNumberReferences": 40936,
+        "baselineSmiReferences": 0,
+        "candidateHeapNumberReferences": 0,
+        "candidateSmiReferences": 40921
+      },
+      {
+        "tag": "CheckedConstructor",
+        "field": "pattern",
+        "baselineHeapNumberReferences": 9761,
+        "baselineSmiReferences": 0,
+        "candidateHeapNumberReferences": 0,
+        "candidateSmiReferences": 9758
+      },
+      {
+        "tag": "TermApp",
+        "field": "fn_id",
+        "baselineHeapNumberReferences": 41423,
+        "baselineSmiReferences": 8864,
+        "candidateHeapNumberReferences": 0,
+        "candidateSmiReferences": 50415
+      },
+      {
+        "tag": "TermApp",
+        "field": "arg_id",
+        "baselineHeapNumberReferences": 41423,
+        "baselineSmiReferences": 8864,
+        "candidateHeapNumberReferences": 0,
+        "candidateSmiReferences": 50415
+      },
+      {
+        "tag": "TermAll",
+        "field": "ty_id",
+        "baselineHeapNumberReferences": 38078,
+        "baselineSmiReferences": 970,
+        "candidateHeapNumberReferences": 0,
+        "candidateSmiReferences": 39034
+      },
+      {
+        "tag": "TermAll",
+        "field": "body_id",
+        "baselineHeapNumberReferences": 39027,
+        "baselineSmiReferences": 21,
+        "candidateHeapNumberReferences": 0,
+        "candidateSmiReferences": 39034
+      },
+      {
+        "tag": "TermCtr",
+        "field": "args_start",
+        "baselineHeapNumberReferences": 75748,
+        "baselineSmiReferences": 5662,
+        "candidateHeapNumberReferences": 0,
+        "candidateSmiReferences": 81516
+      },
+      {
+        "tag": "TermAdt",
+        "field": "args_start",
+        "baselineHeapNumberReferences": 19403,
+        "baselineSmiReferences": 0,
+        "candidateHeapNumberReferences": 0,
+        "candidateSmiReferences": 19500
+      },
+      {
+        "tag": "TermAdt",
+        "field": "refs_start",
+        "baselineHeapNumberReferences": 19403,
+        "baselineSmiReferences": 0,
+        "candidateHeapNumberReferences": 0,
+        "candidateSmiReferences": 19500
+      },
+      {
+        "tag": "Names",
+        "field": "start",
+        "baselineHeapNumberReferences": 10085,
+        "baselineSmiReferences": 0,
+        "candidateHeapNumberReferences": 0,
+        "candidateSmiReferences": 10056
+      }
+    ],
+    "scope": "Real heap-number snapshot nodes vs artificial zero-size Smi entries, not statistical allocation traffic. All13target fields havezero realHeapNumber property references after migration. C/A totalchunks differ by221, so prefixprogress notcertifiedidentical; do not infer same retainedgraph or absoluteexclusive savedbytes. Snapshot forcesGC andpause; not clean peakRAM evidence."
+  },
+  "offlineAnalysis": {
+    "command": [
+      "/Library/Frameworks/Python.framework/Versions/3.12/bin/python3",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/analyze-numeric-fields.py",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/d1-candidate.json.heapsnapshot",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/d1-numeric-fields.json"
+    ],
+    "sourceSha256": "2b63573df5887c858bfbcb51dd70ea7e71343132f8fd61bead89cf64ded0bd19",
+    "sourceReference": "checkpoints/local2039g66-d0.json offlineDecoder.source",
+    "output": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/d1-numeric-fields.json",
+      "sha256": "2f8be6c5a438aef4ea93550f05e11793cc4466f8d983860f888d25b93aff70ba"
+    }
+  },
+  "decision": "Internal low-bit handle layout removes observed sticky Double-field boxes but nineclean processes fail unchangedCPU/RAM qualification. Do not promote algorithm, retime, run unearnedfull/ownfixedpoint or call this accepted acceleration.",
+  "conditionalFullAndOwnFixedpoint": "NOT_RUN_NOT_EARNED",
+  "acceptedG24R12": "UNCHANGED",
+  "mainAlgorithmCutover": false
+}

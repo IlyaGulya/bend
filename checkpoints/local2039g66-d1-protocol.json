@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 1,
+  "version": "G66D1",
+  "status": "PROSPECTIVE_POST_REJECTION_MECHANISM_AND_CHANGED_READBACK_PROOF",
+  "rejectedCandidateCheckpoint": "e675f811",
+  "costDecisionImmutable": true,
+  "candidateImage": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/r3-source-generation.json.output.mjs",
+    "sha256": "e48b1926c1c2abe03b9492892d4ac1785e302b94cee541189fce3214d8e86d92"
+  },
+  "baselineNumericDiagnosis": "checkpoints/local2039g66-d0.json",
+  "cells": [
+    {
+      "id": "G66D1-direct-readback-recheck-consumers",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+        "--memory-mib=8192",
+        "--rss-mib=8192",
+        "--poll-ms=10",
+        "--timeout-ms=120000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=6144",
+        "--max-semi-space-size=128",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository/evals/selfhost_ir_readback_probe.mjs",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/d1-readback-request.json",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/d1-readback.json"
+      ],
+      "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository",
+      "report": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/d1-readback.json"
+    },
+    {
+      "id": "G66D1-numeric-box-mechanism",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+        "--memory-mib=8192",
+        "--rss-mib=8192",
+        "--poll-ms=10",
+        "--timeout-ms=600000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=6144",
+        "--max-semi-space-size=128",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository/evals/selfhost_numeric_ownership_probe.mjs",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/d1-candidate-request.json",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/d1-candidate.json"
+      ],
+      "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository",
+      "report": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/d1-candidate.json"
+    }
+  ],
+  "numericRequest": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/d1-candidate-request.json",
+    "sha256": "667ac205b8327f7e8129077d0a3aaf02e4a855b23496149cde056c994d3644ab"
+  },
+  "readbackRequest": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/d1-readback-request.json",
+    "sha256": "e1a0ad9fe03af3ce6b37407f7e50c2c6f152031af26681feb027e43bf1dfbdea"
+  },
+  "readbackProbe": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository/evals/selfhost_ir_readback_probe.mjs",
+    "sha256": "374a6635088e3a9c8366f3dc3d8b4e0690a78b1dd5f79bfd0793c228bb9e796f"
+  },
+  "readbackSourceFixture": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository/checkpoints/local2039g66-readback.bend",
+    "sha256": "932163e5486d1d620e93cc8840f6b6b978b87227e95b27a4b07fb2dbc4e1d7e1"
+  },
+  "fixtureExtraction": {
+    "source": {
+      "path": "/Users/ilyagulya/Projects/My/bend/evals/checker_library_smoke.ts",
+      "sha256": "4633ce516b3f22205a78ad22102dfa5e3d660b1d703502425a5e0abc346fd753"
+    },
+    "command": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/extract-readback-source.mjs",
+      "/Users/ilyagulya/Projects/My/bend/evals/checker_library_smoke.ts",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository/checkpoints/local2039g66-readback.bend"
+    ],
+    "producerSource": "import {readFileSync,writeFileSync} from 'node:fs';\nimport {parse} from '/Users/ilyagulya/.bun/install/cache/acorn@8.19.0@@@1/dist/acorn.mjs';\nconst source=readFileSync(process.argv[2],'utf8');\nconst ast=parse(new Bun.Transpiler({loader:'ts'}).transformSync(source),{ecmaVersion:'latest',sourceType:'module'});\nconst literals=ast.body.filter(n=>n.type==='VariableDeclaration').flatMap(n=>n.declarations).filter(d=>d.id.type==='Identifier'&&d.id.name==='source');\nif(literals.length!==1||literals[0].init.type!=='TemplateLiteral'||literals[0].init.expressions.length!==0)throw Error('Expected one static smoke source literal');\nwriteFileSync(process.argv[3],literals[0].init.quasis[0].value.cooked,{flag:'wx'});console.log(JSON.stringify({source:process.argv[2],output:process.argv[3]}));\n",
+    "method": "Bun TypeScript syntax transform plusAcorn8.19 staticTemplateLiteral cookedvalue, never execute source module or fake native build provenance."
+  },
+  "scope": [
+    "Direct source inspection must be exercised; existing own69 targets parser/checker/emitter rather than readback. New probe discards originalInspection.program and rechecks actualInspection.modules before library emission and28existing runtime expectations.",
+    "Numeric snapshot exposesrealHeapNumber property values andzero-size artificialSmi nodes; count real boxes separately. It inducesGC andpause and cannotqualifyCPU/peakRAM.",
+    "Same frozen17module2954declaration input atcheckerchunk1000000. C complete scheduler count is221 greater, so prefix progress is not certified identical; compareper-field representations, not claim identical retained-data graphs.",
+    "No repeat/exclusion of9clean samples; conditionalfulltiming and candidateownfixedpoint remainNOT_RUN_NOT_EARNED. No new algorithm changes."
+  ],
+  "primarySources": {
+    "numericSnapshotOptions": "https://nodejs.org/download/release/v23.11.0/docs/api/v8.html#v8writeheapsnapshotfilenameoptions",
+    "doubleFieldStore": "https://raw.githubusercontent.com/nodejs/node/v23.11.0/deps/v8/src/objects/js-objects-inl.h",
+    "numericPropertyExtraction": "https://raw.githubusercontent.com/nodejs/node/v23.11.0/deps/v8/src/profiler/heap-snapshot-generator.cc"
+  },
+  "mainAlgorithmCutover": false
+}
