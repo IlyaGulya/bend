@@ -1,0 +1,619 @@
+{
+  "schemaVersion": 1,
+  "version": "G65D0",
+  "status": "THREE_REAL_DIAGNOSTIC_MODES_PASS_CHEAP_CONSUMER",
+  "protocolCheckpoint": "653e9e52",
+  "executions": [
+    {
+      "id": "G65D0-smoke-traffic",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+        "--memory-mib=8192",
+        "--rss-mib=8192",
+        "--poll-ms=10",
+        "--timeout-ms=600000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=6144",
+        "--max-semi-space-size=128",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/repository/evals/selfhost_heap_ownership_probe.mjs",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/d0-smoke-traffic-request.json",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/d0-smoke-traffic.json"
+      ],
+      "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/repository",
+      "exitCode": 0,
+      "elapsedMs": 10226.679207989946,
+      "stdout": "{\"status\":\"PASS_FULL_OWN_CHECK_DIAGNOSTIC\",\"kind\":\"traffic\",\"moduleCount\":2,\"sourceDeclarations\":519,\"stepCounts\":{\"expand\":20223,\"check\":152412},\"samples\":[{\"label\":\"finished\",\"path\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/d0-smoke-traffic.json.finished.heapprofile\"}]}\n",
+      "stderr": "HEAVY_GATE {\"status\":\"PASS\",\"reason\":\"command_exit\",\"commandExitCode\":0,\"commandSignal\":0,\"peakRssBytes\":946307072,\"peakFootprintBytes\":654827176,\"elapsedMs\":9903,\"timeoutMs\":600000,\"reportPhase\":\"complete\",\"ownedTreeStopped\":true,\"supervisorExitCode\":0,\"command\":[\"/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node\",\"--experimental-strip-types\",\"--max-old-space-size=6144\",\"--max-semi-space-size=128\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/repository/evals/selfhost_heap_ownership_probe.mjs\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/d0-smoke-traffic-request.json\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/d0-smoke-traffic.json\"],\"label\":\"heavy command\",\"exitCode\":0,\"reportPath\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793807182821-4f6449666a8b57b4.json\",\"memoryLimitBytes\":8589934592,\"rssLimitBytes\":8589934592}\n"
+    },
+    {
+      "id": "G65D0-smoke-uncollected",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+        "--memory-mib=8192",
+        "--rss-mib=8192",
+        "--poll-ms=10",
+        "--timeout-ms=600000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=6144",
+        "--max-semi-space-size=128",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/repository/evals/selfhost_heap_ownership_probe.mjs",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/d0-smoke-uncollected-request.json",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/d0-smoke-uncollected.json"
+      ],
+      "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/repository",
+      "exitCode": 0,
+      "elapsedMs": 10172.148041194305,
+      "stdout": "{\"status\":\"PASS_FULL_OWN_CHECK_DIAGNOSTIC\",\"kind\":\"uncollected\",\"moduleCount\":2,\"sourceDeclarations\":519,\"stepCounts\":{\"expand\":20223,\"check\":152412},\"samples\":[{\"label\":\"finished\",\"path\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/d0-smoke-uncollected.json.finished.heapprofile\"}]}\n",
+      "stderr": "HEAVY_GATE {\"status\":\"PASS\",\"reason\":\"command_exit\",\"commandExitCode\":0,\"commandSignal\":0,\"peakRssBytes\":929153024,\"peakFootprintBytes\":625991640,\"elapsedMs\":10063,\"timeoutMs\":600000,\"reportPhase\":\"complete\",\"ownedTreeStopped\":true,\"supervisorExitCode\":0,\"command\":[\"/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node\",\"--experimental-strip-types\",\"--max-old-space-size=6144\",\"--max-semi-space-size=128\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/repository/evals/selfhost_heap_ownership_probe.mjs\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/d0-smoke-uncollected-request.json\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/d0-smoke-uncollected.json\"],\"label\":\"heavy command\",\"exitCode\":0,\"reportPath\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793807222989-2692e9cf5b9a38a0.json\",\"memoryLimitBytes\":8589934592,\"rssLimitBytes\":8589934592}\n"
+    },
+    {
+      "id": "G65D0-smoke-snapshot",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+        "--memory-mib=8192",
+        "--rss-mib=8192",
+        "--poll-ms=10",
+        "--timeout-ms=600000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=6144",
+        "--max-semi-space-size=128",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/repository/evals/selfhost_heap_ownership_probe.mjs",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/d0-smoke-snapshot-request.json",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/d0-smoke-snapshot.json"
+      ],
+      "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/repository",
+      "exitCode": 0,
+      "elapsedMs": 2695.151458028704,
+      "stdout": "{\"status\":\"SNAPSHOT_PREFIX_ONLY_NOT_FULL_CHECK\",\"kind\":\"snapshot\",\"moduleCount\":2,\"sourceDeclarations\":519,\"stepCounts\":{\"expand\":20223},\"samples\":[],\"snapshot\":{\"path\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/d0-smoke-snapshot.json.heapsnapshot\",\"step\":1}}\n",
+      "stderr": "HEAVY_GATE {\"status\":\"PASS\",\"reason\":\"command_exit\",\"commandExitCode\":0,\"commandSignal\":0,\"peakRssBytes\":988151808,\"peakFootprintBytes\":810074912,\"elapsedMs\":2636,\"timeoutMs\":600000,\"reportPhase\":\"complete\",\"ownedTreeStopped\":true,\"supervisorExitCode\":0,\"command\":[\"/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node\",\"--experimental-strip-types\",\"--max-old-space-size=6144\",\"--max-semi-space-size=128\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/repository/evals/selfhost_heap_ownership_probe.mjs\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/d0-smoke-snapshot-request.json\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/d0-smoke-snapshot.json\"],\"label\":\"heavy command\",\"exitCode\":0,\"reportPath\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793807233119-bd793fcd04ee61e2.json\",\"memoryLimitBytes\":8589934592,\"rssLimitBytes\":8589934592}\n"
+    }
+  ],
+  "reports": [
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/d0-smoke-traffic.json",
+      "sha256": "555728d084543074d933755f3c3b07ade0b41424aff6a3c106862a99f081a4ae",
+      "kind": "traffic",
+      "observed": {
+        "status": "PASS_FULL_OWN_CHECK_DIAGNOSTIC",
+        "samples": [
+          {
+            "label": "finished",
+            "step": 152412,
+            "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/d0-smoke-traffic.json.finished.heapprofile",
+            "sha256": "2f7f91ddcc48419ec75b3814f451b8bbca5eabf719870d74cac82f477d760dec",
+            "memory": {
+              "rss": 772390912,
+              "heapTotal": 352780288,
+              "heapUsed": 179739920,
+              "external": 10571033,
+              "arrayBuffers": 7490513
+            },
+            "heapStatistics": {
+              "total_heap_size": 352780288,
+              "total_heap_size_executable": 43139072,
+              "total_physical_size": 353009664,
+              "total_available_size": 6618011480,
+              "used_heap_size": 179740144,
+              "heap_size_limit": 6845104128,
+              "malloced_memory": 2113640,
+              "peak_malloced_memory": 282861568,
+              "does_zap_garbage": 0,
+              "number_of_native_contexts": 1,
+              "number_of_detached_contexts": 0,
+              "total_global_handles_size": 1630208,
+              "used_global_handles_size": 1511008,
+              "external_memory": 10571033
+            },
+            "spaces": [
+              {
+                "space_name": "read_only_space",
+                "space_size": 0,
+                "space_used_size": 0,
+                "space_available_size": 0,
+                "physical_space_size": 0
+              },
+              {
+                "space_name": "new_space",
+                "space_size": 134217728,
+                "space_used_size": 4505680,
+                "space_available_size": 62599088,
+                "physical_space_size": 134217728
+              },
+              {
+                "space_name": "old_space",
+                "space_size": 85688320,
+                "space_used_size": 57577824,
+                "space_available_size": 382408,
+                "physical_space_size": 85721088
+              },
+              {
+                "space_name": "code_space",
+                "space_size": 42991616,
+                "space_used_size": 35612832,
+                "space_available_size": 3332032,
+                "physical_space_size": 42991616
+              },
+              {
+                "space_name": "shared_space",
+                "space_size": 0,
+                "space_used_size": 0,
+                "space_available_size": 0,
+                "physical_space_size": 0
+              },
+              {
+                "space_name": "trusted_space",
+                "space_size": 34930688,
+                "space_used_size": 27416800,
+                "space_available_size": 3462608,
+                "physical_space_size": 35127296
+              },
+              {
+                "space_name": "shared_trusted_space",
+                "space_size": 0,
+                "space_used_size": 0,
+                "space_available_size": 0,
+                "physical_space_size": 0
+              },
+              {
+                "space_name": "new_large_object_space",
+                "space_size": 11206656,
+                "space_used_size": 11198304,
+                "space_available_size": 55910560,
+                "physical_space_size": 11206656
+              },
+              {
+                "space_name": "large_object_space",
+                "space_size": 41402368,
+                "space_used_size": 41131720,
+                "space_available_size": 0,
+                "physical_space_size": 41402368
+              },
+              {
+                "space_name": "code_large_object_space",
+                "space_size": 147456,
+                "space_used_size": 132896,
+                "space_available_size": 0,
+                "physical_space_size": 147456
+              },
+              {
+                "space_name": "shared_large_object_space",
+                "space_size": 0,
+                "space_used_size": 0,
+                "space_available_size": 0,
+                "physical_space_size": 0
+              },
+              {
+                "space_name": "shared_trusted_large_object_space",
+                "space_size": 0,
+                "space_used_size": 0,
+                "space_available_size": 0,
+                "physical_space_size": 0
+              },
+              {
+                "space_name": "trusted_large_object_space",
+                "space_size": 2195456,
+                "space_used_size": 2165032,
+                "space_available_size": 0,
+                "physical_space_size": 2195456
+              }
+            ]
+          }
+        ],
+        "stepCounts": {
+          "expand": 20223,
+          "check": 152412
+        },
+        "moduleCount": 2,
+        "sourceDeclarations": 519
+      }
+    },
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/d0-smoke-uncollected.json",
+      "sha256": "f873d8e65066fcd1239bce23e4f8db6d7d4bad8a837fbd5feb222519b7ce29e1",
+      "kind": "uncollected",
+      "observed": {
+        "status": "PASS_FULL_OWN_CHECK_DIAGNOSTIC",
+        "samples": [
+          {
+            "label": "finished",
+            "step": 152412,
+            "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/d0-smoke-uncollected.json.finished.heapprofile",
+            "sha256": "5152213cf36a2a9d3ac954adcfdbedab019bcdc90afbcb2e379e61e983d0305f",
+            "memory": {
+              "rss": 772685824,
+              "heapTotal": 340787200,
+              "heapUsed": 163300080,
+              "external": 3328128,
+              "arrayBuffers": 253233
+            },
+            "heapStatistics": {
+              "total_heap_size": 340787200,
+              "total_heap_size_executable": 42614784,
+              "total_physical_size": 341016576,
+              "total_available_size": 6645196520,
+              "used_heap_size": 163300304,
+              "heap_size_limit": 6845104128,
+              "malloced_memory": 4825192,
+              "peak_malloced_memory": 282861568,
+              "does_zap_garbage": 0,
+              "number_of_native_contexts": 1,
+              "number_of_detached_contexts": 0,
+              "total_global_handles_size": 1540096,
+              "used_global_handles_size": 1432704,
+              "external_memory": 3328128
+            },
+            "spaces": [
+              {
+                "space_name": "read_only_space",
+                "space_size": 0,
+                "space_used_size": 0,
+                "space_available_size": 0,
+                "physical_space_size": 0
+              },
+              {
+                "space_name": "new_space",
+                "space_size": 134217728,
+                "space_used_size": 495672,
+                "space_available_size": 66609096,
+                "physical_space_size": 134217728
+              },
+              {
+                "space_name": "old_space",
+                "space_size": 86736896,
+                "space_used_size": 57183968,
+                "space_available_size": 397904,
+                "physical_space_size": 86769664
+              },
+              {
+                "space_name": "code_space",
+                "space_size": 42467328,
+                "space_used_size": 35649152,
+                "space_available_size": 3007072,
+                "physical_space_size": 42467328
+              },
+              {
+                "space_name": "shared_space",
+                "space_size": 0,
+                "space_used_size": 0,
+                "space_available_size": 0,
+                "physical_space_size": 0
+              },
+              {
+                "space_name": "trusted_space",
+                "space_size": 33619968,
+                "space_used_size": 26542808,
+                "space_available_size": 3755712,
+                "physical_space_size": 33816576
+              },
+              {
+                "space_name": "shared_trusted_space",
+                "space_size": 0,
+                "space_used_size": 0,
+                "space_available_size": 0,
+                "physical_space_size": 0
+              },
+              {
+                "space_name": "new_large_object_space",
+                "space_size": 0,
+                "space_used_size": 0,
+                "space_available_size": 67108864,
+                "physical_space_size": 0
+              },
+              {
+                "space_name": "large_object_space",
+                "space_size": 41402368,
+                "space_used_size": 41131720,
+                "space_available_size": 0,
+                "physical_space_size": 41402368
+              },
+              {
+                "space_name": "code_large_object_space",
+                "space_size": 147456,
+                "space_used_size": 132896,
+                "space_available_size": 0,
+                "physical_space_size": 147456
+              },
+              {
+                "space_name": "shared_large_object_space",
+                "space_size": 0,
+                "space_used_size": 0,
+                "space_available_size": 0,
+                "physical_space_size": 0
+              },
+              {
+                "space_name": "shared_trusted_large_object_space",
+                "space_size": 0,
+                "space_used_size": 0,
+                "space_available_size": 0,
+                "physical_space_size": 0
+              },
+              {
+                "space_name": "trusted_large_object_space",
+                "space_size": 2195456,
+                "space_used_size": 2165032,
+                "space_available_size": 0,
+                "physical_space_size": 2195456
+              }
+            ]
+          }
+        ],
+        "stepCounts": {
+          "expand": 20223,
+          "check": 152412
+        },
+        "moduleCount": 2,
+        "sourceDeclarations": 519
+      }
+    },
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/d0-smoke-snapshot.json",
+      "sha256": "109efd2b6d7fb3d70e33d8cdfa44e110e8fbda77c7713837ecd7e37a2d372871",
+      "kind": "snapshot",
+      "observed": {
+        "status": "SNAPSHOT_PREFIX_ONLY_NOT_FULL_CHECK",
+        "samples": [],
+        "stepCounts": {
+          "expand": 20223
+        },
+        "moduleCount": 2,
+        "sourceDeclarations": 519,
+        "snapshot": {
+          "step": 1,
+          "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/d0-smoke-snapshot.json.heapsnapshot",
+          "memoryBefore": {
+            "memory": {
+              "rss": 573784064,
+              "heapTotal": 171835392,
+              "heapUsed": 126378264,
+              "external": 34864080,
+              "arrayBuffers": 31783560
+            },
+            "heapStatistics": {
+              "total_heap_size": 171835392,
+              "total_heap_size_executable": 9060352,
+              "total_physical_size": 172064768,
+              "total_available_size": 6718444104,
+              "used_heap_size": 126378488,
+              "heap_size_limit": 6845104128,
+              "malloced_memory": 7356568,
+              "peak_malloced_memory": 282861568,
+              "does_zap_garbage": 0,
+              "number_of_native_contexts": 1,
+              "number_of_detached_contexts": 0,
+              "total_global_handles_size": 8192,
+              "used_global_handles_size": 3648,
+              "external_memory": 34864080
+            },
+            "spaces": [
+              {
+                "space_name": "read_only_space",
+                "space_size": 0,
+                "space_used_size": 0,
+                "space_available_size": 0,
+                "physical_space_size": 0
+              },
+              {
+                "space_name": "new_space",
+                "space_size": 67108864,
+                "space_used_size": 23210112,
+                "space_available_size": 10342272,
+                "physical_space_size": 67108864
+              },
+              {
+                "space_name": "old_space",
+                "space_size": 47153152,
+                "space_used_size": 46101944,
+                "space_available_size": 947456,
+                "physical_space_size": 47185920
+              },
+              {
+                "space_name": "code_space",
+                "space_size": 8912896,
+                "space_used_size": 8824480,
+                "space_available_size": 87328,
+                "physical_space_size": 8912896
+              },
+              {
+                "space_name": "shared_space",
+                "space_size": 0,
+                "space_used_size": 0,
+                "space_available_size": 0,
+                "physical_space_size": 0
+              },
+              {
+                "space_name": "trusted_space",
+                "space_size": 9764864,
+                "space_used_size": 9520792,
+                "space_available_size": 242936,
+                "physical_space_size": 9961472
+              },
+              {
+                "space_name": "shared_trusted_space",
+                "space_size": 0,
+                "space_used_size": 0,
+                "space_available_size": 0,
+                "physical_space_size": 0
+              },
+              {
+                "space_name": "new_large_object_space",
+                "space_size": 0,
+                "space_used_size": 0,
+                "space_available_size": 33554432,
+                "physical_space_size": 0
+              },
+              {
+                "space_name": "large_object_space",
+                "space_size": 36552704,
+                "space_used_size": 36424176,
+                "space_available_size": 0,
+                "physical_space_size": 36552704
+              },
+              {
+                "space_name": "code_large_object_space",
+                "space_size": 147456,
+                "space_used_size": 132896,
+                "space_available_size": 0,
+                "physical_space_size": 147456
+              },
+              {
+                "space_name": "shared_large_object_space",
+                "space_size": 0,
+                "space_used_size": 0,
+                "space_available_size": 0,
+                "physical_space_size": 0
+              },
+              {
+                "space_name": "shared_trusted_large_object_space",
+                "space_size": 0,
+                "space_used_size": 0,
+                "space_available_size": 0,
+                "physical_space_size": 0
+              },
+              {
+                "space_name": "trusted_large_object_space",
+                "space_size": 2195456,
+                "space_used_size": 2165032,
+                "space_available_size": 0,
+                "physical_space_size": 2195456
+              }
+            ]
+          },
+          "implicitGC": true,
+          "notPeakMemoryEvidence": true,
+          "memoryAfter": {
+            "memory": {
+              "rss": 818069504,
+              "heapTotal": 92930048,
+              "heapUsed": 89820400,
+              "external": 3096987,
+              "arrayBuffers": 25037
+            },
+            "heapStatistics": {
+              "total_heap_size": 92930048,
+              "total_heap_size_executable": 6963200,
+              "total_physical_size": 92192768,
+              "total_available_size": 6756077536,
+              "used_heap_size": 89820624,
+              "heap_size_limit": 6845104128,
+              "malloced_memory": 2113640,
+              "peak_malloced_memory": 282861568,
+              "does_zap_garbage": 0,
+              "number_of_native_contexts": 1,
+              "number_of_detached_contexts": 0,
+              "total_global_handles_size": 8192,
+              "used_global_handles_size": 3648,
+              "external_memory": 3096987
+            },
+            "spaces": [
+              {
+                "space_name": "read_only_space",
+                "space_size": 0,
+                "space_used_size": 0,
+                "space_available_size": 0,
+                "physical_space_size": 0
+              },
+              {
+                "space_name": "new_space",
+                "space_size": 1048576,
+                "space_used_size": 1216,
+                "space_available_size": 1047296,
+                "physical_space_size": 311296
+              },
+              {
+                "space_name": "old_space",
+                "space_size": 39288832,
+                "space_used_size": 38245944,
+                "space_available_size": 965056,
+                "physical_space_size": 39288832
+              },
+              {
+                "space_name": "code_space",
+                "space_size": 6815744,
+                "space_used_size": 6327456,
+                "space_available_size": 487456,
+                "physical_space_size": 6815744
+              },
+              {
+                "space_name": "shared_space",
+                "space_size": 0,
+                "space_used_size": 0,
+                "space_available_size": 0,
+                "physical_space_size": 0
+              },
+              {
+                "space_name": "trusted_space",
+                "space_size": 6881280,
+                "space_used_size": 6524848,
+                "space_available_size": 354128,
+                "physical_space_size": 6881280
+              },
+              {
+                "space_name": "shared_trusted_space",
+                "space_size": 0,
+                "space_used_size": 0,
+                "space_available_size": 0,
+                "physical_space_size": 0
+              },
+              {
+                "space_name": "new_large_object_space",
+                "space_size": 0,
+                "space_used_size": 0,
+                "space_available_size": 1048576,
+                "physical_space_size": 0
+              },
+              {
+                "space_name": "large_object_space",
+                "space_size": 36552704,
+                "space_used_size": 36424176,
+                "space_available_size": 0,
+                "physical_space_size": 36552704
+              },
+              {
+                "space_name": "code_large_object_space",
+                "space_size": 147456,
+                "space_used_size": 132896,
+                "space_available_size": 0,
+                "physical_space_size": 147456
+              },
+              {
+                "space_name": "shared_large_object_space",
+                "space_size": 0,
+                "space_used_size": 0,
+                "space_available_size": 0,
+                "physical_space_size": 0
+              },
+              {
+                "space_name": "shared_trusted_large_object_space",
+                "space_size": 0,
+                "space_used_size": 0,
+                "space_available_size": 0,
+                "physical_space_size": 0
+              },
+              {
+                "space_name": "trusted_large_object_space",
+                "space_size": 2195456,
+                "space_used_size": 2165032,
+                "space_available_size": 0,
+                "physical_space_size": 2195456
+              }
+            ]
+          },
+          "sha256": "8df071b61d8642363910392a2fa7056e0213357f9ce778e0c09334072e7b3508"
+        }
+      }
+    }
+  ],
+  "scope": "Diagnostic tool smoke only; not clean performance or a compiler algorithm change. Parent receipt reader initially assumed an incorrect declaration count; successful process retained without retry."
+}

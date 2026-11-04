@@ -2814,3 +2814,114 @@ short-lived traffic, genuinely retained graphs and GC-reserved capacity before
 choosing packed storage or another control-loop rewrite. Temporary timing and
 statistics controllers are removed; the checkpointed observer is frozen source.
 
+### G65: real heap owners, read-only Map.get and a failed memory filter
+
+**Status: G65R1 rejected before production; G65R2 rejected after measurement.**
+Accepted G24R12 and main's compiler algorithms remain unchanged. Experimental
+sources live on `selfhost/g65-heap-owners-isz5wzuq`: diagnosis `1ddc6afe`,
+R1 source `dd1b0173`/rejection `7c3558f1`, R2 protocol `ed9a3b3b`, source
+`1582daea`, production `908c1ec2`, semantics/schedule `b9b6ce02`, measured
+rejection `eccce39c`, post-rejection mechanism evidence `7cc7a0b7`.
+
+#### Measure traffic separately from uncollected samples and storage
+
+G65D0 runs six complete real-source checker diagnostics: unchanged main, G63
+and rejected G64R2, each with collected-object allocation sampling and with
+uncollected-only sampling. Every run owns the real parser, expansion and checker,
+passing17 modules,2954 declarations,263032 expansion and1975761 checker chunks.
+The existing opaque helper and images are not patched. A seventh process takes
+a separate snapshot at checker chunk1000000; it is prefix evidence only.
+Sampling is1MiB and worker CPU sampling1ms, under the same8GiB/600s guards and
+256/6144/128MiB worker policy. Profiling never enters clean timing cohorts.
+
+The unchanged compiler's `Map.get.go` family accounts for3.836GB of statistical
+allocation self-size and3.33% of sampled self elapsed weight. Neither measure
+is an exact allocated-byte total, process CPU or a hard causal speedup ceiling.
+Uncollected samples can include garbage awaiting collection. Snapshot generation
+induces GC and a pause; node-shallow sums include VM/code objects and are not
+unperturbed live heap or peak physical footprint. Source-data graph unions omit
+closure/prototype/VM reachability, including hidden numeric storage, and overlap;
+they are not exclusive retained-byte owners and must not be summed.
+
+Acorn8.19 syntax trees map emitted private functions/continuations to source
+registrations, excluding function-looking text inside quoted runtime strings.
+Unresolved frames stay unresolved. V8 node.selfSize and individual sample.size
+estimates differ slightly; both totals are retained rather than asserted equal.
+Initial offline-reader mistakes are preserved; no compiler diagnostic is retried.
+
+#### Source-only shared read, cheap failure, then real JS and C proof
+
+R2 changes only `bend2/base.bend` in the complete53-file compiler closure.
+`Map.get` keeps its exact public signature and parameter quantities, locally
+shares its already-Data map, calls existing exact `Map.find`, and returns the
+original map beside the hit/default. Obsolete get.go/get.leaf definitions go.
+Generic affine Map.set/seek, all consumers, runtime and opaque helpers stay fixed.
+This is the same mechanism class as G53, not a new primitive or a repacking win.
+G53's old single full observation was a checker-wall improvement but higher
+footprint; it is not reused as current timing or memory acceptance.
+
+R1's computed match is rejected in1232ms: Bend requires a parameter/field
+scrutinee. R2 uses the existing parameter-scoped helper convention. Before a
+full compiler build, eight existing public fixtures pass as source and emitted
+default-stack JS; seven actual C binaries also pass. They cover returned-map
+reuse, misses/defaults, prefix/NUL/full-U32 keys, arbitrary/backward/huge node
+positions, nested values, generic sharing and host field/value identity.
+
+The unchanged baseline's actual own byte-fixed JS compiler then parses,
+expands, checks all bodies and emits the complete R2 source:18 modules,
+13010 declarations,334723ms guardian elapsed. The31750861-byte result has SHA256
+`9775f2f1f7c9ecda979c4719f6860b8a564d2f6f707173c3082452467c9439a1`.
+Its native receipt is an ancestor, not a direct C-produced candidate claim.
+The new compiler passes all69 own consumers, emits13 default-stack JS programs,
+and emits three C programs whose actual binaries pass unchanged literal outputs.
+
+#### Nine fresh unprofiled observations: no memory-preserving acceptance
+
+ABC/CAB/BCA triads compare A unchanged main, B G63, C R2 on the identical frozen
+selected corpus. Every cell passes the same counts and original runtime/guard
+limits. CPU is checker-phase process user+system including helper threads.
+No profiler, retries, exclusions, older timings or conditional full-source runs.
+
+| Candidate ratio | C / unchanged main | C / G63 |
+| --- | --- | --- |
+| Checker CPU, geometric [Student95] | 0.934223 [0.739410,1.180364] | 0.960297 [0.826845,1.115288] |
+| Checker wall, geometric [Student95] | 0.916552 [0.755724,1.111605] | 0.986010 [0.867681,1.120477] |
+| Peak footprint, geometric [Student95] | 1.092017 [0.530849,2.246403] | 1.132796 [0.791915,1.620408] |
+| Peak footprint, ratio of medians | 1.129339 | 1.132009 |
+
+Intervals are inconclusive at the existing2% practical band. The first C/A CPU
+pair is slower; both memory conditions fail the unchanged prospective filter.
+CPU point estimates do not qualify an improvement or excuse memory growth.
+Full-source confirmation and candidate-own byte-fixedpoint remain
+**NOT_RUN_NOT_EARNED**, not failed or silently omitted checks.
+
+#### Post-rejection diagnosis confirms churn removal, not a smaller data graph
+
+G65D1 freezes two new diagnostic-only processes after rejection, with no new
+unprofiled timing or threshold change. The actual new emitted Map.get calls
+`$p_map_find`; the old path-rebuilding definition is absent.
+
+| Same frozen workload / fixed snapshot prefix | Unchanged compiler | R2 |
+| --- | ---: | ---: |
+| Statistical checker allocation node-self GB | 67.390615 | 63.664124 |
+| Snapshot node-shallow MB, including VM/code | 324.809598 | 324.583742 |
+| Restricted Arena source-data union MB | 77.556840 | 77.557352 |
+
+The sampler confirms lower traffic, but the sampled persistent data shape is
+effectively unchanged and clean peak-memory acceptance still fails. No GC/JIT
+cause of the peak variability is established. The snapshot also observes732384
+heap-number nodes/11.718MB, mostly hidden edges from occurrence/descriptor
+objects. Their stored values are not exposed: this does not prove an ID-tagging
+cause. Current IR flags occupy bits31/30; observed Node has pointer compression
+and31-bit-Smi mode disabled. Scalar encoding and ownership-safe record recycling
+are future DOD hypotheses, not implemented or accepted acceleration.
+
+`local2039g65-index.json` maps the compact main evidence and checkpointed source
+inputs. The full detailed D0 census and frozen observer/analyzer sources remain
+in the source branch. No rejected Base implementation, generated compiler image,
+AST transport, profile, snapshot or bulk log is promoted. Existing generator,
+admission, provenance and historical sharing-regression comments intentionally
+remain unchanged because there is no algorithm cutover. Temporary controllers
+and analysis scripts are removed after proof; exact invocations/source receipts
+remain reproducible.
+

@@ -1,0 +1,855 @@
+{
+  "schemaVersion": 1,
+  "version": "G65",
+  "status": "COMPLETE_DIAGNOSIS_SOURCE_EXPERIMENT_AND_EXPLICIT_REJECTIONS",
+  "userMemoryAndCpuGoalAchieved": false,
+  "mainBaselineCheckpoint": "f6cb89e2",
+  "sourceBranch": "selfhost/g65-heap-owners-isz5wzuq",
+  "sourceWorktree": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/repository",
+  "versions": {
+    "D0": {
+      "protocol": "653e9e52",
+      "execution": "87545fac",
+      "observed": "1ddc6afe",
+      "status": "REAL_ALLOCATION_UNCOLLECTED_AND_SNAPSHOT_DIAGNOSIS_COMPLETE"
+    },
+    "R1": {
+      "protocol": "09b8e19e",
+      "source": "dd1b0173",
+      "rejection": "7c3558f1",
+      "status": "REJECTED_SOURCE_PREFLIGHT_COMPUTED_MATCH",
+      "compilerProduction": "NOT_RUN",
+      "timing": "NOT_RUN_NOT_EARNED"
+    },
+    "R2": {
+      "protocol": "ed9a3b3b",
+      "source": "1582daea",
+      "preflight": "cc298c22",
+      "production": "908c1ec2",
+      "ownConsumersPlan": "01b7bcf8",
+      "semanticsAndTimingPlan": "b9b6ce02",
+      "measuredRejection": "eccce39c",
+      "status": "REJECTED_MEMORY_AND_CPU_PAIR_CONSISTENCY_FILTER"
+    },
+    "D1": {
+      "protocol": "03d41e61",
+      "observed": "7cc7a0b7",
+      "status": "ACTUAL_CHURN_REMOVAL_CONFIRMED_NO_SMALLER_SOURCE_DATA_GRAPH"
+    }
+  },
+  "acceptedG24R12": "UNCHANGED",
+  "mainAlgorithmCutover": false,
+  "mainScope": "Existing COMPILER_PROFILING.md and these compact JSON receipts only. Rejected Base source and diagnostic observer remain in committed experimental branch. Paths in experimental source receipts refer to that worktree/commit, not main.",
+  "mainBaseObserved": {
+    "path": "bend2/base.bend",
+    "sha256": "21baec76caf1a6cfd4a544340b291f7bb55bf30cc841f9f5f29e3b12a1a4d614"
+  },
+  "experimentalBase": {
+    "path": "bend2/base.bend",
+    "sha256": "f21bfeaef0b381b58b77632f47284b8780e4aaf77ecaf67b1ebb03db06a4daa5",
+    "sourceCheckpoint": "1582daea",
+    "retainedInMain": false
+  },
+  "frozenObserver": {
+    "path": "evals/selfhost_heap_ownership_probe.mjs",
+    "sha256": "4461be56a6b53ab866cb8156503a76518fbaf0abbf64333a3b30b9568d70c32c",
+    "sourceCheckpoint": "653e9e52",
+    "retainedInMain": false
+  },
+  "fullDetailedDiagnosis": {
+    "gitPath": "checkpoints/local2039g65-d0.json",
+    "checkpoint": "1ddc6afe",
+    "branch": "selfhost/g65-heap-owners-isz5wzuq",
+    "file": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/repository/checkpoints/local2039g65-d0.json",
+      "sha256": "a5577020d3e2005b699618849ab5b74e24f699f5390bf27fe86ed446bbed0c7b"
+    },
+    "retainedInMain": false,
+    "compactMainVersion": "checkpoints/local2039g65-diagnosis.json"
+  },
+  "runtime": {
+    "bun": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "node": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+    "release": "2.0.39",
+    "releaseCommit": "a3efe8a3801f423827424227172eed9802c5e6cb",
+    "os": "darwin25.6.0 arm64",
+    "helperFiles": {
+      "selfhost_throughput.mjs": {
+        "path": "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+        "sha256": "1a806befee02216a9499f6b4dcde7e2326e01f0a5b96bbd36b75295344c50317"
+      },
+      "checker_core_step_runtime.mjs": {
+        "path": "/Users/ilyagulya/Projects/My/bend/evals/checker_core_step_runtime.mjs",
+        "sha256": "00cd400ac0452a3681bf6491db08be51f9ae3a33ff2baf88654a9763eb5073ed"
+      },
+      "selfhost_cpu_profile.mjs": {
+        "path": "/Users/ilyagulya/Projects/My/bend/evals/selfhost_cpu_profile.mjs",
+        "sha256": "5d5fc8d329a3b600522c58eeac59c49c515109bc7f48845d8177cb520129a1c0"
+      },
+      "native_seed_runtime.mjs": {
+        "path": "/Users/ilyagulya/Projects/My/bend/evals/native_seed_runtime.mjs",
+        "sha256": "7f81a9b9013853355910b93bf59586b2acbcda4de7bcaa08d7942ebf45c0147a"
+      },
+      "heavy_gate.ts": {
+        "path": "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+        "sha256": "e72f2b81970be76734df918e35b1a4289d0fb194039e5ca20e9785e5ac0ee015"
+      },
+      "heavy_gate_native.c": {
+        "path": "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate_native.c",
+        "sha256": "1ff233edacdbf13c6ffd4a8bf38cbf153629e8c76be4860deec8a5b591d3fa8b"
+      }
+    }
+  },
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "nativeProductionTimeoutMs": 300000,
+    "sourcePreflightTimeoutMs": 120000,
+    "throughputTimeoutMs": 600000,
+    "workerStackMiB": 256,
+    "oldGenerationMiB": 6144,
+    "youngGenerationMiB": 128,
+    "parserFuelPerModule": 8000000,
+    "oneHeavyLane": true,
+    "chunkQuantum": 64,
+    "abi": 13
+  },
+  "actualMeasuredRuntime": {
+    "execPath": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+    "versions": {
+      "node": "23.11.0",
+      "acorn": "8.14.1",
+      "ada": "3.2.1",
+      "amaro": "0.4.1",
+      "ares": "1.34.4",
+      "brotli": "1.1.0",
+      "cjs_module_lexer": "2.1.0",
+      "cldr": "46.0",
+      "icu": "76.1",
+      "llhttp": "9.2.1",
+      "modules": "131",
+      "napi": "10",
+      "nbytes": "0.1.1",
+      "ncrypto": "0.0.1",
+      "nghttp2": "1.64.0",
+      "openssl": "3.0.16",
+      "simdjson": "3.12.2",
+      "simdutf": "6.0.3",
+      "sqlite": "3.49.1",
+      "tz": "2025a",
+      "undici": "6.21.2",
+      "unicode": "16.0",
+      "uv": "1.50.0",
+      "uvwasi": "0.0.21",
+      "v8": "12.9.202.28-node.14",
+      "zlib": "1.3.0.1-motley-788cb3c",
+      "zstd": "1.5.6"
+    },
+    "execArgv": [
+      "--experimental-strip-types",
+      "--max-old-space-size=6144",
+      "--max-semi-space-size=128"
+    ],
+    "heapLimitBytes": 6845104128
+  },
+  "workerPolicy": {
+    "stackMiB": 256,
+    "oldGenerationMiB": 6144,
+    "youngGenerationMiB": 128
+  },
+  "frozenCorporaVerified": {
+    "candidateSource": {
+      "manifest": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/r2-source.corpus.json",
+        "sha256": "ddc9620afdb8bc855902121ead03ca9bb9c67b79f1883de19496296eded9fbfe"
+      },
+      "filesVerified": 53,
+      "allPinnedBytesUnchanged": true
+    },
+    "selectedInput": {
+      "manifest": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/main-complete.corpus.json",
+        "sha256": "1a269e15bf70257b019ab572c003b6eb130b4e3f63ad507783525e28d307b0e4"
+      },
+      "filesVerified": 52,
+      "allPinnedBytesUnchanged": true
+    },
+    "fullInput": {
+      "manifest": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/full-frozen.corpus.json",
+        "sha256": "60bf820e76a9c336e58c848eec6a40b3f8fbb4b7ac2ae45ffd1abdb1d217ebc6"
+      },
+      "filesVerified": 53,
+      "allPinnedBytesUnchanged": true
+    }
+  },
+  "candidateLineage": {
+    "schemaVersion": 1,
+    "version": "G65R2",
+    "status": "ACTUAL_FULL_SOURCE_PRODUCTION_PASS_NEW_MAP_GET_ACTIVE",
+    "sourceCheckpoint": "1582daea",
+    "preflightCheckpoint": "cc298c22",
+    "command": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+      "js",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/r2-source-generation-request.json",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/r2-source-generation.json"
+    ],
+    "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/repository",
+    "request": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/r2-source-generation-request.json",
+      "sha256": "687c40429af2868b8e8a1a670a5750a0603a54c7eed17d02c560937c78d63dde"
+    },
+    "report": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/r2-source-generation.json",
+      "sha256": "c23c0bbcbd5ddda82f5dbd4a66fc821aebb36fd77955d53fabecb0b78b2a1ce3"
+    },
+    "actualProducerImage": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs",
+      "sha256": "4636c05aa8c75e72212cb03949937e25561942bc00da250f876f37f001b9fc18"
+    },
+    "actualProducerReport": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json",
+      "sha256": "32b9d93cf4de5a8918b61dc9ae21ef2232beb27879b6629ec26f981626da248f"
+    },
+    "nativeAncestorReceipt": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json",
+      "sha256": "717ea720d6d117e4fb49ede7ea0d57f544571d336437bb992cdf78c055dc5135"
+    },
+    "directNativeProducedStage0": false,
+    "image": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/r2-source-generation.json.output.mjs",
+      "sha256": "9775f2f1f7c9ecda979c4719f6860b8a564d2f6f707173c3082452467c9439a1"
+    },
+    "outputBytes": 31750861,
+    "sourceManifest": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/r2-source.corpus.json",
+      "sha256": "ddc9620afdb8bc855902121ead03ca9bb9c67b79f1883de19496296eded9fbfe"
+    },
+    "sourceDeclarations": 13010,
+    "stepCounts": {
+      "expand": 1069030,
+      "check": 10384996,
+      "emit": 1283947
+    },
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "elapsedMs": 334723,
+      "peakRssBytes": 2399846400,
+      "peakFootprintBytes": 3212898120,
+      "timeoutMs": 600000,
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592,
+      "ownedTreeStopped": true,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793809805050-68be1082094abf8b.json"
+    },
+    "phases": [
+      {
+        "phase": "startup",
+        "elapsedMs": 597.994833,
+        "userCpuMs": 538.243,
+        "systemCpuMs": 74.981,
+        "memoryEnd": {
+          "rss": 519749632,
+          "heapTotal": 94289920,
+          "heapUsed": 82045144,
+          "external": 42251616,
+          "arrayBuffers": 31783564
+        }
+      },
+      {
+        "phase": "load-parse",
+        "elapsedMs": 9618.26,
+        "userCpuMs": 12614.184,
+        "systemCpuMs": 335.748,
+        "memoryEnd": {
+          "rss": 1317928960,
+          "heapTotal": 813318144,
+          "heapUsed": 655044056,
+          "external": 10493131,
+          "arrayBuffers": 25039
+        }
+      },
+      {
+        "phase": "expand",
+        "elapsedMs": 6968.369708999999,
+        "userCpuMs": 7570.842,
+        "systemCpuMs": 103.173,
+        "memoryEnd": {
+          "rss": 1043939328,
+          "heapTotal": 957759488,
+          "heapUsed": 713309992,
+          "external": 10493131,
+          "arrayBuffers": 25039
+        }
+      },
+      {
+        "phase": "check",
+        "elapsedMs": 297553.54637500003,
+        "userCpuMs": 311024.258,
+        "systemCpuMs": 6253.271,
+        "memoryEnd": {
+          "rss": 1275461632,
+          "heapTotal": 2210512896,
+          "heapUsed": 2012689480,
+          "external": 10486368,
+          "arrayBuffers": 25039
+        }
+      },
+      {
+        "phase": "emit",
+        "elapsedMs": 18953.92637499998,
+        "userCpuMs": 22723.599,
+        "systemCpuMs": 444.78,
+        "memoryEnd": {
+          "rss": 2083635200,
+          "heapTotal": 2628009984,
+          "heapUsed": 2459488632,
+          "external": 10486368,
+          "arrayBuffers": 25039
+        }
+      }
+    ],
+    "ownVersionByteFixedpoint": "NOT_RUN",
+    "scope": "Full real own-parser, expander, all-body checker and emitter, not direct C-produced candidate. Source algorithm active immediately, runtime/helper bytes unchanged. Setup time/memory are not paired performance evidence."
+  },
+  "mechanism": "Exact existing Map.get signature/quantities, Data-only local sharing, existing Map.find plus parameter-scoped result helper; old path-building helper definitions removed. No new primitive, non-Data borrowing, caller duplication or runtime update.",
+  "semantics": {
+    "cheapPublicSourceAndDefaultJsFixturesPassed": 8,
+    "cheapActualNativeBinariesPassed": 7,
+    "newCompilerOwnConsumersPassed": 69,
+    "newCompilerOwnEmittedDefaultStackJsProgramsPassed": 13,
+    "newCompilerOwnEmittedCProgramsAndBinariesPassed": 3,
+    "sourceAndRuntimeProof": "All outputs and expected negative categories/spans are retained in preflight and own-semantics receipts. Unused invalid bodies still reject.",
+    "ownVersionByteFixedpoint": "NOT_RUN_NOT_EARNED"
+  },
+  "selectedPerformance": {
+    "freshProcesses": 9,
+    "profiling": false,
+    "orders": [
+      [
+        "A",
+        "B",
+        "C"
+      ],
+      [
+        "C",
+        "A",
+        "B"
+      ],
+      [
+        "B",
+        "C",
+        "A"
+      ]
+    ],
+    "roles": {
+      "A": "unchanged main actual own byte-fixed image",
+      "B": "G63 actual own byte-fixed image",
+      "C": "G65R2 actual newly own-source-produced image"
+    },
+    "primary": "checker phase Node process user+system including helper threads",
+    "statistics": {
+      "schemaVersion": 1,
+      "triads": [
+        {
+          "triad": 1,
+          "order": [
+            "A",
+            "B",
+            "C"
+          ],
+          "A": {
+            "checkerCpuMs": 66808.48800000001,
+            "checkerWallMs": 58033.683541000006,
+            "footprintBytes": 1381882576,
+            "rssBytes": 1192656896
+          },
+          "B": {
+            "checkerCpuMs": 68171.336,
+            "checkerWallMs": 56587.528583,
+            "footprintBytes": 1132967936,
+            "rssBytes": 1184661504
+          },
+          "C": {
+            "checkerCpuMs": 69548.299,
+            "checkerWallMs": 58172.62091699999,
+            "footprintBytes": 1111563936,
+            "rssBytes": 1101840384
+          }
+        },
+        {
+          "triad": 2,
+          "order": [
+            "C",
+            "A",
+            "B"
+          ],
+          "A": {
+            "checkerCpuMs": 71803.802,
+            "checkerWallMs": 62013.042583999995,
+            "footprintBytes": 1074827144,
+            "rssBytes": 1065238528
+          },
+          "B": {
+            "checkerCpuMs": 70883.334,
+            "checkerWallMs": 58116.346292,
+            "footprintBytes": 1177200736,
+            "rssBytes": 1156153344
+          },
+          "C": {
+            "checkerCpuMs": 64108.185999999994,
+            "checkerWallMs": 54100.784042,
+            "footprintBytes": 1540773360,
+            "rssBytes": 1313587200
+          }
+        },
+        {
+          "triad": 3,
+          "order": [
+            "B",
+            "C",
+            "A"
+          ],
+          "A": {
+            "checkerCpuMs": 77864.698,
+            "checkerWallMs": 68855.95275,
+            "footprintBytes": 1153308400,
+            "rssBytes": 1055965184
+          },
+          "B": {
+            "checkerCpuMs": 71171.841,
+            "checkerWallMs": 60521.838040999995,
+            "footprintBytes": 1150588224,
+            "rssBytes": 1079148544
+          },
+          "C": {
+            "checkerCpuMs": 68307.95,
+            "checkerWallMs": 60625.231166000005,
+            "footprintBytes": 1302476088,
+            "rssBytes": 1242447872
+          }
+        }
+      ],
+      "C_over_A": {
+        "checkerCpuMs": {
+          "n": 3,
+          "logRatios": [
+            0.040191322506671096,
+            -0.11336536481739101,
+            -0.1309465213860673
+          ],
+          "meanLog": -0.06804018789892907,
+          "varianceLog": 0.00886281915008123,
+          "geometricMeanRatio": 0.9342229283661646,
+          "ci95": [
+            0.7394096073610688,
+            1.1803639974329672
+          ],
+          "baselineMedian": 71803.802,
+          "variantMedian": 68307.95,
+          "direction": "inconclusive"
+        },
+        "checkerWallMs": {
+          "n": 3,
+          "logRatios": [
+            0.002391220387756114,
+            -0.13649604897386658,
+            -0.1273055188344285
+          ],
+          "meanLog": -0.08713678247351299,
+          "varianceLog": 0.006032563933306537,
+          "geometricMeanRatio": 0.9165517188474678,
+          "ci95": [
+            0.7557242487885111,
+            1.1116052643129357
+          ],
+          "baselineMedian": 62013.042583999995,
+          "variantMedian": 58172.62091699999,
+          "direction": "inconclusive"
+        },
+        "footprintBytes": {
+          "n": 3,
+          "logRatios": [
+            -0.21767877998571794,
+            0.36012461982118027,
+            0.12163245426486773
+          ],
+          "meanLog": 0.08802609803344336,
+          "varianceLog": 0.08431123259146761,
+          "geometricMeanRatio": 1.0920166211426097,
+          "ci95": [
+            0.530848834342532,
+            2.246402786828494
+          ],
+          "baselineMedian": 1153308400,
+          "variantMedian": 1302476088,
+          "direction": "inconclusive"
+        },
+        "rssBytes": {
+          "n": 3,
+          "logRatios": [
+            -0.07920164596383854,
+            0.20956297141726432,
+            0.16262830894021166
+          ],
+          "meanLog": 0.09766321146454582,
+          "varianceLog": 0.02401159898033076,
+          "geometricMeanRatio": 1.1025913824330427,
+          "ci95": [
+            0.7503085689099164,
+            1.6202770526556105
+          ],
+          "baselineMedian": 1065238528,
+          "variantMedian": 1242447872,
+          "direction": "inconclusive"
+        },
+        "medianFootprintRatio": 1.1293389417782789
+      },
+      "C_over_B": {
+        "checkerCpuMs": {
+          "n": 3,
+          "logRatios": [
+            0.01999727759903236,
+            -0.10046327995557355,
+            -0.0410710905714381
+          ],
+          "meanLog": -0.04051236430932643,
+          "varianceLog": 0.003627920612868611,
+          "geometricMeanRatio": 0.9602972910252578,
+          "ci95": [
+            0.8268454353865102,
+            1.1152881151473957
+          ],
+          "baselineMedian": 70883.334,
+          "variantMedian": 68307.95,
+          "direction": "inconclusive"
+        },
+        "checkerWallMs": {
+          "n": 3,
+          "logRatios": [
+            0.027626195197139942,
+            -0.07159829361996356,
+            0.0017069030357884508
+          ],
+          "meanLog": -0.014088398462345055,
+          "varianceLog": 0.0026484934573165783,
+          "geometricMeanRatio": 0.9860103786089385,
+          "ci95": [
+            0.867681246924291,
+            1.1204765231135303
+          ],
+          "baselineMedian": 58116.346292,
+          "variantMedian": 58172.62091699999,
+          "direction": "inconclusive"
+        },
+        "footprintBytes": {
+          "n": 3,
+          "logRatios": [
+            -0.019072706522174483,
+            0.26914510960327537,
+            0.12399382520109378
+          ],
+          "meanLog": 0.12468874276073157,
+          "varianceLog": 0.020767739565841926,
+          "geometricMeanRatio": 1.1327958072922657,
+          "ci95": [
+            0.791915367588922,
+            1.6204084344591858
+          ],
+          "baselineMedian": 1150588224,
+          "variantMedian": 1302476088,
+          "direction": "inconclusive"
+        },
+        "rssBytes": {
+          "n": 3,
+          "logRatios": [
+            -0.07247522501344122,
+            0.1276633034822641,
+            0.14091117897189354
+          ],
+          "meanLog": 0.06536641914690547,
+          "varianceLog": 0.014294115699867911,
+          "geometricMeanRatio": 1.0675501235322522,
+          "ci95": [
+            0.7932378852889852,
+            1.436723191604162
+          ],
+          "baselineMedian": 1156153344,
+          "variantMedian": 1242447872,
+          "direction": "inconclusive"
+        },
+        "medianFootprintRatio": 1.1320088810503939
+      },
+      "B_over_A": {
+        "checkerCpuMs": {
+          "n": 3,
+          "logRatios": [
+            0.020194044907638556,
+            -0.01290208486181751,
+            -0.08987543081462906
+          ],
+          "meanLog": -0.027527823589602676,
+          "varianceLog": 0.003189256546443791,
+          "geometricMeanRatio": 0.9728476140641248,
+          "ci95": [
+            0.8455095782327084,
+            1.1193634046919987
+          ],
+          "baselineMedian": 71803.802,
+          "variantMedian": 70883.334,
+          "direction": "inconclusive"
+        },
+        "checkerWallMs": {
+          "n": 3,
+          "logRatios": [
+            -0.02523497480938373,
+            -0.06489775535390306,
+            -0.129012421870217
+          ],
+          "meanLog": -0.07304838401116794,
+          "varianceLog": 0.002742264190247483,
+          "geometricMeanRatio": 0.929555853296937,
+          "ci95": [
+            0.8161686141103466,
+            1.0586955556242124
+          ],
+          "baselineMedian": 62013.042583999995,
+          "variantMedian": 58116.346292,
+          "direction": "inconclusive"
+        },
+        "footprintBytes": {
+          "n": 3,
+          "logRatios": [
+            -0.1986060734635435,
+            0.09097951021790482,
+            -0.00236137093622607
+          ],
+          "meanLog": -0.03666264472728825,
+          "varianceLog": 0.021847385606798338,
+          "geometricMeanRatio": 0.9640012914179733,
+          "ci95": [
+            0.6677512263514069,
+            1.3916836887491886
+          ],
+          "baselineMedian": 1153308400,
+          "variantMedian": 1150588224,
+          "direction": "inconclusive"
+        },
+        "rssBytes": {
+          "n": 3,
+          "logRatios": [
+            -0.006726420950397342,
+            0.0818996679350003,
+            0.021717129968318077
+          ],
+          "meanLog": 0.03229679231764034,
+          "varianceLog": 0.002047592849349851,
+          "geometricMeanRatio": 1.0328239940480246,
+          "ci95": [
+            0.9230136349178524,
+            1.1556984234325551
+          ],
+          "baselineMedian": 1065238528,
+          "variantMedian": 1156153344,
+          "direction": "inconclusive"
+        },
+        "medianFootprintRatio": 0.9976414149068887
+      },
+      "costGate": {
+        "cpuCAatMostPoint97": true,
+        "cpuCBatMost1Point02": true,
+        "everyCpuCAfaster": false,
+        "wallCAatMost1": true,
+        "medianFootCAatMost1": false,
+        "geometricFootCBatMostPoint95": false
+      },
+      "costGatePassed": false
+    },
+    "retries": 0,
+    "exclusions": 0,
+    "oldTimingReuse": 0,
+    "fullSourceConfirmations": "NOT_RUN_NOT_EARNED",
+    "candidateOwnVersionFixedpoint": "NOT_RUN_NOT_EARNED"
+  },
+  "mechanismObservation": {
+    "baselineAllocationNodeSelfEstimateBytes": 67390614720,
+    "candidateAllocationNodeSelfEstimateBytes": 63664124280,
+    "ratio": 0.9447031243818872,
+    "baselineSnapshotNodeShallowBytes": 324809598,
+    "candidateSnapshotNodeShallowBytes": 324583742,
+    "baselineRestrictedArenaGraphBytes": 77556840,
+    "candidateRestrictedArenaGraphBytes": 77557352,
+    "limits": "One diagnostic each, statistical traffic, GC-perturbed prefix snapshot; source-data graph is restricted/overlapping and excludes hidden numeric storage. Not exact allocated/live/exclusive retained bytes or clean peak footprint. Does not change R2 rejection."
+  },
+  "nextDODBoundary": {
+    "observed": "732384 boxed-number snapshot nodes/11718144 shallow bytes, mostly hidden descriptor/occurrence edges; current IR has owner/reverse flags in bits31/30; actual Node pointerCompression=0 and smi31=0.",
+    "unproved": "Stored numeric values are absent, so Smi overflow/encoding cause is not proved. No retagging, nullary-constant interning or record-recycling optimization is implemented or timed.",
+    "decision": "Stop treating a read-only lookup rewrite as a memory-layout solution. A future separately frozen variant must target physical scalar/record layout or ownership-safe reuse, preserve full handle ranges/ownership/reverse semantics and earn the unchanged CPU/memory filter."
+  },
+  "intentionalNonChanges": [
+    "Main Base algorithm and all callers stay on the accepted source baseline; no compatibility shim or source alias is added.",
+    "No generator/admission/provenance/schema-witness or historical generic-sharing comment migration because there is no algorithm cutover.",
+    "No accepted selfhost version, release/runtime, workload, stack/fuel/deadline/RSS/footprint policy or opaque-helper change."
+  ],
+  "documentation": {
+    "path": "bend2/selfhost/COMPILER_PROFILING.md",
+    "section": "G65",
+    "integrationOwner": "main; source branch checkpoints retain full source and compact machine-readable evidence"
+  },
+  "temporaryToolsRemoved": true,
+  "temporaryToolsFrozenSources": {
+    "run-diagnostics.mjs": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/run-diagnostics.mjs",
+      "sha256": "d8c42f926250be1a14b1641f90ee51a1d816e56c4e8d0713afbcdc63ef99370c",
+      "source": "import {readFileSync,writeFileSync,existsSync} from 'node:fs';\nconst plan=JSON.parse(readFileSync(process.argv[2],'utf8'));\nconst result={schemaVersion:1,status:'RUNNING',cells:[]};\nfor(const cell of plan.cells){\n const fresh=cell.freshOutput??cell.report;\n if(fresh&&existsSync(fresh))throw Error('Existing output '+fresh);\n console.log('START '+cell.id+' '+new Date().toISOString());\n const child=Bun.spawn(cell.command,{cwd:cell.cwd,stdout:'pipe',stderr:'pipe'});\n const [exitCode,stdout,stderr]=await Promise.all([child.exited,new Response(child.stdout).text(),new Response(child.stderr).text()]);\n const passed=exitCode===0&&(cell.expectedStdout===undefined||stdout===cell.expectedStdout)&&(!fresh||existsSync(fresh));\n result.cells.push({id:cell.id,exitCode,stdout,stderr,report:cell.report,freshOutput:cell.freshOutput,passed});\n writeFileSync(plan.output,JSON.stringify(result,null,2)+'\\n');\n console.log('FINISH '+cell.id+' exit='+exitCode+' '+new Date().toISOString());\n if(!passed){result.status='FAILED_CELL_RETAINED';writeFileSync(plan.output,JSON.stringify(result,null,2)+'\\n');process.exit(exitCode||1);}\n}\nresult.status='ALL_CELLS_FINISHED';writeFileSync(plan.output,JSON.stringify(result,null,2)+'\\n');console.log(JSON.stringify({status:result.status,cells:result.cells.length,output:plan.output}));\n"
+    },
+    "compare-three-way.ts": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/compare-three-way.ts",
+      "sha256": "99d1369e3abece807296e3b153d97ecc33540c76701ac467bba7ca8175fafe68",
+      "source": "import {readFileSync} from 'node:fs';\nimport {pairedStats,classifyRatio,median} from \"/Users/ilyagulya/Projects/My/bend/evals/selfhost_corpus_calibration.ts\";\nconst triads=JSON.parse(readFileSync(process.argv[2]!,'utf8'));\nconst protocol=JSON.parse(readFileSync(process.argv[3]!,'utf8')),limit=protocol.selected.costGate;\nconst result:any={schemaVersion:1,triads};\nfor(const [variant,baseline] of [['C','A'],['C','B'],['B','A']]){\n const comparison:any={};\n for(const metric of ['checkerCpuMs','checkerWallMs','footprintBytes','rssBytes']){\n  const a=triads.map((t:any)=>t[baseline][metric]),c=triads.map((t:any)=>t[variant][metric]);\n  const statistics=pairedStats(a,c);comparison[metric]={...statistics,direction:classifyRatio(statistics.ci95,.02)};\n }\n comparison.medianFootprintRatio=median(triads.map((t:any)=>t[variant].footprintBytes))!/median(triads.map((t:any)=>t[baseline].footprintBytes))!;\n result[variant+'_over_'+baseline]=comparison;\n}\nresult.costGate={cpuCAatMostPoint97:result.C_over_A.checkerCpuMs.geometricMeanRatio<=limit.geometricCpu_C_over_A_atMost,cpuCBatMost1Point02:result.C_over_B.checkerCpuMs.geometricMeanRatio<=limit.geometricCpu_C_over_B_atMost,everyCpuCAfaster:triads.every((t:any)=>t.C.checkerCpuMs/t.A.checkerCpuMs<limit.everyCpuPair_C_over_A_below),wallCAatMost1:result.C_over_A.checkerWallMs.geometricMeanRatio<=limit.geometricWall_C_over_A_atMost,medianFootCAatMost1:result.C_over_A.medianFootprintRatio<=limit.medianFootprint_C_over_A_atMost,geometricFootCBatMostPoint95:result.C_over_B.footprintBytes.geometricMeanRatio<=limit.geometricFootprint_C_over_B_atMost};\nresult.costGatePassed=Object.values(result.costGate).every(Boolean);\nconsole.log(JSON.stringify(result,null,2));\n"
+    },
+    "analyze-heap-owners.py": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/analyze-heap-owners.py",
+      "sha256": "6fa9f5ec1dfbe61b5009054450a9667186b4517a1e9007de72532ac4e0a3be45",
+      "source": "import sys,json,hashlib,re,bisect,collections,array,os\nfrom pathlib import Path\nimport ijson\n\ndef digest(path):\n h=hashlib.sha256()\n with open(path,'rb') as f:\n  for block in iter(lambda:f.read(1048576),b''):h.update(block)\n return {'path':str(Path(path).resolve()),'sha256':h.hexdigest(),'bytes':os.path.getsize(path)}\n\ndef image_index(path):\n manifest=json.loads(Path(__file__).with_name('d0-ast-index-manifest.json').read_text())\n entry=manifest[str(Path(path).resolve())]\n assert digest(entry['path'])['sha256']==entry['sha256']\n index=json.loads(Path(entry['path']).read_text())\n assert index['image']['sha256']==digest(path)['sha256']\n return index['names'],index['aliases']\n\ndef sampled(report_paths,out):\n cache={};result={'schemaVersion':1,'diagnosticOnly':True,'scope':'Statistical sampled allocation bytes, not exact allocated/live/exclusive-retained bytes; uncollected includes garbage not yet collected. Source ownership uses the emitted function/continuation and may reflect compiler inlining.','roles':[]}\n for report_path in report_paths:\n  report=json.loads(Path(report_path).read_text());image=report['image'];index,aliases=cache.setdefault(image,image_index(image)) if image not in cache else cache[image]\n  row={'report':digest(report_path),'kind':report['kind'],'image':digest(image),'counts':report['stepCounts'],'boundaries':report['boundaries'],'samples':[],'indexedSourceAliases':len(aliases)}\n  for s in report['samples']:\n   profile=json.loads(Path(s['path']).read_text());sites={};groups=collections.Counter();nodes=[profile['head']];total=0;node_ids=set()\n   while nodes:\n    node=nodes.pop();nodes.extend(node.get('children',[]));size=node['selfSize'];total+=size\n    assert node['id'] not in node_ids;node_ids.add(node['id'])\n    if not size:continue\n    frame=node['callFrame'];key=(frame['functionName'],frame['url'],frame['lineNumber'],frame['columnNumber']);sites[key]=sites.get(key,0)+size\n    attribution=index.get(frame['functionName']) if Path(frame['url'].removeprefix('file://')).resolve()==Path(image).resolve() else None\n    group=' | '.join(attribution['sourceOwners']) if attribution and attribution['sourceOwners'] else ('emitted-runtime:'+frame['functionName'] if attribution else 'other:'+frame['functionName'])\n    groups[group]+=size\n   sample_total=sum(x['size'] for x in profile.get('samples',[]));assert all(x['nodeId'] in node_ids for x in profile.get('samples',[]))\n   top=[]\n   for (name,url,line,col),size in sorted(sites.items(),key=lambda x:-x[1])[:35]:\n    attribution=index.get(name) if Path(url.removeprefix('file://')).resolve()==Path(image).resolve() else None\n    top.append({'functionName':name,'url':url,'lineNumber':line,'columnNumber':col,'estimatedBytes':size,'estimatedShare':size/total if total else 0,'sourceOwner':attribution})\n   row['samples'].append({'label':s['label'],'step':s['step'],'profile':digest(s['path']),'statisticalNodeSelfBytes':total,'statisticalIndividualSampleBytes':sample_total,'nodeMinusSampleBytes':total-sample_total,'accounting':'Ownership weights use node.selfSize, matching prior analyzer; individual sample.size totals are retained separately. V8 returns slightly different estimates, not assumed equal.','sampleCount':len(profile.get('samples',[])),'memory':s['memory'],'spaces':s['spaces'],'topSourceOwners':[{'owner':k,'estimatedBytes':v,'share':v/total if total else 0} for k,v in groups.most_common(35)],'topSites':top})\n  result['roles'].append(row)\n Path(out).write_text(json.dumps(result,indent=2)+'\\n');print(json.dumps({'output':out,'roles':[{'kind':r['kind'],'imageSha':r['image']['sha256'],'samples':[{'label':s['label'],'nodeSelfBytes':s['statisticalNodeSelfBytes'],'top':s['topSourceOwners'][:10]} for s in r['samples']]} for r in result['roles']]}))\n\ndef graph(path,out):\n with open(path,'rb') as f:meta=next(ijson.items(f,'snapshot'))\n nf=meta['meta']['node_fields'];ef=meta['meta']['edge_fields'];nw=len(nf);ew=len(ef)\n nt=meta['meta']['node_types'][0];et=meta['meta']['edge_types'][0]\n nodes=array.array('Q');edges=array.array('Q');strings=[]\n with open(path,'rb') as f:\n  for prefix,event,value in ijson.parse(f):\n   if prefix=='nodes.item' and event=='number':nodes.append(value)\n   elif prefix=='edges.item' and event=='number':edges.append(value)\n   elif prefix=='strings.item' and event=='string':strings.append(value)\n n=meta['node_count'];assert len(nodes)==n*nw and len(edges)==meta['edge_count']*ew\n idx={k:nf.index(k) for k in nf};eidx={k:ef.index(k) for k in ef}\n types=nodes[idx['type']::nw];sizes=nodes[idx['self_size']::nw];names=nodes[idx['name']::nw];counts=nodes[idx['edge_count']::nw]\n offsets=array.array('Q',[0]);running=0\n for c in counts:running+=c*ew;offsets.append(running)\n assert running==len(edges)\n tag_index=array.array('q',[-1])*n;shallow=collections.Counter();tagged=collections.Counter();tag_counts=collections.Counter();large=[]\n property_type=et.index('property');internal_type=et.index('internal');element_type=et.index('element')\n dollar=strings.index('$') if '$' in strings else -1\n for node in range(n):\n  typ=nt[types[node]];name=strings[names[node]];shallow[(typ,name)]+=sizes[node]\n  if sizes[node]>=1048576:large.append({'nodeIndex':node,'type':typ,'name':name[:300],'selfBytes':sizes[node]})\n  if typ=='object':\n   for off in range(offsets[node],offsets[node+1],ew):\n    if edges[off+eidx['type']]==property_type and edges[off+eidx['name_or_index']]==dollar:\n     target=edges[off+eidx['to_node']]//nw\n     if nt[types[target]]=='string':tag_index[node]=names[target];tagged[strings[names[target]]]+=sizes[node];tag_counts[strings[names[target]]]+=1\n     break\n def field_name(off):\n  t=edges[off+eidx['type']];v=edges[off+eidx['name_or_index']]\n  return str(v) if t in [element_type,et.index('hidden')] else strings[v]\n def data_edge(node,off):\n  t=edges[off+eidx['type']]\n  if t==property_type:return field_name(off) not in ['__proto__','constructor']\n  if t==element_type:return True\n  if t==internal_type:\n   name=field_name(off)\n   return name in ['elements','properties'] or (nt[types[node]] in ['concatenated string','sliced string'] and name!='map')\n  return False\n number_type=nt.index('number');number_refs=collections.Counter()\n for node in range(n):\n  for off in range(offsets[node],offsets[node+1],ew):\n   target=edges[off+eidx['to_node']]//nw\n   if types[target]!=number_type:continue\n   owner=strings[tag_index[node]] if tag_index[node]>=0 else '['+nt[types[node]]+'] '+strings[names[node]][:80]\n   edge=et[edges[off+eidx['type']]]\n   field='$element' if edge in ['element','hidden'] else field_name(off)\n   number_refs[(owner,edge,field)]+=1\n # A source-data graph is a deliberately restricted subset of strong edges.\n # It excludes closure/context/prototype/map reachability and does not claim\n # exclusive retained bytes. Each union counts shared nodes once.\n groups={}\n for tag in ['Arena','CheckerRunState','CheckerStackMore','MNode','MLeaf']:\n  roots=[i for i,t in enumerate(tag_index) if t>=0 and strings[t].split('.')[-1]==tag]\n  seen=bytearray(n);queue=array.array('Q',roots);head=0;total=0;objects=0;bytype=collections.Counter()\n  for root in roots:seen[root]=1\n  while head<len(queue):\n   node=queue[head];head+=1;total+=sizes[node];objects+=1;bytype[nt[types[node]]]+=sizes[node]\n   for off in range(offsets[node],offsets[node+1],ew):\n    if not data_edge(node,off):continue\n    target=edges[off+eidx['to_node']]//nw\n    if not seen[target]:seen[target]=1;queue.append(target)\n  groups[tag]={'roots':len(roots),'reachableNodes':objects,'sourceDataGraphShallowBytes':total,'bytesByNodeType':dict(bytype)}\n  del seen,queue\n result={'schemaVersion':1,'diagnosticOnly':True,'snapshot':digest(path),'embeddedMetadata':meta,'nodeCount':n,'edgeCount':meta['edge_count'],'nodeShallowBytes':sum(sizes),'topNodeTypes':[{'type':a,'name':b[:300],'selfBytes':v} for (a,b),v in shallow.most_common(40)],'topTaggedObjects':[{'tag':tag,'count':tag_counts[tag],'selfBytes':v} for tag,v in tagged.most_common(40)],'largeNodes':sorted(large,key=lambda r:-r['selfBytes'])[:35],'sourceDataGraphUnions':groups,'edgePolicy':'Property except __proto__/constructor; elements; internal elements/properties and rope/sliced string backing links except map. Not general V8 retention/dominators or exclusive ownership. Overlapping unions must not be summed.','scope':'Snapshot is GC-perturbed prefix evidence, not a clean peak-RAM measurement. Shallow counts are exact for snapshot nodes; source-data graph unions are strong-edge subsets, not exclusive retained bytes.'}\n result['numericReferenceCensus']={'numberNodes':sum(t==number_type for t in types),'numberShallowBytes':sum(sizes[i] for i,t in enumerate(types) if t==number_type),'topIncomingEdges':[{'owner':owner,'edgeType':edge,'field':field,'references':count} for (owner,edge,field),count in number_refs.most_common(30)],'scope':'Incoming-reference counts, not exclusive bytes or stored numeric values. Does not prove Smi overflow, a specific numeric encoding cause, or a future speedup.'}\n Path(out).write_text(json.dumps(result,indent=2)+'\\n');print(json.dumps({'output':out,'nodeCount':n,'nodeShallowBytes':result['nodeShallowBytes'],'topTaggedObjects':result['topTaggedObjects'][:12],'dataGraphUnions':groups}))\n\nif __name__=='__main__':\n if sys.argv[1]=='samples':sampled(sys.argv[2:-1],sys.argv[-1])\n elif sys.argv[1]=='snapshot':graph(sys.argv[2],sys.argv[3])\n else:raise ValueError('samples REPORT... OUT or snapshot SNAPSHOT OUT')\n"
+    },
+    "index-emitted-functions.mjs": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/index-emitted-functions.mjs",
+      "sha256": "8b26344a1f90157c2686b5b0430e1a8cdd571553745f6e47411567587df9cafb",
+      "source": "import {readFileSync,writeFileSync} from 'node:fs';\nimport {createHash} from 'node:crypto';\nimport {parse} from '/Users/ilyagulya/.bun/install/cache/acorn@8.19.0@@@1/dist/acorn.mjs';\nconst [path,out]=process.argv.slice(2),source=readFileSync(path,'utf8');\nconst ast=parse(source,{ecmaVersion:'latest',sourceType:'module',locations:true});\nconst privateName=x=>typeof x==='string'&&/^\\$b[0-9]+$/.test(x);\nconst aliases=new Map(),functions=[],edges=new Map();let owner;\nfunction visit(root,action){const stack=[root];while(stack.length){const node=stack.pop();if(!node||typeof node!=='object')continue;if(Array.isArray(node)){for(const item of node)if(item&&typeof item==='object')stack.push(item);continue;}if(typeof node.type==='string')action(node);for(const [key,value] of Object.entries(node)){if(key==='loc'||key==='start'||key==='end')continue;if(value&&typeof value==='object')stack.push(value);}}}\nfor(const node of ast.body){\n if(node.type==='FunctionDeclaration'&&node.id){\n  const name=node.id.name;\n  if(privateName(name))owner=name;\n  const own=privateName(name)?name:(/^\\$k[0-9]+$/.test(name)?owner:null);\n  const callees=new Set();visit(node.body,x=>{if(x.type==='Identifier'&&privateName(x.name))callees.add(x.name);});\n  if(own){if(!edges.has(own))edges.set(own,new Set());for(const callee of callees)edges.get(own).add(callee);}\n  functions.push({name,lineNumber:node.loc.start.line-1,columnNumber:node.id.end-node.loc.start.column-node.start,privateOwner:own});\n }\n if(node.type==='ExpressionStatement'&&node.expression.type==='AssignmentExpression'){\n  const assignment=node.expression,left=assignment.left;\n  if(left.type==='MemberExpression'&&left.object.type==='Identifier'&&left.object.name==='$D'&&left.computed&&left.property.type==='Literal'&&typeof left.property.value==='string'){\n   const refs=new Set();visit(assignment.right,x=>{if(x.type==='Identifier'&&privateName(x.name))refs.add(x.name);});\n   if(refs.size===1){const target=[...refs][0];if(!aliases.has(target))aliases.set(target,[]);aliases.get(target).push(left.property.value);}\n  }\n }\n}\nconst reverse=new Map();for(const [from,tos]of edges)for(const to of tos){if(!reverse.has(to))reverse.set(to,new Set());reverse.get(to).add(from);}\nfunction roots(start){const result=new Set(),seen=new Set(),stack=[start];while(stack.length){const x=stack.pop();if(!x||seen.has(x))continue;seen.add(x);if(aliases.has(x)){for(const name of aliases.get(x))result.add(name);continue;}for(const parent of reverse.get(x)||[])stack.push(parent);}return [...result].sort();}\nconst names={};for(const f of functions){if(names[f.name])throw Error('Duplicate top-level function '+f.name);names[f.name]={function:f.name,privateOwner:f.privateOwner,sourceOwners:roots(f.privateOwner),lineNumber:f.lineNumber,columnNumber:f.columnNumber};}\nwriteFileSync(out,JSON.stringify({schemaVersion:1,method:'Acorn AST top-level declarations/registration RHS identifiers; continuation follows its emitted private body; unregistered lifted bodies trace static incoming private references to registered roots. Runtime strings are never parsed as declarations.',image:{path,sha256:createHash('sha256').update(source).digest('hex')},aliases:Object.fromEntries(aliases),names})+'\\n',{flag:'wx'});\nlet mapGet;for(const [name,sourceNames]of aliases)if(sourceNames.includes('Map.get')){mapGet=names[name];break;}\nconsole.log(JSON.stringify({out,functions:functions.length,aliases:aliases.size,mapGet,runtimeSplitDone:names['$split_done']}));\n"
+    }
+  },
+  "evidence": [
+    {
+      "path": "checkpoints/local2039g65-d0-protocol.json",
+      "sha256": "04e99352b76c5ec0d8c2cb8ce0436a2a62a7e2d803b838d553ea611b8ee4848d",
+      "bytes": 21721,
+      "version": "G65D0",
+      "status": "PROSPECTIVE_DIAGNOSTIC_NOT_RUN"
+    },
+    {
+      "path": "checkpoints/local2039g65-d0-smoke.json",
+      "sha256": "d3072ed8158d21633b46ddfc79ae187a3f7e318426ec09a1f56e77895c267627",
+      "bytes": 28459,
+      "version": "G65D0",
+      "status": "THREE_REAL_DIAGNOSTIC_MODES_PASS_CHEAP_CONSUMER"
+    },
+    {
+      "path": "checkpoints/local2039g65-d0-execution.json",
+      "sha256": "2c6905240e897784d5ebefd947f3b53076b70b80fb6665478491c2880b1851d1",
+      "bytes": 11755,
+      "version": "G65D0",
+      "status": "SEVEN_DIAGNOSTICS_FROZEN_BEFORE_EXECUTION"
+    },
+    {
+      "path": "checkpoints/local2039g65-diagnosis.json",
+      "sha256": "d139f410d1790a5d927a9ac32856a04aa420b11b6a1ee429d64c8d6ba47cdeaf",
+      "bytes": 225840,
+      "version": "G65D0",
+      "status": "COMPLETED_ACTUAL_HEAP_OWNERSHIP_DIAGNOSIS"
+    },
+    {
+      "path": "checkpoints/local2039g65-r1-protocol.json",
+      "sha256": "d4199802af2082687bbf88a93e90a43684a5b84c5a954466e85470cbb3d7e166",
+      "bytes": 6665,
+      "version": "G65R1",
+      "status": "PROSPECTIVE_NOT_RUN"
+    },
+    {
+      "path": "checkpoints/local2039g65-r1-source.json",
+      "sha256": "0974583dbdf454abffdfde06e0dc78ddb40de0f312ecef960c6fa6bc6c22dfc9",
+      "bytes": 1837,
+      "version": "G65R1",
+      "status": "SOURCE_READY_NOT_RUN"
+    },
+    {
+      "path": "checkpoints/local2039g65-r1-decision.json",
+      "sha256": "7443fb8303f28c9993147cd85cdba9f170cbc26967c97e87a9587f74f6c79d34",
+      "bytes": 3900,
+      "version": "G65R1",
+      "status": "REJECTED_SOURCE_PREFLIGHT_COMPUTED_MATCH"
+    },
+    {
+      "path": "checkpoints/local2039g65-r2-protocol.json",
+      "sha256": "8fe459588872fb27f1924d11caf8b36e30d92edbc0ff24e4b617a264cd0a57d3",
+      "bytes": 6762,
+      "version": "G65R2",
+      "status": "PROSPECTIVE_NOT_RUN"
+    },
+    {
+      "path": "checkpoints/local2039g65-r2-source.json",
+      "sha256": "c6c2315c651143772e5b5342e216964c9f4251cdb486b8c35980889b2f791e62",
+      "bytes": 2004,
+      "version": "G65R2",
+      "status": "SOURCE_READY_NOT_RUN"
+    },
+    {
+      "path": "checkpoints/local2039g65-r2-preflight.json",
+      "sha256": "3e0aefe8ed4654f4dbf9b87fe765019a31c5d3986016f774b1e7ea1f0794b932",
+      "bytes": 142914,
+      "version": "G65R2",
+      "status": "EIGHT_PUBLIC_SOURCE_AND_JS_SEVEN_C_BINARIES_PASS"
+    },
+    {
+      "path": "checkpoints/local2039g65-r2-production.json",
+      "sha256": "028fa90ffb6de2ce6477f12974456d19d9cb7cfbc1ae4012c2f85d041f9ce5e7",
+      "bytes": 5158,
+      "version": "G65R2",
+      "status": "ACTUAL_FULL_SOURCE_PRODUCTION_PASS_NEW_MAP_GET_ACTIVE"
+    },
+    {
+      "path": "checkpoints/local2039g65-r2-consumer-plan.json",
+      "sha256": "1c2ad6af9e6f046d8f40ebeffc7b99eb816616cfddbd1f9e09fe9b6a01555f62",
+      "bytes": 43604,
+      "version": "G65R2",
+      "status": "ACTUAL_OWN_CONSUMER_PLAN_FROZEN_NOT_RUN"
+    },
+    {
+      "path": "checkpoints/local2039g65-r2-semantics.json",
+      "sha256": "265a1c10b1e925e903e4798243929d01bb195191286340dbcb302ae2c08cf518",
+      "bytes": 383012,
+      "version": "G65R2",
+      "status": "ACTUAL_NEW_COMPILER_69_CONSUMERS_13_JS_3_C_PASS"
+    },
+    {
+      "path": "checkpoints/local2039g65-r2-execution.json",
+      "sha256": "dc4b7ff524b55143290e57fd91362273081160fb8b76fffda43bf4f40abd6792",
+      "bytes": 66421,
+      "version": "G65R2",
+      "status": "NINE_FRESH_SELECTED_CELLS_FROZEN_NOT_RUN"
+    },
+    {
+      "path": "checkpoints/local2039g65-r2-selected.json",
+      "sha256": "7dac4a3c86df5b3c161c2fd0588f6e57d6ff33501039c3e9774d2af3dad56c96",
+      "bytes": 44573,
+      "version": "G65R2",
+      "status": "NINE_FRESH_SELECTED_CELLS_PASS_COST_FILTER_FAIL"
+    },
+    {
+      "path": "checkpoints/local2039g65-r2-decision.json",
+      "sha256": "171cc062c4836772c2d74f87957481440d17407e2c5f0dc89176fb5ed48578be",
+      "bytes": 5544,
+      "version": "G65R2",
+      "status": "REJECTED_CPU_POINT_GAIN_WITH_HIGHER_FOOTPRINT_AND_INCONSISTENT_PAIRS"
+    },
+    {
+      "path": "checkpoints/local2039g65-d1-protocol.json",
+      "sha256": "19c1ff35ee2db9a0152d06a8b022f5ce55286902c3ccbc3b730d3ae3990a1d01",
+      "bytes": 6734,
+      "version": "G65D1",
+      "status": "PROSPECTIVE_MECHANISM_DIAGNOSTIC_NOT_RUN"
+    },
+    {
+      "path": "checkpoints/local2039g65-d1.json",
+      "sha256": "d7ccca3c155fea7e551b371297df77839d08bfb703e73dbc59fde9358db2b957",
+      "bytes": 231538,
+      "version": "G65D1",
+      "status": "ACTUAL_CHURN_REDUCTION_CONFIRMED_NO_MEMORY_ACCEPTANCE"
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "version": "G65R1",
+  "status": "SOURCE_READY_NOT_RUN",
+  "protocolCheckpoint": "09b8e19e",
+  "diagnosisCheckpoint": "1ddc6afe",
+  "source": {
+    "path": "bend2/base.bend",
+    "sha256": "17194ce482a729657dffea7178bf480f67d394f76435c46d472f279f2ee6cdcb"
+  },
+  "publicSignature": "Map.get(-V: Data, d: V, m: Map<&2, V>, key: String) -> Map<&2, V> & V",
+  "change": "Only the body shares its already-Data map with a local +shared binding and calls exact existing Map.find. Unused get.go/get.leaf definitions removed; all public caller code and parameter quantities unchanged.",
+  "unchangedSourceAlgorithms": {
+    "checker": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/repository/checkpoints/checker_core_steps_v1.bend",
+      "sha256": "e4c1197d63129394551d5643ef2934be84af82eaeacfa3da1e4e660c6ff603a4"
+    },
+    "emitter": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/repository/checkpoints/emitter_steps_v1.bend",
+      "sha256": "7f7c8d2e57a3fcd3925b4286a8300668ae91b7e11a26317cea6da2df5c9ea425"
+    },
+    "canonicalJsBackend": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/repository/bend2/selfhost/js_backend.bend",
+      "sha256": "9ad0e83cafd243745d7d1b256d3e053258a801350fc5d0e16dd65fec89a35aa0"
+    }
+  },
+  "references": "LSP status/references unavailable: no server configured; targeted repository helper search finds only Base implementation plus a historical explanatory comment in tests/rfc/share_map.bend. That unchanged behavioral regression is included in preflight.",
+  "byteFixedpoint": "NOT_RUN",
+  "performance": "NOT_RUN"
+}

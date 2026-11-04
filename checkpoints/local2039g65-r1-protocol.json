@@ -1,0 +1,140 @@
+{
+  "schemaVersion": 1,
+  "version": "G65R1",
+  "status": "PROSPECTIVE_NOT_RUN",
+  "priorDiagnosisCheckpoint": "1ddc6afe",
+  "baselineMain": "f6cb89e2",
+  "sourceBranch": "selfhost/g65-heap-owners-isz5wzuq",
+  "goal": "Keep at least G63 CPU behavior while lowering memory; optimize confirmed map-read allocation traffic without assuming fewer allocations imply lower physical footprint.",
+  "sourceDelta": [
+    "bend2/base.bend"
+  ],
+  "mechanism": "Map.get keeps its existing -V:Data/default/map/key signature and quantities. Locally share the Data Map, use existing exact Map.find, return original map plus hit/default. Delete now-unused Map.get.go/Map.get.leaf and update obsolete comment; no caller/API twin or new primitive.",
+  "invariants": [
+    "empty/leaf/node/default/hit result and full returned map preserved",
+    "prefix, NUL, Unicode and arbitrary/backward MNode bit positions follow existing Map.find exact semantics",
+    "quantity-polymorphic Map.set/seek remain unchanged; no borrowing of non-Data values",
+    "sourcebook and consumer bodies remain fully checked; unused invalid bodies still reject",
+    "all measured input sources/foreign closure stay frozen independently of candidate compiler source"
+  ],
+  "scope": "Source-only compiler Base implementation. G63 contiguous loop and rejected G64 retirement/flat state are not copied into candidate. BaselineA main and G63B are fresh contemporaneous controls.",
+  "priorArt": "Same read-only lookup mechanism class as rejected G53, not claimed novel or accepted. G53 changed consumers; this changes one library definition and removes its helper implementation while preserving callers. Prior G53 one full observation: checker wall -2.353%, footprint +5.719%, not current qualification.",
+  "production": "Actual unchanged baseline own byte-fixed JS compiler parses/expands/checks/all-body-emits complete53-file candidate source; native receipt is ancestor only, no direct C-produced candidate claim. Runtime unchanged, so source algorithm active in resulting image without an extra runtime activation stage.",
+  "cheapFirstProof": [
+    "existing map behavior fixtures as source and default-stack emitted JS using candidate Base",
+    "actual emitted C map consumers with existing C lowering conventions",
+    "new compiled compiler passes all69 existing own parser/checker/emitter consumers",
+    "new compiled compiler emits the frozen map/depth/reentry consumers, executed unchanged with default-stack Node"
+  ],
+  "selected": {
+    "manifest": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/main-complete.corpus.json",
+      "sha256": "1a269e15bf70257b019ab572c003b6eb130b4e3f63ad507783525e28d307b0e4"
+    },
+    "roles": {
+      "A": "unchanged main actual byte-fixed image",
+      "B": "G63 actual byte-fixed image",
+      "C": "new Map.get implementation only"
+    },
+    "orders": [
+      [
+        "A",
+        "B",
+        "C"
+      ],
+      [
+        "C",
+        "A",
+        "B"
+      ],
+      [
+        "B",
+        "C",
+        "A"
+      ]
+    ],
+    "freshProcesses": true,
+    "primaryCpu": "checker phase process user+system CPU including helper threads",
+    "statistics": "existing paired log-ratio Student95,2% practical band, not old timing reuse",
+    "costGate": {
+      "geometricCpu_C_over_A_atMost": 0.97,
+      "geometricCpu_C_over_B_atMost": 1.02,
+      "everyCpuPair_C_over_A_below": 1,
+      "geometricWall_C_over_A_atMost": 1,
+      "medianFootprint_C_over_A_atMost": 1,
+      "geometricFootprint_C_over_B_atMost": 0.95
+    },
+    "costGateInterpretation": "same operational CPU-preservation/memory filter used prospectively for G64; not retroactive acceptance of G63 and not product qualification.",
+    "noRetriesExclusionsOrProfiling": true
+  },
+  "conditionalFull": {
+    "earnedOnlyIf": "all semantics and selected cost conditions pass",
+    "manifest": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/full-frozen.corpus.json",
+      "sha256": "60bf820e76a9c336e58c848eec6a40b3f8fbb4b7ac2ae45ffd1abdb1d217ebc6"
+    },
+    "orders": [
+      [
+        "A",
+        "B",
+        "C"
+      ],
+      [
+        "C",
+        "B",
+        "A"
+      ]
+    ],
+    "ownVersionFixedpoint": "actual candidate compiles exact own candidate source and output must byte-equal the candidate image"
+  },
+  "runtime": {
+    "bun": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "node": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+    "release": "2.0.39",
+    "releaseCommit": "a3efe8a3801f423827424227172eed9802c5e6cb",
+    "os": "darwin25.6.0 arm64",
+    "helperFiles": {
+      "selfhost_throughput.mjs": {
+        "path": "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+        "sha256": "1a806befee02216a9499f6b4dcde7e2326e01f0a5b96bbd36b75295344c50317"
+      },
+      "checker_core_step_runtime.mjs": {
+        "path": "/Users/ilyagulya/Projects/My/bend/evals/checker_core_step_runtime.mjs",
+        "sha256": "00cd400ac0452a3681bf6491db08be51f9ae3a33ff2baf88654a9763eb5073ed"
+      },
+      "selfhost_cpu_profile.mjs": {
+        "path": "/Users/ilyagulya/Projects/My/bend/evals/selfhost_cpu_profile.mjs",
+        "sha256": "5d5fc8d329a3b600522c58eeac59c49c515109bc7f48845d8177cb520129a1c0"
+      },
+      "native_seed_runtime.mjs": {
+        "path": "/Users/ilyagulya/Projects/My/bend/evals/native_seed_runtime.mjs",
+        "sha256": "7f81a9b9013853355910b93bf59586b2acbcda4de7bcaa08d7942ebf45c0147a"
+      },
+      "heavy_gate.ts": {
+        "path": "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+        "sha256": "e72f2b81970be76734df918e35b1a4289d0fb194039e5ca20e9785e5ac0ee015"
+      },
+      "heavy_gate_native.c": {
+        "path": "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate_native.c",
+        "sha256": "1ff233edacdbf13c6ffd4a8bf38cbf153629e8c76be4860deec8a5b591d3fa8b"
+      }
+    }
+  },
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "nativeProductionTimeoutMs": 300000,
+    "sourcePreflightTimeoutMs": 120000,
+    "throughputTimeoutMs": 600000,
+    "workerStackMiB": 256,
+    "oldGenerationMiB": 6144,
+    "youngGenerationMiB": 128,
+    "parserFuelPerModule": 8000000,
+    "oneHeavyLane": true,
+    "chunkQuantum": 64,
+    "abi": 13
+  },
+  "acceptedG24R12": "UNCHANGED",
+  "promotion": "No automatic algorithm promotion; migration/doc/provenance obligations evaluated only if the prospective selected/full/fixedpoint filters pass."
+}

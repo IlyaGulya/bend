@@ -1,0 +1,386 @@
+{
+  "schemaVersion": 1,
+  "version": "G65D0",
+  "status": "PROSPECTIVE_DIAGNOSTIC_NOT_RUN",
+  "baselineCheckpoint": "f6cb89e2",
+  "sourceBranch": "selfhost/g65-heap-owners-isz5wzuq",
+  "goal": "Identify actual heap-bearing owners and allocation traffic before choosing a data-oriented storage change; retain CPU benefit and lower memory without assuming G63 effect reproduces.",
+  "source": {
+    "path": "evals/selfhost_heap_ownership_probe.mjs",
+    "sha256": "4461be56a6b53ab866cb8156503a76518fbaf0abbf64333a3b30b9568d70c32c"
+  },
+  "lineage": {
+    "A": {
+      "image": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs",
+        "sha256": "4636c05aa8c75e72212cb03949937e25561942bc00da250f876f37f001b9fc18"
+      },
+      "sourceRequest": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/r2-A-selected-request.json",
+        "sha256": "7cb40ccbc418ab7bf70dd8b32717f5b9a6a0b9774e90ebb929b7756b1c5ea607"
+      },
+      "description": "unchanged main baseline, actual byte-fixed image"
+    },
+    "B": {
+      "image": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/g63-baseline-self-stage2.json.output.mjs",
+        "sha256": "65a07432de9482e67a71a70d1a2696474c8aca08a75e4e7dfe13fa6c006df045"
+      },
+      "sourceRequest": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/r2-B-selected-request.json",
+        "sha256": "64b426b6d36a9a9362f34f6d96b20bd14727cec3a22560afbba17736930206ac"
+      },
+      "description": "G63 own-source byte-fixed image"
+    },
+    "C": {
+      "image": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/r2-source-generation.json.output.mjs",
+        "sha256": "df3340236dd8eee0bb01b42b562f59f212ed5912eb08362972b905f28fa8cee8"
+      },
+      "sourceRequest": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/r2-C-selected-request.json",
+        "sha256": "5222ff1fed25bb19821b05deb3d0c45bb80f85bcc3a974a15cebdf6f5e19490f"
+      },
+      "description": "rejected G64R2 flat state plus capture retirement, actual own-source-produced image"
+    }
+  },
+  "selectedSourceManifest": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/main-complete.corpus.json",
+    "sha256": "1a269e15bf70257b019ab572c003b6eb130b4e3f63ad507783525e28d307b0e4"
+  },
+  "runtime": {
+    "bun": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "node": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+    "release": "2.0.39",
+    "releaseCommit": "a3efe8a3801f423827424227172eed9802c5e6cb",
+    "os": "darwin25.6.0 arm64",
+    "helperFiles": {
+      "selfhost_throughput.mjs": {
+        "path": "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+        "sha256": "1a806befee02216a9499f6b4dcde7e2326e01f0a5b96bbd36b75295344c50317"
+      },
+      "checker_core_step_runtime.mjs": {
+        "path": "/Users/ilyagulya/Projects/My/bend/evals/checker_core_step_runtime.mjs",
+        "sha256": "00cd400ac0452a3681bf6491db08be51f9ae3a33ff2baf88654a9763eb5073ed"
+      },
+      "selfhost_cpu_profile.mjs": {
+        "path": "/Users/ilyagulya/Projects/My/bend/evals/selfhost_cpu_profile.mjs",
+        "sha256": "5d5fc8d329a3b600522c58eeac59c49c515109bc7f48845d8177cb520129a1c0"
+      },
+      "native_seed_runtime.mjs": {
+        "path": "/Users/ilyagulya/Projects/My/bend/evals/native_seed_runtime.mjs",
+        "sha256": "7f81a9b9013853355910b93bf59586b2acbcda4de7bcaa08d7942ebf45c0147a"
+      },
+      "heavy_gate.ts": {
+        "path": "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+        "sha256": "e72f2b81970be76734df918e35b1a4289d0fb194039e5ca20e9785e5ac0ee015"
+      },
+      "heavy_gate_native.c": {
+        "path": "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate_native.c",
+        "sha256": "1ff233edacdbf13c6ffd4a8bf38cbf153629e8c76be4860deec8a5b591d3fa8b"
+      }
+    }
+  },
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "nativeProductionTimeoutMs": 300000,
+    "sourcePreflightTimeoutMs": 120000,
+    "throughputTimeoutMs": 600000,
+    "workerStackMiB": 256,
+    "oldGenerationMiB": 6144,
+    "youngGenerationMiB": 128,
+    "parserFuelPerModule": 8000000,
+    "oneHeavyLane": true,
+    "chunkQuantum": 64,
+    "abi": 13
+  },
+  "sampler": {
+    "intervalBytes": 1048576,
+    "phase": "own checker only",
+    "traffic": "includeObjectsCollectedByMajorGC=true, includeObjectsCollectedByMinorGC=true",
+    "uncollected": "both flags false; includes not-yet-collected garbage; not exact live bytes or strong-retention proof",
+    "milestones": [
+      250000,
+      1000000
+    ],
+    "finishedSample": true,
+    "profilingNotPerformanceEvidence": true,
+    "cpuSamplingIntervalUs": 1000
+  },
+  "snapshot": {
+    "role": "A",
+    "step": 1000000,
+    "scope": "separate prefix-only diagnostic, not complete checker PASS or peak-footprint evidence",
+    "implicitGcAndPause": true,
+    "originalLimitsRetained": true,
+    "boundedHashBufferBytes": 1048576,
+    "reference": "https://nodejs.org/download/release/v23.11.0/docs/api/v8.html#v8getheapsnapshotoptions",
+    "caveat": "Node documents roughly2x heap memory and synchronous pause. Snapshot induces GC; no profile time or memory is promoted as clean performance."
+  },
+  "smokePlan": [
+    {
+      "id": "G65D0-smoke-traffic",
+      "kind": "traffic",
+      "request": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/d0-smoke-traffic-request.json",
+      "report": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/d0-smoke-traffic.json",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+        "--memory-mib=8192",
+        "--rss-mib=8192",
+        "--poll-ms=10",
+        "--timeout-ms=600000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=6144",
+        "--max-semi-space-size=128",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/repository/evals/selfhost_heap_ownership_probe.mjs",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/d0-smoke-traffic-request.json",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/d0-smoke-traffic.json"
+      ],
+      "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/repository"
+    },
+    {
+      "id": "G65D0-smoke-uncollected",
+      "kind": "uncollected",
+      "request": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/d0-smoke-uncollected-request.json",
+      "report": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/d0-smoke-uncollected.json",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+        "--memory-mib=8192",
+        "--rss-mib=8192",
+        "--poll-ms=10",
+        "--timeout-ms=600000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=6144",
+        "--max-semi-space-size=128",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/repository/evals/selfhost_heap_ownership_probe.mjs",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/d0-smoke-uncollected-request.json",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/d0-smoke-uncollected.json"
+      ],
+      "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/repository"
+    },
+    {
+      "id": "G65D0-smoke-snapshot",
+      "kind": "snapshot",
+      "request": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/d0-smoke-snapshot-request.json",
+      "report": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/d0-smoke-snapshot.json",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+        "--memory-mib=8192",
+        "--rss-mib=8192",
+        "--poll-ms=10",
+        "--timeout-ms=600000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=6144",
+        "--max-semi-space-size=128",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/repository/evals/selfhost_heap_ownership_probe.mjs",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/d0-smoke-snapshot-request.json",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/d0-smoke-snapshot.json"
+      ],
+      "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/repository"
+    }
+  ],
+  "cells": [
+    {
+      "id": "G65D0-A-traffic",
+      "role": "A",
+      "kind": "traffic",
+      "request": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/d0-A-traffic-request.json",
+      "report": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/d0-A-traffic.json",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+        "--memory-mib=8192",
+        "--rss-mib=8192",
+        "--poll-ms=10",
+        "--timeout-ms=600000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=6144",
+        "--max-semi-space-size=128",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/repository/evals/selfhost_heap_ownership_probe.mjs",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/d0-A-traffic-request.json",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/d0-A-traffic.json"
+      ],
+      "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/repository"
+    },
+    {
+      "id": "G65D0-B-traffic",
+      "role": "B",
+      "kind": "traffic",
+      "request": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/d0-B-traffic-request.json",
+      "report": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/d0-B-traffic.json",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+        "--memory-mib=8192",
+        "--rss-mib=8192",
+        "--poll-ms=10",
+        "--timeout-ms=600000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=6144",
+        "--max-semi-space-size=128",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/repository/evals/selfhost_heap_ownership_probe.mjs",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/d0-B-traffic-request.json",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/d0-B-traffic.json"
+      ],
+      "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/repository"
+    },
+    {
+      "id": "G65D0-C-traffic",
+      "role": "C",
+      "kind": "traffic",
+      "request": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/d0-C-traffic-request.json",
+      "report": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/d0-C-traffic.json",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+        "--memory-mib=8192",
+        "--rss-mib=8192",
+        "--poll-ms=10",
+        "--timeout-ms=600000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=6144",
+        "--max-semi-space-size=128",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/repository/evals/selfhost_heap_ownership_probe.mjs",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/d0-C-traffic-request.json",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/d0-C-traffic.json"
+      ],
+      "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/repository"
+    },
+    {
+      "id": "G65D0-C-uncollected",
+      "role": "C",
+      "kind": "uncollected",
+      "request": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/d0-C-uncollected-request.json",
+      "report": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/d0-C-uncollected.json",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+        "--memory-mib=8192",
+        "--rss-mib=8192",
+        "--poll-ms=10",
+        "--timeout-ms=600000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=6144",
+        "--max-semi-space-size=128",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/repository/evals/selfhost_heap_ownership_probe.mjs",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/d0-C-uncollected-request.json",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/d0-C-uncollected.json"
+      ],
+      "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/repository"
+    },
+    {
+      "id": "G65D0-B-uncollected",
+      "role": "B",
+      "kind": "uncollected",
+      "request": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/d0-B-uncollected-request.json",
+      "report": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/d0-B-uncollected.json",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+        "--memory-mib=8192",
+        "--rss-mib=8192",
+        "--poll-ms=10",
+        "--timeout-ms=600000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=6144",
+        "--max-semi-space-size=128",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/repository/evals/selfhost_heap_ownership_probe.mjs",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/d0-B-uncollected-request.json",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/d0-B-uncollected.json"
+      ],
+      "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/repository"
+    },
+    {
+      "id": "G65D0-A-uncollected",
+      "role": "A",
+      "kind": "uncollected",
+      "request": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/d0-A-uncollected-request.json",
+      "report": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/d0-A-uncollected.json",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+        "--memory-mib=8192",
+        "--rss-mib=8192",
+        "--poll-ms=10",
+        "--timeout-ms=600000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=6144",
+        "--max-semi-space-size=128",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/repository/evals/selfhost_heap_ownership_probe.mjs",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/d0-A-uncollected-request.json",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/d0-A-uncollected.json"
+      ],
+      "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/repository"
+    },
+    {
+      "id": "G65D0-A-snapshot",
+      "role": "A",
+      "kind": "snapshot",
+      "request": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/d0-A-snapshot-request.json",
+      "report": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/d0-A-snapshot.json",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+        "--memory-mib=8192",
+        "--rss-mib=8192",
+        "--poll-ms=10",
+        "--timeout-ms=600000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=6144",
+        "--max-semi-space-size=128",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/repository/evals/selfhost_heap_ownership_probe.mjs",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/d0-A-snapshot-request.json",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/d0-A-snapshot.json"
+      ],
+      "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/repository"
+    }
+  ],
+  "concurrency": "one heavy process at a time; read-only source/history research may overlap",
+  "noChanges": [
+    "compiler source/image bytes",
+    "opaque Run helper",
+    "frozen selected sources and foreign closure",
+    "worker stack/old/young policy",
+    "8GiB and600s limits",
+    "GC flags"
+  ],
+  "failurePolicy": "retain failures; no retry, raising limits or dropping observations. New diagnostic source version/checkpoint required if implementation fault is discovered.",
+  "decisionBoundary": "Finish diagnosis and checkpoint observations before any algorithm variant; source implementation and prospective acceptance filter require their own next-version checkpoint.",
+  "acceptedG24R12": "UNCHANGED",
+  "mainCompilerAlgorithms": "UNCHANGED"
+}

@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "version": "G65R1",
+  "status": "REJECTED_SOURCE_PREFLIGHT_COMPUTED_MATCH",
+  "protocolCheckpoint": "09b8e19e",
+  "sourceCheckpoint": "dd1b0173",
+  "failedExecution": {
+    "name": "r1-source-map-0-source",
+    "command": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+      "--memory-mib=8192",
+      "--rss-mib=8192",
+      "--poll-ms=10",
+      "--timeout-ms=120000",
+      "--",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/repository/bend2/main.ts",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/repository/tests/base/map_ops.bend"
+    ],
+    "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/repository",
+    "exitCode": 1,
+    "elapsedMs": 1231.549333082512,
+    "stdout": "",
+    "stderr": "SOME PROOFS FAIL\nError:\n- message  : a parameter or field scrutinee (a match cannot scrutinize a computed value: give it its own def)\nLocation:\n2918 |   +shared = {m : Map<&2, V>}\n2919>|   match Map.find(V, shared, key):\n     |         ^^^^^^^^^^^^^^^^^^^^^^^^\n2920 |     case Some{value}:\nHEAVY_GATE {\"status\":\"FAIL\",\"reason\":\"command_exit\",\"commandExitCode\":1,\"commandSignal\":0,\"peakRssBytes\":72007680,\"peakFootprintBytes\":50217608,\"elapsedMs\":951,\"timeoutMs\":120000,\"reportPhase\":\"complete\",\"ownedTreeStopped\":true,\"supervisorExitCode\":1,\"command\":[\"/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun\",\"--smol\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/repository/bend2/main.ts\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/repository/tests/base/map_ops.bend\"],\"label\":\"heavy command\",\"exitCode\":1,\"reportPath\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793809548202-fcfe68a86f6ddca5.json\",\"memoryLimitBytes\":8589934592,\"rssLimitBytes\":8589934592}\n",
+    "expectedStdout": "7\n",
+    "guardian": {
+      "status": "FAIL",
+      "reason": "command_exit",
+      "commandExitCode": 1,
+      "commandSignal": 0,
+      "peakRssBytes": 72007680,
+      "peakFootprintBytes": 50217608,
+      "elapsedMs": 951,
+      "timeoutMs": 120000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 1,
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/repository/bend2/main.ts",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/repository/tests/base/map_ops.bend"
+      ],
+      "label": "heavy command",
+      "exitCode": 1,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793809548202-fcfe68a86f6ddca5.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    },
+    "passed": false
+  },
+  "diagnosis": "Bend requires a parameter/field match scrutinee. match Map.find(...) is rejected before compiler production; use the existing own-parameter helper convention, not a computed match.",
+  "compilerProduction": "NOT_RUN",
+  "selectedPerformance": "NOT_RUN_NOT_EARNED",
+  "fullPerformance": "NOT_RUN_NOT_EARNED",
+  "byteFixedpoint": "NOT_RUN_NOT_EARNED",
+  "acceptedG24R12": "UNCHANGED",
+  "sourcePerformanceClaim": false
+}

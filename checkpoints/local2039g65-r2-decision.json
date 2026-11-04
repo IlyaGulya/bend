@@ -1,0 +1,175 @@
+{
+  "schemaVersion": 1,
+  "version": "G65R2",
+  "status": "REJECTED_CPU_POINT_GAIN_WITH_HIGHER_FOOTPRINT_AND_INCONSISTENT_PAIRS",
+  "sourceCheckpoint": "1582daea",
+  "protocolCheckpoint": "ed9a3b3b",
+  "semanticsCheckpoint": "b9b6ce02",
+  "sourceImplementation": "Base Map.get -> existing Map.find with local Data sharing; no public signature/quantity change. Source/consumer/native proof passes.",
+  "costGate": {
+    "cpuCAatMostPoint97": true,
+    "cpuCBatMost1Point02": true,
+    "everyCpuCAfaster": false,
+    "wallCAatMost1": true,
+    "medianFootCAatMost1": false,
+    "geometricFootCBatMostPoint95": false
+  },
+  "costGatePassed": false,
+  "C_over_A": {
+    "checkerCpuMs": {
+      "n": 3,
+      "logRatios": [
+        0.040191322506671096,
+        -0.11336536481739101,
+        -0.1309465213860673
+      ],
+      "meanLog": -0.06804018789892907,
+      "varianceLog": 0.00886281915008123,
+      "geometricMeanRatio": 0.9342229283661646,
+      "ci95": [
+        0.7394096073610688,
+        1.1803639974329672
+      ],
+      "baselineMedian": 71803.802,
+      "variantMedian": 68307.95,
+      "direction": "inconclusive"
+    },
+    "checkerWallMs": {
+      "n": 3,
+      "logRatios": [
+        0.002391220387756114,
+        -0.13649604897386658,
+        -0.1273055188344285
+      ],
+      "meanLog": -0.08713678247351299,
+      "varianceLog": 0.006032563933306537,
+      "geometricMeanRatio": 0.9165517188474678,
+      "ci95": [
+        0.7557242487885111,
+        1.1116052643129357
+      ],
+      "baselineMedian": 62013.042583999995,
+      "variantMedian": 58172.62091699999,
+      "direction": "inconclusive"
+    },
+    "footprintBytes": {
+      "n": 3,
+      "logRatios": [
+        -0.21767877998571794,
+        0.36012461982118027,
+        0.12163245426486773
+      ],
+      "meanLog": 0.08802609803344336,
+      "varianceLog": 0.08431123259146761,
+      "geometricMeanRatio": 1.0920166211426097,
+      "ci95": [
+        0.530848834342532,
+        2.246402786828494
+      ],
+      "baselineMedian": 1153308400,
+      "variantMedian": 1302476088,
+      "direction": "inconclusive"
+    },
+    "rssBytes": {
+      "n": 3,
+      "logRatios": [
+        -0.07920164596383854,
+        0.20956297141726432,
+        0.16262830894021166
+      ],
+      "meanLog": 0.09766321146454582,
+      "varianceLog": 0.02401159898033076,
+      "geometricMeanRatio": 1.1025913824330427,
+      "ci95": [
+        0.7503085689099164,
+        1.6202770526556105
+      ],
+      "baselineMedian": 1065238528,
+      "variantMedian": 1242447872,
+      "direction": "inconclusive"
+    },
+    "medianFootprintRatio": 1.1293389417782789
+  },
+  "C_over_B": {
+    "checkerCpuMs": {
+      "n": 3,
+      "logRatios": [
+        0.01999727759903236,
+        -0.10046327995557355,
+        -0.0410710905714381
+      ],
+      "meanLog": -0.04051236430932643,
+      "varianceLog": 0.003627920612868611,
+      "geometricMeanRatio": 0.9602972910252578,
+      "ci95": [
+        0.8268454353865102,
+        1.1152881151473957
+      ],
+      "baselineMedian": 70883.334,
+      "variantMedian": 68307.95,
+      "direction": "inconclusive"
+    },
+    "checkerWallMs": {
+      "n": 3,
+      "logRatios": [
+        0.027626195197139942,
+        -0.07159829361996356,
+        0.0017069030357884508
+      ],
+      "meanLog": -0.014088398462345055,
+      "varianceLog": 0.0026484934573165783,
+      "geometricMeanRatio": 0.9860103786089385,
+      "ci95": [
+        0.867681246924291,
+        1.1204765231135303
+      ],
+      "baselineMedian": 58116.346292,
+      "variantMedian": 58172.62091699999,
+      "direction": "inconclusive"
+    },
+    "footprintBytes": {
+      "n": 3,
+      "logRatios": [
+        -0.019072706522174483,
+        0.26914510960327537,
+        0.12399382520109378
+      ],
+      "meanLog": 0.12468874276073157,
+      "varianceLog": 0.020767739565841926,
+      "geometricMeanRatio": 1.1327958072922657,
+      "ci95": [
+        0.791915367588922,
+        1.6204084344591858
+      ],
+      "baselineMedian": 1150588224,
+      "variantMedian": 1302476088,
+      "direction": "inconclusive"
+    },
+    "rssBytes": {
+      "n": 3,
+      "logRatios": [
+        -0.07247522501344122,
+        0.1276633034822641,
+        0.14091117897189354
+      ],
+      "meanLog": 0.06536641914690547,
+      "varianceLog": 0.014294115699867911,
+      "geometricMeanRatio": 1.0675501235322522,
+      "ci95": [
+        0.7932378852889852,
+        1.436723191604162
+      ],
+      "baselineMedian": 1156153344,
+      "variantMedian": 1242447872,
+      "direction": "inconclusive"
+    },
+    "medianFootprintRatio": 1.1320088810503939
+  },
+  "interpretation": "Checker CPU geometric point estimate0.934223 vs unchanged baseline and0.960297 vsG63, but95% intervals inconclusive. First C/A CPU pair is slower; C/A median footprint1.129339 and C/B geometric footprint1.132796 fail unchanged limits. No qualified CPU win or memory reduction. All9 original cells retained.",
+  "conditionalFullSource": "NOT_RUN_NOT_EARNED",
+  "ownVersionByteFixedpoint": "NOT_RUN_NOT_EARNED",
+  "acceptedG24R12": "UNCHANGED",
+  "mainAlgorithmCutover": false,
+  "remainingUncertainty": "The source removes trie-path construction, but new actual allocated traffic has not yet been sampled; end-of-phase heap sizes/peakFootprint do not establish a GC/JIT cause. Do not equate fewer source constructors with bounded RAM.",
+  "allowedNextDiagnostic": "A separately checkpointed diagnostic-only candidate traffic/retention observation may confirm the mechanism; no new timing samples or promotion threshold changes."
+}
