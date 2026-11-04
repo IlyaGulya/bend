@@ -1,0 +1,623 @@
+{
+  "schemaVersion": 1,
+  "version": "G64",
+  "status": "COMPLETE_BOTH_SOURCE_VARIANTS_EXPLICITLY_REJECTED",
+  "userGoalAchieved": false,
+  "mainBaselineCheckpoint": "08dbc079",
+  "sourceBranch": "selfhost/g64-capture-lifetime-5omwcc8o",
+  "sourceWorktree": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/repository",
+  "checkpoints": {
+    "D0Protocol": "65b1c9c9",
+    "D0Observed": "aa99cdec",
+    "R1Protocol": "27cb847f",
+    "R1Source": "5357ae7d",
+    "R1Decision": "1fbbd7f2",
+    "R2Protocol": "27c1f1a4",
+    "R2Source": "88ea4b7d",
+    "R2Decision": "a20ade96"
+  },
+  "acceptedG24R12": "UNCHANGED",
+  "mainAlgorithmCutover": false,
+  "promotionScope": "Main receives these compact receipts and an update to existing COMPILER_PROFILING.md only. Experimental canonical owner, generated checker/emitter and observer remain in their checkpointed branch. No stale compatibility aliases are introduced.",
+  "releaseRuntime": {
+    "bun": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "node": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+    "release": "2.0.39",
+    "releaseCommit": "a3efe8a3801f423827424227172eed9802c5e6cb",
+    "os": "darwin25.6.0 arm64",
+    "helperFiles": {
+      "selfhost_throughput.mjs": {
+        "path": "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+        "sha256": "1a806befee02216a9499f6b4dcde7e2326e01f0a5b96bbd36b75295344c50317"
+      },
+      "checker_core_step_runtime.mjs": {
+        "path": "/Users/ilyagulya/Projects/My/bend/evals/checker_core_step_runtime.mjs",
+        "sha256": "00cd400ac0452a3681bf6491db08be51f9ae3a33ff2baf88654a9763eb5073ed"
+      },
+      "selfhost_cpu_profile.mjs": {
+        "path": "/Users/ilyagulya/Projects/My/bend/evals/selfhost_cpu_profile.mjs",
+        "sha256": "5d5fc8d329a3b600522c58eeac59c49c515109bc7f48845d8177cb520129a1c0"
+      },
+      "native_seed_runtime.mjs": {
+        "path": "/Users/ilyagulya/Projects/My/bend/evals/native_seed_runtime.mjs",
+        "sha256": "7f81a9b9013853355910b93bf59586b2acbcda4de7bcaa08d7942ebf45c0147a"
+      },
+      "heavy_gate.ts": {
+        "path": "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+        "sha256": "e72f2b81970be76734df918e35b1a4289d0fb194039e5ca20e9785e5ac0ee015"
+      },
+      "heavy_gate_native.c": {
+        "path": "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate_native.c",
+        "sha256": "1ff233edacdbf13c6ffd4a8bf38cbf153629e8c76be4860deec8a5b591d3fa8b"
+      }
+    }
+  },
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "nativeProductionTimeoutMs": 300000,
+    "sourcePreflightTimeoutMs": 120000,
+    "throughputTimeoutMs": 600000,
+    "workerStackMiB": 256,
+    "oldGenerationMiB": 6144,
+    "youngGenerationMiB": 128,
+    "parserFuelPerModule": 8000000,
+    "oneHeavyLane": true,
+    "chunkQuantum": 64,
+    "abi": 13
+  },
+  "actualWorkerRuntime": {
+    "execPath": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+    "versions": {
+      "node": "23.11.0",
+      "acorn": "8.14.1",
+      "ada": "3.2.1",
+      "amaro": "0.4.1",
+      "ares": "1.34.4",
+      "brotli": "1.1.0",
+      "cjs_module_lexer": "2.1.0",
+      "cldr": "46.0",
+      "icu": "76.1",
+      "llhttp": "9.2.1",
+      "modules": "131",
+      "napi": "10",
+      "nbytes": "0.1.1",
+      "ncrypto": "0.0.1",
+      "nghttp2": "1.64.0",
+      "openssl": "3.0.16",
+      "simdjson": "3.12.2",
+      "simdutf": "6.0.3",
+      "sqlite": "3.49.1",
+      "tz": "2025a",
+      "undici": "6.21.2",
+      "unicode": "16.0",
+      "uv": "1.50.0",
+      "uvwasi": "0.0.21",
+      "v8": "12.9.202.28-node.14",
+      "zlib": "1.3.0.1-motley-788cb3c",
+      "zstd": "1.5.6"
+    },
+    "execArgv": [
+      "--experimental-strip-types",
+      "--max-old-space-size=6144",
+      "--max-semi-space-size=128"
+    ],
+    "heapLimitBytes": 6845104128
+  },
+  "actualWorkerPolicy": {
+    "stackMiB": 256,
+    "oldGenerationMiB": 6144,
+    "youngGenerationMiB": 128
+  },
+  "sourceValidation": {
+    "candidateR2": {
+      "manifest": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/r2-source.corpus.json",
+        "sha256": "0be4ab8fa1fb540b1e3bda0a37f9605055e3cafcc729abd8965f2a364e02d68c"
+      },
+      "filesValidated": 53,
+      "allPinnedBytesUnchanged": true
+    },
+    "selected": {
+      "manifest": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/main-complete.corpus.json",
+        "sha256": "1a269e15bf70257b019ab572c003b6eb130b4e3f63ad507783525e28d307b0e4"
+      },
+      "filesValidated": 52,
+      "allPinnedBytesUnchanged": true
+    },
+    "full": {
+      "manifest": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/full-frozen.corpus.json",
+        "sha256": "60bf820e76a9c336e58c848eec6a40b3f8fbb4b7ac2ae45ffd1abdb1d217ebc6"
+      },
+      "filesValidated": 53,
+      "allPinnedBytesUnchanged": true
+    }
+  },
+  "frozenDiagnosticSource": {
+    "path": "evals/continuation_lifetime_probe.mjs",
+    "checkpoint": "65b1c9c9",
+    "branch": "selfhost/g64-capture-lifetime-5omwcc8o",
+    "sha256": "c9d0029c170a8b2a5a9c77d56e0ce8fc9a80dee65467581307b72699c9059379",
+    "retainedInMain": false,
+    "purpose": "Read-only same-prefix real-source checker observer, not a full checker PASS, performance sample or forced-GC experiment."
+  },
+  "experimentalR2Sources": [
+    {
+      "path": "bend2/selfhost/js_backend.bend",
+      "sha256": "ef7e3104292a9b0995c73d3fbe08111d7bf29a207de431983b252dff8d3d6c81"
+    },
+    {
+      "path": "checkpoints/emitter_steps_v1.bend",
+      "sha256": "934534b95920cf166138c47fe1ddbb79eab4d7dc1920a16725bcca17efb5a192"
+    },
+    {
+      "path": "checkpoints/checker_core_steps_v1.bend",
+      "sha256": "e038ed64d06bc658ba7b43a1cca04abcd9586dc88a8260568c6b24993cdd50b5"
+    }
+  ],
+  "mechanisms": {
+    "R1": "Source-owned one-shot capture transfer retires each consumed reference without shrinking/replacing dense reusable slot storage.",
+    "R2": "R1 plus typed progress/stack arguments; flat checker_chunk_state selection avoids intermediate RunState constructions until yield.",
+    "scopeLimits": "Sampled outside-prefix root count is not exclusive retained bytes. Static construction sites are not dynamic allocation traffic. No universal retirement of unentered/aborted regions is proved."
+  },
+  "observedCaptureRoots": {
+    "samePrefix": 250000,
+    "capacity": 7083,
+    "activeSp": 3,
+    "G63DeadObjects": 7044,
+    "R1DeadObjects": 0,
+    "R2DeadObjects": 0,
+    "inspectorPerformanceEvidence": false
+  },
+  "semantics": {
+    "R1": {
+      "ownCompilerConsumersPassed": 69,
+      "earlyOwnEmittedDefaultNodeProgramsPassed": 5
+    },
+    "R2": {
+      "schedulerLiteralObservationsPassed": 49,
+      "sourceAndDefaultNodeScheduler": true,
+      "ownCompilerConsumersPassed": 69,
+      "ownEmittedDefaultNodeProgramsPassed": 5
+    }
+  },
+  "freshSelectedPerformance": {
+    "processesPerVersion": 9,
+    "triadOrders": [
+      [
+        "A",
+        "B",
+        "C"
+      ],
+      [
+        "C",
+        "A",
+        "B"
+      ],
+      [
+        "B",
+        "C",
+        "A"
+      ]
+    ],
+    "roles": {
+      "A": "unchanged baseline actual previously byte-fixed image",
+      "B": "G63 actual own byte-fixed image",
+      "C_R1": "G63 plus source-owned consumed-capture retirement, runtime genuinely activated",
+      "C_R2": "R1 plus flat checker state transport, new exact R2 image produced by actual own-source compilation"
+    },
+    "moduleCount": 17,
+    "sourceDeclarations": 2954,
+    "stepCounts": {
+      "expand": 263032,
+      "check": 1975761
+    },
+    "primaryCpu": "checker process user+system including helper threads",
+    "R1OverG63": {
+      "checkerCpuMs": {
+        "n": 3,
+        "logRatios": [
+          0.022698851328048306,
+          0.0337682878547143,
+          0.01788926094175375
+        ],
+        "meanLog": 0.02478546670817212,
+        "varianceLog": 6.630134673405831e-05,
+        "geometricMeanRatio": 1.0250951798895995,
+        "ci95": [
+          1.0045686211461375,
+          1.0460411620601722
+        ],
+        "baselineMedian": 69309.136,
+        "variantMedian": 70560.182,
+        "direction": "inconclusive"
+      },
+      "checkerWallMs": {
+        "n": 3,
+        "logRatios": [
+          -0.03133715744342757,
+          0.040007517516324254,
+          -0.005988771858900359
+        ],
+        "meanLog": 0.0008938627379987749,
+        "varianceLog": 0.0013080436555239843,
+        "geometricMeanRatio": 1.0008942623523538,
+        "ci95": [
+          0.9148916252021915,
+          1.0949814128951796
+        ],
+        "baselineMedian": 58091.681916,
+        "variantMedian": 58242.268125,
+        "direction": "inconclusive"
+      },
+      "footprintBytes": {
+        "n": 3,
+        "logRatios": [
+          -0.03456110929416625,
+          -0.0050431621580255695,
+          -0.01697101576680631
+        ],
+        "meanLog": -0.018858429072999377,
+        "varianceLog": 0.000220499047524295,
+        "geometricMeanRatio": 0.9813182785476956,
+        "ci95": [
+          0.9457794161359729,
+          1.0181925588380178
+        ],
+        "baselineMedian": 1130027144,
+        "variantMedian": 1091639336,
+        "direction": "inconclusive"
+      },
+      "rssBytes": {
+        "n": 3,
+        "logRatios": [
+          0.024887955906870377,
+          -0.0269869825937111,
+          -0.04170648573346658
+        ],
+        "meanLog": -0.01460183747343577,
+        "varianceLog": 0.001223748779084771,
+        "geometricMeanRatio": 0.9855042523588198,
+        "ci95": [
+          0.903479152735818,
+          1.0749762498408257
+        ],
+        "baselineMedian": 1071300608,
+        "variantMedian": 1068711936,
+        "direction": "inconclusive"
+      },
+      "medianFootprintRatio": 0.9660293045137683
+    },
+    "R2OverG63": {
+      "checkerCpuMs": {
+        "n": 3,
+        "logRatios": [
+          -0.058420904458886556,
+          -0.018963422921131904,
+          0.26173193630961533
+        ],
+        "meanLog": 0.06144920297653229,
+        "varianceLog": 0.030474103165853705,
+        "geometricMeanRatio": 1.063376478796893,
+        "ci95": [
+          0.6892146084613564,
+          1.6406639119023834
+        ],
+        "baselineMedian": 69610.887,
+        "variantMedian": 68303.264,
+        "direction": "inconclusive"
+      },
+      "checkerWallMs": {
+        "n": 3,
+        "logRatios": [
+          -0.026463665120616448,
+          -0.0006933031461002266,
+          0.13131309962925217
+        ],
+        "meanLog": 0.03471871045417849,
+        "varianceLog": 0.007163884904153591,
+        "geometricMeanRatio": 1.0353284407693377,
+        "ci95": [
+          0.8390054727703058,
+          1.2775899741470733
+        ],
+        "baselineMedian": 57836.608125,
+        "variantMedian": 56792.03675,
+        "direction": "inconclusive"
+      },
+      "footprintBytes": {
+        "n": 3,
+        "logRatios": [
+          -0.030407036017262648,
+          0.06268367792787034,
+          0.7688521764140708
+        ],
+        "meanLog": 0.2670429394415595,
+        "varianceLog": 0.19102585298890418,
+        "geometricMeanRatio": 1.306096528182127,
+        "ci95": [
+          0.44101040059161956,
+          3.868135850403847
+        ],
+        "baselineMedian": 1130388984,
+        "variantMedian": 1143398504,
+        "direction": "inconclusive"
+      },
+      "rssBytes": {
+        "n": 3,
+        "logRatios": [
+          0.005240213349424845,
+          0.09812264666598815,
+          0.7132898710727413
+        ],
+        "meanLog": 0.27221757702938476,
+        "varianceLog": 0.14806536303420334,
+        "geometricMeanRatio": 1.3128726211626953,
+        "ci95": [
+          0.5047660168757817,
+          3.414719814275406
+        ],
+        "baselineMedian": 1069613056,
+        "variantMedian": 1128235008,
+        "direction": "inconclusive"
+      },
+      "medianFootprintRatio": 1.011508887811313
+    },
+    "R1Passed": false,
+    "R2Passed": false,
+    "retries": 0,
+    "excludedObservations": 0,
+    "pooledWithOlderTimings": false,
+    "simultaneousHeavyJobs": false
+  },
+  "G63ContemporaneousReplication": {
+    "R1": {
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "-e",
+        "import {readFileSync} from 'node:fs'; import {pairedStats,classifyRatio} from \"/Users/ilyagulya/Projects/My/bend/evals/selfhost_corpus_calibration.ts\";const rows=JSON.parse(readFileSync(process.argv[1],'utf8'));const stats=pairedStats(rows.map(r=>r.A.checkerCpuMs),rows.map(r=>r.B.checkerCpuMs));console.log(JSON.stringify({...stats,direction:classifyRatio(stats.ci95,.02)}));",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/selected-triad-input.json"
+      ],
+      "input": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/selected-triad-input.json",
+        "sha256": "5c85ccf373a1d001aa5de08062a7efe816b2f10410dfe843298158c12e06e405"
+      },
+      "statistics": {
+        "n": 3,
+        "logRatios": [
+          -0.014695233491703812,
+          0.00043634615903915164,
+          0.023910283770947633
+        ],
+        "meanLog": 0.0032171321460943247,
+        "varianceLog": 0.0003783960688085715,
+        "geometricMeanRatio": 1.0032223126697037,
+        "ci95": [
+          0.9558968002920989,
+          1.052890864715522
+        ],
+        "baselineMedian": 67671.59000000001,
+        "variantMedian": 69309.136,
+        "direction": "inconclusive"
+      }
+    },
+    "R2": {
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "-e",
+        "import {readFileSync} from 'node:fs'; import {pairedStats,classifyRatio} from \"/Users/ilyagulya/Projects/My/bend/evals/selfhost_corpus_calibration.ts\";const rows=JSON.parse(readFileSync(process.argv[1],'utf8'));const stats=pairedStats(rows.map(r=>r.A.checkerCpuMs),rows.map(r=>r.B.checkerCpuMs));console.log(JSON.stringify({...stats,direction:classifyRatio(stats.ci95,.02)}));",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/r2-selected-triad-input.json"
+      ],
+      "input": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/r2-selected-triad-input.json",
+        "sha256": "a15886e561f0a351bdcabea53dc55bcf3faceb787259ef2073c88474168783f7"
+      },
+      "statistics": {
+        "n": 3,
+        "logRatios": [
+          -0.020025292916592937,
+          0.02640766282577418,
+          -0.029502537725060448
+        ],
+        "meanLog": -0.007706722605293068,
+        "varianceLog": 0.0008952980122944661,
+        "geometricMeanRatio": 0.9923228980398223,
+        "ci95": [
+          0.9212388617256789,
+          1.0688918747192095
+        ],
+        "baselineMedian": 70501.24399999999,
+        "variantMedian": 69610.887,
+        "direction": "inconclusive"
+      }
+    }
+  },
+  "R2LargeObservation": {
+    "id": "r2-selected-t3-C",
+    "checkerCpuMs": 88930.908,
+    "peakFootprintBytes": 2438575320,
+    "endHeapTotalBytes": 1887698944,
+    "endHeapUsedBytes": 1318322072,
+    "endArrayBuffersBytes": 25039,
+    "interpretation": "Recorded growth is primarily JS heap, not end-of-phase ArrayBuffer growth. Cause of the CPU/heap spike remains unproved; no GC/JIT diagnosis from end snapshots alone."
+  },
+  "fixedpoints": {
+    "unchangedBaseline": "PASS earlier actual own-source result, exact image reused without reusing timing samples",
+    "G63": "PASS genuine own-source stage2 byte-equal C-produced stage0",
+    "R1OwnVersion": "NOT_RUN_NOT_EARNED",
+    "R2OwnVersion": "NOT_RUN_NOT_EARNED"
+  },
+  "fullSourcePairedPerformance": {
+    "R1": "NOT_RUN_NOT_EARNED",
+    "R2": "NOT_RUN_NOT_EARNED",
+    "notToConfuseWith": "Actual complete compiler-source production succeeded; conditional full-workload timing cohorts were not earned by the selected filters."
+  },
+  "historicalReceiptCaveats": [
+    "Prospective NOT_RUN records intentionally remain immutable; their final disposition is supplied by measured selected/decision receipts.",
+    "R2 protocol inherited the R1 shorthand C role description; its explicit checker source delta, mechanism and pinned actual measured image define the additional state transport.",
+    "R1 capture probe inherited a stale scope/producer description from the G63 request template; actual candidate image hash and own stage2 report, recorded in R1 lifetime evidence, are lineage authority. R2 probe has a clean minimal request."
+  ],
+  "intentionalNonChanges": [
+    "No canonical generator/admission/provenance/schema-witness migration: neither isolated source version is promoted.",
+    "No main source algorithm, release, accepted compiler, workload, runtime limits, GC policy or opaque helper change."
+  ],
+  "nextArchitectureDecision": "Measure actual heap allocation sites and survivors/retention paths before selecting a compact arena/indexed hot-state layout. Separate churn, strong retained graphs and GC-reserved heap; derive storage lifetime boundaries from live ranges rather than assuming fewer source objects lowers peak footprint. Cause of R2 CPU/heap spike remains unproved.",
+  "temporaryControllers": "REMOVED_AFTER_ALL_RECORDED_RUNS_AND_STATISTICS; source hashes and exact invocations remain in immutable execution/selected receipts.",
+  "evidence": [
+    {
+      "path": "checkpoints/local2039g64-baseline-stage2.json",
+      "sha256": "f735584011761922c7478fecba210e6508e19a8b83293c765273ff29ed13a3b6",
+      "bytes": 4076,
+      "status": "GENUINE_OWN_SELF_STAGE2_PASS_BYTE_EQUAL_NATIVE_STAGE0"
+    },
+    {
+      "path": "checkpoints/local2039g64-d0-protocol.json",
+      "sha256": "e20da688e7820467ca0d8eaa497635b39662356912e9ed9bb1281ed07fde766c",
+      "bytes": 2678,
+      "status": "PROSPECTIVE_DIAGNOSTIC_NOT_RUN"
+    },
+    {
+      "path": "checkpoints/local2039g64-d0.json",
+      "sha256": "bc981f94bf1f68df07de0e90c2a58fbd28ffae05258c8112f15888c98a201ece",
+      "bytes": 2768,
+      "status": "REAL_G63_CAPTURE_HIGHWATER_RETENTION_OBSERVED"
+    },
+    {
+      "path": "checkpoints/local2039g64-r1-architecture.json",
+      "sha256": "191dc9a23662d08a57b8f79163e885ff4e02572352e365fb7bf9ee85533e3885",
+      "bytes": 2320,
+      "status": "SOURCE_AND_RUNTIME_OWNERSHIP_REVIEW_NOT_PERFORMANCE"
+    },
+    {
+      "path": "checkpoints/local2039g64-r1-consumer-plan.json",
+      "sha256": "e71f8742299affa064a2dcda5473ad7d75234ebd9bb0fcf891370cf48b4d1ca6",
+      "bytes": 1822,
+      "status": "PROGRAM_INPUTS_FROZEN_NOT_RUN"
+    },
+    {
+      "path": "checkpoints/local2039g64-r1-decision.json",
+      "sha256": "8350dbab72599e033c316430075f6b80f129581a4a56f540e4aa438a27d156f3",
+      "bytes": 2686,
+      "status": "REJECTED_AS_COMPLETE_CPU_AND_MEMORY_SOLUTION"
+    },
+    {
+      "path": "checkpoints/local2039g64-r1-early-preflight.json",
+      "sha256": "f1b3178fd2be14775459fa1a5764efd7b29f4b6ad56a97ef3d88373709595b90",
+      "bytes": 20412,
+      "status": "FIVE_NEW_RUNTIME_DEFAULT_NODE_CONSUMERS_PASS_BEFORE_SELF_EMISSION"
+    },
+    {
+      "path": "checkpoints/local2039g64-r1-execution.json",
+      "sha256": "9f5fc389caabf7601914c52bc97bc66e0bfdd7bf81acb3c3ffe6f959774388a3",
+      "bytes": 60434,
+      "status": "NINE_SELECTED_CELLS_FROZEN_NOT_RUN"
+    },
+    {
+      "path": "checkpoints/local2039g64-r1-lifetime.json",
+      "sha256": "6c0080f72e2b6dc17b6e0714ef79a03b49a4e83305cea8180d2891ae54f6b013",
+      "bytes": 4136,
+      "status": "ACTUAL_SELF_STAGE2_CONSUMED_ROOT_RETIREMENT_OBSERVED"
+    },
+    {
+      "path": "checkpoints/local2039g64-r1-protocol.json",
+      "sha256": "b39dff329f69f18cf0f6c5a1633e4f8c2f2ffa330983083890b7454352ae8674",
+      "bytes": 8399,
+      "status": "PROSPECTIVE_NOT_RUN"
+    },
+    {
+      "path": "checkpoints/local2039g64-r1-selected.json",
+      "sha256": "e158864bea577a357dcbbb0f10dc3b014b0ed6da4c23bb3c0fd86ce974ec773f",
+      "bytes": 43530,
+      "status": "NINE_SELECTED_CELLS_PASS_MEMORY_PRESERVATION_GATE_FAIL"
+    },
+    {
+      "path": "checkpoints/local2039g64-r1-semantics.json",
+      "sha256": "5a9ac7e44d436c7581473d14ce541c2fab89366e78a66cffad3dc8f3511c9c71",
+      "bytes": 17944,
+      "status": "ACTIVE_SELF_STAGE2_69_OWN_CONSUMERS_PASS"
+    },
+    {
+      "path": "checkpoints/local2039g64-r1-source.json",
+      "sha256": "dbce56b369ecd99ef606dc5847f3516e75f3c3d6c5c481f16a194c0d91e9836b",
+      "bytes": 1582,
+      "status": "SOURCE_READY_NOT_RUN"
+    },
+    {
+      "path": "checkpoints/local2039g64-r1-stage0.json",
+      "sha256": "27281b909666b00ac3a699ad149c7a99492c4e1704b9334652d5d414faa254f6",
+      "bytes": 3590,
+      "status": "ACTUAL_C_NATIVE_STAGE0_PASS"
+    },
+    {
+      "path": "checkpoints/local2039g64-r1-stage2.json",
+      "sha256": "a5a83756e370a9b9f2f047c7fb647cfec222e985bd659bcc17159e806e92fe8c",
+      "bytes": 4262,
+      "status": "GENUINE_OWN_SELF_STAGE2_PASS_CAPTURE_RETIREMENT_ACTIVE"
+    },
+    {
+      "path": "checkpoints/local2039g64-r2-decision.json",
+      "sha256": "9194e82d7b46be836872dd8b534938be4a50caf45cd5f0d4a51f66d180bd0201",
+      "bytes": 2666,
+      "status": "REJECTED_BY_UNCHANGED_CPU_PRESERVATION_AND_MEMORY_FILTER"
+    },
+    {
+      "path": "checkpoints/local2039g64-r2-execution.json",
+      "sha256": "981e9b69be61ed4b1f8c25c1b7081038fdf0ea0d341590437ef20514806d5a0f",
+      "bytes": 62525,
+      "status": "NINE_FRESH_TRIAD_CELLS_FROZEN_NOT_RUN"
+    },
+    {
+      "path": "checkpoints/local2039g64-r2-lifetime.json",
+      "sha256": "b2266cbe15a67ada33e939540c4f06ded1c0c246ed6a5f06fd3581c872fd8d3c",
+      "bytes": 3040,
+      "status": "CAPTURE_LIFETIME_FIX_PRESERVED_WITH_FLAT_STATE_TRANSPORT"
+    },
+    {
+      "path": "checkpoints/local2039g64-r2-production.json",
+      "sha256": "46951002268c13cbcb317304b03269bec1ccd3af2ccdc815e830f06ecc8f2f93",
+      "bytes": 5090,
+      "status": "ACTUAL_SOURCE_GENERATION_PASS_NEW_ALGORITHM_ACTIVE"
+    },
+    {
+      "path": "checkpoints/local2039g64-r2-programs.json",
+      "sha256": "2b0a4933533f689ab9426bb608aa49fd7b061bc25027abe063d2e9f7bcddb77c",
+      "bytes": 19553,
+      "status": "FIVE_REAL_NEW_COMPILER_DEFAULT_NODE_CONSUMERS_PASS"
+    },
+    {
+      "path": "checkpoints/local2039g64-r2-protocol.json",
+      "sha256": "9d4d5abae73e1af183948a474a3ce7c58e9b31d3fac5f948142f3d8d02d4cdf8",
+      "bytes": 8893,
+      "status": "PROSPECTIVE_NOT_RUN"
+    },
+    {
+      "path": "checkpoints/local2039g64-r2-selected.json",
+      "sha256": "be56b96abb1d0841fdae96e8d130e29da41773ec50d907f9283447876b90770f",
+      "bytes": 58154,
+      "status": "MEASURED_COMPLETE_SELECTED_ONLY"
+    },
+    {
+      "path": "checkpoints/local2039g64-r2-semantics.json",
+      "sha256": "d76d2bf3550184a1b19a3cd24f016b14e936356f676c4cf68026e61dd4ea5fb4",
+      "bytes": 18677,
+      "status": "ACTUAL_NEW_COMPILER_69_OWN_CONSUMERS_PASS"
+    },
+    {
+      "path": "checkpoints/local2039g64-r2-source-preflight.json",
+      "sha256": "3eb1711faf0276aa6f2250dd49ad0561967fed576e428b3ddd69c38b88534c19",
+      "bytes": 7649,
+      "status": "SOURCE_AND_DEFAULT_NODE_49_OBSERVATIONS_PASS"
+    },
+    {
+      "path": "checkpoints/local2039g64-r2-source.json",
+      "sha256": "eeff2ea97dcf8d54a6a2799c0c39f85ddc554817a71554697d53ee1fce945182",
+      "bytes": 1338,
+      "status": "SOURCE_READY_NOT_RUN"
+    }
+  ]
+}

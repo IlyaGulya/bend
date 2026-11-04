@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 1,
+  "version": "G64R2",
+  "status": "CAPTURE_LIFETIME_FIX_PRESERVED_WITH_FLAT_STATE_TRANSPORT",
+  "command": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+    "--memory-mib=8192",
+    "--rss-mib=8192",
+    "--poll-ms=10",
+    "--timeout-ms=600000",
+    "--",
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+    "--experimental-strip-types",
+    "--max-old-space-size=6144",
+    "--max-semi-space-size=128",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/repository/evals/continuation_lifetime_probe.mjs",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/r2-dead-slot-probe-request.json",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/r2-dead-slot-probe.json"
+  ],
+  "cwd": "/Users/ilyagulya/Projects/My/bend",
+  "request": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/r2-dead-slot-probe-request.json",
+    "sha256": "9c86885a898aca8f0323bac8832928af9c6b186405df70142fa7dbecc5258014"
+  },
+  "report": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/r2-dead-slot-probe.json",
+    "sha256": "f3bffe7f36ed4e2b11c228bfbdc971f3df96b05419c10863fed7aee116a94f72"
+  },
+  "image": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/r2-source-generation.json.output.mjs",
+    "sha256": "df3340236dd8eee0bb01b42b562f59f212ed5912eb08362972b905f28fa8cee8"
+  },
+  "state": {
+    "sp": 3,
+    "ksp": 1,
+    "capacity": 7083,
+    "defined": 3,
+    "deadObjects": 0,
+    "deadFunctions": 0,
+    "liveObjects": 2,
+    "deadObjectTags": {},
+    "tailRest": null,
+    "tailUnaryDefined": true,
+    "tailArgsDefined": 0,
+    "kFnDormant": 0
+  },
+  "baselineG63State": {
+    "sp": 3,
+    "ksp": 1,
+    "capacity": 7083,
+    "defined": 7083,
+    "deadObjects": 7044,
+    "deadFunctions": 0,
+    "liveObjects": 2,
+    "deadObjectTags": {
+      "../bend2/selfhost/checker_arena.Arena": 1,
+      "Array": 10,
+      "MTip": 2,
+      "MNode": 17,
+      "MLeaf": 11,
+      "../bend2/selfhost/scope_lookup.ArenaGlobal": 1171,
+      "template_steps_v1.CaptureName": 5832
+    },
+    "tailRest": null,
+    "tailUnaryDefined": true,
+    "tailArgsDefined": 0,
+    "kFnDormant": 0
+  },
+  "samePrefix": {
+    "modules": 17,
+    "declarations": 2954,
+    "checkerStep": 250000
+  },
+  "performanceEvidence": false,
+  "scope": "No retired object roots observed at same real compiler prefix; dense buffer length retained. No exact retained-byte, universal exception-path cleanup, throughput or physical peak-memory conclusion."
+}

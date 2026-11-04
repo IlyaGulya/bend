@@ -1,0 +1,87 @@
+{
+  "schemaVersion": 1,
+  "version": "G64R1",
+  "status": "ACTUAL_C_NATIVE_STAGE0_PASS",
+  "sourceCheckpoint": "5357ae7d",
+  "manifest": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/candidate-source.corpus.json",
+    "sha256": "a0abe55c0887436917d630317e88098e6d8a88196a029ede5a4e51d9b08d5649"
+  },
+  "deltaFromG63": [
+    {
+      "path": "checkpoints/emitter_steps_v1.bend",
+      "G63": "7f7c8d2e57a3fcd3925b4286a8300668ae91b7e11a26317cea6da2df5c9ea425",
+      "G64": "934534b95920cf166138c47fe1ddbb79eab4d7dc1920a16725bcca17efb5a192"
+    }
+  ],
+  "command": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/evals/native_compiler_experiment.ts",
+    "--mode=run",
+    "--corpus=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/candidate-source.corpus.json",
+    "--build=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g44d1-native-build.json",
+    "--report=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/candidate-native-stage0.json",
+    "--phase=compile",
+    "--threads=1"
+  ],
+  "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/repository",
+  "report": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/candidate-native-stage0.json",
+    "sha256": "16cb0a1cc09082b8f25e448668cd2bdb4196d270741888996930f1040bdb3e48"
+  },
+  "image": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/candidate-native-stage0.json.mjs",
+    "sha256": "15f07c8ee94d1942c569537c00b0024187c5050aaeb31eb1af854ea2c8a4f7a6"
+  },
+  "guardian": {
+    "status": "PASS",
+    "reason": "command_exit",
+    "elapsedMs": 103308,
+    "peakRssBytes": 1697873920,
+    "peakFootprintBytes": 1768196592,
+    "timeoutMs": 300000,
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592,
+    "ownedTreeStopped": true,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793783281602-14b153e57525e100.json"
+  },
+  "phases": [
+    {
+      "phase": "parse",
+      "elapsedMs": 7038.23,
+      "userCpuMs": 6623.992,
+      "systemCpuMs": 114.138,
+      "modules": 18,
+      "sourceBytes": 7870543,
+      "foreignBytes": 78415,
+      "eagerFuelCells": 144000000,
+      "fuelBuildMs": 972.171
+    },
+    {
+      "phase": "expand",
+      "elapsedMs": 4793.017,
+      "userCpuMs": 4612.863,
+      "systemCpuMs": 24.487,
+      "chunkAdvances": 1069350,
+      "chunkQuantum": 64
+    },
+    {
+      "phase": "check",
+      "elapsedMs": 75167.131,
+      "userCpuMs": 66555.389,
+      "systemCpuMs": 669.391,
+      "chunkAdvances": 10389473,
+      "chunkQuantum": 64
+    },
+    {
+      "phase": "emit",
+      "elapsedMs": 14843.534,
+      "userCpuMs": 13707.602,
+      "systemCpuMs": 287.7,
+      "chunkAdvances": 1284342,
+      "chunkQuantum": 64
+    }
+  ],
+  "activation": "This compiler has the new emitter but still old capture runtime; only its newly emitted consumers run $take. Own self-stage2 is required before compiler performance measurement."
+}

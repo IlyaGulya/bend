@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "version": "G64R1",
+  "status": "SOURCE_READY_NOT_RUN",
+  "protocolCheckpoint": "27cb847f",
+  "compilerSource": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/repository/checkpoints/emitter_steps_v1.bend",
+    "sha256": "934534b95920cf166138c47fe1ddbb79eab4d7dc1920a16725bcca17efb5a192"
+  },
+  "canonicalOwner": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/repository/bend2/selfhost/js_backend.bend",
+    "sha256": "ef7e3104292a9b0995c73d3fbe08111d7bf29a207de431983b252dff8d3d6c81"
+  },
+  "checkerPreserved": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/repository/checkpoints/checker_core_steps_v1.bend",
+    "sha256": "995e0a9becf499e4cd03154e7a427bde79c906b03576c680727c6c45054fb6b5"
+  },
+  "ownershipOperation": "function $take(i) { const x=$stArgs[i]; $stArgs[i]=undefined; return x; }",
+  "generatedBindings": "const localOrCapture=$take($base+constantIndex);",
+  "allocationPolicy": "no new objects, no shrinking capacity, no delete/holes, one existing read plus one clearing write per consumed capture; tiny monomorphic-index helper allows one index calculation and avoids duplicating inline clearing text",
+  "sourceScope": "canonical owner and isolated generated compiler checkpoint updated together; no canonical generation provenance claimed",
+  "byteFixedpoint": "NOT_RUN"
+}

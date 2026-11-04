@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "version": "G64R1",
+  "status": "SOURCE_AND_RUNTIME_OWNERSHIP_REVIEW_NOT_PERFORMANCE",
+  "ownership": {
+    "slotRange": "[frameBase,frameBase+localCount+slotCount), stored/loaded in identical contiguous order",
+    "consume": "frame removed and $sp reset before generated continuation/thunk prologue",
+    "release": "$take returns the reference into a JS const and clears just its own consumed index before body execution",
+    "reentry": "nested runs preserve outer live prefix; each invocation stores fresh values before its own one-shot prologue",
+    "region": "entered region thunk consumes owned slots; normal region returns and skipped/aborted ranges may retain residual dead roots",
+    "codeSize": "one tiny private helper rather than duplicating load/store expressions or calling Array.fill per frame; actual CPU and image size still require measurement"
+  },
+  "sourceTransportPriorArt": {
+    "G58B": "uses separate self-recursive chunk_state with nested fuel/progress match, retained helper declarations and differentG50 emitter source world",
+    "G63": "flat fuel/run match, no advance/pop helpers, per-tick RunState retained",
+    "potentialFuture": "flat fuel/progress/stack ownership transport could remove RunState materialization, but it is not implemented or credited here",
+    "noGo": "source-only scheduler edits cannot release already-retired generic emitter capture slots"
+  },
+  "E12PriorArt": {
+    "receipt": {
+      "path": "evals/receipts/experiments_e10_e12_admission.json",
+      "sha256": "7f5b70ef41b64a8b518fb0129b439390619c64b44413e17743ad1fb7fb3f5544"
+    },
+    "observed": "diagnostic image mutation used high-water scope suffix fills, capacity preserved, compilerAcceptedfalse; not a production source candidate",
+    "distinction": "G64 source-owned per-consumer ownership transfer, not a patched-image repeat or a hard performance ceiling"
+  },
+  "retainedBytes": "NOT_MEASURED; CaptureName holds2strings+2bools, ArenaGlobal scalar handles/text; counts do not imply hundreds of MB, and referenced Arena/arrays may overlap live state",
+  "sourceAnchors": [
+    "bend2/selfhost/js_backend.bend:1379-1395",
+    "bend2/selfhost/backend_ir.bend:188-244",
+    "checkpoints/template_steps_v1.bend:17-18",
+    "bend2/selfhost/scope_lookup.bend:16-17"
+  ]
+}

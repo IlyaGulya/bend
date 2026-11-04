@@ -1,0 +1,588 @@
+{
+  "schemaVersion": 1,
+  "version": "G64R1",
+  "status": "ACTIVE_SELF_STAGE2_69_OWN_CONSUMERS_PASS",
+  "sourceCheckpoint": "5357ae7d",
+  "selfStage2Checkpoint": "ca368900",
+  "image": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/candidate-self-stage2.json.output.mjs",
+    "sha256": "e0582efb222dcc5e81bd23aa180d338db1f63f0660433830e833494659a97585"
+  },
+  "command": [
+    "/usr/bin/env",
+    "PATH=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools:/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/cmux-cli-shims/1AE884FF-4153-438F-922A-7660D416EB20:/Applications/cmux.app/Contents/Resources/bin:/Users/ilyagulya/.antigravity/antigravity/bin:/opt/homebrew/opt/mysql-client/bin:/opt/homebrew/opt/binutils/bin:/Users/ilyagulya/.depot_tools:/opt/homebrew/opt/whois/bin:/Users/ilyagulya/go/bin:/opt/homebrew/opt/curl/bin:/Users/ilyagulya/Library/pnpm:/Users/ilyagulya/.opam/default/bin:/Users/ilyagulya/.bun/bin:/Users/ilyagulya/.local/bin:/Users/ilyagulya/.local/bin:/Users/ilyagulya/fvm/default/bin:/opt/homebrew/opt/ruby/bin:/Users/ilyagulya/.elan/bin:/Library/Frameworks/Python.framework/Versions/3.12/bin:/opt/homebrew/share/google-cloud-sdk/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/pkg/env/global/bin:/opt/X11/bin:/Library/Apple/usr/bin:/Applications/Wireshark.app/Contents/MacOS:/Applications/VMware Fusion.app/Contents/Public:/opt/homebrew/bin:/Users/ilyagulya/.cargo/bin:/Users/ilyagulya/Library/Application Support/JetBrains/Toolbox/scripts:/Users/ilyagulya/.orbstack/bin:/Users/ilyagulya/Library/Android/sdk/platform-tools:/Users/ilyagulya/Library/Android/sdk/build-tools/34.0.0:/Users/ilyagulya/Library/Android/sdk/tools/proguard/bin:/Users/ilyagulya/Library/Android/sdk/emulator:/Users/ilyagulya/Library/Android/sdk/cmdline-tools/latest/bin:/Users/ilyagulya/.spoof-dpi/bin:/Users/ilyagulya/.pub-cache/bin:/Users/ilyagulya/Library/Android/sdk/ndk/26.3.11579264:/Users/ilyagulya/.lmstudio/bin:/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin",
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "/Users/ilyagulya/Projects/My/bend/evals/checker_core_target_gate.ts",
+    "--component=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/candidate-self-stage2.json.output.mjs",
+    "--parser=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/candidate-self-stage2.json.output.mjs",
+    "--report=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/candidate-own-consumers.json"
+  ],
+  "cwd": "/Users/ilyagulya/Projects/My/bend",
+  "report": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/candidate-own-consumers.json",
+    "sha256": "1bb62b124d1e715c1413f63237c3fd230d51a07dd567109bfd5744338482aa95"
+  },
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "workerStackMiB": 256,
+    "parserFuel": 2000000,
+    "maxHeavyChildren": 1
+  },
+  "cases": [
+    {
+      "name": "enum-constant",
+      "passed": true,
+      "status": "PASS",
+      "accepted": true,
+      "checkerTag": "CheckSuccess",
+      "emitterTag": "EmitSuccess",
+      "output": "BitOne{}"
+    },
+    {
+      "name": "affine-identity",
+      "passed": true,
+      "status": "PASS",
+      "accepted": true,
+      "checkerTag": "CheckSuccess",
+      "emitterTag": "EmitSuccess",
+      "output": "BitZero{}"
+    },
+    {
+      "name": "reusable-duplicate",
+      "passed": true,
+      "status": "PASS",
+      "accepted": true,
+      "checkerTag": "CheckSuccess",
+      "emitterTag": "EmitSuccess",
+      "output": "Duo{BitOne{}, BitOne{}}"
+    },
+    {
+      "name": "return-type-mismatch",
+      "passed": true,
+      "status": "PASS",
+      "accepted": false,
+      "checkerTag": "CheckFailure"
+    },
+    {
+      "name": "affine-duplicate",
+      "passed": true,
+      "status": "PASS",
+      "accepted": false,
+      "checkerTag": "CheckFailure"
+    },
+    {
+      "name": "undefined-reference",
+      "passed": true,
+      "status": "PASS",
+      "accepted": false,
+      "checkerTag": "CheckFailure"
+    },
+    {
+      "name": "inherited-reusable-lambda",
+      "passed": true,
+      "status": "PASS",
+      "accepted": true,
+      "checkerTag": "CheckSuccess",
+      "emitterTag": "EmitSuccess",
+      "output": "Duo{BitOne{}, BitOne{}}"
+    },
+    {
+      "name": "promoted-reusable-lambda",
+      "passed": true,
+      "status": "PASS",
+      "accepted": true,
+      "checkerTag": "CheckSuccess",
+      "emitterTag": "EmitSuccess",
+      "output": "Duo{BitZero{}, BitZero{}}"
+    },
+    {
+      "name": "affine-lambda-duplicate",
+      "passed": true,
+      "status": "PASS",
+      "accepted": false,
+      "checkerTag": "CheckFailure"
+    },
+    {
+      "name": "promoted-lambda-lower-kind",
+      "passed": true,
+      "status": "PASS",
+      "accepted": false,
+      "checkerTag": "CheckFailure"
+    },
+    {
+      "name": "recursive-datatype",
+      "passed": true,
+      "status": "PASS",
+      "accepted": true,
+      "checkerTag": "CheckSuccess",
+      "emitterTag": "EmitSuccess",
+      "output": "Link{Stop{}}"
+    },
+    {
+      "name": "self-referential-datatype-kind",
+      "passed": true,
+      "status": "PASS",
+      "accepted": false,
+      "checkerTag": "CheckFailure"
+    },
+    {
+      "name": "single-enum-match-complete",
+      "passed": true,
+      "status": "PASS",
+      "accepted": true,
+      "checkerTag": "CheckSuccess",
+      "emitterTag": "EmitSuccess",
+      "output": "BitOne{}"
+    },
+    {
+      "name": "single-enum-match-incomplete",
+      "passed": true,
+      "status": "PASS",
+      "accepted": false,
+      "checkerTag": "CheckFailure"
+    },
+    {
+      "name": "joint-match-complete",
+      "passed": true,
+      "status": "PASS",
+      "accepted": true,
+      "checkerTag": "CheckSuccess",
+      "emitterTag": "EmitSuccess",
+      "output": "BitOne{}"
+    },
+    {
+      "name": "joint-match-incomplete",
+      "passed": true,
+      "status": "PASS",
+      "accepted": false,
+      "checkerTag": "CheckFailure"
+    },
+    {
+      "name": "nested-field-pattern",
+      "passed": true,
+      "status": "PASS",
+      "accepted": true,
+      "checkerTag": "CheckSuccess",
+      "emitterTag": "EmitSuccess",
+      "output": "BitOne{}"
+    },
+    {
+      "name": "partial-family-application",
+      "passed": true,
+      "status": "PASS",
+      "accepted": true,
+      "checkerTag": "CheckSuccess",
+      "emitterTag": "EmitSuccess",
+      "output": "BitOne{}"
+    },
+    {
+      "name": "checked-template-binder-guard",
+      "passed": true,
+      "status": "PASS",
+      "checkerTag": "CheckSuccess"
+    },
+    {
+      "name": "checked-template-term-guard",
+      "passed": true,
+      "status": "PASS",
+      "checkerTag": "CheckFailure"
+    },
+    {
+      "name": "mutual-datatype-fields",
+      "passed": true,
+      "status": "PASS",
+      "accepted": true,
+      "checkerTag": "CheckSuccess",
+      "emitterTag": "EmitSuccess",
+      "output": "MkA{MkB{AEnd{}}}"
+    },
+    {
+      "name": "forward-index-datatype",
+      "passed": true,
+      "status": "PASS",
+      "accepted": true,
+      "checkerTag": "CheckSuccess",
+      "emitterTag": "EmitSuccess",
+      "output": "MkB{}"
+    },
+    {
+      "name": "mutual-layout-arm-group",
+      "passed": true,
+      "status": "PASS",
+      "accepted": true,
+      "checkerTag": "CheckSuccess",
+      "emitterTag": "EmitSuccess",
+      "output": "LayoutData{LayArm{LayoutWord{}}}"
+    },
+    {
+      "name": "mutual-form-nest-cycle",
+      "passed": true,
+      "status": "PASS",
+      "accepted": true,
+      "checkerTag": "CheckSuccess",
+      "emitterTag": "EmitSuccess",
+      "output": "FillForm{FormArm{Nest{FillWord{}}}}"
+    },
+    {
+      "name": "unknown-forward-datatype",
+      "passed": true,
+      "status": "PASS",
+      "accepted": false,
+      "checkerTag": "CheckFailure"
+    },
+    {
+      "name": "duplicate-datatype-header",
+      "passed": true,
+      "status": "PASS",
+      "accepted": false,
+      "checkerTag": "CheckFailure"
+    },
+    {
+      "name": "ill-kinded-forward-field",
+      "passed": true,
+      "status": "PASS",
+      "accepted": false,
+      "checkerTag": "CheckFailure"
+    },
+    {
+      "name": "covered-one",
+      "passed": true,
+      "status": "PASS",
+      "accepted": true,
+      "checkerTag": "CheckSuccess",
+      "emitterTag": "EmitSuccess",
+      "output": "Pair{BitZero{}, BitZero{}}"
+    },
+    {
+      "name": "covered-many",
+      "passed": true,
+      "status": "PASS",
+      "accepted": true,
+      "checkerTag": "CheckSuccess",
+      "emitterTag": "EmitSuccess",
+      "output": "Pair{BitZero{}, BitZero{}}"
+    },
+    {
+      "name": "covered-affine-duplicate",
+      "passed": true,
+      "status": "PASS",
+      "accepted": false,
+      "checkerTag": "CheckFailure"
+    },
+    {
+      "name": "covered-erased-use",
+      "passed": true,
+      "status": "PASS",
+      "accepted": false,
+      "checkerTag": "CheckFailure"
+    },
+    {
+      "name": "typed-local-reusable",
+      "passed": true,
+      "status": "PASS",
+      "accepted": true,
+      "checkerTag": "CheckSuccess",
+      "emitterTag": "EmitSuccess",
+      "output": "Pair{BitOne{}, BitOne{}}"
+    },
+    {
+      "name": "typed-local-affine-duplicate",
+      "passed": true,
+      "status": "PASS",
+      "accepted": false,
+      "checkerTag": "CheckFailure"
+    },
+    {
+      "name": "typed-local-dependent-scope",
+      "passed": true,
+      "status": "PASS",
+      "accepted": true,
+      "checkerTag": "CheckSuccess",
+      "emitterTag": "EmitSuccess",
+      "output": "BitOne{}"
+    },
+    {
+      "name": "covered-local-outer-affine",
+      "passed": true,
+      "status": "PASS",
+      "accepted": false,
+      "checkerTag": "CheckFailure"
+    },
+    {
+      "name": "covered-local-outer-erased",
+      "passed": true,
+      "status": "PASS",
+      "accepted": false,
+      "checkerTag": "CheckFailure"
+    },
+    {
+      "name": "usage-curried-single",
+      "passed": true,
+      "status": "PASS",
+      "accepted": true,
+      "checkerTag": "CheckSuccess",
+      "emitterTag": "EmitSuccess",
+      "output": "Pair{BitOne{}, BitZero{}}"
+    },
+    {
+      "name": "usage-curried-duplicate",
+      "passed": true,
+      "status": "PASS",
+      "accepted": false,
+      "checkerTag": "CheckFailure"
+    },
+    {
+      "name": "usage-annotation-single",
+      "passed": true,
+      "status": "PASS",
+      "accepted": true,
+      "checkerTag": "CheckSuccess",
+      "emitterTag": "EmitSuccess",
+      "output": "Pair{BitOne{}, BitZero{}}"
+    },
+    {
+      "name": "usage-annotation-duplicate",
+      "passed": true,
+      "status": "PASS",
+      "accepted": false,
+      "checkerTag": "CheckFailure"
+    },
+    {
+      "name": "usage-local-function-single",
+      "passed": true,
+      "status": "PASS",
+      "accepted": true,
+      "checkerTag": "CheckSuccess",
+      "emitterTag": "EmitSuccess",
+      "output": "Pair{BitOne{}, BitZero{}}"
+    },
+    {
+      "name": "usage-local-function-duplicate",
+      "passed": true,
+      "status": "PASS",
+      "accepted": false,
+      "checkerTag": "CheckFailure"
+    },
+    {
+      "name": "usage-local-function-erased",
+      "passed": true,
+      "status": "PASS",
+      "accepted": true,
+      "checkerTag": "CheckSuccess",
+      "emitterTag": "EmitSuccess",
+      "output": "BitZero{}"
+    },
+    {
+      "name": "usage-local-function-dependent",
+      "passed": true,
+      "status": "PASS",
+      "accepted": true,
+      "checkerTag": "CheckSuccess",
+      "emitterTag": "EmitSuccess",
+      "output": "BitOne{}"
+    },
+    {
+      "name": "usage-local-function-dependent-live",
+      "passed": true,
+      "status": "PASS",
+      "accepted": false,
+      "checkerTag": "CheckFailure"
+    },
+    {
+      "name": "usage-g55-lambda-error-before-usage",
+      "passed": true,
+      "status": "PASS",
+      "accepted": false,
+      "checkerTag": "CheckFailure"
+    },
+    {
+      "name": "usage-g55-lambda-body-mismatch-before-usage",
+      "passed": true,
+      "status": "PASS",
+      "accepted": false,
+      "checkerTag": "CheckFailure"
+    },
+    {
+      "name": "usage-g55-pattern-usage-before-undefined",
+      "passed": true,
+      "status": "PASS",
+      "accepted": false,
+      "checkerTag": "CheckFailure"
+    },
+    {
+      "name": "usage-g55-pattern-branch-independent",
+      "passed": true,
+      "status": "PASS",
+      "accepted": true,
+      "checkerTag": "CheckSuccess",
+      "emitterTag": "EmitSuccess",
+      "output": "BitOne{}"
+    },
+    {
+      "name": "usage-g55-body-error-before-final-affinity",
+      "passed": true,
+      "status": "PASS",
+      "accepted": false,
+      "checkerTag": "CheckFailure"
+    },
+    {
+      "name": "usage-g55-erased-application-argument-plus-live",
+      "passed": true,
+      "status": "PASS",
+      "accepted": true,
+      "checkerTag": "CheckSuccess",
+      "emitterTag": "EmitSuccess",
+      "output": "Pair{BitZero{}, BitOne{}}"
+    },
+    {
+      "name": "usage-g55-erased-argument-still-typechecked",
+      "passed": true,
+      "status": "PASS",
+      "accepted": false,
+      "checkerTag": "CheckFailure"
+    },
+    {
+      "name": "usage-g55-erased-constructor-field-plus-live",
+      "passed": true,
+      "status": "PASS",
+      "accepted": true,
+      "checkerTag": "CheckSuccess",
+      "emitterTag": "EmitSuccess",
+      "output": "BitOne{}"
+    },
+    {
+      "name": "usage-g55-beta-ignored-argument",
+      "passed": true,
+      "status": "PASS",
+      "accepted": false,
+      "checkerTag": "CheckFailure"
+    },
+    {
+      "name": "usage-g55-early-local-undefined-after-duplicate-typed-value",
+      "passed": true,
+      "status": "PASS",
+      "accepted": false,
+      "checkerTag": "CheckFailure"
+    },
+    {
+      "name": "usage-g55-early-local-undefined-before-duplicate-typed-value",
+      "passed": true,
+      "status": "PASS",
+      "accepted": false,
+      "checkerTag": "CheckFailure"
+    },
+    {
+      "name": "usage-g55-early-local-erased-versus-body-error-typed-value",
+      "passed": true,
+      "status": "PASS",
+      "accepted": false,
+      "checkerTag": "CheckFailure"
+    },
+    {
+      "name": "usage-g55-termination-before-final-duplicate-call",
+      "passed": true,
+      "status": "PASS",
+      "accepted": false,
+      "checkerTag": "CheckFailure"
+    },
+    {
+      "name": "usage-g55-source-lexical-erased-dependent-local-typed-flag",
+      "passed": true,
+      "status": "PASS",
+      "accepted": false,
+      "checkerTag": "CheckFailure"
+    },
+    {
+      "name": "usage-g55-source-lexical-live-dependent-local-typed-flag",
+      "passed": true,
+      "status": "PASS",
+      "accepted": true,
+      "checkerTag": "CheckSuccess",
+      "emitterTag": "EmitSuccess",
+      "output": "BitZero{}"
+    },
+    {
+      "name": "usage-g55-nested-alternative-max",
+      "passed": true,
+      "status": "PASS",
+      "accepted": true,
+      "checkerTag": "CheckSuccess",
+      "emitterTag": "EmitSuccess",
+      "output": "BitOne{}"
+    },
+    {
+      "name": "usage-g55-nested-alternative-one-bad-row",
+      "passed": true,
+      "status": "PASS",
+      "accepted": false,
+      "checkerTag": "CheckFailure"
+    },
+    {
+      "name": "usage-g55-local-shadowed-levels",
+      "passed": true,
+      "status": "PASS",
+      "accepted": true,
+      "checkerTag": "CheckSuccess",
+      "emitterTag": "EmitSuccess",
+      "output": "Pair{BitZero{}, BitZero{}}"
+    },
+    {
+      "name": "usage-g55-sequential-local-values-duplicate-outer",
+      "passed": true,
+      "status": "PASS",
+      "accepted": false,
+      "checkerTag": "CheckFailure"
+    },
+    {
+      "name": "usage-g55-do-let-affine-single",
+      "passed": true,
+      "status": "PASS",
+      "accepted": true,
+      "checkerTag": "CheckSuccess",
+      "emitterTag": "EmitSuccess",
+      "output": "Pair{BitOne{}, BitZero{}}"
+    },
+    {
+      "name": "usage-g55-do-let-quantity-before-value-error",
+      "passed": true,
+      "status": "PASS",
+      "accepted": false,
+      "checkerTag": "CheckFailure"
+    },
+    {
+      "name": "usage-g55-do-let-quantity-before-body-error",
+      "passed": true,
+      "status": "PASS",
+      "accepted": false,
+      "checkerTag": "CheckFailure"
+    },
+    {
+      "name": "usage-g55-do-let-value-type-error",
+      "passed": true,
+      "status": "PASS",
+      "accepted": false,
+      "checkerTag": "CheckFailure"
+    },
+    {
+      "name": "usage-g55-do-let-many",
+      "passed": true,
+      "status": "PASS",
+      "accepted": true,
+      "checkerTag": "CheckSuccess",
+      "emitterTag": "EmitSuccess",
+      "output": "Pair{BitOne{}, BitOne{}}"
+    }
+  ],
+  "earlierDefaultNodePrograms": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/repository/checkpoints/local2039g64-r1-early-preflight.json",
+    "sha256": "f1b3178fd2be14775459fa1a5764efd7b29f4b6ad56a97ef3d88373709595b90"
+  },
+  "actualCaptureWitness": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/repository/checkpoints/local2039g64-r1-lifetime.json",
+    "sha256": "6c0080f72e2b6dc17b6e0714ef79a03b49a4e83305cea8180d2891ae54f6b013"
+  },
+  "scope": "Own active-runtime parser/checker/emitter semantically exercised; no C-runtime, strict12 or product acceptance."
+}

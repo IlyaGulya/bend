@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "version": "G64R2",
+  "status": "SOURCE_READY_NOT_RUN",
+  "protocolCheckpoint": "27c1f1a4",
+  "checker": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/repository/checkpoints/checker_core_steps_v1.bend",
+    "sha256": "e038ed64d06bc658ba7b43a1cca04abcd9586dc88a8260568c6b24993cdd50b5"
+  },
+  "unchangedR1Emitter": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/repository/checkpoints/emitter_steps_v1.bend",
+    "sha256": "934534b95920cf166138c47fe1ddbb79eab4d7dc1920a16725bcca17efb5a192"
+  },
+  "unchangedR1CanonicalOwner": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/repository/bend2/selfhost/js_backend.bend",
+    "sha256": "ef7e3104292a9b0995c73d3fbe08111d7bf29a207de431983b252dff8d3d6c81"
+  },
+  "change": "one flat fuel/progress/stack recursive state function; public wrapper retains original zero-fuel return; no hot-loop RunState construction except zero-fuel yield, no pop/advance aliases",
+  "priorArt": "G58B typed transport re-evaluated with G63 flat case selection and R1 capture lifetime runtime; not an inherited speedup claim"
+}

@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 1,
+  "version": "G64R1",
+  "status": "ACTUAL_SELF_STAGE2_CONSUMED_ROOT_RETIREMENT_OBSERVED",
+  "sourceCheckpoint": "5357ae7d",
+  "candidateSelfStage2Checkpoint": "ca368900",
+  "baseline": {
+    "report": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/g63-dead-slot-probe.json",
+      "sha256": "266a78ed85cfb26cadafef8f6f875ac86037c99b9d4e9205a2543fdc9e9bad88"
+    },
+    "state": {
+      "sp": 3,
+      "ksp": 1,
+      "capacity": 7083,
+      "defined": 7083,
+      "deadObjects": 7044,
+      "deadFunctions": 0,
+      "liveObjects": 2,
+      "deadObjectTags": {
+        "../bend2/selfhost/checker_arena.Arena": 1,
+        "Array": 10,
+        "MTip": 2,
+        "MNode": 17,
+        "MLeaf": 11,
+        "../bend2/selfhost/scope_lookup.ArenaGlobal": 1171,
+        "template_steps_v1.CaptureName": 5832
+      },
+      "tailRest": null,
+      "tailUnaryDefined": true,
+      "tailArgsDefined": 0,
+      "kFnDormant": 0
+    }
+  },
+  "candidate": {
+    "report": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/candidate-dead-slot-probe.json",
+      "sha256": "ce29f52622b3263371cf341536c3db72cd851f3be084e58d7daa2c0cc7e8e33a"
+    },
+    "request": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/candidate-dead-slot-probe-request.json",
+      "sha256": "574b7142fc262d12fb71205557249273a1925302b1aa3d086ce5c68534e30777"
+    },
+    "command": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+      "--memory-mib=8192",
+      "--rss-mib=8192",
+      "--poll-ms=10",
+      "--timeout-ms=600000",
+      "--",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "--experimental-strip-types",
+      "--max-old-space-size=6144",
+      "--max-semi-space-size=128",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/repository/evals/continuation_lifetime_probe.mjs",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/candidate-dead-slot-probe-request.json",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/candidate-dead-slot-probe.json"
+    ],
+    "cwd": "/Users/ilyagulya/Projects/My/bend",
+    "image": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/candidate-self-stage2.json.output.mjs",
+      "sha256": "e0582efb222dcc5e81bd23aa180d338db1f63f0660433830e833494659a97585"
+    },
+    "selfStage2Report": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/candidate-self-stage2.json",
+      "sha256": "18fba70c87cec4b1f5d41d49658dc207ff5d2a7446b58fdfe3da0b34b1275d73"
+    },
+    "state": {
+      "sp": 3,
+      "ksp": 1,
+      "capacity": 7083,
+      "defined": 3,
+      "deadObjects": 0,
+      "deadFunctions": 0,
+      "liveObjects": 2,
+      "deadObjectTags": {},
+      "tailRest": null,
+      "tailUnaryDefined": true,
+      "tailArgsDefined": 0,
+      "kFnDormant": 0
+    }
+  },
+  "samePrefix": {
+    "modules": 17,
+    "sourceDeclarations": 2954,
+    "step": 250000
+  },
+  "diagnosticOnly": true,
+  "performanceEvidence": false,
+  "lineageAuthority": "Actual observed image SHA and pinned self-stage2 report; probe request inherited unused G63 producer/scope description from diagnostic template, not used as candidate production authority.",
+  "interpretation": "Consumed roots are retired without reducing buffer length. Object counts are not retained-byte savings and debugger process memory/timing is excluded from performance. Exception/skipped-region residues not universally eliminated."
+}

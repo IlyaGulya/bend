@@ -1,0 +1,118 @@
+{
+  "schemaVersion": 1,
+  "version": "G64R1",
+  "role": "B_G63",
+  "status": "GENUINE_OWN_SELF_STAGE2_PASS_BYTE_EQUAL_NATIVE_STAGE0",
+  "command": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+    "js",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/g63-baseline-self-stage2-request.json",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/g63-baseline-self-stage2.json"
+  ],
+  "cwd": "/Users/ilyagulya/Projects/My/bend",
+  "request": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/g63-baseline-self-stage2-request.json",
+    "sha256": "0ac61fde52ec07176bac54c52795679597e157570b7bd4819b631f1cfacd135e"
+  },
+  "report": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/g63-baseline-self-stage2.json",
+    "sha256": "e4bd8d25181c4fe988db343c1b751a4882871dd932c8bdfbb48e2fd5389fa34e"
+  },
+  "image": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/g63-baseline-self-stage2.json.output.mjs",
+    "sha256": "65a07432de9482e67a71a70d1a2696474c8aca08a75e4e7dfe13fa6c006df045"
+  },
+  "nativeImage": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g63-contiguous-tick-62txq7en/candidate-native-stage0.json.mjs",
+    "sha256": "65a07432de9482e67a71a70d1a2696474c8aca08a75e4e7dfe13fa6c006df045"
+  },
+  "byteFixedpoint": true,
+  "stepCounts": {
+    "expand": 1069350,
+    "check": 10389473,
+    "emit": 1284318
+  },
+  "sourceDeclarations": 13009,
+  "guardian": {
+    "status": "PASS",
+    "reason": "command_exit",
+    "elapsedMs": 404886,
+    "peakRssBytes": 1911193600,
+    "peakFootprintBytes": 3125896968,
+    "timeoutMs": 600000,
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592,
+    "ownedTreeStopped": true,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793782742858-935a3a88d18d2e81.json"
+  },
+  "phases": [
+    {
+      "phase": "startup",
+      "elapsedMs": 721.5564589999999,
+      "userCpuMs": 571.141,
+      "systemCpuMs": 79.721,
+      "memoryEnd": {
+        "rss": 519880704,
+        "heapTotal": 94289920,
+        "heapUsed": 81990016,
+        "external": 42252454,
+        "arrayBuffers": 31784402
+      }
+    },
+    {
+      "phase": "load-parse",
+      "elapsedMs": 11740.10825,
+      "userCpuMs": 13849.784,
+      "systemCpuMs": 507.998,
+      "memoryEnd": {
+        "rss": 1059553280,
+        "heapTotal": 784482304,
+        "heapUsed": 522453120,
+        "external": 10487433,
+        "arrayBuffers": 25039
+      }
+    },
+    {
+      "phase": "expand",
+      "elapsedMs": 7630.752958000001,
+      "userCpuMs": 7761.59,
+      "systemCpuMs": 120.903,
+      "memoryEnd": {
+        "rss": 1106362368,
+        "heapTotal": 838746112,
+        "heapUsed": 584580736,
+        "external": 10487433,
+        "arrayBuffers": 25039
+      }
+    },
+    {
+      "phase": "check",
+      "elapsedMs": 359548.122625,
+      "userCpuMs": 319596.518,
+      "systemCpuMs": 8096.678,
+      "memoryEnd": {
+        "rss": 1248280576,
+        "heapTotal": 2183774208,
+        "heapUsed": 1969401560,
+        "external": 10486368,
+        "arrayBuffers": 25039
+      }
+    },
+    {
+      "phase": "emit",
+      "elapsedMs": 24228.938250000007,
+      "userCpuMs": 26358.264,
+      "systemCpuMs": 702.549,
+      "memoryEnd": {
+        "rss": 1479950336,
+        "heapTotal": 2599436288,
+        "heapUsed": 2426320136,
+        "external": 10486368,
+        "arrayBuffers": 25039
+      }
+    }
+  ],
+  "scope": "Actual unchanged G63 self parsing/checking/library emission. These untimed setup phases are not a paired performance observation."
+}

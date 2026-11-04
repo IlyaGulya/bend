@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "version": "G64D0",
+  "status": "REAL_G63_CAPTURE_HIGHWATER_RETENTION_OBSERVED",
+  "sourceCheckpoint": "65b1c9c9",
+  "command": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+    "--memory-mib=8192",
+    "--rss-mib=8192",
+    "--poll-ms=10",
+    "--timeout-ms=600000",
+    "--",
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+    "--experimental-strip-types",
+    "--max-old-space-size=6144",
+    "--max-semi-space-size=128",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/repository/evals/continuation_lifetime_probe.mjs",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/g63-dead-slot-probe-request.json",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/g63-dead-slot-probe.json"
+  ],
+  "cwd": "/Users/ilyagulya/Projects/My/bend",
+  "report": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/g63-dead-slot-probe.json",
+    "sha256": "266a78ed85cfb26cadafef8f6f875ac86037c99b9d4e9205a2543fdc9e9bad88"
+  },
+  "snapshot": {
+    "location": {
+      "scriptId": "209",
+      "lineNumber": 19,
+      "columnNumber": 53
+    },
+    "functionName": "run_base",
+    "privateState": {
+      "sp": 3,
+      "ksp": 1,
+      "capacity": 7083,
+      "defined": 7083,
+      "deadObjects": 7044,
+      "deadFunctions": 0,
+      "liveObjects": 2,
+      "deadObjectTags": {
+        "../bend2/selfhost/checker_arena.Arena": 1,
+        "Array": 10,
+        "MTip": 2,
+        "MNode": 17,
+        "MLeaf": 11,
+        "../bend2/selfhost/scope_lookup.ArenaGlobal": 1171,
+        "template_steps_v1.CaptureName": 5832
+      },
+      "tailRest": null,
+      "tailUnaryDefined": true,
+      "tailArgsDefined": 0,
+      "kFnDormant": 0
+    },
+    "processMemory": {
+      "rss": 1738276864,
+      "heapTotal": 864206848,
+      "heapUsed": 683229456,
+      "external": 3012065,
+      "arrayBuffers": 24843
+    }
+  },
+  "scope": "At a real checker prefix step250000, sp3 leaves7080 physical slots outside active prefix;7044 hold object references from earlier expansion/checking. This proves retained references, not retained byte counts or causal explanation of all G63 footprint growth. Inspector changes optimization, so its time/memory are not performance samples.",
+  "performanceEvidence": false,
+  "sourceProbeNamespace": "Matches unchanged throughput namespace rule, verified literal .bend suffix regexp"
+}

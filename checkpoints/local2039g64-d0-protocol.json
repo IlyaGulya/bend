@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "version": "G64D0",
+  "status": "PROSPECTIVE_DIAGNOSTIC_NOT_RUN",
+  "baselineMain": "08dbc079",
+  "compilerSourceCheckpoint": "G63R1 3c354060, unchanged image65a07432de9482e67a71a70d1a2696474c8aca08a75e4e7dfe13fa6c006df045",
+  "goal": "Find dead references in dense private capture/tail buffers before selecting a DOD memory change; preserve G63 CPU benefit.",
+  "probeSource": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/repository/evals/continuation_lifetime_probe.mjs",
+    "sha256": "c9d0029c170a8b2a5a9c77d56e0ce8fc9a80dee65467581307b72699c9059379"
+  },
+  "request": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/g63-dead-slot-probe-request.json",
+    "sha256": "d77178ddde6671c87fa25e3122568d0eab8dbf8cdc8351ca7db6548989ca0a0a"
+  },
+  "command": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+    "--memory-mib=8192",
+    "--rss-mib=8192",
+    "--poll-ms=10",
+    "--timeout-ms=600000",
+    "--",
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+    "--experimental-strip-types",
+    "--max-old-space-size=6144",
+    "--max-semi-space-size=128",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/repository/evals/continuation_lifetime_probe.mjs",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/g63-dead-slot-probe-request.json",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/g63-dead-slot-probe.json"
+  ],
+  "cwd": "/Users/ilyagulya/Projects/My/bend",
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000,
+    "workerStackMiB": 256,
+    "oldGenerationMiB": 6144,
+    "youngGenerationMiB": 128,
+    "parserFuelPerModule": 8000000,
+    "quantum": 64
+  },
+  "scope": "Non-replacing observer in existing opaque runCheckerSteps.onStep plus one Inspector pause; deliberately stopped at250001 chunks. Diagnostic only, no performance or full-check claim. No forced GC or image/source-runtime mutation.",
+  "snapshot": "private array length, active prefix, stale object/function counts and tail scratch registers; not exact retained bytes",
+  "priorG63": "Observed peak footprint growth and phase-end V8 heap variation, not proof of a causal memory regression"
+}

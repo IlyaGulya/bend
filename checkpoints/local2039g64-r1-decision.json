@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "version": "G64R1",
+  "status": "REJECTED_AS_COMPLETE_CPU_AND_MEMORY_SOLUTION",
+  "sourceCheckpoint": "5357ae7d",
+  "protocolCheckpoint": "27cb847f",
+  "costGate": {
+    "cpuCAatMostPoint97": false,
+    "cpuCBatMost1Point02": false,
+    "everyCpuCAfaster": false,
+    "wallCAatMost1": false,
+    "medianFootCAatMost1": true,
+    "geometricFootCBatMostPoint95": false
+  },
+  "costGatePassed": false,
+  "causalSuccess": "At same real compiler prefix dead objects7044->0, dense capture capacity7083 retained. No retained-byte claim.",
+  "observed": {
+    "cpuC_overG63": {
+      "n": 3,
+      "logRatios": [
+        0.022698851328048306,
+        0.0337682878547143,
+        0.01788926094175375
+      ],
+      "meanLog": 0.02478546670817212,
+      "varianceLog": 6.630134673405831e-05,
+      "geometricMeanRatio": 1.0250951798895995,
+      "ci95": [
+        1.0045686211461375,
+        1.0460411620601722
+      ],
+      "baselineMedian": 69309.136,
+      "variantMedian": 70560.182,
+      "direction": "inconclusive"
+    },
+    "footprintC_overG63": {
+      "n": 3,
+      "logRatios": [
+        -0.03456110929416625,
+        -0.0050431621580255695,
+        -0.01697101576680631
+      ],
+      "meanLog": -0.018858429072999377,
+      "varianceLog": 0.000220499047524295,
+      "geometricMeanRatio": 0.9813182785476956,
+      "ci95": [
+        0.9457794161359729,
+        1.0181925588380178
+      ],
+      "baselineMedian": 1130027144,
+      "variantMedian": 1091639336,
+      "direction": "inconclusive"
+    },
+    "medianFootprintC_overG63": 0.9660293045137683,
+    "cpuC_overBaseline": {
+      "n": 3,
+      "logRatios": [
+        0.008003617836344639,
+        0.03420463401375344,
+        0.0417995447127012
+      ],
+      "meanLog": 0.028002598854266425,
+      "varianceLog": 0.0003143900984476448,
+      "geometricMeanRatio": 1.02839835707541,
+      "ci95": [
+        0.984084247101219,
+        1.074707967280998
+      ],
+      "baselineMedian": 67671.59000000001,
+      "variantMedian": 70560.182,
+      "direction": "inconclusive"
+    }
+  },
+  "conditionalFull": "NOT_RUN_NOT_EARNED_6_CELLS",
+  "candidateStage3ByteFixedpoint": "NOT_RUN_NOT_EARNED_NOT_FAILED",
+  "interpretation": "Sound consumer-slot retirement has observed CPU cost and small selected footprint effect. G63 original5.9% CPU point estimate is not assumed when judging fresh A/B/C; no pooling of old timings. Wide footprint intervals do not prove a causal byte saving.",
+  "sourceReuse": "Retirement remains a source-controlled building block for next separately preregistered variant, not an accepted compiler or retroactively passed G63/G64R1.",
+  "acceptedCompiler": "G24R12_UNCHANGED"
+}

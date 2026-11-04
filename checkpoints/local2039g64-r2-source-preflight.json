@@ -1,0 +1,141 @@
+{
+  "schemaVersion": 1,
+  "version": "G64R2",
+  "status": "SOURCE_AND_DEFAULT_NODE_49_OBSERVATIONS_PASS",
+  "sourceCheckpoint": "88ea4b7d",
+  "executions": [
+    {
+      "name": "r2-source-scheduler49",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+        "--memory-mib=8192",
+        "--rss-mib=8192",
+        "--poll-ms=10",
+        "--timeout-ms=120000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/repository/bend2/main.ts",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/repository/checkpoints/local2039g63-scheduler-input/main.bend"
+      ],
+      "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/repository",
+      "exitCode": 0,
+      "stdout": "4294967295\n37\n0\n4294967295\n1\n31\n4294967295\n32\n32\n4294967295\n48\n4294967295\n72\n2\n1\n400\n401\n101\n100\n0\n200\n101\n231\n101\n100\n48\n300\n101\n331\n101\n100\n72\n101\n100\n1\n1\n1\n37\n37\n37\n37\n300\n101\n101\n100\n41\n101\n41\n41\n",
+      "guardians": [
+        {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 1778,
+          "peakRssBytes": 1074708480,
+          "peakFootprintBytes": 997901752,
+          "timeoutMs": 120000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793785512631-2b2ca79d4ae9b673.json"
+        }
+      ],
+      "expectedStdout": "4294967295\n37\n0\n4294967295\n1\n31\n4294967295\n32\n32\n4294967295\n48\n4294967295\n72\n2\n1\n400\n401\n101\n100\n0\n200\n101\n231\n101\n100\n48\n300\n101\n331\n101\n100\n72\n101\n100\n1\n1\n1\n37\n37\n37\n37\n300\n101\n101\n100\n41\n101\n41\n41\n",
+      "passed": true
+    },
+    {
+      "name": "r2-source-scheduler49-js-emit",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+        "--memory-mib=8192",
+        "--rss-mib=8192",
+        "--poll-ms=10",
+        "--timeout-ms=120000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/repository/bend2/main.ts",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/repository/checkpoints/local2039g63-scheduler-input/main.bend",
+        "-o",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/r2-source-scheduler49.js"
+      ],
+      "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/repository",
+      "exitCode": 0,
+      "stdout": "",
+      "guardians": [
+        {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 1837,
+          "peakRssBytes": 1074790400,
+          "peakFootprintBytes": 991004088,
+          "timeoutMs": 120000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793785514468-ccec9602f83680ff.json"
+        }
+      ],
+      "expectedStdout": null,
+      "passed": true
+    },
+    {
+      "name": "r2-source-scheduler49-js-run",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+        "--memory-mib=8192",
+        "--rss-mib=8192",
+        "--poll-ms=10",
+        "--timeout-ms=120000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/r2-source-scheduler49.js"
+      ],
+      "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/repository",
+      "exitCode": 0,
+      "stdout": "4294967295\n37\n0\n4294967295\n1\n31\n4294967295\n32\n32\n4294967295\n48\n4294967295\n72\n2\n1\n400\n401\n101\n100\n0\n200\n101\n231\n101\n100\n48\n300\n101\n331\n101\n100\n72\n101\n100\n1\n1\n1\n37\n37\n37\n37\n300\n101\n101\n100\n41\n101\n41\n41\n",
+      "guardians": [
+        {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 185,
+          "peakRssBytes": 73875456,
+          "peakFootprintBytes": 43714384,
+          "timeoutMs": 120000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793785516366-10a1b39606c0a4fb.json"
+        }
+      ],
+      "expectedStdout": "4294967295\n37\n0\n4294967295\n1\n31\n4294967295\n32\n32\n4294967295\n48\n4294967295\n72\n2\n1\n400\n401\n101\n100\n0\n200\n101\n231\n101\n100\n48\n300\n101\n331\n101\n100\n72\n101\n100\n1\n1\n1\n37\n37\n37\n37\n300\n101\n101\n100\n41\n101\n41\n41\n",
+      "passed": true
+    }
+  ],
+  "expectedStdout": "4294967295\n37\n0\n4294967295\n1\n31\n4294967295\n32\n32\n4294967295\n48\n4294967295\n72\n2\n1\n400\n401\n101\n100\n0\n200\n101\n231\n101\n100\n48\n300\n101\n331\n101\n100\n72\n101\n100\n1\n1\n1\n37\n37\n37\n37\n300\n101\n101\n100\n41\n101\n41\n41\n",
+  "fixture": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/repository/checkpoints/local2039g63-scheduler-input/main.bend",
+    "sha256": "e207571b960d6bcf9ad1f9e19adbd8825ea7b6a875400776f9450bff041d5cd2"
+  },
+  "freezeCommand": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/repository/evals/native_seed_corpus.ts",
+    "--root=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/repository/checkpoints/local2039g49-compiler-root.bend",
+    "--out=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/r2-source.corpus.json",
+    "--target=js"
+  ],
+  "manifest": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/r2-source.corpus.json",
+    "sha256": "0be4ab8fa1fb540b1e3bda0a37f9605055e3cafcc729abd8965f2a364e02d68c"
+  },
+  "deltaFromR1": [
+    {
+      "path": "checkpoints/checker_core_steps_v1.bend",
+      "R1": "995e0a9becf499e4cd03154e7a427bde79c906b03576c680727c6c45054fb6b5",
+      "R2": "e038ed64d06bc658ba7b43a1cca04abcd9586dc88a8260568c6b24993cdd50b5"
+    }
+  ],
+  "producerScope": "ordinary source/TS-emitted JS proof of source semantics, not yet the new native-seeded compiler image"
+}

@@ -1,0 +1,132 @@
+{
+  "schemaVersion": 1,
+  "version": "G64R2",
+  "status": "ACTUAL_SOURCE_GENERATION_PASS_NEW_ALGORITHM_ACTIVE",
+  "sourceCheckpoint": "88ea4b7d",
+  "sourcePreflightCheckpoint": "2371492d",
+  "command": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+    "js",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/r2-source-generation-request.json",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/r2-source-generation.json"
+  ],
+  "cwd": "/Users/ilyagulya/Projects/My/bend",
+  "request": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/r2-source-generation-request.json",
+    "sha256": "e2ae845371141b8919de9b4894e6da2a4bb5abf49677d00a37308211316c2f57"
+  },
+  "report": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/r2-source-generation.json",
+    "sha256": "594dbf3d9e4ab2104f1873ac0cf49617685b2d27cfd359ac9c800a6c7fd70358"
+  },
+  "actualProducerImage": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/candidate-self-stage2.json.output.mjs",
+    "sha256": "e0582efb222dcc5e81bd23aa180d338db1f63f0660433830e833494659a97585"
+  },
+  "actualProducerReport": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/candidate-self-stage2.json",
+    "sha256": "18fba70c87cec4b1f5d41d49658dc207ff5d2a7446b58fdfe3da0b34b1275d73"
+  },
+  "nativeAncestorReceipt": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/candidate-native-stage0.json",
+    "sha256": "16cb0a1cc09082b8f25e448668cd2bdb4196d270741888996930f1040bdb3e48"
+  },
+  "image": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/r2-source-generation.json.output.mjs",
+    "sha256": "df3340236dd8eee0bb01b42b562f59f212ed5912eb08362972b905f28fa8cee8"
+  },
+  "sourceManifest": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/r2-source.corpus.json",
+    "sha256": "0be4ab8fa1fb540b1e3bda0a37f9605055e3cafcc729abd8965f2a364e02d68c"
+  },
+  "stepCounts": {
+    "expand": 1069404,
+    "check": 10392963,
+    "emit": 1284284
+  },
+  "sourceDeclarations": 13010,
+  "guardian": {
+    "status": "PASS",
+    "reason": "command_exit",
+    "elapsedMs": 323257,
+    "peakRssBytes": 2316189696,
+    "peakFootprintBytes": 2888920704,
+    "timeoutMs": 600000,
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592,
+    "ownedTreeStopped": true,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793785605695-45635e76a767ddff.json"
+  },
+  "phases": [
+    {
+      "phase": "startup",
+      "elapsedMs": 672.4495,
+      "userCpuMs": 619.475,
+      "systemCpuMs": 92.384,
+      "memoryEnd": {
+        "rss": 512376832,
+        "heapTotal": 96550912,
+        "heapUsed": 83656416,
+        "external": 42155365,
+        "arrayBuffers": 31687313
+      }
+    },
+    {
+      "phase": "load-parse",
+      "elapsedMs": 11311.961125,
+      "userCpuMs": 13073.786,
+      "systemCpuMs": 514.836,
+      "memoryEnd": {
+        "rss": 1206697984,
+        "heapTotal": 1074479104,
+        "heapUsed": 808273696,
+        "external": 10493131,
+        "arrayBuffers": 25039
+      }
+    },
+    {
+      "phase": "expand",
+      "elapsedMs": 6968.814874999998,
+      "userCpuMs": 7700.433,
+      "systemCpuMs": 129.033,
+      "memoryEnd": {
+        "rss": 1260535808,
+        "heapTotal": 1227046912,
+        "heapUsed": 1005722176,
+        "external": 10493131,
+        "arrayBuffers": 25039
+      }
+    },
+    {
+      "phase": "check",
+      "elapsedMs": 284141.893792,
+      "userCpuMs": 291050.943,
+      "systemCpuMs": 5023.384,
+      "memoryEnd": {
+        "rss": 1394081792,
+        "heapTotal": 2003173376,
+        "heapUsed": 1746253144,
+        "external": 10487506,
+        "arrayBuffers": 25039
+      }
+    },
+    {
+      "phase": "emit",
+      "elapsedMs": 19290.760542000004,
+      "userCpuMs": 22899.054,
+      "systemCpuMs": 497.983,
+      "memoryEnd": {
+        "rss": 1968848896,
+        "heapTotal": 2350252032,
+        "heapUsed": 2057022704,
+        "external": 10487506,
+        "arrayBuffers": 25039
+      }
+    }
+  ],
+  "directCNativeProduced": false,
+  "byteFixedpoint": "CONDITIONAL_NOT_RUN",
+  "scope": "All-body own-source parse/expand/check/library emission by the existing active R1 compiler. New source algorithm active, runtime/emitter unchanged; no need rebuild native seed. Setup time/memory not paired performance evidence."
+}

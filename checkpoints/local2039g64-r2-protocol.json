@@ -1,0 +1,203 @@
+{
+  "schemaVersion": 1,
+  "version": "G64R2",
+  "status": "PROSPECTIVE_NOT_RUN",
+  "priorVersion": "G64R1 explicitly rejected, source5357ae7d; causal retirement retained but no performance acceptance",
+  "goal": "Preserve G63 CPU benefit while reducing memory, applying data-oriented buffer lifetime/reuse rather than tuning GC or shrinking workload.",
+  "sourceScope": {
+    "compilerDeltaFromR1": [
+      "checkpoints/checker_core_steps_v1.bend"
+    ],
+    "emitterAndRuntime": "exact R1 consumed-capture retirement unchanged",
+    "experimentOnly": true,
+    "canonicalGeneratorClaim": false
+  },
+  "mechanism": {
+    "hotData": "fuel, progress and heterogeneous stack passed separately to one self-recursive checker_chunk_state; no per-tick RunState aggregate",
+    "publicBoundary": "checker_chunk wrapper returns original Run at fuel0 and reconstructs exactly observable yielded/completed Runs; ABI13 and quantum64 unchanged",
+    "controlFlow": "flat match fuel/progress/stack, progress and stack decoded once per arm; no nested progress-match helper",
+    "sourceOwnership": "each affine progress/stack/continuation argument transferred once, one predecessor fuel per original transition",
+    "notNovelPriorArt": "re-evaluates G58B transport idea but preserves G63 flat contiguous case selection, no retained advance/pop and current matched emitter/runtime; not reusing G58 performance numbers"
+  },
+  "production": {
+    "actualProducerImage": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/candidate-self-stage2.json.output.mjs",
+      "sha256": "e0582efb222dcc5e81bd23aa180d338db1f63f0660433830e833494659a97585"
+    },
+    "actualProducerReport": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/candidate-self-stage2.json",
+      "sha256": "18fba70c87cec4b1f5d41d49658dc207ff5d2a7446b58fdfe3da0b34b1275d73"
+    },
+    "nativeAncestorReceipt": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/candidate-native-stage0.json",
+      "sha256": "16cb0a1cc09082b8f25e448668cd2bdb4196d270741888996930f1040bdb3e48"
+    },
+    "actualStage": "R1 active self-stage2 own parses/checks/emits new R2 source once; runtime unchanged so resulting R2 source algorithm is already active. Not mislabelled direct native-stage0.",
+    "baselineImages": "reuse actual A/B own self-stage2 byte-fixedpoint images, never old timing observations",
+    "proof": "source all-body check by actual preceding native-seeded compiler; no generated image patch, AST replay, host compiler replacement or weakened auth"
+  },
+  "correctness": {
+    "earlySource": "unchanged49literal scheduler observations under ordinary source and emitted JS, new flat state loop must typecheck and preserve fuel boundaries before own production",
+    "ownConsumers": 69,
+    "defaultNodePrograms": [
+      {
+        "source": "tests/compile/js_split_capture_chain.bend",
+        "stdout": "206\n45\n32\n24\n",
+        "sourceRef": {
+          "path": "tests/compile/js_split_capture_chain.bend",
+          "sha256": "b1c34e1766f5d8aad4bb6ca31593c82dc16b893ebfdaeef5800ad5bd1bab4327"
+        }
+      },
+      {
+        "source": "tests/compile/js_multi_reentrant.bend",
+        "stdout": "10109\n76\n",
+        "sourceRef": {
+          "path": "tests/compile/js_multi_reentrant.bend",
+          "sha256": "28b72182afd669d46528d8361d5b1921cb721a9c70c4ab6f3d6b169a4ffdf3c6"
+        }
+      },
+      {
+        "source": "tests/compile/js_scalar_region_tail.bend",
+        "stdout": "13\n5\n22\n",
+        "sourceRef": {
+          "path": "tests/compile/js_scalar_region_tail.bend",
+          "sha256": "1fd5fcf1bc4999461d936b9b6efec42119054c6e9de1043afbb81fd2636bd45a"
+        }
+      },
+      {
+        "source": "tests/compile/js_closure_host_depth.bend",
+        "stdout": "20000\n",
+        "sourceRef": {
+          "path": "tests/compile/js_closure_host_depth.bend",
+          "sha256": "0870401ad5950774c6d28090e0803f58c151e546dc09de4ad70c19702e6b3222"
+        }
+      },
+      {
+        "source": "evals/repro_js_non_tail_stack.bend",
+        "stdout": "60000\n20000\n40000\n",
+        "sourceRef": {
+          "path": "evals/repro_js_non_tail_stack.bend",
+          "sha256": "84f472df74bcec4eb38a7b4405a14d1dbe1771fe9af2223900045ad9c6e29b29"
+        }
+      }
+    ],
+    "workCounts": {
+      "modules": 17,
+      "declarations": 2954,
+      "expand": 263032,
+      "check": 1975761
+    },
+    "captureWitness": "same no-GC Inspector prefix on actual produced R2 image, no performance interpretation",
+    "selfByteFixedpoint": "conditional actual next own source emission must byte-match R2 image"
+  },
+  "performance": {
+    "selectedManifest": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/main-complete.corpus.json",
+      "sha256": "1a269e15bf70257b019ab572c003b6eb130b4e3f63ad507783525e28d307b0e4"
+    },
+    "fullManifest": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/full-frozen.corpus.json",
+      "sha256": "60bf820e76a9c336e58c848eec6a40b3f8fbb4b7ac2ae45ffd1abdb1d217ebc6"
+    },
+    "newUserGoalNotRetroactiveG63Acceptance": true,
+    "roles": {
+      "A": "unchanged baseline",
+      "B": "G63",
+      "C": "G63 plus consumed-capture retirement"
+    },
+    "selectedTriads": [
+      [
+        "A",
+        "B",
+        "C"
+      ],
+      [
+        "C",
+        "A",
+        "B"
+      ],
+      [
+        "B",
+        "C",
+        "A"
+      ]
+    ],
+    "freshProcesses": true,
+    "profiling": false,
+    "primary": "checker process user+system CPU, guardian whole-tree footprint/RSS separately",
+    "statistics": "existing paired log-ratio Student95 and2% practical band for C/A and C/B, no retries/exclusions",
+    "costGate": {
+      "geometricCpu_C_over_A_atMost": 0.97,
+      "geometricCpu_C_over_B_atMost": 1.02,
+      "everyCpuPair_C_over_A_below": 1,
+      "geometricWall_C_over_A_atMost": 1,
+      "medianFootprint_C_over_A_atMost": 1,
+      "geometricFootprint_C_over_B_atMost": 0.95
+    },
+    "gateInterpretation": "prospective operational filter for new memory-preservation goal, not qualification; does not change or accept G63 old10% gate",
+    "fullEarnedOnlyIf": "all cost conditions and semantics pass",
+    "conditionalFullTriads": [
+      [
+        "A",
+        "B",
+        "C"
+      ],
+      [
+        "C",
+        "B",
+        "A"
+      ]
+    ],
+    "candidateSelfByteFixedpoint": "conditional on selected filter, actual own-source stage3 must equal stage2"
+  },
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "nativeProductionTimeoutMs": 300000,
+    "sourcePreflightTimeoutMs": 120000,
+    "throughputTimeoutMs": 600000,
+    "workerStackMiB": 256,
+    "oldGenerationMiB": 6144,
+    "youngGenerationMiB": 128,
+    "parserFuelPerModule": 8000000,
+    "oneHeavyLane": true,
+    "chunkQuantum": 64,
+    "abi": 13
+  },
+  "runtime": {
+    "bun": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "node": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+    "release": "2.0.39",
+    "releaseCommit": "a3efe8a3801f423827424227172eed9802c5e6cb",
+    "os": "darwin25.6.0 arm64",
+    "helperFiles": {
+      "selfhost_throughput.mjs": {
+        "path": "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+        "sha256": "1a806befee02216a9499f6b4dcde7e2326e01f0a5b96bbd36b75295344c50317"
+      },
+      "checker_core_step_runtime.mjs": {
+        "path": "/Users/ilyagulya/Projects/My/bend/evals/checker_core_step_runtime.mjs",
+        "sha256": "00cd400ac0452a3681bf6491db08be51f9ae3a33ff2baf88654a9763eb5073ed"
+      },
+      "selfhost_cpu_profile.mjs": {
+        "path": "/Users/ilyagulya/Projects/My/bend/evals/selfhost_cpu_profile.mjs",
+        "sha256": "5d5fc8d329a3b600522c58eeac59c49c515109bc7f48845d8177cb520129a1c0"
+      },
+      "native_seed_runtime.mjs": {
+        "path": "/Users/ilyagulya/Projects/My/bend/evals/native_seed_runtime.mjs",
+        "sha256": "7f81a9b9013853355910b93bf59586b2acbcda4de7bcaa08d7942ebf45c0147a"
+      },
+      "heavy_gate.ts": {
+        "path": "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+        "sha256": "e72f2b81970be76734df918e35b1a4289d0fb194039e5ca20e9785e5ac0ee015"
+      },
+      "heavy_gate_native.c": {
+        "path": "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate_native.c",
+        "sha256": "1ff233edacdbf13c6ffd4a8bf38cbf153629e8c76be4860deec8a5b591d3fa8b"
+      }
+    }
+  },
+  "acceptedCompiler": "G24R12_UNCHANGED",
+  "mainPromotion": "no automatic cutover"
+}

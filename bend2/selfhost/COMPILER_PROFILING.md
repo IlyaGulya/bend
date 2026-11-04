@@ -2719,3 +2719,98 @@ The retained input also passes all49 observations on unchanged main, both as
 source and emitted JS under default-stack Node. Exact commands and guards are
 in `local2039g63-main-control.json`; temporary experiment controllers are removed.
 
+### G64: capture-root retirement and flat checker state transport
+
+**Status: G64R1 and G64R2 rejected as complete CPU-preservation/memory solutions.**
+Accepted G24R12 and main's compiler algorithms remain unchanged. Sources and
+prospective protocols are checkpointed on
+`selfhost/g64-capture-lifetime-5omwcc8o`: R1 source `5357ae7d`, R1 rejection
+`1fbbd7f2`, R2 protocol `27c1f1a4`, R2 source `88ea4b7d`, R2 rejection
+`a20ade96`. Main retains compact evidence, not either rejected algorithm.
+
+#### Distinguish stale references, allocation traffic and retained bytes
+
+A read-only Inspector breakpoint observes the actual G63 compiler at checker
+step250000 while parsing/expanding/checking the frozen selected sources.
+Capture buffer capacity is7083, active sp3, with7044 object references outside
+the active prefix:5832 CaptureName,1171 ArenaGlobal and41 other objects.
+These counts prove stale roots, not exclusive retained bytes or the cause of
+the earlier footprint result: the Arena/array graphs can overlap live owners.
+Inspector timing and memory are diagnostic only; no forced GC is used.
+
+R1 changes the source-owned continuation/thunk prologue to load each consumed
+slot through `$take`: read the reference, replace the slot with `undefined`,
+then enter the resumed body. The dense buffer keeps its reusable capacity;
+there are no holes, shrinking, replacement arrays or new heap objects per read.
+Canonical `js_backend.bend` and the isolated emitter source change together;
+this is not a claimed canonical-generator/admission cutover. The active R1
+image at the same prefix has defined slots3 and dead object roots0. R2 preserves
+that observation. Unentered or aborted region ranges are not universally
+retired by this change; the witness is not a global no-retention proof.
+
+R2 additionally carries progress and stack as typed arguments through a flat
+`checker_chunk_state` match. It constructs a public RunState only on fuel0
+yield; the wrapper preserves zero-fuel identity and every positive transition.
+The actual emitted wrapper has zero RunState construction sites, the state
+function one. Static sites are not measured dynamic allocation savings.
+Unlike G58B's separate nested-match/helper version, this uses the current
+matched runtime and flat selection without unused pop/advance aliases.
+
+#### Actual production and cheap-first semantic proof
+
+The G63 control genuinely recompiles its own complete source and is byte-equal
+to its C-produced image. R1 has an actual C-produced stage0, followed by real
+own-source emission to activate the new runtime. Before that expensive self
+emission, five newly emitted programs pass under default-stack Node, covering
+capture chains, reentry, scalar regions, host closure depth and non-tail depth.
+The active R1 compiler then passes all69 own compiler consumers.
+
+R2 reuses the already-activated R1 runtime, not an old timing sample: the real
+R1 compiler parses/expands/checks/emits the complete R2 source in323257ms
+guardian elapsed. This honest source-production chain is not relabelled as
+direct C production or a paired build-speedup measurement. R2 passes all49
+unchanged scheduler observations as source and default-stack emitted JS,
+all69 own compiler consumers, and the same five newly emitted depth/reentry
+programs. Parser, checker, all-body emission and opaque helpers are real.
+
+#### Two frozen nine-process cohorts; neither earns the full run
+
+Each version uses fresh ABC/CAB/BCA triads: A unchanged baseline, B G63,
+C its candidate. All18 timing processes pass the same17 modules,2954
+declarations,263032 expansion chunks and1975761 checker chunks. Same Node23.11,
+worker256MiB stack/6144MiB old/128MiB young,8GiB RSS/physical footprint,
+10ms polling,600s, quantum64, ABI13, parser fuel8M/module and frozen helpers.
+Primary CPU is checker-phase process user+system, including helper threads.
+No profiling, GC tuning, retries, exclusions or pooling with older timings.
+
+| Candidate / contemporaneous G63 | Checker CPU, geometric [Student95] | Peak footprint, geometric [Student95] |
+| --- | --- | --- |
+| R1 capture retirement | 1.025095 [1.004569,1.046041] | 0.981318 [0.945779,1.018193] |
+| R2 retirement plus flat state | 1.063376 [0.689215,1.640664] | 1.306097 [0.441010,3.868136] |
+
+Neither comparison qualifies an improvement at the existing2% practical band.
+The third R2 candidate observation remains included:88.931s checker CPU,
+2.439GB peak physical footprint,1.888GB end heapTotal and1.318GB end heapUsed;
+end ArrayBuffers remain25039B. The recorded growth is primarily JS heap, not
+end-of-phase ArrayBuffer growth. End snapshots do not establish a GC/JIT cause.
+Earlier G63's CPU benefit also does not reproduce conclusively: B/A CPU ratios
+are1.003222 [0.955897,1.052891] in R1 and0.992323 [0.921239,1.068892] in R2.
+
+The prospective new-user filter requires C/A CPU<=0.97, C/B CPU<=1.02, every
+C/A CPU pair faster, C/A wall<=1, C/A median footprint<=1 and C/B geometric
+footprint<=0.95. Neither passes. This does not retroactively relax G63's old
+10% filter. Both conditional full-source cohorts and candidate own-version
+byte-fixedpoints are **NOT_RUN_NOT_EARNED**, not failed checks. The historical
+R2 protocol's C role label inherited R1 shorthand; its mechanism/source delta,
+actual source generation and measured C image identify the additional R2
+state transport. Neither protocol nor workload is rewritten after measurement.
+
+`local2039g64-index.json` maps source checkpoints, exact commands, runtime,
+limits, image/request/report hashes, semantic proofs and all retained cells.
+Generator, admission, provenance and schema-witness consumers intentionally
+remain unchanged: no experimental algorithm is promoted. The next DOD decision
+needs allocation/survivor evidence for actual heap-bearing owners, separating
+short-lived traffic, genuinely retained graphs and GC-reserved capacity before
+choosing packed storage or another control-loop rewrite. Temporary timing and
+statistics controllers are removed; the checkpointed observer is frozen source.
+

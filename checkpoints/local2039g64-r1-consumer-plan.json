@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "version": "G64R1",
+  "status": "PROGRAM_INPUTS_FROZEN_NOT_RUN",
+  "cases": [
+    {
+      "source": "tests/compile/js_split_capture_chain.bend",
+      "stdout": "206\n45\n32\n24\n",
+      "sourceRef": {
+        "path": "tests/compile/js_split_capture_chain.bend",
+        "sha256": "b1c34e1766f5d8aad4bb6ca31593c82dc16b893ebfdaeef5800ad5bd1bab4327"
+      }
+    },
+    {
+      "source": "tests/compile/js_multi_reentrant.bend",
+      "stdout": "10109\n76\n",
+      "sourceRef": {
+        "path": "tests/compile/js_multi_reentrant.bend",
+        "sha256": "28b72182afd669d46528d8361d5b1921cb721a9c70c4ab6f3d6b169a4ffdf3c6"
+      }
+    },
+    {
+      "source": "tests/compile/js_scalar_region_tail.bend",
+      "stdout": "13\n5\n22\n",
+      "sourceRef": {
+        "path": "tests/compile/js_scalar_region_tail.bend",
+        "sha256": "1fd5fcf1bc4999461d936b9b6efec42119054c6e9de1043afbb81fd2636bd45a"
+      }
+    },
+    {
+      "source": "tests/compile/js_closure_host_depth.bend",
+      "stdout": "20000\n",
+      "sourceRef": {
+        "path": "tests/compile/js_closure_host_depth.bend",
+        "sha256": "0870401ad5950774c6d28090e0803f58c151e546dc09de4ad70c19702e6b3222"
+      }
+    },
+    {
+      "source": "evals/repro_js_non_tail_stack.bend",
+      "stdout": "60000\n20000\n40000\n",
+      "sourceRef": {
+        "path": "evals/repro_js_non_tail_stack.bend",
+        "sha256": "84f472df74bcec4eb38a7b4405a14d1dbe1771fe9af2223900045ad9c6e29b29"
+      }
+    }
+  ],
+  "scope": "actual own-parser/checker/emitter generated programs; unmodified output run on default-stack Node; original8GiB120s guard. Early stage0 emitter exercises new runtime in consumers before source self-stage2; same programs repeated under candidate self-stage2 only if necessary to prove compiler-runtime activation."
+}
