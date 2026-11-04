@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "version": "G62R1",
+  "status": "SOURCE_BEFORE_EXECUTION",
+  "protocol": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/repository/checkpoints/local2039g62-protocol.json",
+    "sha256": "60a96b0e051dac7694c6ca4eced6bb810faf0ff723c8afb25a620a7036f2378a"
+  },
+  "sourceManifest": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/candidate-compiler-source.corpus.json",
+    "sha256": "8cd2d7b3d2c5b2dca7c6adfe0c0b99fd3c3c03e2425ffd55e8effba95ca5122a"
+  },
+  "sourceDelta": [
+    {
+      "path": "checkpoints/emitter_steps_v1.bend",
+      "baselineSha256": "7f7c8d2e57a3fcd3925b4286a8300668ae91b7e11a26317cea6da2df5c9ea425",
+      "candidateSha256": "252bc1868cbb7faf1357e8a5b23af2963fee489ace19fa15e8178d97b2c0854d"
+    }
+  ],
+  "changedPath": "Invocation-depth-aware generated-closure fast apply. Only marked closures use eager direct split bracket below64; old split1 retains depth-bound fallback. Unmarked functions use $tailUnary=x + existing $split(f,-1,k,base), preserving one marker lookup. Closure default hidden depth64 for external/trampoline calls.",
+  "unchanged": [
+    "Map/Base",
+    "checker algorithms",
+    "BIR schema",
+    "source fuel",
+    "public chunk quantum",
+    "ABI13",
+    "kernel/TScompiler",
+    "C backend",
+    "frozen throughput/runtime helpers",
+    "direct-call split_enter/done/abort implementations"
+  ],
+  "sourceFreezeCommand": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/repository/evals/native_seed_corpus.ts",
+    "--root=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/repository/checkpoints/local2039g49-compiler-root.bend",
+    "--out=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/candidate-compiler-source.corpus.json",
+    "--target=js"
+  ],
+  "candidateNativeProductionCommand": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/evals/native_compiler_experiment.ts",
+    "--mode=run",
+    "--corpus=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/candidate-compiler-source.corpus.json",
+    "--build=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g44d1-native-build.json",
+    "--report=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/candidate-native-stage0.json",
+    "--phase=compile",
+    "--threads=1"
+  ],
+  "candidateNativeProductionCwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/repository",
+  "stage2Required": "The first C-produced candidate image still runs the original emitter runtime. Candidate must self-emit before its checker-runtime timing; no stage0/stage2 comparison.",
+  "acceptedCompiler": "G24R12 unchanged"
+}

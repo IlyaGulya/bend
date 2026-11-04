@@ -1,0 +1,658 @@
+{
+  "schemaVersion": 1,
+  "version": "G62D1",
+  "status": "CURRENT_MAIN_NATIVE_PHYSICAL_DIAGNOSTIC_COMPLETE",
+  "sourceCheckpoint": "6cd21cd0",
+  "image": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json.mjs",
+    "sha256": "4636c05aa8c75e72212cb03949937e25561942bc00da250f876f37f001b9fc18"
+  },
+  "producer": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json",
+    "sha256": "717ea720d6d117e4fb49ede7ea0d57f544571d336437bb992cdf78c055dc5135"
+  },
+  "nativeProducerCommand": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/evals/native_compiler_experiment.ts",
+    "--mode=run",
+    "--corpus=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g60-lexer-cursor-kkoffczh/main-compiler-source.corpus.json",
+    "--build=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g44d1-native-build.json",
+    "--report=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json",
+    "--phase=compile",
+    "--threads=1"
+  ],
+  "nativeProducerCwd": "/Users/ilyagulya/Projects/My/bend",
+  "nativeProducerGuardian": {
+    "status": "PASS",
+    "reason": "command_exit",
+    "elapsedMs": 97191,
+    "peakRssBytes": 1775714304,
+    "peakFootprintBytes": 1771424264,
+    "timeoutMs": 300000,
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592,
+    "ownedTreeStopped": true,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793759626616-22afb58d02095b24.json"
+  },
+  "profileCommand": [
+    "/usr/bin/env",
+    "SELFHOST_CPU_PROFILE_DIR=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-physical-profile",
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/repository/evals/selfhost_corpus_run.ts",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/main-complete.corpus.json",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json.mjs",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json",
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-profile-check"
+  ],
+  "profileCwd": "/Users/ilyagulya/Projects/My/bend",
+  "profileReport": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-profile-check/report.json",
+    "sha256": "08f7b41796dc3cdedfb00c5587ac904bcdcc76307a0ceca33e8bd809985bc243"
+  },
+  "profileGuardian": {
+    "status": "PASS",
+    "reason": "command_exit",
+    "elapsedMs": 75399,
+    "peakRssBytes": 1298743296,
+    "peakFootprintBytes": 1330340088,
+    "timeoutMs": 600000,
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592,
+    "ownedTreeStopped": true,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793759724328-21dc461d261d96b8.json"
+  },
+  "sourceDeclarations": 2954,
+  "stepCounts": {
+    "expand": 263032,
+    "check": 1975761
+  },
+  "cpuProfile": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-physical-profile/selfhost-27295-thread-1-upP1HW/000004-check.cpuprofile",
+    "sha256": "5279dd8bda82d48ae49bfc853c44339c27aec5c532b8013bacde51739cbf1fa1"
+  },
+  "heapProfile": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-physical-profile/selfhost-27295-thread-1-upP1HW/000004-check.heapprofile",
+    "sha256": "b220bf983ea05b0eddef13199e5b69f7013993c659da458c53071f5361269906"
+  },
+  "sampleCount": 53420,
+  "rawWeightMs": 68330.916,
+  "minDeltaUs": 0,
+  "maxDeltaUs": 176125,
+  "zeroDeltaCount": 383,
+  "negativeDeltaCount": 0,
+  "physicalAggregation": [
+    "url",
+    "lineNumber",
+    "columnNumber",
+    "functionName"
+  ],
+  "cpuExclusiveTop": [
+    {
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json.mjs",
+      "lineNumber": 30593,
+      "columnNumber": 15,
+      "functionName": "$b6850",
+      "sampleCount": 1978,
+      "selfSampledMs": 2567.432,
+      "selfShare": 0.03757350479539891
+    },
+    {
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json.mjs",
+      "lineNumber": 30597,
+      "columnNumber": 17,
+      "functionName": "$k118911",
+      "sampleCount": 1926,
+      "selfSampledMs": 2484.23,
+      "selfShare": 0.036355871476975374
+    },
+    {
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json.mjs",
+      "lineNumber": 19,
+      "columnNumber": 17,
+      "functionName": "run_base",
+      "sampleCount": 1585,
+      "selfSampledMs": 2042.489,
+      "selfShare": 0.029891140344145247
+    },
+    {
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json.mjs",
+      "lineNumber": 12307,
+      "columnNumber": 14,
+      "functionName": "$b395",
+      "sampleCount": 1694,
+      "selfSampledMs": 2015.081,
+      "selfShare": 0.029490033471818233
+    },
+    {
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json.mjs",
+      "lineNumber": 103,
+      "columnNumber": 20,
+      "functionName": "$split_done",
+      "sampleCount": 1034,
+      "selfSampledMs": 1322.801,
+      "selfShare": 0.019358748242157327
+    },
+    {
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json.mjs",
+      "lineNumber": 267,
+      "columnNumber": 17,
+      "functionName": "$p_map_bit",
+      "sampleCount": 947,
+      "selfSampledMs": 1241.707,
+      "selfShare": 0.01817196479555462
+    },
+    {
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json.mjs",
+      "lineNumber": 64135,
+      "columnNumber": 1317,
+      "functionName": "",
+      "sampleCount": 860,
+      "selfSampledMs": 1123.662,
+      "selfShare": 0.016444415877580217
+    },
+    {
+      "url": "",
+      "lineNumber": -1,
+      "columnNumber": -1,
+      "functionName": "(garbage collector)",
+      "sampleCount": 807,
+      "selfSampledMs": 1090.904,
+      "selfShare": 0.01596501355257699
+    },
+    {
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json.mjs",
+      "lineNumber": 12285,
+      "columnNumber": 14,
+      "functionName": "$b385",
+      "sampleCount": 819,
+      "selfSampledMs": 1007.954,
+      "selfShare": 0.014751068169494464
+    },
+    {
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json.mjs",
+      "lineNumber": 30589,
+      "columnNumber": 15,
+      "functionName": "$b6848",
+      "sampleCount": 610,
+      "selfSampledMs": 786.924,
+      "selfShare": 0.011516368374163168
+    },
+    {
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json.mjs",
+      "lineNumber": 30590,
+      "columnNumber": 15,
+      "functionName": "$b6849",
+      "sampleCount": 568,
+      "selfSampledMs": 749.325,
+      "selfShare": 0.010966119640486013
+    },
+    {
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json.mjs",
+      "lineNumber": 12277,
+      "columnNumber": 14,
+      "functionName": "$b381",
+      "sampleCount": 538,
+      "selfSampledMs": 676.041,
+      "selfShare": 0.009893632920126521
+    },
+    {
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json.mjs",
+      "lineNumber": 30592,
+      "columnNumber": 17,
+      "functionName": "$k118856",
+      "sampleCount": 344,
+      "selfSampledMs": 470.004,
+      "selfShare": 0.0068783506429212805
+    },
+    {
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json.mjs",
+      "lineNumber": 12270,
+      "columnNumber": 14,
+      "functionName": "$b377",
+      "sampleCount": 358,
+      "selfSampledMs": 454.666,
+      "selfShare": 0.006653884165697413
+    },
+    {
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json.mjs",
+      "lineNumber": 12683,
+      "columnNumber": 14,
+      "functionName": "$b507",
+      "sampleCount": 324,
+      "selfSampledMs": 422.501,
+      "selfShare": 0.0061831601964768045
+    },
+    {
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json.mjs",
+      "lineNumber": 12268,
+      "columnNumber": 14,
+      "functionName": "$b375",
+      "sampleCount": 314,
+      "selfSampledMs": 410.415,
+      "selfShare": 0.00600628564674883
+    },
+    {
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json.mjs",
+      "lineNumber": 30595,
+      "columnNumber": 17,
+      "functionName": "$k118880",
+      "sampleCount": 272,
+      "selfSampledMs": 372.712,
+      "selfShare": 0.005454514908010306
+    },
+    {
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json.mjs",
+      "lineNumber": 12263,
+      "columnNumber": 14,
+      "functionName": "$b373",
+      "sampleCount": 255,
+      "selfSampledMs": 332.203,
+      "selfShare": 0.004861679301942916
+    },
+    {
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json.mjs",
+      "lineNumber": 30594,
+      "columnNumber": 17,
+      "functionName": "$k118869",
+      "sampleCount": 248,
+      "selfSampledMs": 317.172,
+      "selfShare": 0.004641705666582898
+    },
+    {
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json.mjs",
+      "lineNumber": 12269,
+      "columnNumber": 15,
+      "functionName": "$k2211",
+      "sampleCount": 222,
+      "selfSampledMs": 287.296,
+      "selfShare": 0.004204480443376465
+    },
+    {
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json.mjs",
+      "lineNumber": 290,
+      "columnNumber": 21,
+      "functionName": "$p_string_head",
+      "sampleCount": 217,
+      "selfSampledMs": 270.922,
+      "selfShare": 0.003964852454195112
+    },
+    {
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json.mjs",
+      "lineNumber": 12801,
+      "columnNumber": 16,
+      "functionName": "$b12578",
+      "sampleCount": 191,
+      "selfSampledMs": 243.875,
+      "selfShare": 0.0035690286955907336
+    },
+    {
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json.mjs",
+      "lineNumber": 12672,
+      "columnNumber": 14,
+      "functionName": "$b499",
+      "sampleCount": 190,
+      "selfSampledMs": 242.586,
+      "selfShare": 0.0035501646136281853
+    },
+    {
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json.mjs",
+      "lineNumber": 291,
+      "columnNumber": 21,
+      "functionName": "$p_string_tail",
+      "sampleCount": 178,
+      "selfSampledMs": 226.743,
+      "selfShare": 0.003318307631058246
+    },
+    {
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json.mjs",
+      "lineNumber": 15600,
+      "columnNumber": 15,
+      "functionName": "$b1379",
+      "sampleCount": 169,
+      "selfSampledMs": 213.378,
+      "selfShare": 0.00312271534600824
+    },
+    {
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json.mjs",
+      "lineNumber": 12804,
+      "columnNumber": 14,
+      "functionName": "$b592",
+      "sampleCount": 161,
+      "selfSampledMs": 213.165,
+      "selfShare": 0.0031195981625652437
+    },
+    {
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json.mjs",
+      "lineNumber": 102,
+      "columnNumber": 21,
+      "functionName": "$split_enter",
+      "sampleCount": 155,
+      "selfSampledMs": 198.5,
+      "selfShare": 0.0029049808142481218
+    },
+    {
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json.mjs",
+      "lineNumber": 15603,
+      "columnNumber": 16,
+      "functionName": "$k25982",
+      "sampleCount": 144,
+      "selfSampledMs": 188.408,
+      "selfShare": 0.0027572877846390935
+    },
+    {
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json.mjs",
+      "lineNumber": 12943,
+      "columnNumber": 15,
+      "functionName": "$k7640",
+      "sampleCount": 129,
+      "selfSampledMs": 184.883,
+      "selfShare": 0.0027057005938571055
+    },
+    {
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json.mjs",
+      "lineNumber": 12988,
+      "columnNumber": 14,
+      "functionName": "$b701",
+      "sampleCount": 134,
+      "selfSampledMs": 184.869,
+      "selfShare": 0.0027054957085603827
+    },
+    {
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json.mjs",
+      "lineNumber": 15605,
+      "columnNumber": 15,
+      "functionName": "$b1380",
+      "sampleCount": 145,
+      "selfSampledMs": 184.835,
+      "selfShare": 0.0027049981299826277
+    },
+    {
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json.mjs",
+      "lineNumber": 15601,
+      "columnNumber": 16,
+      "functionName": "$k25977",
+      "sampleCount": 141,
+      "selfSampledMs": 179.33,
+      "selfShare": 0.0026244343043784163
+    },
+    {
+      "url": "node:inspector",
+      "lineNumber": 111,
+      "columnNumber": 6,
+      "functionName": "post",
+      "sampleCount": 1,
+      "selfSampledMs": 176.125,
+      "selfShare": 0.0025775302060929493
+    },
+    {
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json.mjs",
+      "lineNumber": 12942,
+      "columnNumber": 15,
+      "functionName": "$k7638",
+      "sampleCount": 123,
+      "selfSampledMs": 171.378,
+      "selfShare": 0.002508059455839872
+    },
+    {
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json.mjs",
+      "lineNumber": 12292,
+      "columnNumber": 14,
+      "functionName": "$b388",
+      "sampleCount": 130,
+      "selfSampledMs": 161.917,
+      "selfShare": 0.0023696008992474212
+    },
+    {
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json.mjs",
+      "lineNumber": 30572,
+      "columnNumber": 15,
+      "functionName": "$b6831",
+      "sampleCount": 128,
+      "selfSampledMs": 158.875,
+      "selfShare": 0.0023250822512023693
+    },
+    {
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json.mjs",
+      "lineNumber": 17142,
+      "columnNumber": 15,
+      "functionName": "$b1955",
+      "sampleCount": 117,
+      "selfSampledMs": 157.425,
+      "selfShare": 0.002303861988327509
+    },
+    {
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json.mjs",
+      "lineNumber": 30584,
+      "columnNumber": 15,
+      "functionName": "$b6843",
+      "sampleCount": 114,
+      "selfSampledMs": 155.133,
+      "selfShare": 0.002270319338321178
+    },
+    {
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json.mjs",
+      "lineNumber": 12806,
+      "columnNumber": 14,
+      "functionName": "$b593",
+      "sampleCount": 117,
+      "selfSampledMs": 147.746,
+      "selfShare": 0.0021622130749718036
+    },
+    {
+      "url": "",
+      "lineNumber": -1,
+      "columnNumber": -1,
+      "functionName": "update",
+      "sampleCount": 62,
+      "selfSampledMs": 144.5,
+      "selfShare": 0.0021147089554602195
+    }
+  ],
+  "allocationEstimatedTop": [
+    {
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json.mjs",
+      "lineNumber": 30595,
+      "columnNumber": 17,
+      "functionName": "$k118880",
+      "estimatedSelfBytes": 3116403552,
+      "estimatedSelfShare": 0.04615078100512192
+    },
+    {
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json.mjs",
+      "lineNumber": 30592,
+      "columnNumber": 17,
+      "functionName": "$k118856",
+      "estimatedSelfBytes": 2873114688,
+      "estimatedSelfShare": 0.04254791927810227
+    },
+    {
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json.mjs",
+      "lineNumber": 30594,
+      "columnNumber": 17,
+      "functionName": "$k118869",
+      "estimatedSelfBytes": 2831187840,
+      "estimatedSelfShare": 0.04192702511340359
+    },
+    {
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json.mjs",
+      "lineNumber": 12307,
+      "columnNumber": 14,
+      "functionName": "$b395",
+      "estimatedSelfBytes": 1572875808,
+      "estimatedSelfShare": 0.023292698057886883
+    },
+    {
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json.mjs",
+      "lineNumber": 12311,
+      "columnNumber": 15,
+      "functionName": "$k3054",
+      "estimatedSelfBytes": 1199583528,
+      "estimatedSelfShare": 0.01776461737843621
+    },
+    {
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json.mjs",
+      "lineNumber": 12309,
+      "columnNumber": 15,
+      "functionName": "$k2995",
+      "estimatedSelfBytes": 994060080,
+      "estimatedSelfShare": 0.014721023221967491
+    },
+    {
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json.mjs",
+      "lineNumber": 15603,
+      "columnNumber": 16,
+      "functionName": "$k25982",
+      "estimatedSelfBytes": 960525840,
+      "estimatedSelfShare": 0.014224415083583108
+    },
+    {
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json.mjs",
+      "lineNumber": 12285,
+      "columnNumber": 14,
+      "functionName": "$b385",
+      "estimatedSelfBytes": 905983576,
+      "estimatedSelfShare": 0.013416699382010339
+    },
+    {
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json.mjs",
+      "lineNumber": 291,
+      "columnNumber": 21,
+      "functionName": "$p_string_tail",
+      "estimatedSelfBytes": 885001920,
+      "estimatedSelfShare": 0.013105982302202312
+    },
+    {
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json.mjs",
+      "lineNumber": 267,
+      "columnNumber": 17,
+      "functionName": "$p_map_bit",
+      "estimatedSelfBytes": 847255488,
+      "estimatedSelfShare": 0.012546995865468613
+    },
+    {
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json.mjs",
+      "lineNumber": 15567,
+      "columnNumber": 16,
+      "functionName": "$k25868",
+      "estimatedSelfBytes": 629166000,
+      "estimatedSelfShare": 0.009317311380688779
+    },
+    {
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json.mjs",
+      "lineNumber": 30583,
+      "columnNumber": 15,
+      "functionName": "$b6842",
+      "estimatedSelfBytes": 620784352,
+      "estimatedSelfShare": 0.009193187660876635
+    },
+    {
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json.mjs",
+      "lineNumber": 15601,
+      "columnNumber": 16,
+      "functionName": "$k25977",
+      "estimatedSelfBytes": 583027440,
+      "estimatedSelfShare": 0.008634046025954746
+    },
+    {
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json.mjs",
+      "lineNumber": 12264,
+      "columnNumber": 15,
+      "functionName": "$k2173",
+      "estimatedSelfBytes": 557846064,
+      "estimatedSelfShare": 0.008261135345488536
+    },
+    {
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json.mjs",
+      "lineNumber": 12287,
+      "columnNumber": 15,
+      "functionName": "$k2677",
+      "estimatedSelfBytes": 545264216,
+      "estimatedSelfShare": 0.008074810916704247
+    },
+    {
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json.mjs",
+      "lineNumber": 12286,
+      "columnNumber": 15,
+      "functionName": "$k2614",
+      "estimatedSelfBytes": 528487152,
+      "estimatedSelfShare": 0.007826359586941126
+    },
+    {
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json.mjs",
+      "lineNumber": 12809,
+      "columnNumber": 14,
+      "functionName": "$b595",
+      "estimatedSelfBytes": 490747536,
+      "estimatedSelfShare": 0.007267474088265698
+    },
+    {
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json.mjs",
+      "lineNumber": 12840,
+      "columnNumber": 14,
+      "functionName": "$b621",
+      "estimatedSelfBytes": 465583200,
+      "estimatedSelfShare": 0.006894815752945168
+    },
+    {
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json.mjs",
+      "lineNumber": 17129,
+      "columnNumber": 15,
+      "functionName": "$b1949",
+      "estimatedSelfBytes": 465575464,
+      "estimatedSelfShare": 0.006894701190618468
+    },
+    {
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json.mjs",
+      "lineNumber": 12270,
+      "columnNumber": 14,
+      "functionName": "$b377",
+      "estimatedSelfBytes": 461377088,
+      "estimatedSelfShare": 0.006832527493239381
+    },
+    {
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json.mjs",
+      "lineNumber": 12781,
+      "columnNumber": 14,
+      "functionName": "$b575",
+      "estimatedSelfBytes": 457194480,
+      "estimatedSelfShare": 0.0067705873039739725
+    },
+    {
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json.mjs",
+      "lineNumber": 12277,
+      "columnNumber": 14,
+      "functionName": "$b381",
+      "estimatedSelfBytes": 452988280,
+      "estimatedSelfShare": 0.006708297741077292
+    },
+    {
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json.mjs",
+      "lineNumber": 17134,
+      "columnNumber": 16,
+      "functionName": "$k35481",
+      "estimatedSelfBytes": 444610320,
+      "estimatedSelfShare": 0.006584228636810762
+    },
+    {
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json.mjs",
+      "lineNumber": 12802,
+      "columnNumber": 15,
+      "functionName": "$k6384",
+      "estimatedSelfBytes": 427828992,
+      "estimatedSelfShare": 0.006335714161525271
+    },
+    {
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json.mjs",
+      "lineNumber": 27824,
+      "columnNumber": 16,
+      "functionName": "$k91317",
+      "estimatedSelfBytes": 398474232,
+      "estimatedSelfShare": 0.0059009998898936385
+    }
+  ],
+  "allocationInterpretation": "Statistical including collected objects; not exact allocated or live byte counts.",
+  "timingEligibility": "Diagnostic only, excluded from all prospective paired timings."
+}

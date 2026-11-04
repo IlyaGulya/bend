@@ -2519,3 +2519,123 @@ is reproducible from `selfhost/g61-same-runtime-r86b6awi` / `ec8ffab5`.
 Accepted G24R12, G56 native transfer/budget qualification and frozen historical
 runtime helpers remain unchanged.
 
+### G62: bounded generated-closure apply in the selfhost JS runtime
+
+G62 starts from main `6cd21cd0`. Two independent source investigations separate
+Map/data-operation ideas from JS lowering/runtime ideas. Existing G26/G52/G53/
+G58 mechanisms are not relabeled as new candidates. The portable G61 bit
+optimization remains isolated and is not substituted for production evidence.
+
+#### Fresh native evidence and matched self-emission lineage
+
+The unchanged authenticated G44D1 C executable genuinely parses, expands,
+checks and emits the current compiler source. The first D0 invocation fails
+before native source execution because its cwd is the historical producer
+checkout, while `workloadRows` requires the input repository as cwd. D1 retains
+that failed receipt and corrects only cwd; validation and resource limits stay.
+
+The fresh current-main checker profile has 53420 samples, no negative raw
+weights and 383 zero intervals, all preserved. Exclusive physical identities
+are aggregated across URL/line/column/name. Profiled wall time and statistical
+allocation estimates are diagnostics, not throughput or exact/live bytes.
+`local2039g62-profile.json` retains the native image and raw-profile identities.
+
+Changing an emitter runtime literal does not change the runtime of an image
+emitted by the old C seed. Both measured variants therefore follow the same
+chain: authenticated C seed -> native-produced own JS emitter -> genuine full
+own-source parse/expand/check/library emission -> measured self-stage2 image.
+Baseline self-stage2 is byte-identical to its native-produced predecessor,
+SHA256 `4636c05aa8c75e72212cb03949937e25561942bc00da250f876f37f001b9fc18`.
+No self-stage2 receipt is forged or relabeled as C-native production.
+
+#### Source mechanism and the rejected host-boundary version
+
+Non-tail generated-closure applies previously always returned to the general
+trampoline. R1 adds a bounded in-stack path using existing eager
+`$split_enter`/`$split_done`/`$split_abort`, the existing raw marker and the same
+private depth64 bound. Invocation depth must be forwarded into the generated
+closure's terminal tail call, not inherited from its creation-time scope.
+Unmarked functions and exhausted-depth calls keep the original fallback and
+one marker lookup; parser fuel, public quantum64, ABI13 and C backend stay.
+
+**R1 is rejected before timing** (`cfceb044`). All eight initial programs and
+69 semantic consumers pass, but an additional actual FFI falsifier calls a
+callback as `f(20000, undefined, -1000000)`. Baseline prints `20000`; R1 exits1
+with the machine-stack memory-fault diagnostic. Its third host argument had
+become the hidden depth. Frozen ordinary source and failure remain in
+`local2039g62-r1-host-arity-input/` and `local2039g62-r1-rejected.json`.
+
+R2 source checkpoint `5d7ac44e` accepts the supplied invocation depth only when
+`$raw === $BEND_TAIL`; every ordinary host call uses the safe64 boundary and
+ignores extra JS arguments. This fixes the general boundary, not just negative
+inputs. Only `checkpoints/emitter_steps_v1.bend` differs in the complete
+53-file compiler source closure. The retained regression is
+`tests/compile/js_closure_host_depth.bend` with its real foreign JS consumer.
+
+#### Actual R2 semantic proof and prospective timing
+
+The corrected self-stage2 completes the full source pipeline. Its actual
+parser/checker/emitter produces all nine program artifacts; default-stack
+Node executes each with literal stdout, including the red-to-green host
+regression, 20000-deep non-tail/applied returns, million-hop closure recursion,
+loop/split captures, scalar-region exits and reentrant throws. All 69 existing
+checker consumers pass, including negative bodies and structured failures.
+The candidate's byte fixedpoint is **NOT_RUN**, not inferred from these passes.
+
+`local2039g62-r2-protocol.json` prospectively freezes three fresh unprofiled
+AB/BA/AB pairs on the original G56 selected source workload. Primary is
+checker process user+system CPU, with identical process-helper scope; wall
+and memory are retained separately. Every pair must lower CPU, geometric CPU
+ratio must be <=0.90, geometric checker wall <=1 and median footprint <=1.10.
+Only that filter earns the two original full-source AB/BA confirmation pairs.
+All Node/worker/8GiB/600s/fuel/chunk policies and frozen helpers stay unchanged;
+no timing observation is retried or excluded. R1 contributes no timing sample.
+This is a selfhost-JS runtime experiment, not C-native speedup, whole-rebuild,
+strict12 or product acceptance. Accepted G24R12 and main's runtime stay unchanged.
+
+#### Paired result: no promotion, no earned full-source runs
+
+All six fresh processes pass with the original 17 modules, 2954 source
+declarations, 263032 expand and 1975761 checker chunks. Node/V8, complete
+workload inputs, ABI, worker heap/stack and guardian limits are identical.
+Every scheduled observation is retained.
+
+| Selected candidate / baseline | Paired geometric ratio | Paired Student95 interval | 2% practical-band classification |
+| --- | ---: | --- | --- |
+| Checker process CPU | 0.974563 | [0.890107, 1.067033] | inconclusive |
+| Checker wall | 0.997251 | [0.910789, 1.091922] | inconclusive |
+| Peak physical footprint | 1.163280 | [1.025769, 1.319226] | regression |
+
+The original cost filter fails: one CPU pair regresses, the geometric CPU
+ratio misses <=0.90, and the candidate/baseline median footprint ratio is
+1.212623, above 1.10. The four conditional full-source processes are
+**NOT_RUN**, not omitted successful comparisons. Neither CPU equivalence nor
+absence of a smaller benefit is established. R2 is **rejected for promotion**;
+no runtime algorithm is merged into main and accepted G24R12 stays unchanged.
+Exact rows and decision are in `local2039g62-r2-selected.json` and
+`local2039g62-r2-decision.json`.
+
+#### Retained regression and a cheaper semantic rejection point
+
+The original non-tail stress also exceeds the separate official TS emitter's
+default-Node stack; that actual control failure is retained, not repinned as
+a pass. The permanent FFI regression uses a deep tail-recursive count to
+isolate host arity from unrelated non-tail limits. On the same permanent
+source, baseline passes, rejected R1 still overflows, and corrected R2 passes.
+Ordinary main source execution and the resulting JS under default Node and
+the gate's Bun runner print the unchanged literal `20000`; JS compilation passes.
+
+A real early preflight proves a cheaper ordering for future emitter/runtime
+experiments: the native-stage0 emitter produces the **same bytes** as the
+known-failing R1 self-stage2 consumer, SHA256
+`f81f3181bb1dcfd1fed44964eddd1576679b97e69e937a1547ed32d40c75d37b`.
+That guarded emission takes 8827ms; it needs no full own-source self-stage2
+first. Execute small newly emitted consumers before earning expensive
+self-emission, but never measure stage0 as if its runtime had already changed.
+This is an earlier equivalent semantic falsification point, **not** a
+compiler-throughput or whole-build speedup claim.
+
+Main retains the focused regression, required frozen failure input, compact
+receipts and these findings. Generated images, profiles, program outputs and
+bulk logs stay outside Git; the throwaway smoke runner is removed.
+

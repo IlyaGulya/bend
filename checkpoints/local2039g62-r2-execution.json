@@ -1,0 +1,186 @@
+{
+  "schemaVersion": 1,
+  "version": "G62R2",
+  "status": "ALL_SEMANTICS_PASS_EXACT_SELECTED_EXECUTION_FROZEN",
+  "sourceCheckpoint": "5d7ac44e",
+  "protocol": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/repository/checkpoints/local2039g62-r2-protocol.json",
+    "sha256": "d221466b9fe1029ac077f6a1b7a89542150367cdd7cb196aa94802617eca7170"
+  },
+  "sameNativeSeedBuildSha256": "fc276d3926b75a589e00c2cf45e2c0b725d080b83fae8c30df26d03eff1f398f",
+  "baselineOwnStage2": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json",
+    "sha256": "32b9d93cf4de5a8918b61dc9ae21ef2232beb27879b6629ec26f981626da248f"
+  },
+  "candidateOwnStage2": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/candidate-r2-self-stage2.json",
+    "sha256": "5e55f00daa1bfc4c79ec2880783bb2b543b26a340bbff09924138eab08005f11"
+  },
+  "sameInputMapAndLimitsAsFreshNativeDiagnostic": true,
+  "cells": [
+    {
+      "pair": 1,
+      "order": [
+        "baseline",
+        "candidate"
+      ],
+      "role": "baseline",
+      "command": [
+        "/usr/bin/env",
+        "-u",
+        "SELFHOST_CPU_PROFILE_DIR",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+        "js",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/r2-selected-p1-baseline-request.json",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/r2-selected-p1-baseline.json"
+      ],
+      "cwd": "/Users/ilyagulya/Projects/My/bend",
+      "request": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/r2-selected-p1-baseline-request.json",
+        "sha256": "2f6d5f5ea181a27641cce076ac6801050cef07c3d27476ad9e922a0a444a0ca9"
+      },
+      "report": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/r2-selected-p1-baseline.json"
+    },
+    {
+      "pair": 1,
+      "order": [
+        "baseline",
+        "candidate"
+      ],
+      "role": "candidate",
+      "command": [
+        "/usr/bin/env",
+        "-u",
+        "SELFHOST_CPU_PROFILE_DIR",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+        "js",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/r2-selected-p1-candidate-request.json",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/r2-selected-p1-candidate.json"
+      ],
+      "cwd": "/Users/ilyagulya/Projects/My/bend",
+      "request": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/r2-selected-p1-candidate-request.json",
+        "sha256": "9d3c3eb4ccbc7a1bcddf6dff76f799df378fb58d59f4d46f9d6c050c8f19c5b8"
+      },
+      "report": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/r2-selected-p1-candidate.json"
+    },
+    {
+      "pair": 2,
+      "order": [
+        "candidate",
+        "baseline"
+      ],
+      "role": "candidate",
+      "command": [
+        "/usr/bin/env",
+        "-u",
+        "SELFHOST_CPU_PROFILE_DIR",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+        "js",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/r2-selected-p2-candidate-request.json",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/r2-selected-p2-candidate.json"
+      ],
+      "cwd": "/Users/ilyagulya/Projects/My/bend",
+      "request": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/r2-selected-p2-candidate-request.json",
+        "sha256": "9d3c3eb4ccbc7a1bcddf6dff76f799df378fb58d59f4d46f9d6c050c8f19c5b8"
+      },
+      "report": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/r2-selected-p2-candidate.json"
+    },
+    {
+      "pair": 2,
+      "order": [
+        "candidate",
+        "baseline"
+      ],
+      "role": "baseline",
+      "command": [
+        "/usr/bin/env",
+        "-u",
+        "SELFHOST_CPU_PROFILE_DIR",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+        "js",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/r2-selected-p2-baseline-request.json",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/r2-selected-p2-baseline.json"
+      ],
+      "cwd": "/Users/ilyagulya/Projects/My/bend",
+      "request": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/r2-selected-p2-baseline-request.json",
+        "sha256": "2f6d5f5ea181a27641cce076ac6801050cef07c3d27476ad9e922a0a444a0ca9"
+      },
+      "report": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/r2-selected-p2-baseline.json"
+    },
+    {
+      "pair": 3,
+      "order": [
+        "baseline",
+        "candidate"
+      ],
+      "role": "baseline",
+      "command": [
+        "/usr/bin/env",
+        "-u",
+        "SELFHOST_CPU_PROFILE_DIR",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+        "js",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/r2-selected-p3-baseline-request.json",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/r2-selected-p3-baseline.json"
+      ],
+      "cwd": "/Users/ilyagulya/Projects/My/bend",
+      "request": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/r2-selected-p3-baseline-request.json",
+        "sha256": "2f6d5f5ea181a27641cce076ac6801050cef07c3d27476ad9e922a0a444a0ca9"
+      },
+      "report": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/r2-selected-p3-baseline.json"
+    },
+    {
+      "pair": 3,
+      "order": [
+        "baseline",
+        "candidate"
+      ],
+      "role": "candidate",
+      "command": [
+        "/usr/bin/env",
+        "-u",
+        "SELFHOST_CPU_PROFILE_DIR",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+        "js",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/r2-selected-p3-candidate-request.json",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/r2-selected-p3-candidate.json"
+      ],
+      "cwd": "/Users/ilyagulya/Projects/My/bend",
+      "request": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/r2-selected-p3-candidate-request.json",
+        "sha256": "9d3c3eb4ccbc7a1bcddf6dff76f799df378fb58d59f4d46f9d6c050c8f19c5b8"
+      },
+      "report": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/r2-selected-p3-candidate.json"
+    }
+  ],
+  "selectedModuleCount": 17,
+  "selectedSourceDeclarations": 2954,
+  "selectedStepCounts": {
+    "expand": 263032,
+    "check": 1975761
+  },
+  "retries": 0,
+  "exclusions": 0,
+  "R1Timings": "NOT_RUN, rejected version never enters this cohort.",
+  "lineageNote": "Neither actual self-stage2 image is relabeled as native-C-produced. The existing direct frozen throughput driver validates all pins/inputs; no helper or native admission check was weakened.",
+  "semanticReceipt": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/repository/checkpoints/local2039g62-r2-semantics.json",
+    "sha256": "1affb7b101d7c8fcd20f5d1a46557c251d2329319cde5bead9d73594eae9073a"
+  }
+}

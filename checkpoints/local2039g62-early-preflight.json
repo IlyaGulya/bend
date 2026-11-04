@@ -1,0 +1,61 @@
+{
+  "status": "ACTUAL_NATIVE_STAGE0_EMITS_BYTE_IDENTICAL_KNOWN_FAILING_PROGRAM",
+  "source": {
+    "path": "/Users/ilyagulya/Projects/My/bend/tests/compile/js_closure_host_depth.bend",
+    "sha256": "0870401ad5950774c6d28090e0803f58c151e546dc09de4ad70c19702e6b3222"
+  },
+  "producerImage": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/candidate-native-stage0.json.mjs",
+    "sha256": "c18cf4fea938e9c01737987dddc0c1c0c7bb087f38c337d948265c29ac3df918"
+  },
+  "emission": {
+    "name": "r1-native-stage0-cheap-semantic-preflight",
+    "command": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+      "--memory-mib=8192",
+      "--rss-mib=8192",
+      "--poll-ms=10",
+      "--timeout-ms=120000",
+      "--",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "--experimental-strip-types",
+      "--max-old-space-size=6144",
+      "/Users/ilyagulya/Projects/My/bend/evals/candidate_host.ts",
+      "--candidate=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/candidate-native-stage0.json.mjs",
+      "--parser=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/candidate-native-stage0.json.mjs",
+      "--base=/Users/ilyagulya/Projects/My/bend/bend2/base.bend",
+      "/Users/ilyagulya/Projects/My/bend/tests/compile/js_closure_host_depth.bend",
+      "-o",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/r1-native-stage0-early-preflight.js"
+    ],
+    "cwd": "/Users/ilyagulya/Projects/My/bend",
+    "exitCode": 0,
+    "stdout": "{\"output\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/r1-native-stage0-early-preflight.js\",\"bytes\":390845,\"sha256\":\"f81f3181bb1dcfd1fed44964eddd1576679b97e69e937a1547ed32d40c75d37b\",\"target\":\"js\",\"library\":false,\"modules\":2,\"foreignFiles\":59}\n",
+    "stderr": "(node:34364) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\nHEAVY_GATE {\"status\":\"PASS\",\"reason\":\"command_exit\",\"commandExitCode\":0,\"commandSignal\":0,\"peakRssBytes\":1382760448,\"peakFootprintBytes\":1278874040,\"elapsedMs\":8827,\"timeoutMs\":120000,\"reportPhase\":\"complete\",\"ownedTreeStopped\":true,\"supervisorExitCode\":0,\"command\":[\"/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node\",\"--experimental-strip-types\",\"--max-old-space-size=6144\",\"/Users/ilyagulya/Projects/My/bend/evals/candidate_host.ts\",\"--candidate=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/candidate-native-stage0.json.mjs\",\"--parser=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/candidate-native-stage0.json.mjs\",\"--base=/Users/ilyagulya/Projects/My/bend/bend2/base.bend\",\"/Users/ilyagulya/Projects/My/bend/tests/compile/js_closure_host_depth.bend\",\"-o\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/r1-native-stage0-early-preflight.js\"],\"label\":\"heavy command\",\"exitCode\":0,\"reportPath\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793762961906-7f6124bc15cd3e62.json\",\"memoryLimitBytes\":8589934592,\"rssLimitBytes\":8589934592}\n"
+  },
+  "guardian": {
+    "status": "PASS",
+    "reason": "command_exit",
+    "elapsedMs": 8827,
+    "peakRssBytes": 1382760448,
+    "peakFootprintBytes": 1278874040,
+    "timeoutMs": 120000,
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592,
+    "ownedTreeStopped": true,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793762961906-7f6124bc15cd3e62.json"
+  },
+  "output": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/r1-native-stage0-early-preflight.js",
+    "sha256": "f81f3181bb1dcfd1fed44964eddd1576679b97e69e937a1547ed32d40c75d37b"
+  },
+  "sameBadArtifactPreviouslyExecuted": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/host-tail-r1-rejected.js",
+    "sha256": "f81f3181bb1dcfd1fed44964eddd1576679b97e69e937a1547ed32d40c75d37b"
+  },
+  "knownConsumerResult": "R1 tail-host-arity actual default Node exits1 with stack-overflow memory-fault; baseline and R2 same source literal20000. Not rerun.",
+  "workflowDecision": "For future emitter/runtime candidates, exercise real newly emitted small consumers from native stage0 first. Only survivors earn the full own-source self-stage2; stage0 checker timings still cannot measure the new runtime.",
+  "notClaimed": "This is an earlier equivalent semantic rejection point, not measured compiler throughput or whole-build speedup."
+}

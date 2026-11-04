@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "version": "G62R2",
+  "status": "PERMANENT_FFI_REGRESSION_COMPATIBILITY_SOURCE_BEFORE_EXECUTION",
+  "compilerSourceUnchanged": "Runtime4line source still5d7ac44e and timing cohort is complete; test-only change is outside compiler/workload closures.",
+  "initialMainControl": {
+    "sourceRunPassed": true,
+    "jsEmissionPassed": true,
+    "defaultNodeRunPassed": false,
+    "diagnostic": "bend: memory fault (machine stack overflow?)",
+    "rows": [
+      {
+        "name": "main-regression-official-source-run",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/bend2/main.ts",
+          "/Users/ilyagulya/Projects/My/bend/tests/compile/js_closure_host_depth.bend"
+        ],
+        "cwd": "/Users/ilyagulya/Projects/My/bend",
+        "exitCode": 0,
+        "stdout": "20000\n",
+        "stderr": "HEAVY_GATE {\"status\":\"PASS\",\"reason\":\"command_exit\",\"commandExitCode\":0,\"commandSignal\":0,\"peakRssBytes\":73728000,\"peakFootprintBytes\":51921568,\"elapsedMs\":133,\"timeoutMs\":120000,\"reportPhase\":\"complete\",\"ownedTreeStopped\":true,\"supervisorExitCode\":0,\"command\":[\"/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun\",\"--smol\",\"/Users/ilyagulya/Projects/My/bend/bend2/main.ts\",\"/Users/ilyagulya/Projects/My/bend/tests/compile/js_closure_host_depth.bend\"],\"label\":\"heavy command\",\"exitCode\":0,\"reportPath\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793762745875-92c38ea73aaf6e8e.json\",\"memoryLimitBytes\":8589934592,\"rssLimitBytes\":8589934592}\n"
+      },
+      {
+        "name": "main-regression-official-js-emit",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/bend2/main.ts",
+          "/Users/ilyagulya/Projects/My/bend/tests/compile/js_closure_host_depth.bend",
+          "-o",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/main-regression.js"
+        ],
+        "cwd": "/Users/ilyagulya/Projects/My/bend",
+        "exitCode": 0,
+        "stdout": "",
+        "stderr": "HEAVY_GATE {\"status\":\"PASS\",\"reason\":\"command_exit\",\"commandExitCode\":0,\"commandSignal\":0,\"peakRssBytes\":69681152,\"peakFootprintBytes\":51561168,\"elapsedMs\":106,\"timeoutMs\":120000,\"reportPhase\":\"complete\",\"ownedTreeStopped\":true,\"supervisorExitCode\":0,\"command\":[\"/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun\",\"--smol\",\"/Users/ilyagulya/Projects/My/bend/bend2/main.ts\",\"/Users/ilyagulya/Projects/My/bend/tests/compile/js_closure_host_depth.bend\",\"-o\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/main-regression.js\"],\"label\":\"heavy command\",\"exitCode\":0,\"reportPath\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793762746035-fd0d0d3316f8de84.json\",\"memoryLimitBytes\":8589934592,\"rssLimitBytes\":8589934592}\n"
+      },
+      {
+        "name": "main-regression-official-js-default-node",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/main-regression.js"
+        ],
+        "cwd": "/Users/ilyagulya/Projects/My/bend",
+        "exitCode": 1,
+        "stdout": "",
+        "stderr": "bend: memory fault (machine stack overflow?)\nHEAVY_GATE {\"status\":\"FAIL\",\"reason\":\"command_exit\",\"commandExitCode\":1,\"commandSignal\":0,\"peakRssBytes\":38027264,\"peakFootprintBytes\":10847768,\"elapsedMs\":118,\"timeoutMs\":120000,\"reportPhase\":\"complete\",\"ownedTreeStopped\":true,\"supervisorExitCode\":1,\"command\":[\"/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/main-regression.js\"],\"label\":\"heavy command\",\"exitCode\":1,\"reportPath\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793762746164-35f19fb89096839f.json\",\"memoryLimitBytes\":8589934592,\"rssLimitBytes\":8589934592}\n"
+      }
+    ],
+    "meaning": "Initial permanent test also demanded20000-deep non-tail execution from the separate official TS JS emitter. Preserve that actual failure; do not misreport default-Node compatibility. The original non-tail R1 falsifier remains frozen and the R2 selfhost runtime passed it."
+  },
+  "permanentSeam": "Foreign JS extra arguments must be ignored by a generated unary callback. Use a deep tail-recursive count to isolate that host-arity boundary from unrelated non-tail backend limits; literal20000 and negative third JS argument unchanged.",
+  "updatedSource": {
+    "path": "/Users/ilyagulya/Projects/My/bend/tests/compile/js_closure_host_depth.bend",
+    "sha256": "0870401ad5950774c6d28090e0803f58c151e546dc09de4ad70c19702e6b3222"
+  },
+  "updatedForeign": {
+    "path": "/Users/ilyagulya/Projects/My/bend/tests/compile/js_closure_host_depth.js",
+    "sha256": "49c13207a7e8e56b7d308c3da2d2ea9724385b26c80920b5cbf74254c2f57d2e"
+  },
+  "required": "Prove same new fixture baselinePASS,R1FAIL,R2PASS, then ordinary main source/Node/Bun pathsPASS."
+}

@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "version": "G62R2",
+  "status": "SOURCE_BEFORE_EXECUTION",
+  "protocol": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/repository/checkpoints/local2039g62-r2-protocol.json",
+    "sha256": "d221466b9fe1029ac077f6a1b7a89542150367cdd7cb196aa94802617eca7170"
+  },
+  "sourceManifest": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/candidate-r2-compiler-source.corpus.json",
+    "sha256": "cc9e642478be13775bccfdfcd0dc4282e3ee06e2d11796ad4fcfa728da656892"
+  },
+  "sourceDelta": [
+    {
+      "path": "checkpoints/emitter_steps_v1.bend",
+      "baselineSha256": "7f7c8d2e57a3fcd3925b4286a8300668ae91b7e11a26317cea6da2df5c9ea425",
+      "candidateSha256": "5cc01625e30f1429a5cd3f966c8ee5389dabeb353fa77a002529c073a146617f"
+    }
+  ],
+  "fix": "Wrapper parameter $depth is used as private $td only for $raw===BEND_TAIL. Ordinary host arguments cannot override the64 boundary. All fast split/frame/cleanup logic from R1 unchanged.",
+  "regressionSources": [
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/repository/tests/compile/js_closure_host_depth.bend",
+      "sha256": "9b9ac5226ea0d32f58b742e5dff5a1f0e8732cc9b400d317cbb256e4ddfd819a"
+    },
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/repository/tests/compile/js_closure_host_depth.js",
+      "sha256": "49c13207a7e8e56b7d308c3da2d2ea9724385b26c80920b5cbf74254c2f57d2e"
+    }
+  ],
+  "knownBefore": "R1 actual source\u2192JS\u2192default Node exits1 with memory-fault/stack-overflow diagnostic on host f(20000,undefined,-1000000); baseline literal20000. No timing collected for rejected R1.",
+  "sourceFreezeCommand": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/repository/evals/native_seed_corpus.ts",
+    "--root=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/repository/checkpoints/local2039g49-compiler-root.bend",
+    "--out=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/candidate-r2-compiler-source.corpus.json",
+    "--target=js"
+  ],
+  "nativeCommand": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/evals/native_compiler_experiment.ts",
+    "--mode=run",
+    "--corpus=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/candidate-r2-compiler-source.corpus.json",
+    "--build=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g44d1-native-build.json",
+    "--report=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/candidate-r2-native-stage0.json",
+    "--phase=compile",
+    "--threads=1"
+  ],
+  "nativeCwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/repository",
+  "requiredNext": "Genuine own-JS self-stage2 before all correctness/performance claims.",
+  "acceptedCompiler": "G24R12 unchanged"
+}

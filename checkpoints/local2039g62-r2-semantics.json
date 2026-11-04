@@ -1,0 +1,1446 @@
+{
+  "schemaVersion": 1,
+  "version": "G62R2",
+  "status": "HOST_BOUNDARY_AND_FULL_FINITE_SEMANTIC_BATCH_PASS",
+  "sourceCheckpoint": "5d7ac44e",
+  "actualImage": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/candidate-r2-self-stage2.json.output.mjs",
+    "sha256": "bbe0e8f91a4998aeb80c7ac860ab49fecd9ef2b1cbce9ffb21f937375b641ce4"
+  },
+  "programResults": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/r2-program-smoke-results.json",
+    "sha256": "2af8e47d3106d232dcc09a95e5e0d3feec98edf88ba2ca4648225e02a018dad2"
+  },
+  "programsPassed": 9,
+  "guardedOwnEmitAndDefaultStackRunRows": 18,
+  "programCommand": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/program-smoke-runner.mjs",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/r2-program-smoke-plan.json"
+  ],
+  "programCwd": "/Users/ilyagulya/Projects/My/bend",
+  "hostRegression": {
+    "status": "PASS",
+    "stdout": "20000\n",
+    "source": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/repository/tests/compile/js_closure_host_depth.bend",
+      "sha256": "9b9ac5226ea0d32f58b742e5dff5a1f0e8732cc9b400d317cbb256e4ddfd819a"
+    },
+    "foreign": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/repository/tests/compile/js_closure_host_depth.js",
+      "sha256": "49c13207a7e8e56b7d308c3da2d2ea9724385b26c80920b5cbf74254c2f57d2e"
+    },
+    "baseline": "PASS in G62R1 falsifier",
+    "before": "G62R1 exited1 stack-overflow memory-fault; see cfceb044 retained source/failure.",
+    "nodeStack": "Default Node stack, no stack override."
+  },
+  "consumerGate": {
+    "passed": 69,
+    "command": [
+      "/usr/bin/env",
+      "PATH=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools:/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/cmux-cli-shims/1AE884FF-4153-438F-922A-7660D416EB20:/Applications/cmux.app/Contents/Resources/bin:/Users/ilyagulya/.antigravity/antigravity/bin:/opt/homebrew/opt/mysql-client/bin:/opt/homebrew/opt/binutils/bin:/Users/ilyagulya/.depot_tools:/opt/homebrew/opt/whois/bin:/Users/ilyagulya/go/bin:/opt/homebrew/opt/curl/bin:/Users/ilyagulya/Library/pnpm:/Users/ilyagulya/.opam/default/bin:/Users/ilyagulya/.bun/bin:/Users/ilyagulya/.local/bin:/Users/ilyagulya/.local/bin:/Users/ilyagulya/fvm/default/bin:/opt/homebrew/opt/ruby/bin:/Users/ilyagulya/.elan/bin:/Library/Frameworks/Python.framework/Versions/3.12/bin:/opt/homebrew/share/google-cloud-sdk/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/pkg/env/global/bin:/opt/X11/bin:/Library/Apple/usr/bin:/Applications/Wireshark.app/Contents/MacOS:/Applications/VMware Fusion.app/Contents/Public:/opt/homebrew/bin:/Users/ilyagulya/.cargo/bin:/Users/ilyagulya/Library/Application Support/JetBrains/Toolbox/scripts:/Users/ilyagulya/.orbstack/bin:/Users/ilyagulya/Library/Android/sdk/platform-tools:/Users/ilyagulya/Library/Android/sdk/build-tools/34.0.0:/Users/ilyagulya/Library/Android/sdk/tools/proguard/bin:/Users/ilyagulya/Library/Android/sdk/emulator:/Users/ilyagulya/Library/Android/sdk/cmdline-tools/latest/bin:/Users/ilyagulya/.spoof-dpi/bin:/Users/ilyagulya/.pub-cache/bin:/Users/ilyagulya/Library/Android/sdk/ndk/26.3.11579264:/Users/ilyagulya/.lmstudio/bin:/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "/Users/ilyagulya/Projects/My/bend/evals/checker_core_target_gate.ts",
+      "--component=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/candidate-r2-self-stage2.json.output.mjs",
+      "--parser=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/candidate-r2-self-stage2.json.output.mjs",
+      "--report=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/candidate-r2-stage2-targets.json"
+    ],
+    "cwd": "/Users/ilyagulya/Projects/My/bend",
+    "report": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/candidate-r2-stage2-targets.json",
+      "sha256": "40ee936d62641ed50e05240fc725189022d5a18387e4a8800783858f0e198635"
+    },
+    "limits": {
+      "memoryMiB": 8192,
+      "rssMiB": 8192,
+      "pollMs": 10,
+      "workerStackMiB": 256,
+      "parserFuel": 2000000,
+      "maxHeavyChildren": 1
+    },
+    "rows": [
+      {
+        "name": "enum-constant",
+        "passed": true,
+        "accepted": true,
+        "output": "BitOne{}",
+        "checkerTag": "CheckSuccess",
+        "emitterTag": "EmitSuccess",
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 879,
+          "peakRssBytes": 662667264,
+          "peakFootprintBytes": 471687208,
+          "timeoutMs": 600000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793762188372-cedaf032f1eebef6.json"
+        }
+      },
+      {
+        "name": "affine-identity",
+        "passed": true,
+        "accepted": true,
+        "output": "BitZero{}",
+        "checkerTag": "CheckSuccess",
+        "emitterTag": "EmitSuccess",
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 915,
+          "peakRssBytes": 668581888,
+          "peakFootprintBytes": 474183104,
+          "timeoutMs": 600000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793762189301-70f75c41400ba2d2.json"
+        }
+      },
+      {
+        "name": "reusable-duplicate",
+        "passed": true,
+        "accepted": true,
+        "output": "Duo{BitOne{}, BitOne{}}",
+        "checkerTag": "CheckSuccess",
+        "emitterTag": "EmitSuccess",
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 967,
+          "peakRssBytes": 668254208,
+          "peakFootprintBytes": 472735688,
+          "timeoutMs": 600000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793762190261-2a34b911ea7c3f5b.json"
+        }
+      },
+      {
+        "name": "return-type-mismatch",
+        "passed": true,
+        "accepted": false,
+        "output": null,
+        "checkerTag": "CheckFailure",
+        "emitterTag": null,
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 820,
+          "peakRssBytes": 621527040,
+          "peakFootprintBytes": 472194968,
+          "timeoutMs": 600000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793762191274-3a685bc601395abf.json"
+        }
+      },
+      {
+        "name": "affine-duplicate",
+        "passed": true,
+        "accepted": false,
+        "output": null,
+        "checkerTag": "CheckFailure",
+        "emitterTag": null,
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 817,
+          "peakRssBytes": 623034368,
+          "peakFootprintBytes": 472162416,
+          "timeoutMs": 600000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793762192140-7eb1dbe1e15af28a.json"
+        }
+      },
+      {
+        "name": "undefined-reference",
+        "passed": true,
+        "accepted": false,
+        "output": null,
+        "checkerTag": "CheckFailure",
+        "emitterTag": null,
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 781,
+          "peakRssBytes": 619495424,
+          "peakFootprintBytes": 471719952,
+          "timeoutMs": 600000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793762193003-065753006fdfab9b.json"
+        }
+      },
+      {
+        "name": "inherited-reusable-lambda",
+        "passed": true,
+        "accepted": true,
+        "output": "Duo{BitOne{}, BitOne{}}",
+        "checkerTag": "CheckSuccess",
+        "emitterTag": "EmitSuccess",
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 911,
+          "peakRssBytes": 656064512,
+          "peakFootprintBytes": 472096616,
+          "timeoutMs": 600000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793762193828-c972fe7a6444f360.json"
+        }
+      },
+      {
+        "name": "promoted-reusable-lambda",
+        "passed": true,
+        "accepted": true,
+        "output": "Duo{BitZero{}, BitZero{}}",
+        "checkerTag": "CheckSuccess",
+        "emitterTag": "EmitSuccess",
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 936,
+          "peakRssBytes": 671629312,
+          "peakFootprintBytes": 474346272,
+          "timeoutMs": 600000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793762194783-06e9bafb020ce717.json"
+        }
+      },
+      {
+        "name": "affine-lambda-duplicate",
+        "passed": true,
+        "accepted": false,
+        "output": null,
+        "checkerTag": "CheckFailure",
+        "emitterTag": null,
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 832,
+          "peakRssBytes": 623001600,
+          "peakFootprintBytes": 471818160,
+          "timeoutMs": 600000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793762195765-192414cf79c80e08.json"
+        }
+      },
+      {
+        "name": "promoted-lambda-lower-kind",
+        "passed": true,
+        "accepted": false,
+        "output": null,
+        "checkerTag": "CheckFailure",
+        "emitterTag": null,
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 798,
+          "peakRssBytes": 621936640,
+          "peakFootprintBytes": 472244144,
+          "timeoutMs": 600000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793762196642-5e9d26cc95993fc9.json"
+        }
+      },
+      {
+        "name": "recursive-datatype",
+        "passed": true,
+        "accepted": true,
+        "output": "Link{Stop{}}",
+        "checkerTag": "CheckSuccess",
+        "emitterTag": "EmitSuccess",
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 908,
+          "peakRssBytes": 664453120,
+          "peakFootprintBytes": 471654320,
+          "timeoutMs": 600000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793762197486-c5086888f080619f.json"
+        }
+      },
+      {
+        "name": "self-referential-datatype-kind",
+        "passed": true,
+        "accepted": false,
+        "output": null,
+        "checkerTag": "CheckFailure",
+        "emitterTag": null,
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 768,
+          "peakRssBytes": 617742336,
+          "peakFootprintBytes": 471670704,
+          "timeoutMs": 600000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793762198439-c5cdb913107cb414.json"
+        }
+      },
+      {
+        "name": "single-enum-match-complete",
+        "passed": true,
+        "accepted": true,
+        "output": "BitOne{}",
+        "checkerTag": "CheckSuccess",
+        "emitterTag": "EmitSuccess",
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 993,
+          "peakRssBytes": 668139520,
+          "peakFootprintBytes": 476018112,
+          "timeoutMs": 600000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793762199252-32081ca52bcc7f59.json"
+        }
+      },
+      {
+        "name": "single-enum-match-incomplete",
+        "passed": true,
+        "accepted": false,
+        "output": null,
+        "checkerTag": "CheckFailure",
+        "emitterTag": null,
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 847,
+          "peakRssBytes": 622444544,
+          "peakFootprintBytes": 471900104,
+          "timeoutMs": 600000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793762200290-8a97801c679d1fac.json"
+        }
+      },
+      {
+        "name": "joint-match-complete",
+        "passed": true,
+        "accepted": true,
+        "output": "BitOne{}",
+        "checkerTag": "CheckSuccess",
+        "emitterTag": "EmitSuccess",
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 1043,
+          "peakRssBytes": 669810688,
+          "peakFootprintBytes": 482047400,
+          "timeoutMs": 600000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793762201182-9e64b63a56b94dcf.json"
+        }
+      },
+      {
+        "name": "joint-match-incomplete",
+        "passed": true,
+        "accepted": false,
+        "output": null,
+        "checkerTag": "CheckFailure",
+        "emitterTag": null,
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 864,
+          "peakRssBytes": 624951296,
+          "peakFootprintBytes": 471916416,
+          "timeoutMs": 600000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793762202269-6c90abd811fb81ea.json"
+        }
+      },
+      {
+        "name": "nested-field-pattern",
+        "passed": true,
+        "accepted": true,
+        "output": "BitOne{}",
+        "checkerTag": "CheckSuccess",
+        "emitterTag": "EmitSuccess",
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 1034,
+          "peakRssBytes": 668794880,
+          "peakFootprintBytes": 480343272,
+          "timeoutMs": 600000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793762203178-30c33fe2666c9c7a.json"
+        }
+      },
+      {
+        "name": "partial-family-application",
+        "passed": true,
+        "accepted": true,
+        "output": "BitOne{}",
+        "checkerTag": "CheckSuccess",
+        "emitterTag": "EmitSuccess",
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 936,
+          "peakRssBytes": 652492800,
+          "peakFootprintBytes": 471900176,
+          "timeoutMs": 600000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793762204256-b588f0de8700fd16.json"
+        }
+      },
+      {
+        "name": "checked-template-binder-guard",
+        "passed": true,
+        "accepted": null,
+        "output": null,
+        "checkerTag": "CheckSuccess",
+        "emitterTag": null,
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 794,
+          "peakRssBytes": 620986368,
+          "peakFootprintBytes": 471982168,
+          "timeoutMs": 600000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793762205236-5bb39bea8718cb6d.json"
+        }
+      },
+      {
+        "name": "checked-template-term-guard",
+        "passed": true,
+        "accepted": null,
+        "output": null,
+        "checkerTag": "CheckFailure",
+        "emitterTag": null,
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 786,
+          "peakRssBytes": 619020288,
+          "peakFootprintBytes": 471932824,
+          "timeoutMs": 600000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793762206075-371831143fe7f23a.json"
+        }
+      },
+      {
+        "name": "mutual-datatype-fields",
+        "passed": true,
+        "accepted": true,
+        "output": "MkA{MkB{AEnd{}}}",
+        "checkerTag": "CheckSuccess",
+        "emitterTag": "EmitSuccess",
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 917,
+          "peakRssBytes": 664682496,
+          "peakFootprintBytes": 472609616,
+          "timeoutMs": 600000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793762206905-0ccf3db98fd4eaa3.json"
+        }
+      },
+      {
+        "name": "forward-index-datatype",
+        "passed": true,
+        "accepted": true,
+        "output": "MkB{}",
+        "checkerTag": "CheckSuccess",
+        "emitterTag": "EmitSuccess",
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 916,
+          "peakRssBytes": 657211392,
+          "peakFootprintBytes": 472063800,
+          "timeoutMs": 600000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793762207868-85babf4a67f33940.json"
+        }
+      },
+      {
+        "name": "mutual-layout-arm-group",
+        "passed": true,
+        "accepted": true,
+        "output": "LayoutData{LayArm{LayoutWord{}}}",
+        "checkerTag": "CheckSuccess",
+        "emitterTag": "EmitSuccess",
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 918,
+          "peakRssBytes": 664174592,
+          "peakFootprintBytes": 471621576,
+          "timeoutMs": 600000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793762208829-e4dc19ef62a82642.json"
+        }
+      },
+      {
+        "name": "mutual-form-nest-cycle",
+        "passed": true,
+        "accepted": true,
+        "output": "FillForm{FormArm{Nest{FillWord{}}}}",
+        "checkerTag": "CheckSuccess",
+        "emitterTag": "EmitSuccess",
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 916,
+          "peakRssBytes": 668237824,
+          "peakFootprintBytes": 472412816,
+          "timeoutMs": 600000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793762209793-97a6b7c1dca90d51.json"
+        }
+      },
+      {
+        "name": "unknown-forward-datatype",
+        "passed": true,
+        "accepted": false,
+        "output": null,
+        "checkerTag": "CheckFailure",
+        "emitterTag": null,
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 774,
+          "peakRssBytes": 618201088,
+          "peakFootprintBytes": 471703544,
+          "timeoutMs": 600000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793762210756-ab620c2e400b722f.json"
+        }
+      },
+      {
+        "name": "duplicate-datatype-header",
+        "passed": true,
+        "accepted": false,
+        "output": null,
+        "checkerTag": "CheckFailure",
+        "emitterTag": null,
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 899,
+          "peakRssBytes": 803389440,
+          "peakFootprintBytes": 652999264,
+          "timeoutMs": 600000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793762211576-a07b9d430273b22a.json"
+        }
+      },
+      {
+        "name": "ill-kinded-forward-field",
+        "passed": true,
+        "accepted": false,
+        "output": null,
+        "checkerTag": "CheckFailure",
+        "emitterTag": null,
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 768,
+          "peakRssBytes": 619888640,
+          "peakFootprintBytes": 471441328,
+          "timeoutMs": 600000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793762212520-32f3d32462579d75.json"
+        }
+      },
+      {
+        "name": "covered-one",
+        "passed": true,
+        "accepted": true,
+        "output": "Pair{BitZero{}, BitZero{}}",
+        "checkerTag": "CheckSuccess",
+        "emitterTag": "EmitSuccess",
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 1038,
+          "peakRssBytes": 665092096,
+          "peakFootprintBytes": 478131072,
+          "timeoutMs": 600000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793762213334-63e7f5364586b327.json"
+        }
+      },
+      {
+        "name": "covered-many",
+        "passed": true,
+        "accepted": true,
+        "output": "Pair{BitZero{}, BitZero{}}",
+        "checkerTag": "CheckSuccess",
+        "emitterTag": "EmitSuccess",
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 1012,
+          "peakRssBytes": 664354816,
+          "peakFootprintBytes": 477049656,
+          "timeoutMs": 600000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793762214416-243e647261387fc8.json"
+        }
+      },
+      {
+        "name": "covered-affine-duplicate",
+        "passed": true,
+        "accepted": false,
+        "output": null,
+        "checkerTag": "CheckFailure",
+        "emitterTag": null,
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 888,
+          "peakRssBytes": 627507200,
+          "peakFootprintBytes": 471769080,
+          "timeoutMs": 600000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793762215472-3120a81b4667c9d4.json"
+        }
+      },
+      {
+        "name": "covered-erased-use",
+        "passed": true,
+        "accepted": false,
+        "output": null,
+        "checkerTag": "CheckFailure",
+        "emitterTag": null,
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 889,
+          "peakRssBytes": 627818496,
+          "peakFootprintBytes": 472375312,
+          "timeoutMs": 600000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793762216405-bca94607527f089c.json"
+        }
+      },
+      {
+        "name": "typed-local-reusable",
+        "passed": true,
+        "accepted": true,
+        "output": "Pair{BitOne{}, BitOne{}}",
+        "checkerTag": "CheckSuccess",
+        "emitterTag": "EmitSuccess",
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 966,
+          "peakRssBytes": 659980288,
+          "peakFootprintBytes": 473248256,
+          "timeoutMs": 600000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793762217340-1af031756dde297f.json"
+        }
+      },
+      {
+        "name": "typed-local-affine-duplicate",
+        "passed": true,
+        "accepted": false,
+        "output": null,
+        "checkerTag": "CheckFailure",
+        "emitterTag": null,
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 831,
+          "peakRssBytes": 622133248,
+          "peakFootprintBytes": 471965904,
+          "timeoutMs": 600000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793762218352-6f9751d74ec7d54e.json"
+        }
+      },
+      {
+        "name": "typed-local-dependent-scope",
+        "passed": true,
+        "accepted": true,
+        "output": "BitOne{}",
+        "checkerTag": "CheckSuccess",
+        "emitterTag": "EmitSuccess",
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 979,
+          "peakRssBytes": 660619264,
+          "peakFootprintBytes": 472904168,
+          "timeoutMs": 600000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793762219230-075b6c556b71f232.json"
+        }
+      },
+      {
+        "name": "covered-local-outer-affine",
+        "passed": true,
+        "accepted": false,
+        "output": null,
+        "checkerTag": "CheckFailure",
+        "emitterTag": null,
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 934,
+          "peakRssBytes": 626589696,
+          "peakFootprintBytes": 471998576,
+          "timeoutMs": 600000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793762220254-63be6049934ee3da.json"
+        }
+      },
+      {
+        "name": "covered-local-outer-erased",
+        "passed": true,
+        "accepted": false,
+        "output": null,
+        "checkerTag": "CheckFailure",
+        "emitterTag": null,
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 983,
+          "peakRssBytes": 631488512,
+          "peakFootprintBytes": 471719928,
+          "timeoutMs": 600000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793762221233-3e75aed2306842b2.json"
+        }
+      },
+      {
+        "name": "usage-curried-single",
+        "passed": true,
+        "accepted": true,
+        "output": "Pair{BitOne{}, BitZero{}}",
+        "checkerTag": "CheckSuccess",
+        "emitterTag": "EmitSuccess",
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 933,
+          "peakRssBytes": 671055872,
+          "peakFootprintBytes": 475968528,
+          "timeoutMs": 600000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793762222260-7e9f6ae1df2126be.json"
+        }
+      },
+      {
+        "name": "usage-curried-duplicate",
+        "passed": true,
+        "accepted": false,
+        "output": null,
+        "checkerTag": "CheckFailure",
+        "emitterTag": null,
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 841,
+          "peakRssBytes": 624115712,
+          "peakFootprintBytes": 473079920,
+          "timeoutMs": 600000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793762223237-14d59abe77e5d6cb.json"
+        }
+      },
+      {
+        "name": "usage-annotation-single",
+        "passed": true,
+        "accepted": true,
+        "output": "Pair{BitOne{}, BitZero{}}",
+        "checkerTag": "CheckSuccess",
+        "emitterTag": "EmitSuccess",
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 940,
+          "peakRssBytes": 667222016,
+          "peakFootprintBytes": 471949328,
+          "timeoutMs": 600000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793762224122-368606a94f7abcb1.json"
+        }
+      },
+      {
+        "name": "usage-annotation-duplicate",
+        "passed": true,
+        "accepted": false,
+        "output": null,
+        "checkerTag": "CheckFailure",
+        "emitterTag": null,
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 843,
+          "peakRssBytes": 622968832,
+          "peakFootprintBytes": 471834712,
+          "timeoutMs": 600000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793762225106-794840a1c48da739.json"
+        }
+      },
+      {
+        "name": "usage-local-function-single",
+        "passed": true,
+        "accepted": true,
+        "output": "Pair{BitOne{}, BitZero{}}",
+        "checkerTag": "CheckSuccess",
+        "emitterTag": "EmitSuccess",
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 970,
+          "peakRssBytes": 667992064,
+          "peakFootprintBytes": 472855448,
+          "timeoutMs": 600000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793762225993-6c0ff61d7f75ebb8.json"
+        }
+      },
+      {
+        "name": "usage-local-function-duplicate",
+        "passed": true,
+        "accepted": false,
+        "output": null,
+        "checkerTag": "CheckFailure",
+        "emitterTag": null,
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 879,
+          "peakRssBytes": 624934912,
+          "peakFootprintBytes": 471703472,
+          "timeoutMs": 600000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793762227007-7d89b8138ffcda3a.json"
+        }
+      },
+      {
+        "name": "usage-local-function-erased",
+        "passed": true,
+        "accepted": true,
+        "output": "BitZero{}",
+        "checkerTag": "CheckSuccess",
+        "emitterTag": "EmitSuccess",
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 952,
+          "peakRssBytes": 671907840,
+          "peakFootprintBytes": 477213688,
+          "timeoutMs": 600000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793762227931-ae498dfd6c2c82c2.json"
+        }
+      },
+      {
+        "name": "usage-local-function-dependent",
+        "passed": true,
+        "accepted": true,
+        "output": "BitOne{}",
+        "checkerTag": "CheckSuccess",
+        "emitterTag": "EmitSuccess",
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 961,
+          "peakRssBytes": 667648000,
+          "peakFootprintBytes": 471637936,
+          "timeoutMs": 600000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793762228928-c977e4f258bf3522.json"
+        }
+      },
+      {
+        "name": "usage-local-function-dependent-live",
+        "passed": true,
+        "accepted": false,
+        "output": null,
+        "checkerTag": "CheckFailure",
+        "emitterTag": null,
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 869,
+          "peakRssBytes": 623198208,
+          "peakFootprintBytes": 471719832,
+          "timeoutMs": 600000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793762229933-f22eb53394e8595b.json"
+        }
+      },
+      {
+        "name": "usage-g55-lambda-error-before-usage",
+        "passed": true,
+        "accepted": false,
+        "output": null,
+        "checkerTag": "CheckFailure",
+        "emitterTag": null,
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 823,
+          "peakRssBytes": 622510080,
+          "peakFootprintBytes": 473309128,
+          "timeoutMs": 600000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793762230847-9188dd893332f3da.json"
+        }
+      },
+      {
+        "name": "usage-g55-lambda-body-mismatch-before-usage",
+        "passed": true,
+        "accepted": false,
+        "output": null,
+        "checkerTag": "CheckFailure",
+        "emitterTag": null,
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 834,
+          "peakRssBytes": 621346816,
+          "peakFootprintBytes": 471621576,
+          "timeoutMs": 600000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793762231716-d92edba0329af1c6.json"
+        }
+      },
+      {
+        "name": "usage-g55-pattern-usage-before-undefined",
+        "passed": true,
+        "accepted": false,
+        "output": null,
+        "checkerTag": "CheckFailure",
+        "emitterTag": null,
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 872,
+          "peakRssBytes": 623017984,
+          "peakFootprintBytes": 471752792,
+          "timeoutMs": 600000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793762232595-92e330ff432e5fae.json"
+        }
+      },
+      {
+        "name": "usage-g55-pattern-branch-independent",
+        "passed": true,
+        "accepted": true,
+        "output": "BitOne{}",
+        "checkerTag": "CheckSuccess",
+        "emitterTag": "EmitSuccess",
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 1317,
+          "peakRssBytes": 678313984,
+          "peakFootprintBytes": 483554776,
+          "timeoutMs": 600000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793762233515-b65e487704cf0c33.json"
+        }
+      },
+      {
+        "name": "usage-g55-body-error-before-final-affinity",
+        "passed": true,
+        "accepted": false,
+        "output": null,
+        "checkerTag": "CheckFailure",
+        "emitterTag": null,
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 930,
+          "peakRssBytes": 622149632,
+          "peakFootprintBytes": 471867432,
+          "timeoutMs": 600000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793762234886-e86c6f73218027e2.json"
+        }
+      },
+      {
+        "name": "usage-g55-erased-application-argument-plus-live",
+        "passed": true,
+        "accepted": true,
+        "output": "Pair{BitZero{}, BitOne{}}",
+        "checkerTag": "CheckSuccess",
+        "emitterTag": "EmitSuccess",
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 1081,
+          "peakRssBytes": 663912448,
+          "peakFootprintBytes": 473773312,
+          "timeoutMs": 600000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793762235864-ea69a29332e085e3.json"
+        }
+      },
+      {
+        "name": "usage-g55-erased-argument-still-typechecked",
+        "passed": true,
+        "accepted": false,
+        "output": null,
+        "checkerTag": "CheckFailure",
+        "emitterTag": null,
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 994,
+          "peakRssBytes": 624656384,
+          "peakFootprintBytes": 472768576,
+          "timeoutMs": 600000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793762236992-531320245fc42f35.json"
+        }
+      },
+      {
+        "name": "usage-g55-erased-constructor-field-plus-live",
+        "passed": true,
+        "accepted": true,
+        "output": "BitOne{}",
+        "checkerTag": "CheckSuccess",
+        "emitterTag": "EmitSuccess",
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 1053,
+          "peakRssBytes": 667811840,
+          "peakFootprintBytes": 480147024,
+          "timeoutMs": 600000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793762238032-7d02e3e9f7b5c602.json"
+        }
+      },
+      {
+        "name": "usage-g55-beta-ignored-argument",
+        "passed": true,
+        "accepted": false,
+        "output": null,
+        "checkerTag": "CheckFailure",
+        "emitterTag": null,
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 932,
+          "peakRssBytes": 625639424,
+          "peakFootprintBytes": 473571176,
+          "timeoutMs": 600000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793762239131-dc809f45aec7c667.json"
+        }
+      },
+      {
+        "name": "usage-g55-early-local-undefined-after-duplicate-typed-value",
+        "passed": true,
+        "accepted": false,
+        "output": null,
+        "checkerTag": "CheckFailure",
+        "emitterTag": null,
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 956,
+          "peakRssBytes": 623689728,
+          "peakFootprintBytes": 472227856,
+          "timeoutMs": 600000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793762240108-04dc581067177255.json"
+        }
+      },
+      {
+        "name": "usage-g55-early-local-undefined-before-duplicate-typed-value",
+        "passed": true,
+        "accepted": false,
+        "output": null,
+        "checkerTag": "CheckFailure",
+        "emitterTag": null,
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 923,
+          "peakRssBytes": 622329856,
+          "peakFootprintBytes": 471719808,
+          "timeoutMs": 600000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793762241112-77d824a577939770.json"
+        }
+      },
+      {
+        "name": "usage-g55-early-local-erased-versus-body-error-typed-value",
+        "passed": true,
+        "accepted": false,
+        "output": null,
+        "checkerTag": "CheckFailure",
+        "emitterTag": null,
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 856,
+          "peakRssBytes": 622084096,
+          "peakFootprintBytes": 471687064,
+          "timeoutMs": 600000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793762242080-7ac3692e279ff3a9.json"
+        }
+      },
+      {
+        "name": "usage-g55-termination-before-final-duplicate-call",
+        "passed": true,
+        "accepted": false,
+        "output": null,
+        "checkerTag": "CheckFailure",
+        "emitterTag": null,
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 845,
+          "peakRssBytes": 622608384,
+          "peakFootprintBytes": 471719832,
+          "timeoutMs": 600000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793762242981-e52ef8dbd5bad1fe.json"
+        }
+      },
+      {
+        "name": "usage-g55-source-lexical-erased-dependent-local-typed-flag",
+        "passed": true,
+        "accepted": false,
+        "output": null,
+        "checkerTag": "CheckFailure",
+        "emitterTag": null,
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 965,
+          "peakRssBytes": 632406016,
+          "peakFootprintBytes": 471637888,
+          "timeoutMs": 600000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793762243870-639dfe1e5ec443f3.json"
+        }
+      },
+      {
+        "name": "usage-g55-source-lexical-live-dependent-local-typed-flag",
+        "passed": true,
+        "accepted": true,
+        "output": "BitZero{}",
+        "checkerTag": "CheckSuccess",
+        "emitterTag": "EmitSuccess",
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 1105,
+          "peakRssBytes": 678494208,
+          "peakFootprintBytes": 487372440,
+          "timeoutMs": 600000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793762244880-acaf7052bae6a2cb.json"
+        }
+      },
+      {
+        "name": "usage-g55-nested-alternative-max",
+        "passed": true,
+        "accepted": true,
+        "output": "BitOne{}",
+        "checkerTag": "CheckSuccess",
+        "emitterTag": "EmitSuccess",
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 1048,
+          "peakRssBytes": 676593664,
+          "peakFootprintBytes": 482063856,
+          "timeoutMs": 600000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793762246033-3329a90cc07e87a6.json"
+        }
+      },
+      {
+        "name": "usage-g55-nested-alternative-one-bad-row",
+        "passed": true,
+        "accepted": false,
+        "output": null,
+        "checkerTag": "CheckFailure",
+        "emitterTag": null,
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 1015,
+          "peakRssBytes": 627916800,
+          "peakFootprintBytes": 471883912,
+          "timeoutMs": 600000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793762247126-199f9755610eade9.json"
+        }
+      },
+      {
+        "name": "usage-g55-local-shadowed-levels",
+        "passed": true,
+        "accepted": true,
+        "output": "Pair{BitZero{}, BitZero{}}",
+        "checkerTag": "CheckSuccess",
+        "emitterTag": "EmitSuccess",
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 996,
+          "peakRssBytes": 672841728,
+          "peakFootprintBytes": 478148200,
+          "timeoutMs": 600000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793762248187-9c8b7a8a713d2db9.json"
+        }
+      },
+      {
+        "name": "usage-g55-sequential-local-values-duplicate-outer",
+        "passed": true,
+        "accepted": false,
+        "output": null,
+        "checkerTag": "CheckFailure",
+        "emitterTag": null,
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 880,
+          "peakRssBytes": 623804416,
+          "peakFootprintBytes": 471900176,
+          "timeoutMs": 600000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793762249233-c3102ac3d43fecd6.json"
+        }
+      },
+      {
+        "name": "usage-g55-do-let-affine-single",
+        "passed": true,
+        "accepted": true,
+        "output": "Pair{BitOne{}, BitZero{}}",
+        "checkerTag": "CheckSuccess",
+        "emitterTag": "EmitSuccess",
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 1078,
+          "peakRssBytes": 667664384,
+          "peakFootprintBytes": 473723920,
+          "timeoutMs": 600000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793762250162-a2926ce2de6585e8.json"
+        }
+      },
+      {
+        "name": "usage-g55-do-let-quantity-before-value-error",
+        "passed": true,
+        "accepted": false,
+        "output": null,
+        "checkerTag": "CheckFailure",
+        "emitterTag": null,
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 898,
+          "peakRssBytes": 622919680,
+          "peakFootprintBytes": 471834496,
+          "timeoutMs": 600000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793762251308-258059c201a4bbc6.json"
+        }
+      },
+      {
+        "name": "usage-g55-do-let-quantity-before-body-error",
+        "passed": true,
+        "accepted": false,
+        "output": null,
+        "checkerTag": "CheckFailure",
+        "emitterTag": null,
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 844,
+          "peakRssBytes": 621805568,
+          "peakFootprintBytes": 471867456,
+          "timeoutMs": 600000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793762252262-50beb7b5ded9ece5.json"
+        }
+      },
+      {
+        "name": "usage-g55-do-let-value-type-error",
+        "passed": true,
+        "accepted": false,
+        "output": null,
+        "checkerTag": "CheckFailure",
+        "emitterTag": null,
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 820,
+          "peakRssBytes": 623263744,
+          "peakFootprintBytes": 472375264,
+          "timeoutMs": 600000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793762253155-62d2619876f846e3.json"
+        }
+      },
+      {
+        "name": "usage-g55-do-let-many",
+        "passed": true,
+        "accepted": true,
+        "output": "Pair{BitOne{}, BitOne{}}",
+        "checkerTag": "CheckSuccess",
+        "emitterTag": "EmitSuccess",
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 982,
+          "peakRssBytes": 662405120,
+          "peakFootprintBytes": 473985872,
+          "timeoutMs": 600000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793762254019-96ee46980d3c8a0e.json"
+        }
+      }
+    ]
+  },
+  "performance": "No timing samples yet; all source/runtime smoke observations excluded."
+}

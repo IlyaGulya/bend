@@ -1,0 +1,123 @@
+{
+  "schemaVersion": 1,
+  "version": "G62R1",
+  "status": "PROSPECTIVE_BOUNDED_GENERATED_CLOSURE_APPLY_FASTPATH",
+  "sourceBaseline": "6cd21cd0",
+  "nativeDiagnostic": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/repository/checkpoints/local2039g62-profile.json",
+    "sha256": "f330fe9a239b0820b7ae5ff659b6ddaab50ccdd3386a3829211a3dd1d9772426"
+  },
+  "baselineNativeImage": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json.mjs",
+    "sha256": "4636c05aa8c75e72212cb03949937e25561942bc00da250f876f37f001b9fc18"
+  },
+  "baselineNativeProducer": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json",
+    "sha256": "717ea720d6d117e4fb49ede7ea0d57f544571d336437bb992cdf78c055dc5135"
+  },
+  "sourceScope": [
+    "checkpoints/emitter_steps_v1.bend JS public_closure emits explicit hidden $td=64 argument; $split1 fast caller forwards the actual current depth; generated closure terminal tail_call already consumes $td.",
+    "JS non-tail Apply forwards depth to $split1_fast. That helper executes only marked generated closures below64, using existing eager split_enter/done/abort and raw marker.",
+    "Unmarked functions and depth-limit paths retain original opaque trampoline semantics and exactly one marker lookup; no global dynamic-depth counter, no extra recursion allowance, no new BIR/checker/RunState/Map algorithm."
+  ],
+  "causalHypothesis": "Non-tail generated closure applies currently unwind into CALL_PENDING even at shallow depth; closure wrappers capture creation-time depth rather than receive invocation depth. Bound actual invocation depth explicitly and use the existing direct-call fast bracket for generated closures, preserving pending/LEAVE/abort and fallback.",
+  "declinedBeforeImplementation": [
+    "Lazy direct continuation publication: current physical enter/done total2.23pct, no persuasive >=10pct headroom; no source/build executed.",
+    "Map walker fusion/equality/cursor variants have low single-digit observed family budget and overlap G53; no new Map edit.",
+    "No G26/G52/G58 source-transport re-run."
+  ],
+  "lineage": {
+    "requiredStages": "Both source variants: same authenticated G44D1 C producer -> stage0 native-produced own JS emitter -> fresh self-source parse/expand/check/library emission -> measured stage2 image. Runtime-emitter changes cannot be measured by merely comparing old-runtime stage0 images.",
+    "notNativeCReceipt": "Stage2 reports are genuine unmodified selfhost_throughput PASS records, not forged NATIVE_FULL_COMPILE_PASS receipts. Use unchanged direct throughput driver with explicitly pinned stage chain for both sides.",
+    "baselineStage2Command": [
+      "/usr/bin/env",
+      "-u",
+      "SELFHOST_CPU_PROFILE_DIR",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+      "js",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2-request.json",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json"
+    ],
+    "baselineStage2Cwd": "/Users/ilyagulya/Projects/My/bend",
+    "baselineStage2Request": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2-request.json",
+      "sha256": "adcfb651972fa148392fc438f9c63ec6c1bec1dde9cba4d48c115d9c7de96c28"
+    },
+    "baselineExpectedByteFixedpoint": "4636c05aa8c75e72212cb03949937e25561942bc00da250f876f37f001b9fc18"
+  },
+  "correctness": [
+    "Existing 69 checker consumers on actual candidate image.",
+    "Actual own-image JS emission and default-stack Node execution for deep20000 non-tail/applied returns, million-hop tail closure, loop captures, split capture chain, non-tail returns, partial application/foreign apply, plus existing semantic scheduler edges as applicable.",
+    "All-body validation of source via genuine native producer and both full-source self-stage2 passes.",
+    "Public ABI13, source literal outputs, no expected-output edits; reject unused affine-invalid body."
+  ],
+  "performance": {
+    "selectedManifest": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/main-complete.corpus.json",
+      "sha256": "1a269e15bf70257b019ab572c003b6eb130b4e3f63ad507783525e28d307b0e4"
+    },
+    "orders": [
+      [
+        "baseline",
+        "candidate"
+      ],
+      [
+        "candidate",
+        "baseline"
+      ],
+      [
+        "baseline",
+        "candidate"
+      ]
+    ],
+    "primary": "Check process user+system CPU; equally scoped both sides, process helpers included.",
+    "costFilter": {
+      "allCpuRatiosBelow": 1,
+      "geometricCpuRatioAtMost": 0.9,
+      "geometricCheckerWallRatioAtMost": 1,
+      "candidateMedianFootprintRatioAtMost": 1.1
+    },
+    "conditionalFull": {
+      "onlyIfCostFilterPasses": true,
+      "manifest": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/full-frozen.corpus.json",
+        "sha256": "60bf820e76a9c336e58c848eec6a40b3f8fbb4b7ac2ae45ffd1abdb1d217ebc6"
+      },
+      "orders": [
+        [
+          "baseline",
+          "candidate"
+        ],
+        [
+          "candidate",
+          "baseline"
+        ]
+      ],
+      "interpretation": "Descriptive full-source direction confirmation; not strict12/native/product qualification."
+    },
+    "freshProcesses": true,
+    "profilesExcluded": true,
+    "excludedObservations": 0,
+    "retries": 0,
+    "statistics": "Existing paired log Student95 intervals and2pct practical band."
+  },
+  "limits": {
+    "nativeProductionTimeoutMs": 300000,
+    "profileTimeoutMs": 600000,
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "workerStackMiB": 256,
+    "oldGenerationMiB": 6144,
+    "youngGenerationMiB": 128,
+    "parserFuelPerModule": 8000000,
+    "chunkQuantum": 64,
+    "abi": 13,
+    "oneHeavyLane": true,
+    "privateDepthBound": 64,
+    "selfStage2TimeoutMs": 600000
+  },
+  "acceptedCompiler": "G24R12 unchanged; isolated candidate, no automatic source/backend promotion."
+}

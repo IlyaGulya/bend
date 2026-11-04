@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "version": "G62R2",
+  "status": "REJECTED_FOR_PROMOTION_PRESPECIFIED_COST_FILTER_FAILED",
+  "selectedCostFilterPass": false,
+  "fullPairs": "NOT_RUN",
+  "fullProcessesNOT_RUN": 4,
+  "nativeCOrProductPerformance": "NOT_ESTABLISHED",
+  "candidateByteFixedpoint": "NOT_RUN",
+  "sourceIntegratedIntoMain": false,
+  "reason": "No>=10pct checkerCPU reduction and median physical footprint exceeds original1.10 budget; retain all6 observations, do not spend conditional full-source runs.",
+  "cpuPairRatios": [
+    1.0090758556217223,
+    0.9382496769767564,
+    0.9776598872988533
+  ],
+  "footprintMedianRatio": 1.2126234230284005,
+  "candidateImageGrowthBytes": 2904078,
+  "acceptedCompiler": "G24R12 unchanged"
+}

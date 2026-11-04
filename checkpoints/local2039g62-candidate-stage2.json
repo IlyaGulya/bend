@@ -1,0 +1,144 @@
+{
+  "schemaVersion": 1,
+  "version": "G62R1",
+  "status": "CANDIDATE_CHANGED_RUNTIME_SELF_STAGE2_PASS_SEMANTICS_FROZEN",
+  "sourceCheckpoint": "480609a8",
+  "nativeStage0Report": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/candidate-native-stage0.json",
+    "sha256": "e676029f3f995282d4a288184124cf8e22d3f5c10ac7063d0569f95289e028a5"
+  },
+  "nativeStage0Image": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/candidate-native-stage0.json.mjs",
+    "sha256": "c18cf4fea938e9c01737987dddc0c1c0c7bb087f38c337d948265c29ac3df918"
+  },
+  "selfStage2Report": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/candidate-self-stage2.json",
+    "sha256": "e98ec7c5d8f3414fd5531d2c0520557ddd88c2be0bbc34a0b594022fc3468e84"
+  },
+  "selfStage2Image": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/candidate-self-stage2.json.output.mjs",
+    "sha256": "4abb9fff75d33b2dc5c855377a9b0532e1c4f6be3cdf6dd4411688c99d93617c"
+  },
+  "selfStage2Command": [
+    "/usr/bin/env",
+    "-u",
+    "SELFHOST_CPU_PROFILE_DIR",
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+    "js",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/candidate-self-stage2-request.json",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/candidate-self-stage2.json"
+  ],
+  "selfStage2Cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/repository",
+  "guardian": {
+    "status": "PASS",
+    "reason": "command_exit",
+    "elapsedMs": 309475,
+    "peakRssBytes": 2543075328,
+    "peakFootprintBytes": 3018972296,
+    "timeoutMs": 600000,
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592,
+    "ownedTreeStopped": true,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793760876381-9352dcb6134d049a.json"
+  },
+  "phases": [
+    {
+      "phase": "startup",
+      "elapsedMs": 586.9689169999999,
+      "userCpuMs": 570.073,
+      "systemCpuMs": 82.253,
+      "memoryEnd": {
+        "rss": 513769472,
+        "heapTotal": 96649216,
+        "heapUsed": 83739360,
+        "external": 42253720,
+        "arrayBuffers": 31785668
+      }
+    },
+    {
+      "phase": "load-parse",
+      "elapsedMs": 9796.219417,
+      "userCpuMs": 12280.61,
+      "systemCpuMs": 360.444,
+      "memoryEnd": {
+        "rss": 1529036800,
+        "heapTotal": 1070120960,
+        "heapUsed": 799389072,
+        "external": 10493131,
+        "arrayBuffers": 25039
+      }
+    },
+    {
+      "phase": "expand",
+      "elapsedMs": 6773.351833999999,
+      "userCpuMs": 7570.594,
+      "systemCpuMs": 99.112,
+      "memoryEnd": {
+        "rss": 1684717568,
+        "heapTotal": 1221115904,
+        "heapUsed": 996615624,
+        "external": 10493131,
+        "arrayBuffers": 25039
+      }
+    },
+    {
+      "phase": "check",
+      "elapsedMs": 272359.094584,
+      "userCpuMs": 286513.744,
+      "systemCpuMs": 3323.304,
+      "memoryEnd": {
+        "rss": 1490141184,
+        "heapTotal": 2083749888,
+        "heapUsed": 1823840600,
+        "external": 10487506,
+        "arrayBuffers": 25039
+      }
+    },
+    {
+      "phase": "emit",
+      "elapsedMs": 19149.770542000013,
+      "userCpuMs": 22748.005,
+      "systemCpuMs": 424.923,
+      "memoryEnd": {
+        "rss": 2267758592,
+        "heapTotal": 2476703744,
+        "heapUsed": 2264915984,
+        "external": 10487506,
+        "arrayBuffers": 25039
+      }
+    }
+  ],
+  "stepCounts": {
+    "expand": 1069353,
+    "check": 10414347,
+    "emit": 1284328
+  },
+  "programSmokePlan": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/program-smoke-plan.json",
+    "sha256": "c1192adf22f69a8cbebd07f6ec9a2084477b464dabd320a065a23a3efd2f9e7a"
+  },
+  "programSmokeRunner": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/program-smoke-runner.mjs",
+    "sha256": "5eaf6faf46ab41505356f0481d265a2a15a9406f6b9166525cb612bf2da32f97"
+  },
+  "programSmokeCommand": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/program-smoke-runner.mjs",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/program-smoke-plan.json"
+  ],
+  "programSmokeCwd": "/Users/ilyagulya/Projects/My/bend",
+  "consumerGateCommand": [
+    "/usr/bin/env",
+    "PATH=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools:/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/cmux-cli-shims/1AE884FF-4153-438F-922A-7660D416EB20:/Applications/cmux.app/Contents/Resources/bin:/Users/ilyagulya/.antigravity/antigravity/bin:/opt/homebrew/opt/mysql-client/bin:/opt/homebrew/opt/binutils/bin:/Users/ilyagulya/.depot_tools:/opt/homebrew/opt/whois/bin:/Users/ilyagulya/go/bin:/opt/homebrew/opt/curl/bin:/Users/ilyagulya/Library/pnpm:/Users/ilyagulya/.opam/default/bin:/Users/ilyagulya/.bun/bin:/Users/ilyagulya/.local/bin:/Users/ilyagulya/.local/bin:/Users/ilyagulya/fvm/default/bin:/opt/homebrew/opt/ruby/bin:/Users/ilyagulya/.elan/bin:/Library/Frameworks/Python.framework/Versions/3.12/bin:/opt/homebrew/share/google-cloud-sdk/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/pkg/env/global/bin:/opt/X11/bin:/Library/Apple/usr/bin:/Applications/Wireshark.app/Contents/MacOS:/Applications/VMware Fusion.app/Contents/Public:/opt/homebrew/bin:/Users/ilyagulya/.cargo/bin:/Users/ilyagulya/Library/Application Support/JetBrains/Toolbox/scripts:/Users/ilyagulya/.orbstack/bin:/Users/ilyagulya/Library/Android/sdk/platform-tools:/Users/ilyagulya/Library/Android/sdk/build-tools/34.0.0:/Users/ilyagulya/Library/Android/sdk/tools/proguard/bin:/Users/ilyagulya/Library/Android/sdk/emulator:/Users/ilyagulya/Library/Android/sdk/cmdline-tools/latest/bin:/Users/ilyagulya/.spoof-dpi/bin:/Users/ilyagulya/.pub-cache/bin:/Users/ilyagulya/Library/Android/sdk/ndk/26.3.11579264:/Users/ilyagulya/.lmstudio/bin:/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin",
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "/Users/ilyagulya/Projects/My/bend/evals/checker_core_target_gate.ts",
+    "--component=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/candidate-self-stage2.json.output.mjs",
+    "--parser=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/candidate-self-stage2.json.output.mjs",
+    "--report=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/candidate-stage2-native-targets.json"
+  ],
+  "consumerGateCwd": "/Users/ilyagulya/Projects/My/bend",
+  "candidateByteFixedpoint": "NOT_RUN: stage0 and stage2 runtime intentionally differ; no false fixedpoint-failure or product-acceptance label."
+}

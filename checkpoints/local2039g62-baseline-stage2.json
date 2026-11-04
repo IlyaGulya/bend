@@ -1,0 +1,124 @@
+{
+  "schemaVersion": 1,
+  "version": "G62R1",
+  "status": "BASELINE_NATIVE_SEEDED_SELF_STAGE2_BYTE_FIXEDPOINT_PASS",
+  "nativeStage0": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json",
+    "sha256": "717ea720d6d117e4fb49ede7ea0d57f544571d336437bb992cdf78c055dc5135"
+  },
+  "nativeStage0Image": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json.mjs",
+    "sha256": "4636c05aa8c75e72212cb03949937e25561942bc00da250f876f37f001b9fc18"
+  },
+  "selfStage2Report": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json",
+    "sha256": "32b9d93cf4de5a8918b61dc9ae21ef2232beb27879b6629ec26f981626da248f"
+  },
+  "selfStage2Image": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs",
+    "sha256": "4636c05aa8c75e72212cb03949937e25561942bc00da250f876f37f001b9fc18"
+  },
+  "selfStage2Request": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2-request.json",
+    "sha256": "adcfb651972fa148392fc438f9c63ec6c1bec1dde9cba4d48c115d9c7de96c28"
+  },
+  "command": [
+    "/usr/bin/env",
+    "-u",
+    "SELFHOST_CPU_PROFILE_DIR",
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+    "js",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2-request.json",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json"
+  ],
+  "cwd": "/Users/ilyagulya/Projects/My/bend",
+  "guardian": {
+    "status": "PASS",
+    "reason": "command_exit",
+    "elapsedMs": 315005,
+    "peakRssBytes": 2602041344,
+    "peakFootprintBytes": 3182571600,
+    "timeoutMs": 600000,
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592,
+    "ownedTreeStopped": true,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793760420672-27f34fda5ffba027.json"
+  },
+  "stepCounts": {
+    "expand": 1069353,
+    "check": 10414347,
+    "emit": 1284273
+  },
+  "phases": [
+    {
+      "phase": "startup",
+      "elapsedMs": 622.328458,
+      "userCpuMs": 551.921,
+      "systemCpuMs": 78.888,
+      "memoryEnd": {
+        "rss": 520699904,
+        "heapTotal": 94814208,
+        "heapUsed": 82213504,
+        "external": 42251616,
+        "arrayBuffers": 31783564
+      }
+    },
+    {
+      "phase": "load-parse",
+      "elapsedMs": 9902.376833,
+      "userCpuMs": 12787.299,
+      "systemCpuMs": 344.795,
+      "memoryEnd": {
+        "rss": 1421180928,
+        "heapTotal": 957202432,
+        "heapUsed": 760128176,
+        "external": 10487506,
+        "arrayBuffers": 25039
+      }
+    },
+    {
+      "phase": "expand",
+      "elapsedMs": 6492.532458,
+      "userCpuMs": 7331.255,
+      "systemCpuMs": 92.678,
+      "memoryEnd": {
+        "rss": 1580990464,
+        "heapTotal": 1112129536,
+        "heapUsed": 953752336,
+        "external": 10487506,
+        "arrayBuffers": 25039
+      }
+    },
+    {
+      "phase": "check",
+      "elapsedMs": 278422.320416,
+      "userCpuMs": 294725.974,
+      "systemCpuMs": 3587.573,
+      "memoryEnd": {
+        "rss": 1700511744,
+        "heapTotal": 2192359424,
+        "heapUsed": 1971504008,
+        "external": 10486368,
+        "arrayBuffers": 25039
+      }
+    },
+    {
+      "phase": "emit",
+      "elapsedMs": 18661.89066600002,
+      "userCpuMs": 22366.422,
+      "systemCpuMs": 404.224,
+      "memoryEnd": {
+        "rss": 2303180800,
+        "heapTotal": 2607759360,
+        "heapUsed": 2414281552,
+        "external": 10486368,
+        "arrayBuffers": 25039
+      }
+    }
+  ],
+  "sourceCount": 18,
+  "byteFixedpoint": true,
+  "interpretation": "Baseline measured artifact is the actual matched self-stage2 output, byte-equal to native stage0; no baseline historical timing reuse and no native binary bootstrap claim."
+}

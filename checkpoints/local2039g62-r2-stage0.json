@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 1,
+  "version": "G62R2",
+  "status": "CORRECTED_CANDIDATE_NATIVE_STAGE0_PASS_SELF_STAGE2_FROZEN",
+  "sourceCheckpoint": "5d7ac44e",
+  "nativeReport": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/candidate-r2-native-stage0.json",
+    "sha256": "23e351d0d2069424a79876d2e9f80cb584ebd60c8ac39962219908ca9e8e48c8"
+  },
+  "nativeImage": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/candidate-r2-native-stage0.json.mjs",
+    "sha256": "8098f52fefc5f740d93c327cf835bc6db2472fdc01428e24acd434718fed54b3"
+  },
+  "nativeCommand": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/evals/native_compiler_experiment.ts",
+    "--mode=run",
+    "--corpus=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/candidate-r2-compiler-source.corpus.json",
+    "--build=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g44d1-native-build.json",
+    "--report=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/candidate-r2-native-stage0.json",
+    "--phase=compile",
+    "--threads=1"
+  ],
+  "nativeCwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/repository",
+  "nativeGuardian": {
+    "status": "PASS",
+    "reason": "command_exit",
+    "elapsedMs": 91681,
+    "peakRssBytes": 1720909824,
+    "peakFootprintBytes": 1769556464,
+    "timeoutMs": 300000,
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592,
+    "ownedTreeStopped": true,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793761571902-86b6d870d07b5fcb.json"
+  },
+  "nativePhases": [
+    {
+      "phase": "parse",
+      "elapsedMs": 6625.967,
+      "userCpuMs": 6478.71,
+      "systemCpuMs": 98.429,
+      "modules": 18,
+      "sourceBytes": 7870910,
+      "foreignBytes": 78415,
+      "eagerFuelCells": 144000000,
+      "fuelBuildMs": 875.704
+    },
+    {
+      "phase": "expand",
+      "elapsedMs": 4630.481,
+      "userCpuMs": 4538.29,
+      "systemCpuMs": 27.934,
+      "chunkAdvances": 1069353,
+      "chunkQuantum": 64
+    },
+    {
+      "phase": "check",
+      "elapsedMs": 65107.651,
+      "userCpuMs": 63918.377,
+      "systemCpuMs": 388.127,
+      "chunkAdvances": 10414347,
+      "chunkQuantum": 64
+    },
+    {
+      "phase": "emit",
+      "elapsedMs": 14025.649,
+      "userCpuMs": 13548.938,
+      "systemCpuMs": 254.101,
+      "chunkAdvances": 1284344,
+      "chunkQuantum": 64
+    }
+  ],
+  "selfStage2Request": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/candidate-r2-self-stage2-request.json",
+    "sha256": "9295adee77f90a0e8382947f44a7cba1e138f987817fa6ab7fbaaf6bd01f19b2"
+  },
+  "selfStage2Command": [
+    "/usr/bin/env",
+    "-u",
+    "SELFHOST_CPU_PROFILE_DIR",
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+    "js",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/candidate-r2-self-stage2-request.json",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/candidate-r2-self-stage2.json"
+  ],
+  "selfStage2Cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/repository",
+  "rejectedR1": "cfceb044: no R1 timing samples or runtime artifact silently substituted.",
+  "acceptedCompiler": "G24R12 unchanged"
+}
