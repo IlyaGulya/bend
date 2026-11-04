@@ -2639,3 +2639,83 @@ Main retains the focused regression, required frozen failure input, compact
 receipts and these findings. Generated images, profiles, program outputs and
 bulk logs stay outside Git; the throwaway smoke runner is removed.
 
+### G63: contiguous checker ticks without Run-state elision
+
+**Status: G63R1 rejected for promotion by its prospective selected filter.**
+Accepted G24R12 and main's compiler algorithms remain unchanged. Protocol
+`13c67b8c`, source `3c354060`, native production `397e5c58`, semantics and timing
+schedule `93f08b7b`, measured rejection `62186ef8`; isolated branch
+`selfhost/g63-contiguous-tick-62txq7en`.
+
+The source experiment moves `checker_advance`/`checker_pop` case selection into
+`checker_chunk` and deletes those now-unused helpers. It preserves each
+`CheckerRunState`/`CheckerStackMore` construction, strict request/invoke/resume
+order and one transition per predecessor fuel. Zero fuel returns the supplied
+Run without executing progress; quantum64, ABI13 and runtime code are unchanged.
+This is not G58B's progress/stack transport: intermediate Runs still materialize.
+The actual C-produced image has two fewer private functions and one fewer
+continuation, but those static counts are not speedup measurements.
+
+This is an isolated source checkpoint, not a claimed canonical-generator
+cutover. The only compiler-corpus delta is
+`checkpoints/checker_core_steps_v1.bend`; emitter bytes and all other53-file
+world entries stay fixed. Because this changes the checked algorithm rather
+than the emitted runtime, it is already active in the native-stage0 JS image.
+Baseline and candidate therefore use matched real images from the same
+unchanged C seed; G62's additional self-stage2 activation step is not needed.
+Neither image is relabelled as a running C-native compiler.
+
+#### Cheap-first semantics actually executed
+
+The retained49-observation scheduler input covers fuel0/1/63/64/65, every
+Progress arm, heterogeneous results, affine captures and nested resumptions.
+Source execution passes in1901ms; ordinary JS emission in1654ms and execution
+under default-stack Node in184ms print all49 unchanged literal observations.
+Only then does actual native full-source parse/expand/check/emission run:
+18 modules, PASS, guardian90927ms with the original8GiB/300s limits.
+
+The resulting compiler's own parser/checker/emitter passes all69 existing
+consumer fixtures, including negative cases and source spans. It also emits
+the existing non-tail returns, reentry/unwind and host-extra-argument programs;
+their unchanged JS passes under default-stack Node. These are semantic checks,
+not a whole-build speedup claim. Candidate self-stage2 and byte-fixedpoint are
+**NOT_RUN**, not failed checks.
+
+#### Three fresh selected pairs: smaller CPU effect, failed cost filter
+
+All six AB/BA/AB processes pass with the same17 modules,2954 source
+declarations,263032 expansion chunks and1975761 checker chunks. Node23.11,
+worker256MiB stack/6144MiB old/128MiB young,8GiB RSS/footprint,600s, parser
+fuel8M/module and the frozen helpers remain identical. No retry or exclusion.
+
+| Selected candidate / baseline | Ratio | Paired Student95 interval | Interpretation |
+| --- | ---: | --- | --- |
+| Checker process CPU, geometric | 0.941499 | [0.900372,0.984504] | all pairs faster; inconclusive at2% practical band |
+| Checker wall, geometric | 0.951451 | [0.897722,1.008396] | inconclusive |
+| Peak physical footprint, geometric | 1.114894 | [0.829337,1.498773] | inconclusive |
+| Peak physical footprint, ratio of medians | 1.167834 | — | above1.10 cost limit |
+
+The geometric CPU ratio misses the prospective<=0.90 filter and the median
+footprint ratio misses<=1.10. All four conditional full-source cells are
+**NOT_RUN_NOT_EARNED**. The CPU observations do not qualify a practical-band
+improvement or a full-source/product speedup; the memory interval does not
+establish a causal regression either. No threshold is relaxed after the data.
+
+`local2039g63-selected.json` retains every cell and the existing paired-statistics
+method; `local2039g63-decision.json` records the explicit rejection. Canonical
+generator/admission/schema-witness consumers intentionally remain unchanged:
+there is no permanent algorithm cutover to migrate after this rejected probe.
+
+The independent leaf census remains useful, not a measured win:906 of4097
+source Direct sites call definitions with no own-source outgoing calls, an
+over-approximation for non-suspending BIR. The complete native image also has
+2588 syntactic strict calls to `checker_unbox`. A leaf analysis must still rule
+out indirect Apply, lazy Symbol and other suspension. Exclusive/inclusive CPU
+attribution and a broader transform's noisy point estimate are not hard causal
+speedup ceilings; that route remains unmeasured. Main retains the frozen input
+and compact receipts, not the rejected algorithm, images or bulk logs.
+
+The retained input also passes all49 observations on unchanged main, both as
+source and emitted JS under default-stack Node. Exact commands and guards are
+in `local2039g63-main-control.json`; temporary experiment controllers are removed.
+

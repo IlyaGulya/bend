@@ -1,0 +1,142 @@
+{
+  "schemaVersion": 1,
+  "version": "G63R1",
+  "status": "SOURCE_AND_DEFAULT_NODE_49_OBSERVATIONS_PASS",
+  "sourceCheckpoint": "3c354060",
+  "executions": [
+    {
+      "name": "r1-source-scheduler",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+        "--memory-mib=8192",
+        "--rss-mib=8192",
+        "--poll-ms=10",
+        "--timeout-ms=120000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g63-contiguous-tick-62txq7en/repository/bend2/main.ts",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g63-contiguous-tick-62txq7en/repository/checkpoints/local2039g63-scheduler-input/main.bend"
+      ],
+      "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g63-contiguous-tick-62txq7en/repository",
+      "exitCode": 0,
+      "stdout": "4294967295\n37\n0\n4294967295\n1\n31\n4294967295\n32\n32\n4294967295\n48\n4294967295\n72\n2\n1\n400\n401\n101\n100\n0\n200\n101\n231\n101\n100\n48\n300\n101\n331\n101\n100\n72\n101\n100\n1\n1\n1\n37\n37\n37\n37\n300\n101\n101\n100\n41\n101\n41\n41\n",
+      "guardians": [
+        {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 1901,
+          "peakRssBytes": 898678784,
+          "peakFootprintBytes": 791971088,
+          "timeoutMs": 120000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793773761845-75d05680f210a9b3.json"
+        }
+      ],
+      "expectedStdout": "4294967295\n37\n0\n4294967295\n1\n31\n4294967295\n32\n32\n4294967295\n48\n4294967295\n72\n2\n1\n400\n401\n101\n100\n0\n200\n101\n231\n101\n100\n48\n300\n101\n331\n101\n100\n72\n101\n100\n1\n1\n1\n37\n37\n37\n37\n300\n101\n101\n100\n41\n101\n41\n41\n",
+      "passed": true
+    },
+    {
+      "name": "r1-source-scheduler-js-emit",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+        "--memory-mib=8192",
+        "--rss-mib=8192",
+        "--poll-ms=10",
+        "--timeout-ms=120000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g63-contiguous-tick-62txq7en/repository/bend2/main.ts",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g63-contiguous-tick-62txq7en/repository/checkpoints/local2039g63-scheduler-input/main.bend",
+        "-o",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g63-contiguous-tick-62txq7en/r1-source-scheduler.js"
+      ],
+      "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g63-contiguous-tick-62txq7en/repository",
+      "exitCode": 0,
+      "stdout": "",
+      "guardians": [
+        {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 1654,
+          "peakRssBytes": 986431488,
+          "peakFootprintBytes": 912753984,
+          "timeoutMs": 120000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793773791150-a27e32ae8ef4be5e.json"
+        }
+      ],
+      "expectedStdout": null,
+      "passed": true
+    },
+    {
+      "name": "r1-source-scheduler-js-run",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+        "--memory-mib=8192",
+        "--rss-mib=8192",
+        "--poll-ms=10",
+        "--timeout-ms=120000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g63-contiguous-tick-62txq7en/r1-source-scheduler.js"
+      ],
+      "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g63-contiguous-tick-62txq7en/repository",
+      "exitCode": 0,
+      "stdout": "4294967295\n37\n0\n4294967295\n1\n31\n4294967295\n32\n32\n4294967295\n48\n4294967295\n72\n2\n1\n400\n401\n101\n100\n0\n200\n101\n231\n101\n100\n48\n300\n101\n331\n101\n100\n72\n101\n100\n1\n1\n1\n37\n37\n37\n37\n300\n101\n101\n100\n41\n101\n41\n41\n",
+      "guardians": [
+        {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 184,
+          "peakRssBytes": 79757312,
+          "peakFootprintBytes": 49761256,
+          "timeoutMs": 120000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793773792863-642e32f5e779e6c3.json"
+        }
+      ],
+      "expectedStdout": "4294967295\n37\n0\n4294967295\n1\n31\n4294967295\n32\n32\n4294967295\n48\n4294967295\n72\n2\n1\n400\n401\n101\n100\n0\n200\n101\n231\n101\n100\n48\n300\n101\n331\n101\n100\n72\n101\n100\n1\n1\n1\n37\n37\n37\n37\n300\n101\n101\n100\n41\n101\n41\n41\n",
+      "passed": true
+    }
+  ],
+  "nativeSourceCorpus": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g63-contiguous-tick-62txq7en/candidate-source.corpus.json",
+    "sha256": "70fc71e6d13d8ff68975782a5121dcd8b362323975a4a0bcf0caecc1083613cd"
+  },
+  "freezeCommand": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g63-contiguous-tick-62txq7en/repository/evals/native_seed_corpus.ts",
+    "--root=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g63-contiguous-tick-62txq7en/repository/checkpoints/local2039g49-compiler-root.bend",
+    "--out=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g63-contiguous-tick-62txq7en/candidate-source.corpus.json",
+    "--target=js"
+  ],
+  "freezeCwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g63-contiguous-tick-62txq7en/repository",
+  "sourceFiles": 53,
+  "sourceDelta": [
+    {
+      "path": "checkpoints/checker_core_steps_v1.bend",
+      "baseline": "e4c1197d63129394551d5643ef2934be84af82eaeacfa3da1e4e660c6ff603a4",
+      "candidate": "995e0a9becf499e4cd03154e7a427bde79c906b03576c680727c6c45054fb6b5"
+    }
+  ],
+  "image": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g63-contiguous-tick-62txq7en/r1-source-scheduler.js",
+    "sha256": "ee541fd96aa8f621b2a73210b369724cfacea135fb09d1ebb4f87a61f353833e"
+  },
+  "scope": "Early source-development semantics only, not native-root compiler correctness or throughput."
+}

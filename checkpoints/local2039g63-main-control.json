@@ -1,0 +1,130 @@
+{
+  "schemaVersion": 1,
+  "version": "G63R1",
+  "status": "UNCHANGED_MAIN_SOURCE_AND_DEFAULT_NODE_SCHEDULER_49_PASS",
+  "input": {
+    "path": "checkpoints/local2039g63-scheduler-input/main.bend",
+    "sha256": "e207571b960d6bcf9ad1f9e19adbd8825ea7b6a875400776f9450bff041d5cd2"
+  },
+  "expectedStdout": "4294967295\n37\n0\n4294967295\n1\n31\n4294967295\n32\n32\n4294967295\n48\n4294967295\n72\n2\n1\n400\n401\n101\n100\n0\n200\n101\n231\n101\n100\n48\n300\n101\n331\n101\n100\n72\n101\n100\n1\n1\n1\n37\n37\n37\n37\n300\n101\n101\n100\n41\n101\n41\n41\n",
+  "observations": 49,
+  "unchangedChecker": {
+    "path": "checkpoints/checker_core_steps_v1.bend",
+    "sha256": "e4c1197d63129394551d5643ef2934be84af82eaeacfa3da1e4e660c6ff603a4"
+  },
+  "unchangedEmitter": {
+    "path": "checkpoints/emitter_steps_v1.bend",
+    "sha256": "7f7c8d2e57a3fcd3925b4286a8300668ae91b7e11a26317cea6da2df5c9ea425"
+  },
+  "executions": [
+    {
+      "name": "main-baseline-source-scheduler",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+        "--memory-mib=8192",
+        "--rss-mib=8192",
+        "--poll-ms=10",
+        "--timeout-ms=120000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/bend2/main.ts",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g63-scheduler-input/main.bend"
+      ],
+      "cwd": "/Users/ilyagulya/Projects/My/bend",
+      "exitCode": 0,
+      "stdout": "4294967295\n37\n0\n4294967295\n1\n31\n4294967295\n32\n32\n4294967295\n48\n4294967295\n72\n2\n1\n400\n401\n101\n100\n0\n200\n101\n231\n101\n100\n48\n300\n101\n331\n101\n100\n72\n101\n100\n1\n1\n1\n37\n37\n37\n37\n300\n101\n101\n100\n41\n101\n41\n41\n",
+      "guardians": [
+        {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 1590,
+          "peakRssBytes": 1037615104,
+          "peakFootprintBytes": 960431472,
+          "timeoutMs": 120000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793774804814-6cd98dce7c9b6d81.json"
+        }
+      ],
+      "expectedStdout": "4294967295\n37\n0\n4294967295\n1\n31\n4294967295\n32\n32\n4294967295\n48\n4294967295\n72\n2\n1\n400\n401\n101\n100\n0\n200\n101\n231\n101\n100\n48\n300\n101\n331\n101\n100\n72\n101\n100\n1\n1\n1\n37\n37\n37\n37\n300\n101\n101\n100\n41\n101\n41\n41\n",
+      "passed": true
+    },
+    {
+      "name": "main-baseline-scheduler-js-emit",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+        "--memory-mib=8192",
+        "--rss-mib=8192",
+        "--poll-ms=10",
+        "--timeout-ms=120000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/bend2/main.ts",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g63-scheduler-input/main.bend",
+        "-o",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g63-contiguous-tick-62txq7en/main-baseline-scheduler.js"
+      ],
+      "cwd": "/Users/ilyagulya/Projects/My/bend",
+      "exitCode": 0,
+      "stdout": "",
+      "guardians": [
+        {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 1798,
+          "peakRssBytes": 981237760,
+          "peakFootprintBytes": 966100288,
+          "timeoutMs": 120000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793774806439-e82ce9ecf73ae42b.json"
+        }
+      ],
+      "expectedStdout": null,
+      "passed": true
+    },
+    {
+      "name": "main-baseline-scheduler-js-run",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+        "--memory-mib=8192",
+        "--rss-mib=8192",
+        "--poll-ms=10",
+        "--timeout-ms=120000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g63-contiguous-tick-62txq7en/main-baseline-scheduler.js"
+      ],
+      "cwd": "/Users/ilyagulya/Projects/My/bend",
+      "exitCode": 0,
+      "stdout": "4294967295\n37\n0\n4294967295\n1\n31\n4294967295\n32\n32\n4294967295\n48\n4294967295\n72\n2\n1\n400\n401\n101\n100\n0\n200\n101\n231\n101\n100\n48\n300\n101\n331\n101\n100\n72\n101\n100\n1\n1\n1\n37\n37\n37\n37\n300\n101\n101\n100\n41\n101\n41\n41\n",
+      "guardians": [
+        {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 203,
+          "peakRssBytes": 78282752,
+          "peakFootprintBytes": 47909168,
+          "timeoutMs": 120000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793774808268-eeb8ee2bb81d44aa.json"
+        }
+      ],
+      "expectedStdout": "4294967295\n37\n0\n4294967295\n1\n31\n4294967295\n32\n32\n4294967295\n48\n4294967295\n72\n2\n1\n400\n401\n101\n100\n0\n200\n101\n231\n101\n100\n48\n300\n101\n331\n101\n100\n72\n101\n100\n1\n1\n1\n37\n37\n37\n37\n300\n101\n101\n100\n41\n101\n41\n41\n",
+      "passed": true
+    }
+  ],
+  "scope": "Confirms required frozen input on unchanged main. Rejected algorithm is not merged, source-developer timings are not compiler throughput evidence."
+}

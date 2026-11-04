@@ -1,0 +1,312 @@
+{
+  "schemaVersion": 1,
+  "version": "G63R1",
+  "status": "EXPERIMENT_COMPLETE_REJECTED_FOR_PROMOTION",
+  "sourceBranch": "selfhost/g63-contiguous-tick-62txq7en",
+  "checkpoints": {
+    "protocol": "13c67b8c",
+    "source": "3c354060",
+    "sourcePreflight": "7eab4410",
+    "nativeStage0": "397e5c58",
+    "nativeSemanticsAndTimingPlan": "93f08b7b",
+    "sourceCensus": "883bf880",
+    "measuredRejection": "62186ef8"
+  },
+  "decision": "Retain reproducible source experiment and compact evidence. No main algorithm or canonical generator migration: original CPU<=.90 and median-footprint<=1.10 filter failed. Accepted G24R12 unchanged.",
+  "mechanism": "Contiguous checker tick selection, not G58B Run-state elision; unchanged JS emitter/runtime, quantum64, ABI13, fuel and effects.",
+  "sourceWorld": {
+    "baselineManifest": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g60-lexer-cursor-kkoffczh/main-compiler-source.corpus.json",
+      "sha256": "4dcdf7518b43970eb0a3df0de930078b8c11000168880383fe56a9d5ec8fe636"
+    },
+    "candidateManifest": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g63-contiguous-tick-62txq7en/candidate-source.corpus.json",
+      "sha256": "70fc71e6d13d8ff68975782a5121dcd8b362323975a4a0bcf0caecc1083613cd"
+    },
+    "files": 53,
+    "sources": 18,
+    "foreign": 35,
+    "delta": [
+      {
+        "path": "checkpoints/checker_core_steps_v1.bend",
+        "baseline": "e4c1197d63129394551d5643ef2934be84af82eaeacfa3da1e4e660c6ff603a4",
+        "candidate": "995e0a9becf499e4cd03154e7a427bde79c906b03576c680727c6c45054fb6b5"
+      }
+    ]
+  },
+  "nativeProduction": {
+    "command": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/evals/native_compiler_experiment.ts",
+      "--mode=run",
+      "--corpus=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g63-contiguous-tick-62txq7en/candidate-source.corpus.json",
+      "--build=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g44d1-native-build.json",
+      "--report=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g63-contiguous-tick-62txq7en/candidate-native-stage0.json",
+      "--phase=compile",
+      "--threads=1"
+    ],
+    "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g63-contiguous-tick-62txq7en/repository",
+    "report": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g63-contiguous-tick-62txq7en/candidate-native-stage0.json",
+      "sha256": "623d520fea3665b8db8e97cc05ae28f50aa75970e37e0e03aff09ce268661487"
+    },
+    "image": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g63-contiguous-tick-62txq7en/candidate-native-stage0.json.mjs",
+      "sha256": "65a07432de9482e67a71a70d1a2696474c8aca08a75e4e7dfe13fa6c006df045"
+    },
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "elapsedMs": 90927,
+      "peakRssBytes": 1776943104,
+      "peakFootprintBytes": 1768737288,
+      "timeoutMs": 300000,
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592,
+      "ownedTreeStopped": true,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793773825201-80bc68bb7c2ee7d4.json"
+    }
+  },
+  "correctness": {
+    "sourceSchedulerLiteralObservations": 49,
+    "sourceSchedulerDefaultNodeLiteralObservations": 49,
+    "nativeOwnConsumersPassed": 69,
+    "nativeDefaultNodeProgramsPassed": [
+      "tests/reg/js_non_tail_returns.bend",
+      "tests/compile/js_multi_reentrant.bend",
+      "tests/compile/js_closure_host_depth.bend"
+    ],
+    "unchangedMainLiteralObservations": 49
+  },
+  "selected": {
+    "status": "ALL_SIX_PASS_FILTER_FAIL",
+    "pairs": 3,
+    "roles": [
+      "baseline",
+      "candidate",
+      "candidate",
+      "baseline",
+      "baseline",
+      "candidate"
+    ],
+    "statistics": {
+      "checkerCpuMs": {
+        "n": 3,
+        "logRatios": [
+          -0.052651017002309494,
+          -0.04737632001741389,
+          -0.08081954302324326
+        ],
+        "meanLog": -0.06028229334765555,
+        "varianceLog": 0.00032328957524868743,
+        "geometricMeanRatio": 0.9414987172422177,
+        "ci95": [
+          0.9003715898727599,
+          0.9845044474293217
+        ],
+        "baselineMedian": 70770.94,
+        "variantMedian": 65697.936,
+        "direction": "inconclusive"
+      },
+      "checkerWallMs": {
+        "n": 3,
+        "logRatios": [
+          -0.06237573557564284,
+          -0.022766682259826074,
+          -0.06415741436032127
+        ],
+        "meanLog": -0.04976661073193006,
+        "varianceLog": 0.000547540697946992,
+        "geometricMeanRatio": 0.9514514571488756,
+        "ci95": [
+          0.8977223831645978,
+          1.008396239513991
+        ],
+        "baselineMedian": 58016.804792,
+        "variantMedian": 54508.517332999996,
+        "direction": "inconclusive"
+      },
+      "footprintBytes": {
+        "n": 3,
+        "logRatios": [
+          -0.0259726386297916,
+          0.20006111549076372,
+          0.15218862758822338
+        ],
+        "meanLog": 0.1087590348163985,
+        "varianceLog": 0.01418741164670282,
+        "geometricMeanRatio": 1.1148936674138679,
+        "ci95": [
+          0.8293368301050149,
+          1.4987732903193878
+        ],
+        "baselineMedian": 1152884264,
+        "variantMedian": 1346377752,
+        "direction": "inconclusive"
+      },
+      "rssBytes": {
+        "n": 3,
+        "logRatios": [
+          0.023923179481641552,
+          0.15406995431731607,
+          0.05789435318647648
+        ],
+        "meanLog": 0.07862916232847804,
+        "varianceLog": 0.004556994982648364,
+        "geometricMeanRatio": 1.081803074342892,
+        "ci95": [
+          0.914787170695521,
+          1.279311657560681
+        ],
+        "baselineMedian": 1092943872,
+        "variantMedian": 1158086656,
+        "direction": "inconclusive"
+      },
+      "medianFootprintRatio": 1.1678342692688535,
+      "costGate": {
+        "everyPairCpuFaster": true,
+        "cpuAtMostPoint90": false,
+        "wallAtMost1": true,
+        "medianFootprintAtMost1Point10": false
+      },
+      "costGatePassed": false
+    },
+    "selectedCounts": {
+      "modules": 17,
+      "declarations": 2954,
+      "expand": 263032,
+      "check": 1975761
+    },
+    "retries": 0,
+    "exclusions": 0
+  },
+  "runtime": {
+    "releaseReference": "2.0.39 a3efe8a3801f423827424227172eed9802c5e6cb, not a new released compiler",
+    "releaseIdentitySource": {
+      "path": "evals/release_identity.ts",
+      "sha256": "ee065f58c821c741c8e79d1fc056c1b0931eb02806652e9e9ac7808e36839039"
+    },
+    "bunProducer": "1.4.3 c6da4a4d3010e5553438c60f6bd76d981976867c",
+    "checker": {
+      "execPath": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "versions": {
+        "node": "23.11.0",
+        "acorn": "8.14.1",
+        "ada": "3.2.1",
+        "amaro": "0.4.1",
+        "ares": "1.34.4",
+        "brotli": "1.1.0",
+        "cjs_module_lexer": "2.1.0",
+        "cldr": "46.0",
+        "icu": "76.1",
+        "llhttp": "9.2.1",
+        "modules": "131",
+        "napi": "10",
+        "nbytes": "0.1.1",
+        "ncrypto": "0.0.1",
+        "nghttp2": "1.64.0",
+        "openssl": "3.0.16",
+        "simdjson": "3.12.2",
+        "simdutf": "6.0.3",
+        "sqlite": "3.49.1",
+        "tz": "2025a",
+        "undici": "6.21.2",
+        "unicode": "16.0",
+        "uv": "1.50.0",
+        "uvwasi": "0.0.21",
+        "v8": "12.9.202.28-node.14",
+        "zlib": "1.3.0.1-motley-788cb3c",
+        "zstd": "1.5.6"
+      },
+      "execArgv": [
+        "--experimental-strip-types",
+        "--max-old-space-size=6144",
+        "--max-semi-space-size=128"
+      ],
+      "heapLimitBytes": 6845104128
+    },
+    "worker": {
+      "stackMiB": 256,
+      "oldGenerationMiB": 6144,
+      "youngGenerationMiB": 128
+    },
+    "limits": {
+      "memoryMiB": 8192,
+      "rssMiB": 8192,
+      "pollMs": 10,
+      "nativeProductionTimeoutMs": 300000,
+      "sourcePreflightTimeoutMs": 120000,
+      "throughputTimeoutMs": 600000,
+      "workerStackMiB": 256,
+      "oldGenerationMiB": 6144,
+      "youngGenerationMiB": 128,
+      "parserFuelPerModule": 8000000,
+      "oneHeavyLane": true,
+      "chunkQuantum": 64,
+      "abi": 13
+    }
+  },
+  "fullSource": "NOT_RUN_NOT_EARNED_4_CELLS",
+  "candidateSelfStage2": "NOT_RUN_NOT_EARNED",
+  "candidateByteFixedpoint": "NOT_RUN_NOT_A_FAILED_FIXEDPOINT",
+  "primaryScope": "Matched C-produced stage0 JS checker performance on the existing frozen selected corpus; no nativeC runtime, whole-rebuild, strict12 or product acceptance.",
+  "mainPolicy": {
+    "checkerAndEmitterUnchanged": true,
+    "onlyEvidenceDocsAndRequiredInputIntegrated": true,
+    "canonicalGeneratorAdmissionAndSchemaWitnesses": "intentionally unchanged because no permanent cutover",
+    "generatedImagesCachesProfilesAndBulkLogs": "outside Git",
+    "temporaryControllersRemoved": true
+  },
+  "receipts": {
+    "protocol": {
+      "path": "checkpoints/local2039g63-protocol.json",
+      "sha256": "a969bb36ebfb0c7998c787aca0f4f26b300e404c07a438a60863e3bd8786bcb3"
+    },
+    "source": {
+      "path": "checkpoints/local2039g63-source.json",
+      "sha256": "11145d41a58e9fb0aa168f11ff085f41cefadde8c4a10e0a00c9f9e5411b0a56"
+    },
+    "source-preflight": {
+      "path": "checkpoints/local2039g63-source-preflight.json",
+      "sha256": "01d2f38b23e9cf0cc345093afd37755dbc5dae8323d647cbd0a1aa62c1a23094"
+    },
+    "stage0": {
+      "path": "checkpoints/local2039g63-stage0.json",
+      "sha256": "2f52a1024b318a82d739275258064d4294d5ca9ba301da8416629ce5da63d151"
+    },
+    "semantics": {
+      "path": "checkpoints/local2039g63-semantics.json",
+      "sha256": "c6beeb9c41950be16ca5b523c8db85b5a3b38b611d8e328ed67b83a8ad7b003e"
+    },
+    "execution": {
+      "path": "checkpoints/local2039g63-execution.json",
+      "sha256": "997fe5f37e5086162f513521e403a12aff7c270701d24b5cc7b45c1d1b2184b4"
+    },
+    "static-shape": {
+      "path": "checkpoints/local2039g63-static-shape.json",
+      "sha256": "6b7dc31439709490e2d9cd48728e9a25a38548402aec3212bbf8b11c9de85c33"
+    },
+    "prioritization": {
+      "path": "checkpoints/local2039g63-prioritization.json",
+      "sha256": "29f7b10cc32f4abd3201c4d8428ffedc6b4504313c8290de83f1e16b87effc95"
+    },
+    "selected": {
+      "path": "checkpoints/local2039g63-selected.json",
+      "sha256": "65c27b77feec4610b2b774ec6f8a152caf7d076807f08002c0110f699bb627d2"
+    },
+    "decision": {
+      "path": "checkpoints/local2039g63-decision.json",
+      "sha256": "b94f2314c1886b603fce17497355fc44c4207c1acdd0d0db75d97b629e39b332"
+    },
+    "main-control": {
+      "path": "checkpoints/local2039g63-main-control.json",
+      "sha256": "10018a777c640ebf438e41c21e4fdc7b439d5082b53f8eea58c997cb412271a6"
+    }
+  },
+  "requiredInput": {
+    "path": "checkpoints/local2039g63-scheduler-input/main.bend",
+    "sha256": "e207571b960d6bcf9ad1f9e19adbd8825ea7b6a875400776f9450bff041d5cd2"
+  },
+  "documentation": "bend2/selfhost/COMPILER_PROFILING.md#G63"
+}

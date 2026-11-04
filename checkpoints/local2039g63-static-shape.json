@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "version": "G63R1",
+  "status": "ACTUAL_NATIVE_IMAGE_SCHEDULER_CONTRACTION_OBSERVED",
+  "shapes": {
+    "baseline": {
+      "image": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json.mjs",
+        "sha256": "4636c05aa8c75e72212cb03949937e25561942bc00da250f876f37f001b9fc18"
+      },
+      "privateCodeFunctions": 24625,
+      "continuationFunctions": 15080,
+      "scheduler": {
+        "checker_chunk": {
+          "present": true,
+          "aliasLine": 58516,
+          "bodyLine": 30597,
+          "privateFunction": "$b6851",
+          "bodySha256": "44c3465d9382106cc6362d71c93ac41eabebb6eab1cc87fad8a6c53c23a54436",
+          "bodyBytes": 1103,
+          "syntacticSplitEnterSites": 1,
+          "syntacticIndirectSplitSites": 0,
+          "privateCallees": [
+            "$b6850"
+          ]
+        },
+        "checker_pop": {
+          "present": true,
+          "aliasLine": 58514,
+          "bodyLine": 30591,
+          "privateFunction": "$b6849",
+          "bodySha256": "2efc7229a6a51a37f31385a3f4092caf8120a79a67913a3010c3943c6dbff402",
+          "bodyBytes": 716,
+          "syntacticSplitEnterSites": 1,
+          "syntacticIndirectSplitSites": 1,
+          "privateCallees": [
+            "$b1209"
+          ]
+        },
+        "checker_advance": {
+          "present": true,
+          "aliasLine": 58515,
+          "bodyLine": 30594,
+          "privateFunction": "$b6850",
+          "bodySha256": "d7315ff3c0e9bed0e93f765f96aba12749b124bb60ee0ecfb15260c0ae82849e",
+          "bodyBytes": 1280,
+          "syntacticSplitEnterSites": 1,
+          "syntacticIndirectSplitSites": 1,
+          "privateCallees": [
+            "$b6848",
+            "$b6849"
+          ]
+        }
+      }
+    },
+    "candidate": {
+      "image": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g63-contiguous-tick-62txq7en/candidate-native-stage0.json.mjs",
+        "sha256": "65a07432de9482e67a71a70d1a2696474c8aca08a75e4e7dfe13fa6c006df045"
+      },
+      "privateCodeFunctions": 24623,
+      "continuationFunctions": 15079,
+      "scheduler": {
+        "checker_chunk": {
+          "present": true,
+          "aliasLine": 58511,
+          "bodyLine": 30591,
+          "privateFunction": "$b6849",
+          "bodySha256": "6fe22057368aa2dcc9ef1fedc6376c796c9ee95a12b13a71f04e6e1ceb83492a",
+          "bodyBytes": 4266,
+          "syntacticSplitEnterSites": 2,
+          "syntacticIndirectSplitSites": 2,
+          "privateCallees": [
+            "$b1209",
+            "$b6848"
+          ]
+        },
+        "checker_pop": {
+          "present": false
+        },
+        "checker_advance": {
+          "present": false
+        }
+      }
+    }
+  },
+  "interpretation": "Static native output only, not dynamic frequency, code-size expectation test, causal speedup ceiling, or performance evidence. Source export keys resolve private function identity; no baseline numeric-symbol assumption. Helpers are absent rather than retained as aliases."
+}

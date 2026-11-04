@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "version": "G63R1",
+  "status": "REJECTED_FOR_PROMOTION_AFTER_PREDECLARED_SELECTED_FILTER",
+  "protocolCheckpoint": "13c67b8c",
+  "sourceCheckpoint": "3c354060",
+  "semanticsCheckpoint": "93f08b7b",
+  "sourceBranch": "selfhost/g63-contiguous-tick-62txq7en",
+  "selected": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g63-contiguous-tick-62txq7en/repository/checkpoints/local2039g63-selected.json",
+    "sha256": "65c27b77feec4610b2b774ec6f8a152caf7d076807f08002c0110f699bb627d2"
+  },
+  "costGate": {
+    "everyPairCpuFaster": true,
+    "cpuAtMostPoint90": false,
+    "wallAtMost1": true,
+    "medianFootprintAtMost1Point10": false
+  },
+  "costGatePassed": false,
+  "reasons": [
+    "All three CPU ratios are below1 but geometric ratio0.941498717 exceeds the required0.90.",
+    "Median footprint ratio1.167834269 exceeds the required1.10.",
+    "No scheduled sample is retried, replaced, trimmed or excluded; no threshold is relaxed."
+  ],
+  "interpretation": {
+    "checkerCpuGeometricRatio": 0.9414987172422177,
+    "checkerCpu95": [
+      0.9003715898727599,
+      0.9845044474293217
+    ],
+    "checkerCpuDirectionAt2PercentBand": "inconclusive",
+    "checkerWallGeometricRatio": 0.9514514571488756,
+    "checkerWall95": [
+      0.8977223831645978,
+      1.008396239513991
+    ],
+    "footprintGeometricRatio": 1.1148936674138679,
+    "footprint95": [
+      0.8293368301050149,
+      1.4987732903193878
+    ],
+    "medianFootprintRatio": 1.1678342692688535,
+    "claim": "Observed CPU reduction on these three selected pairs, not qualified practical-band improvement, full-source speedup, equivalence, absence of a smaller benefit, or proof of memory regression."
+  },
+  "conditionalFull": {
+    "status": "NOT_RUN_NOT_EARNED",
+    "scheduledCells": 4,
+    "pairs": 2
+  },
+  "candidateSelfStage2": "NOT_RUN_NOT_EARNED",
+  "candidateByteFixedpoint": "NOT_RUN_NOT_A_FAILED_FIXEDPOINT",
+  "canonicalGeneratorMigration": "NOT_DONE_INTENTIONALLY_EXPERIMENT_REJECTED_NO_PERMANENT_ALGORITHM_CUTOVER",
+  "mainAlgorithm": "UNCHANGED",
+  "acceptedCompiler": "G24R12_UNCHANGED"
+}

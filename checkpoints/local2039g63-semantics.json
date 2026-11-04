@@ -1,0 +1,839 @@
+{
+  "schemaVersion": 1,
+  "version": "G63R1",
+  "status": "NATIVE_69_CONSUMERS_AND_THREE_DEFAULT_NODE_PROGRAMS_PASS",
+  "nativeStage0Checkpoint": "397e5c58",
+  "image": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g63-contiguous-tick-62txq7en/candidate-native-stage0.json.mjs",
+    "sha256": "65a07432de9482e67a71a70d1a2696474c8aca08a75e4e7dfe13fa6c006df045"
+  },
+  "gate": {
+    "command": [
+      "/usr/bin/env",
+      "PATH=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools:/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/cmux-cli-shims/1AE884FF-4153-438F-922A-7660D416EB20:/Applications/cmux.app/Contents/Resources/bin:/Users/ilyagulya/.antigravity/antigravity/bin:/opt/homebrew/opt/mysql-client/bin:/opt/homebrew/opt/binutils/bin:/Users/ilyagulya/.depot_tools:/opt/homebrew/opt/whois/bin:/Users/ilyagulya/go/bin:/opt/homebrew/opt/curl/bin:/Users/ilyagulya/Library/pnpm:/Users/ilyagulya/.opam/default/bin:/Users/ilyagulya/.bun/bin:/Users/ilyagulya/.local/bin:/Users/ilyagulya/.local/bin:/Users/ilyagulya/fvm/default/bin:/opt/homebrew/opt/ruby/bin:/Users/ilyagulya/.elan/bin:/Library/Frameworks/Python.framework/Versions/3.12/bin:/opt/homebrew/share/google-cloud-sdk/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/pkg/env/global/bin:/opt/X11/bin:/Library/Apple/usr/bin:/Applications/Wireshark.app/Contents/MacOS:/Applications/VMware Fusion.app/Contents/Public:/opt/homebrew/bin:/Users/ilyagulya/.cargo/bin:/Users/ilyagulya/Library/Application Support/JetBrains/Toolbox/scripts:/Users/ilyagulya/.orbstack/bin:/Users/ilyagulya/Library/Android/sdk/platform-tools:/Users/ilyagulya/Library/Android/sdk/build-tools/34.0.0:/Users/ilyagulya/Library/Android/sdk/tools/proguard/bin:/Users/ilyagulya/Library/Android/sdk/emulator:/Users/ilyagulya/Library/Android/sdk/cmdline-tools/latest/bin:/Users/ilyagulya/.spoof-dpi/bin:/Users/ilyagulya/.pub-cache/bin:/Users/ilyagulya/Library/Android/sdk/ndk/26.3.11579264:/Users/ilyagulya/.lmstudio/bin:/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "/Users/ilyagulya/Projects/My/bend/evals/checker_core_target_gate.ts",
+      "--component=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g63-contiguous-tick-62txq7en/candidate-native-stage0.json.mjs",
+      "--parser=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g63-contiguous-tick-62txq7en/candidate-native-stage0.json.mjs",
+      "--report=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g63-contiguous-tick-62txq7en/native-consumer-gate.json"
+    ],
+    "cwd": "/Users/ilyagulya/Projects/My/bend",
+    "report": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g63-contiguous-tick-62txq7en/native-consumer-gate.json",
+      "sha256": "f1344ac63a497ba9ff80716bd8dd395974becd1c45b8415f69a73093d8e23c84"
+    },
+    "passed": true,
+    "finished": true,
+    "limits": {
+      "memoryMiB": 8192,
+      "rssMiB": 8192,
+      "pollMs": 10,
+      "workerStackMiB": 256,
+      "parserFuel": 2000000,
+      "maxHeavyChildren": 1
+    },
+    "rows": [
+      {
+        "name": "enum-constant",
+        "passed": true,
+        "status": "PASS",
+        "accepted": true,
+        "checkerTag": "CheckSuccess",
+        "emitterTag": "EmitSuccess",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "affine-identity",
+        "passed": true,
+        "status": "PASS",
+        "accepted": true,
+        "checkerTag": "CheckSuccess",
+        "emitterTag": "EmitSuccess",
+        "output": "BitZero{}"
+      },
+      {
+        "name": "reusable-duplicate",
+        "passed": true,
+        "status": "PASS",
+        "accepted": true,
+        "checkerTag": "CheckSuccess",
+        "emitterTag": "EmitSuccess",
+        "output": "Duo{BitOne{}, BitOne{}}"
+      },
+      {
+        "name": "return-type-mismatch",
+        "passed": true,
+        "status": "PASS",
+        "accepted": false,
+        "checkerTag": "CheckFailure"
+      },
+      {
+        "name": "affine-duplicate",
+        "passed": true,
+        "status": "PASS",
+        "accepted": false,
+        "checkerTag": "CheckFailure"
+      },
+      {
+        "name": "undefined-reference",
+        "passed": true,
+        "status": "PASS",
+        "accepted": false,
+        "checkerTag": "CheckFailure"
+      },
+      {
+        "name": "inherited-reusable-lambda",
+        "passed": true,
+        "status": "PASS",
+        "accepted": true,
+        "checkerTag": "CheckSuccess",
+        "emitterTag": "EmitSuccess",
+        "output": "Duo{BitOne{}, BitOne{}}"
+      },
+      {
+        "name": "promoted-reusable-lambda",
+        "passed": true,
+        "status": "PASS",
+        "accepted": true,
+        "checkerTag": "CheckSuccess",
+        "emitterTag": "EmitSuccess",
+        "output": "Duo{BitZero{}, BitZero{}}"
+      },
+      {
+        "name": "affine-lambda-duplicate",
+        "passed": true,
+        "status": "PASS",
+        "accepted": false,
+        "checkerTag": "CheckFailure"
+      },
+      {
+        "name": "promoted-lambda-lower-kind",
+        "passed": true,
+        "status": "PASS",
+        "accepted": false,
+        "checkerTag": "CheckFailure"
+      },
+      {
+        "name": "recursive-datatype",
+        "passed": true,
+        "status": "PASS",
+        "accepted": true,
+        "checkerTag": "CheckSuccess",
+        "emitterTag": "EmitSuccess",
+        "output": "Link{Stop{}}"
+      },
+      {
+        "name": "self-referential-datatype-kind",
+        "passed": true,
+        "status": "PASS",
+        "accepted": false,
+        "checkerTag": "CheckFailure"
+      },
+      {
+        "name": "single-enum-match-complete",
+        "passed": true,
+        "status": "PASS",
+        "accepted": true,
+        "checkerTag": "CheckSuccess",
+        "emitterTag": "EmitSuccess",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "single-enum-match-incomplete",
+        "passed": true,
+        "status": "PASS",
+        "accepted": false,
+        "checkerTag": "CheckFailure"
+      },
+      {
+        "name": "joint-match-complete",
+        "passed": true,
+        "status": "PASS",
+        "accepted": true,
+        "checkerTag": "CheckSuccess",
+        "emitterTag": "EmitSuccess",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "joint-match-incomplete",
+        "passed": true,
+        "status": "PASS",
+        "accepted": false,
+        "checkerTag": "CheckFailure"
+      },
+      {
+        "name": "nested-field-pattern",
+        "passed": true,
+        "status": "PASS",
+        "accepted": true,
+        "checkerTag": "CheckSuccess",
+        "emitterTag": "EmitSuccess",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "partial-family-application",
+        "passed": true,
+        "status": "PASS",
+        "accepted": true,
+        "checkerTag": "CheckSuccess",
+        "emitterTag": "EmitSuccess",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "checked-template-binder-guard",
+        "passed": true,
+        "status": "PASS",
+        "checkerTag": "CheckSuccess"
+      },
+      {
+        "name": "checked-template-term-guard",
+        "passed": true,
+        "status": "PASS",
+        "checkerTag": "CheckFailure"
+      },
+      {
+        "name": "mutual-datatype-fields",
+        "passed": true,
+        "status": "PASS",
+        "accepted": true,
+        "checkerTag": "CheckSuccess",
+        "emitterTag": "EmitSuccess",
+        "output": "MkA{MkB{AEnd{}}}"
+      },
+      {
+        "name": "forward-index-datatype",
+        "passed": true,
+        "status": "PASS",
+        "accepted": true,
+        "checkerTag": "CheckSuccess",
+        "emitterTag": "EmitSuccess",
+        "output": "MkB{}"
+      },
+      {
+        "name": "mutual-layout-arm-group",
+        "passed": true,
+        "status": "PASS",
+        "accepted": true,
+        "checkerTag": "CheckSuccess",
+        "emitterTag": "EmitSuccess",
+        "output": "LayoutData{LayArm{LayoutWord{}}}"
+      },
+      {
+        "name": "mutual-form-nest-cycle",
+        "passed": true,
+        "status": "PASS",
+        "accepted": true,
+        "checkerTag": "CheckSuccess",
+        "emitterTag": "EmitSuccess",
+        "output": "FillForm{FormArm{Nest{FillWord{}}}}"
+      },
+      {
+        "name": "unknown-forward-datatype",
+        "passed": true,
+        "status": "PASS",
+        "accepted": false,
+        "checkerTag": "CheckFailure"
+      },
+      {
+        "name": "duplicate-datatype-header",
+        "passed": true,
+        "status": "PASS",
+        "accepted": false,
+        "checkerTag": "CheckFailure"
+      },
+      {
+        "name": "ill-kinded-forward-field",
+        "passed": true,
+        "status": "PASS",
+        "accepted": false,
+        "checkerTag": "CheckFailure"
+      },
+      {
+        "name": "covered-one",
+        "passed": true,
+        "status": "PASS",
+        "accepted": true,
+        "checkerTag": "CheckSuccess",
+        "emitterTag": "EmitSuccess",
+        "output": "Pair{BitZero{}, BitZero{}}"
+      },
+      {
+        "name": "covered-many",
+        "passed": true,
+        "status": "PASS",
+        "accepted": true,
+        "checkerTag": "CheckSuccess",
+        "emitterTag": "EmitSuccess",
+        "output": "Pair{BitZero{}, BitZero{}}"
+      },
+      {
+        "name": "covered-affine-duplicate",
+        "passed": true,
+        "status": "PASS",
+        "accepted": false,
+        "checkerTag": "CheckFailure"
+      },
+      {
+        "name": "covered-erased-use",
+        "passed": true,
+        "status": "PASS",
+        "accepted": false,
+        "checkerTag": "CheckFailure"
+      },
+      {
+        "name": "typed-local-reusable",
+        "passed": true,
+        "status": "PASS",
+        "accepted": true,
+        "checkerTag": "CheckSuccess",
+        "emitterTag": "EmitSuccess",
+        "output": "Pair{BitOne{}, BitOne{}}"
+      },
+      {
+        "name": "typed-local-affine-duplicate",
+        "passed": true,
+        "status": "PASS",
+        "accepted": false,
+        "checkerTag": "CheckFailure"
+      },
+      {
+        "name": "typed-local-dependent-scope",
+        "passed": true,
+        "status": "PASS",
+        "accepted": true,
+        "checkerTag": "CheckSuccess",
+        "emitterTag": "EmitSuccess",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "covered-local-outer-affine",
+        "passed": true,
+        "status": "PASS",
+        "accepted": false,
+        "checkerTag": "CheckFailure"
+      },
+      {
+        "name": "covered-local-outer-erased",
+        "passed": true,
+        "status": "PASS",
+        "accepted": false,
+        "checkerTag": "CheckFailure"
+      },
+      {
+        "name": "usage-curried-single",
+        "passed": true,
+        "status": "PASS",
+        "accepted": true,
+        "checkerTag": "CheckSuccess",
+        "emitterTag": "EmitSuccess",
+        "output": "Pair{BitOne{}, BitZero{}}"
+      },
+      {
+        "name": "usage-curried-duplicate",
+        "passed": true,
+        "status": "PASS",
+        "accepted": false,
+        "checkerTag": "CheckFailure"
+      },
+      {
+        "name": "usage-annotation-single",
+        "passed": true,
+        "status": "PASS",
+        "accepted": true,
+        "checkerTag": "CheckSuccess",
+        "emitterTag": "EmitSuccess",
+        "output": "Pair{BitOne{}, BitZero{}}"
+      },
+      {
+        "name": "usage-annotation-duplicate",
+        "passed": true,
+        "status": "PASS",
+        "accepted": false,
+        "checkerTag": "CheckFailure"
+      },
+      {
+        "name": "usage-local-function-single",
+        "passed": true,
+        "status": "PASS",
+        "accepted": true,
+        "checkerTag": "CheckSuccess",
+        "emitterTag": "EmitSuccess",
+        "output": "Pair{BitOne{}, BitZero{}}"
+      },
+      {
+        "name": "usage-local-function-duplicate",
+        "passed": true,
+        "status": "PASS",
+        "accepted": false,
+        "checkerTag": "CheckFailure"
+      },
+      {
+        "name": "usage-local-function-erased",
+        "passed": true,
+        "status": "PASS",
+        "accepted": true,
+        "checkerTag": "CheckSuccess",
+        "emitterTag": "EmitSuccess",
+        "output": "BitZero{}"
+      },
+      {
+        "name": "usage-local-function-dependent",
+        "passed": true,
+        "status": "PASS",
+        "accepted": true,
+        "checkerTag": "CheckSuccess",
+        "emitterTag": "EmitSuccess",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "usage-local-function-dependent-live",
+        "passed": true,
+        "status": "PASS",
+        "accepted": false,
+        "checkerTag": "CheckFailure"
+      },
+      {
+        "name": "usage-g55-lambda-error-before-usage",
+        "passed": true,
+        "status": "PASS",
+        "accepted": false,
+        "checkerTag": "CheckFailure"
+      },
+      {
+        "name": "usage-g55-lambda-body-mismatch-before-usage",
+        "passed": true,
+        "status": "PASS",
+        "accepted": false,
+        "checkerTag": "CheckFailure"
+      },
+      {
+        "name": "usage-g55-pattern-usage-before-undefined",
+        "passed": true,
+        "status": "PASS",
+        "accepted": false,
+        "checkerTag": "CheckFailure"
+      },
+      {
+        "name": "usage-g55-pattern-branch-independent",
+        "passed": true,
+        "status": "PASS",
+        "accepted": true,
+        "checkerTag": "CheckSuccess",
+        "emitterTag": "EmitSuccess",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "usage-g55-body-error-before-final-affinity",
+        "passed": true,
+        "status": "PASS",
+        "accepted": false,
+        "checkerTag": "CheckFailure"
+      },
+      {
+        "name": "usage-g55-erased-application-argument-plus-live",
+        "passed": true,
+        "status": "PASS",
+        "accepted": true,
+        "checkerTag": "CheckSuccess",
+        "emitterTag": "EmitSuccess",
+        "output": "Pair{BitZero{}, BitOne{}}"
+      },
+      {
+        "name": "usage-g55-erased-argument-still-typechecked",
+        "passed": true,
+        "status": "PASS",
+        "accepted": false,
+        "checkerTag": "CheckFailure"
+      },
+      {
+        "name": "usage-g55-erased-constructor-field-plus-live",
+        "passed": true,
+        "status": "PASS",
+        "accepted": true,
+        "checkerTag": "CheckSuccess",
+        "emitterTag": "EmitSuccess",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "usage-g55-beta-ignored-argument",
+        "passed": true,
+        "status": "PASS",
+        "accepted": false,
+        "checkerTag": "CheckFailure"
+      },
+      {
+        "name": "usage-g55-early-local-undefined-after-duplicate-typed-value",
+        "passed": true,
+        "status": "PASS",
+        "accepted": false,
+        "checkerTag": "CheckFailure"
+      },
+      {
+        "name": "usage-g55-early-local-undefined-before-duplicate-typed-value",
+        "passed": true,
+        "status": "PASS",
+        "accepted": false,
+        "checkerTag": "CheckFailure"
+      },
+      {
+        "name": "usage-g55-early-local-erased-versus-body-error-typed-value",
+        "passed": true,
+        "status": "PASS",
+        "accepted": false,
+        "checkerTag": "CheckFailure"
+      },
+      {
+        "name": "usage-g55-termination-before-final-duplicate-call",
+        "passed": true,
+        "status": "PASS",
+        "accepted": false,
+        "checkerTag": "CheckFailure"
+      },
+      {
+        "name": "usage-g55-source-lexical-erased-dependent-local-typed-flag",
+        "passed": true,
+        "status": "PASS",
+        "accepted": false,
+        "checkerTag": "CheckFailure"
+      },
+      {
+        "name": "usage-g55-source-lexical-live-dependent-local-typed-flag",
+        "passed": true,
+        "status": "PASS",
+        "accepted": true,
+        "checkerTag": "CheckSuccess",
+        "emitterTag": "EmitSuccess",
+        "output": "BitZero{}"
+      },
+      {
+        "name": "usage-g55-nested-alternative-max",
+        "passed": true,
+        "status": "PASS",
+        "accepted": true,
+        "checkerTag": "CheckSuccess",
+        "emitterTag": "EmitSuccess",
+        "output": "BitOne{}"
+      },
+      {
+        "name": "usage-g55-nested-alternative-one-bad-row",
+        "passed": true,
+        "status": "PASS",
+        "accepted": false,
+        "checkerTag": "CheckFailure"
+      },
+      {
+        "name": "usage-g55-local-shadowed-levels",
+        "passed": true,
+        "status": "PASS",
+        "accepted": true,
+        "checkerTag": "CheckSuccess",
+        "emitterTag": "EmitSuccess",
+        "output": "Pair{BitZero{}, BitZero{}}"
+      },
+      {
+        "name": "usage-g55-sequential-local-values-duplicate-outer",
+        "passed": true,
+        "status": "PASS",
+        "accepted": false,
+        "checkerTag": "CheckFailure"
+      },
+      {
+        "name": "usage-g55-do-let-affine-single",
+        "passed": true,
+        "status": "PASS",
+        "accepted": true,
+        "checkerTag": "CheckSuccess",
+        "emitterTag": "EmitSuccess",
+        "output": "Pair{BitOne{}, BitZero{}}"
+      },
+      {
+        "name": "usage-g55-do-let-quantity-before-value-error",
+        "passed": true,
+        "status": "PASS",
+        "accepted": false,
+        "checkerTag": "CheckFailure"
+      },
+      {
+        "name": "usage-g55-do-let-quantity-before-body-error",
+        "passed": true,
+        "status": "PASS",
+        "accepted": false,
+        "checkerTag": "CheckFailure"
+      },
+      {
+        "name": "usage-g55-do-let-value-type-error",
+        "passed": true,
+        "status": "PASS",
+        "accepted": false,
+        "checkerTag": "CheckFailure"
+      },
+      {
+        "name": "usage-g55-do-let-many",
+        "passed": true,
+        "status": "PASS",
+        "accepted": true,
+        "checkerTag": "CheckSuccess",
+        "emitterTag": "EmitSuccess",
+        "output": "Pair{BitOne{}, BitOne{}}"
+      }
+    ]
+  },
+  "programs": [
+    {
+      "source": "tests/reg/js_non_tail_returns.bend",
+      "stdout": "200\n200\n400\n4\n",
+      "sourceRef": {
+        "path": "tests/reg/js_non_tail_returns.bend",
+        "sha256": "34ef9d5c30d57f56c6344e7069ed11c5511921525414bc717710c4f0365c353b"
+      }
+    },
+    {
+      "source": "tests/compile/js_multi_reentrant.bend",
+      "stdout": "10109\n76\n",
+      "sourceRef": {
+        "path": "tests/compile/js_multi_reentrant.bend",
+        "sha256": "28b72182afd669d46528d8361d5b1921cb721a9c70c4ab6f3d6b169a4ffdf3c6"
+      }
+    },
+    {
+      "source": "tests/compile/js_closure_host_depth.bend",
+      "stdout": "20000\n",
+      "sourceRef": {
+        "path": "tests/compile/js_closure_host_depth.bend",
+        "sha256": "0870401ad5950774c6d28090e0803f58c151e546dc09de4ad70c19702e6b3222"
+      }
+    }
+  ],
+  "programExecutions": [
+    {
+      "name": "r1-native-program-0-emit",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+        "--memory-mib=8192",
+        "--rss-mib=8192",
+        "--poll-ms=10",
+        "--timeout-ms=120000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=6144",
+        "/Users/ilyagulya/Projects/My/bend/evals/candidate_host.ts",
+        "--candidate=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g63-contiguous-tick-62txq7en/candidate-native-stage0.json.mjs",
+        "--parser=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g63-contiguous-tick-62txq7en/candidate-native-stage0.json.mjs",
+        "--base=/Users/ilyagulya/Projects/My/bend/bend2/base.bend",
+        "/Users/ilyagulya/Projects/My/bend/tests/reg/js_non_tail_returns.bend",
+        "-o",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g63-contiguous-tick-62txq7en/native-preflight-0.js"
+      ],
+      "cwd": "/Users/ilyagulya/Projects/My/bend",
+      "exitCode": 0,
+      "stdout": "{\"output\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g63-contiguous-tick-62txq7en/native-preflight-0.js\",\"bytes\":393226,\"sha256\":\"8951351ec7273ded517c0e698715456a501d8b9be6c4490b2d60597bf04fb335\",\"target\":\"js\",\"library\":false,\"modules\":2,\"foreignFiles\":58}\n",
+      "guardians": [
+        {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 9093,
+          "peakRssBytes": 1390706688,
+          "peakFootprintBytes": 1193529232,
+          "timeoutMs": 120000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793774102171-3963beba0b9b611c.json"
+        }
+      ],
+      "expectedStdout": null,
+      "passed": true
+    },
+    {
+      "name": "r1-native-program-0-run",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+        "--memory-mib=8192",
+        "--rss-mib=8192",
+        "--poll-ms=10",
+        "--timeout-ms=120000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g63-contiguous-tick-62txq7en/native-preflight-0.js"
+      ],
+      "cwd": "/Users/ilyagulya/Projects/My/bend",
+      "exitCode": 0,
+      "stdout": "200\n200\n400\n4\n",
+      "guardians": [
+        {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 40,
+          "peakRssBytes": 44040192,
+          "peakFootprintBytes": 13895288,
+          "timeoutMs": 120000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793774111301-2a75dce01752a1b4.json"
+        }
+      ],
+      "expectedStdout": "200\n200\n400\n4\n",
+      "passed": true
+    },
+    {
+      "name": "r1-native-program-1-emit",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+        "--memory-mib=8192",
+        "--rss-mib=8192",
+        "--poll-ms=10",
+        "--timeout-ms=120000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=6144",
+        "/Users/ilyagulya/Projects/My/bend/evals/candidate_host.ts",
+        "--candidate=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g63-contiguous-tick-62txq7en/candidate-native-stage0.json.mjs",
+        "--parser=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g63-contiguous-tick-62txq7en/candidate-native-stage0.json.mjs",
+        "--base=/Users/ilyagulya/Projects/My/bend/bend2/base.bend",
+        "/Users/ilyagulya/Projects/My/bend/tests/compile/js_multi_reentrant.bend",
+        "-o",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g63-contiguous-tick-62txq7en/native-preflight-1.js"
+      ],
+      "cwd": "/Users/ilyagulya/Projects/My/bend",
+      "exitCode": 0,
+      "stdout": "{\"output\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g63-contiguous-tick-62txq7en/native-preflight-1.js\",\"bytes\":395777,\"sha256\":\"66580e841fbc96f88b9af812265686332e4c40f82ddb9e525dd9b58d8280ce0a\",\"target\":\"js\",\"library\":false,\"modules\":2,\"foreignFiles\":59}\n",
+      "guardians": [
+        {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 8690,
+          "peakRssBytes": 1344700416,
+          "peakFootprintBytes": 1154085792,
+          "timeoutMs": 120000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793774111367-0aacfd93f4b4d8d6.json"
+        }
+      ],
+      "expectedStdout": null,
+      "passed": true
+    },
+    {
+      "name": "r1-native-program-1-run",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+        "--memory-mib=8192",
+        "--rss-mib=8192",
+        "--poll-ms=10",
+        "--timeout-ms=120000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g63-contiguous-tick-62txq7en/native-preflight-1.js"
+      ],
+      "cwd": "/Users/ilyagulya/Projects/My/bend",
+      "exitCode": 0,
+      "stdout": "10109\n76\n",
+      "guardians": [
+        {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 42,
+          "peakRssBytes": 44105728,
+          "peakFootprintBytes": 13960824,
+          "timeoutMs": 120000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793774120085-f646683586886338.json"
+        }
+      ],
+      "expectedStdout": "10109\n76\n",
+      "passed": true
+    },
+    {
+      "name": "r1-native-program-2-emit",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+        "--memory-mib=8192",
+        "--rss-mib=8192",
+        "--poll-ms=10",
+        "--timeout-ms=120000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=6144",
+        "/Users/ilyagulya/Projects/My/bend/evals/candidate_host.ts",
+        "--candidate=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g63-contiguous-tick-62txq7en/candidate-native-stage0.json.mjs",
+        "--parser=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g63-contiguous-tick-62txq7en/candidate-native-stage0.json.mjs",
+        "--base=/Users/ilyagulya/Projects/My/bend/bend2/base.bend",
+        "/Users/ilyagulya/Projects/My/bend/tests/compile/js_closure_host_depth.bend",
+        "-o",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g63-contiguous-tick-62txq7en/native-preflight-2.js"
+      ],
+      "cwd": "/Users/ilyagulya/Projects/My/bend",
+      "exitCode": 0,
+      "stdout": "{\"output\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g63-contiguous-tick-62txq7en/native-preflight-2.js\",\"bytes\":386208,\"sha256\":\"5d961ca3274de460e7279f141f47d29cd4b13e83dc78852a58b5521ddddef11e\",\"target\":\"js\",\"library\":false,\"modules\":2,\"foreignFiles\":59}\n",
+      "guardians": [
+        {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 8729,
+          "peakRssBytes": 1351696384,
+          "peakFootprintBytes": 1138929560,
+          "timeoutMs": 120000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793774120154-8bdb2c5a3a695e02.json"
+        }
+      ],
+      "expectedStdout": null,
+      "passed": true
+    },
+    {
+      "name": "r1-native-program-2-run",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+        "--memory-mib=8192",
+        "--rss-mib=8192",
+        "--poll-ms=10",
+        "--timeout-ms=120000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g63-contiguous-tick-62txq7en/native-preflight-2.js"
+      ],
+      "cwd": "/Users/ilyagulya/Projects/My/bend",
+      "exitCode": 0,
+      "stdout": "20000\n",
+      "guardians": [
+        {
+          "status": "PASS",
+          "reason": "command_exit",
+          "elapsedMs": 42,
+          "peakRssBytes": 44056576,
+          "peakFootprintBytes": 13911672,
+          "timeoutMs": 120000,
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592,
+          "ownedTreeStopped": true,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793774128908-848d699920b04435.json"
+        }
+      ],
+      "expectedStdout": "20000\n",
+      "passed": true
+    }
+  ],
+  "proofBoundary": "Actual C-produced own parser/checker/emitter consumers. Fixture parser fuel2M retained; performance parser fuel8M retained. No full-source performance, fixedpoint, C-runtime/release or product acceptance."
+}

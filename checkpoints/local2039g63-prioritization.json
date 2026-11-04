@@ -1,0 +1,153 @@
+{
+  "schemaVersion": 1,
+  "version": "G63R1",
+  "status": "READ_ONLY_CAUSAL_PRIORITIZATION_NOT_PERFORMANCE",
+  "sourceCensus": [
+    {
+      "component": "checker",
+      "manifest": {
+        "path": "checkpoints/checker-core-steps-v1.json",
+        "sha256": "cd973ad57134f08587515330c65e44a9fb864f41470a4edf32e5c8f48fb767d6"
+      },
+      "definitions": 1161,
+      "zeroOwnSourceOutgoingCallees": 140,
+      "strictDirectSites": 1478,
+      "zeroOwnSourceOutgoingCalleeSites": 170,
+      "fraction": 0.11502029769959404,
+      "topCallees": [
+        [
+          "canonical_key",
+          56
+        ],
+        [
+          "readback_term",
+          23
+        ],
+        [
+          "materialized",
+          20
+        ],
+        [
+          "typed_leaf",
+          9
+        ],
+        [
+          "global_local_alias",
+          5
+        ],
+        [
+          "pattern_row_index_region_result",
+          5
+        ],
+        [
+          "readback_diagnostic",
+          5
+        ],
+        [
+          "maybe_shift_index",
+          4
+        ]
+      ]
+    },
+    {
+      "component": "emitter",
+      "manifest": {
+        "path": "checkpoints/emitter-steps-v1.json",
+        "sha256": "0e46d9df5aa4ae5c589a83aa115d0376a05b203d58c564f9fc01f5c271fe21ee"
+      },
+      "definitions": 2145,
+      "zeroOwnSourceOutgoingCallees": 389,
+      "strictDirectSites": 2619,
+      "zeroOwnSourceOutgoingCalleeSites": 736,
+      "fraction": 0.2810232913325697,
+      "topCallees": [
+        [
+          "cps_provider_5_join_text",
+          253
+        ],
+        [
+          "cps_provider_8_cat",
+          115
+        ],
+        [
+          "cps_provider_1_no_span",
+          26
+        ],
+        [
+          "cps_provider_2_lv_name",
+          20
+        ],
+        [
+          "cps_provider_5_show_state_error",
+          19
+        ],
+        [
+          "cps_provider_2_r_name",
+          10
+        ],
+        [
+          "cps_provider_4_flush_key",
+          10
+        ],
+        [
+          "cps_provider_5_one_job",
+          10
+        ]
+      ]
+    }
+  ],
+  "actualNativeImageUnboxStrictCallSites": {
+    "image": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json.mjs",
+      "sha256": "4636c05aa8c75e72212cb03949937e25561942bc00da250f876f37f001b9fc18"
+    },
+    "resolvedGetter": "$b1210 = checker_unbox, source body image line15351",
+    "pattern": "$split_done($b1210(",
+    "sites": 2588,
+    "interpretation": "Complete syntactic inline-fast split-call site count, not dynamic count or one-per-handler assumption."
+  },
+  "observedStackUnion": {
+    "checkerChunk": {
+      "exclusiveRawShare": 0.03734432595635042,
+      "observedStackInclusiveShare": 0.2725557052388995
+    },
+    "checkerAdvancePop": {
+      "exclusiveRawShare": 0.0655141956533994,
+      "observedStackInclusiveShare": 0.24688564104716523
+    },
+    "checkerRequestDispatch": {
+      "exclusiveRawShare": 0.011516368374163168,
+      "observedStackInclusiveShare": 0.17962746174806146
+    },
+    "runtimeRun": {
+      "exclusiveRawShare": 0.03051795764014052,
+      "observedStackInclusiveShare": 0.866726519515705
+    },
+    "runtimeSplit": {
+      "exclusiveRawShare": 0.022942440871127793,
+      "observedStackInclusiveShare": 0.4740264421451631
+    },
+    "baseMapWalks": {
+      "exclusiveRawShare": 0.089828548471383,
+      "observedStackInclusiveShare": 0.11876644533786142
+    }
+  },
+  "interpretation": [
+    "Zero own-source calls is an over-approximation: BIR can still Apply a higher-order value, access Symbol, or otherwise suspend.",
+    "No exclusive/inclusive sample share or rejected broader-transform point estimate is a hard causal speedup ceiling.",
+    "Strict-leaf deframing is unmeasured and deferred, not disproved. It does not remove the per-tick call to non-leaf checker_advance.",
+    "Selected experiment instead contracts checker tick selection while retaining every materialized state and the entire JS runtime.",
+    "Scheduler source equivalence argument is a case split plus induction on Nat fuel, not a mechanized preservation proof."
+  ],
+  "sourceCaseInvariants": {
+    "fuelZero": "return supplied run without calling or inspecting progress",
+    "finishedRun": "same immediate finished result",
+    "finishedStackDone": "same typed cast then finished run",
+    "finishedStackMore": "same one resume invocation then materialized run with remaining stack",
+    "pending": "same one step_one invocation then StackMore and RunState construction",
+    "direct": "same one invoke(arguments) then StackMore and RunState construction",
+    "bound": "no invocation; same StackMore and RunState construction",
+    "recursiveFuel": "each State transition recurs with predecessor fuel exactly once",
+    "affineCaptures": "passed once in each exclusive source arm"
+  }
+}

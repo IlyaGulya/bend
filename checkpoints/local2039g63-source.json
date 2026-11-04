@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "version": "G63R1",
+  "status": "SOURCE_READY_NOT_RUN",
+  "protocolCheckpoint": "13c67b8c",
+  "source": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g63-contiguous-tick-62txq7en/repository/checkpoints/checker_core_steps_v1.bend",
+    "sha256": "995e0a9becf499e4cd03154e7a427bde79c906b03576c680727c6c45054fb6b5"
+  },
+  "unchangedEmitter": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g63-contiguous-tick-62txq7en/repository/checkpoints/emitter_steps_v1.bend",
+    "sha256": "7f7c8d2e57a3fcd3925b4286a8300668ae91b7e11a26317cea6da2df5c9ea425"
+  },
+  "schedulerInput": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g63-contiguous-tick-62txq7en/repository/checkpoints/local2039g63-scheduler-input/main.bend",
+    "sha256": "e207571b960d6bcf9ad1f9e19adbd8825ea7b6a875400776f9450bff041d5cd2"
+  },
+  "reusedInputSource": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/scheduler/repository/evals/scheduler_chunk_smoke.bend",
+    "sha256": "fbaf14b399a2f125a6180d3bd1fe0c90c396fac5627713531ef99171eb18bb7c"
+  },
+  "expectedStdout": "4294967295\n37\n0\n4294967295\n1\n31\n4294967295\n32\n32\n4294967295\n48\n4294967295\n72\n2\n1\n400\n401\n101\n100\n0\n200\n101\n231\n101\n100\n48\n300\n101\n331\n101\n100\n72\n101\n100\n1\n1\n1\n37\n37\n37\n37\n300\n101\n101\n100\n41\n101\n41\n41\n",
+  "observations": 49,
+  "notes": [
+    "Removed unused checker_pop/checker_advance source declarations, no aliases.",
+    "Experimental source checkpoint, no canonical generator provenance claimed.",
+    "All RunState/StackMore constructors and one-tick accounting remain."
+  ]
+}
