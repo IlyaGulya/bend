@@ -3156,6 +3156,13 @@ zero-fuel input,64 transitions, heterogeneous affine stack/equality transport,
 resume/invoke order, trace suspension and API13. It is **not implemented or
 measured in G67**; sampled allocation share is not a predicted CPU speedup.
 
+**Prior-art correction before the next version:** the scalar-carry proposal
+above is not new. G58B and G64R2 already implement boundary-only RunState
+materialization, including zero-fuel identity and quantum64, and were rejected
+by their recorded filters. No new candidate or production run is started from
+that rediscovery. A new DOD experiment must remove a different allocation or
+reference-lifetime cost; old rejected source is not relabelled as G68.
+
 All candidate53, selected52 and conditional-full53 inputs were hash-checked
 unchanged at closure. Rejected source, required generated Bend inputs,
 regressions and experimental law changes remain in the source checkpoints.

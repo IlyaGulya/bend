@@ -232,6 +232,7 @@
     ],
     "emitterTemplate": "evals/checker_core_step_lower.ts:2531-2560",
     "proposedOnly": "Carry typed progress/stack as scalar parameters inside native fuel chunk; box RunState only at external quantum boundary. Preservefuel0 whole input, quantum64, affine heterogeneous stack/equality transport, resume/invoke order, trace suspension, API13. No mutation, newBIR or memoization required for first fusion. Not implemented or measured in G67.",
+    "priorArtCorrection": "Subsequent journal lookup establishes this scalar-carry design was already implemented in G58B/G64R2 and rejected. It is not novel and is not being rebuilt or renamed G68. New experiment design must remove a different allocation/reference-lifetime cost; G67 findings and rejection are unchanged.",
     "risk": "Only one structurally decreasing Nat-recursive loop; no unproved mutual recursion. TracedRun suspension and budget accounting must remain exact."
   },
   "mainIntegration": "Existing profiling journal and11compactJSONreceipts only; rejected source, regenerated required inputs, fixtures and law changes remain source checkpoint. MainFIR/BIRlaws and historical artifacts intentionally unchanged. Images, caches, snapshots and rawoutputs outsideGit.",
