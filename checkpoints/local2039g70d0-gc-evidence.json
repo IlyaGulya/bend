@@ -1,0 +1,561 @@
+{
+  "schemaVersion": 1,
+  "version": "G70D0",
+  "status": "TWO_FULL_SAME_WORK_GC_DIAGNOSTICS_PASS_NO_SAMPLER_OR_SNAPSHOT",
+  "preflight": {
+    "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g70d0-gc-preflight.json",
+    "sha256": "ddb92347f29c039979a46406ea7dd39bbead82c535b3d89b1d79cb7beee9e52f"
+  },
+  "execution": {
+    "schemaVersion": 1,
+    "status": "ALL_CELLS_FINISHED",
+    "cells": [
+      {
+        "id": "A-full-frozen-GC-diagnostic",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=600000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--experimental-strip-types",
+          "--max-old-space-size=6144",
+          "--max-semi-space-size=128",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g70-peak-owners-obke30h6/gc-timeline.mjs",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g70-peak-owners-obke30h6/A-gc-request.json",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g70-peak-owners-obke30h6/A-gc-result.json"
+        ],
+        "cwd": "/Users/ilyagulya/Projects/My/bend",
+        "report": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g70-peak-owners-obke30h6/A-gc-result.json",
+        "exitCode": 0,
+        "elapsedMs": 68259.529708,
+        "stdout": "{\"status\":\"PASS_FULL_FROZEN_OWN_CHECK_GC_DIAGNOSTIC\",\"report\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g70-peak-owners-obke30h6/A-gc-result.json\",\"moduleCount\":17,\"sourceDeclarations\":2954,\"stepCounts\":{\"expand\":263032,\"check\":1975761},\"boundarySamples\":127,\"gcEvents\":598,\"sampledOccupiedHeapMaximum\":644572648,\"scope\":\"Diagnostic only; not peak-live or clean CPU/RAM comparison\"}\n",
+        "stderr": "HEAVY_GATE {\"status\":\"PASS\",\"reason\":\"command_exit\",\"commandExitCode\":0,\"commandSignal\":0,\"peakRssBytes\":1117503488,\"peakFootprintBytes\":1107007072,\"elapsedMs\":68215,\"timeoutMs\":600000,\"reportPhase\":\"complete\",\"ownedTreeStopped\":true,\"supervisorExitCode\":0,\"command\":[\"/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node\",\"--experimental-strip-types\",\"--max-old-space-size=6144\",\"--max-semi-space-size=128\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g70-peak-owners-obke30h6/gc-timeline.mjs\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g70-peak-owners-obke30h6/A-gc-request.json\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g70-peak-owners-obke30h6/A-gc-result.json\"],\"label\":\"heavy command\",\"exitCode\":0,\"reportPath\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793877013974-182665d7a817308d.json\",\"memoryLimitBytes\":8589934592,\"rssLimitBytes\":8589934592}\n",
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "commandExitCode": 0,
+          "commandSignal": 0,
+          "peakRssBytes": 1117503488,
+          "peakFootprintBytes": 1107007072,
+          "elapsedMs": 68215,
+          "timeoutMs": 600000,
+          "reportPhase": "complete",
+          "ownedTreeStopped": true,
+          "supervisorExitCode": 0,
+          "command": [
+            "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+            "--experimental-strip-types",
+            "--max-old-space-size=6144",
+            "--max-semi-space-size=128",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g70-peak-owners-obke30h6/gc-timeline.mjs",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g70-peak-owners-obke30h6/A-gc-request.json",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g70-peak-owners-obke30h6/A-gc-result.json"
+          ],
+          "label": "heavy command",
+          "exitCode": 0,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793877013974-182665d7a817308d.json",
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592
+        },
+        "passed": true
+      },
+      {
+        "id": "C-full-frozen-GC-diagnostic",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=600000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--experimental-strip-types",
+          "--max-old-space-size=6144",
+          "--max-semi-space-size=128",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g70-peak-owners-obke30h6/gc-timeline.mjs",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g70-peak-owners-obke30h6/C-gc-request.json",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g70-peak-owners-obke30h6/C-gc-result.json"
+        ],
+        "cwd": "/Users/ilyagulya/Projects/My/bend",
+        "report": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g70-peak-owners-obke30h6/C-gc-result.json",
+        "exitCode": 0,
+        "elapsedMs": 68460.39250000002,
+        "stdout": "{\"status\":\"PASS_FULL_FROZEN_OWN_CHECK_GC_DIAGNOSTIC\",\"report\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g70-peak-owners-obke30h6/C-gc-result.json\",\"moduleCount\":17,\"sourceDeclarations\":2954,\"stepCounts\":{\"expand\":263032,\"check\":1975761},\"boundarySamples\":127,\"gcEvents\":589,\"sampledOccupiedHeapMaximum\":629114128,\"scope\":\"Diagnostic only; not peak-live or clean CPU/RAM comparison\"}\n",
+        "stderr": "HEAVY_GATE {\"status\":\"PASS\",\"reason\":\"command_exit\",\"commandExitCode\":0,\"commandSignal\":0,\"peakRssBytes\":1122402304,\"peakFootprintBytes\":1145967480,\"elapsedMs\":68434,\"timeoutMs\":600000,\"reportPhase\":\"complete\",\"ownedTreeStopped\":true,\"supervisorExitCode\":0,\"command\":[\"/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node\",\"--experimental-strip-types\",\"--max-old-space-size=6144\",\"--max-semi-space-size=128\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g70-peak-owners-obke30h6/gc-timeline.mjs\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g70-peak-owners-obke30h6/C-gc-request.json\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g70-peak-owners-obke30h6/C-gc-result.json\"],\"label\":\"heavy command\",\"exitCode\":0,\"reportPath\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793877082225-61b0282aaae9e15e.json\",\"memoryLimitBytes\":8589934592,\"rssLimitBytes\":8589934592}\n",
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "commandExitCode": 0,
+          "commandSignal": 0,
+          "peakRssBytes": 1122402304,
+          "peakFootprintBytes": 1145967480,
+          "elapsedMs": 68434,
+          "timeoutMs": 600000,
+          "reportPhase": "complete",
+          "ownedTreeStopped": true,
+          "supervisorExitCode": 0,
+          "command": [
+            "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+            "--experimental-strip-types",
+            "--max-old-space-size=6144",
+            "--max-semi-space-size=128",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g70-peak-owners-obke30h6/gc-timeline.mjs",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g70-peak-owners-obke30h6/C-gc-request.json",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g70-peak-owners-obke30h6/C-gc-result.json"
+          ],
+          "label": "heavy command",
+          "exitCode": 0,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793877082225-61b0282aaae9e15e.json",
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592
+        },
+        "passed": true
+      }
+    ]
+  },
+  "reports": [
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g70-peak-owners-obke30h6/A-gc-result.json",
+      "sha256": "961f3c952c4f89780da5c88be78401f0511cd33069f5433c7b227c8a3e9ee517"
+    },
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g70-peak-owners-obke30h6/C-gc-result.json",
+      "sha256": "d7366bf73c49a38bc481ba88f6944dc568948ac2326e738b2b7e87d432ed6405"
+    }
+  ],
+  "summaries": {
+    "A": {
+      "fullCheckStatus": "PASS_FULL_FROZEN_OWN_CHECK_GC_DIAGNOSTIC",
+      "samples": 121,
+      "checkGCEvents": 510,
+      "checkGCKinds": {
+        "1": 504,
+        "8": 3,
+        "4": 3
+      },
+      "checkGCPauseMs": 917.499119758606,
+      "sampledOccupiedHeapMaximum": 644572648,
+      "sampledCheckOccupiedMaximum": 644572648,
+      "sampledCheckMaximumAtStep": 1916928,
+      "heapTotalAtSampledMaximum": 817168384,
+      "spacesAtSampledCheckMaximum": {
+        "read_only_space": {
+          "space_used_size": 0,
+          "space_size": 0,
+          "physical_space_size": 0
+        },
+        "new_space": {
+          "space_used_size": 109307888,
+          "space_size": 268435456,
+          "physical_space_size": 268435456
+        },
+        "old_space": {
+          "space_used_size": 363376136,
+          "space_size": 365920256,
+          "physical_space_size": 365953024
+        },
+        "code_space": {
+          "space_used_size": 54910720,
+          "space_size": 61341696,
+          "physical_space_size": 61341696
+        },
+        "shared_space": {
+          "space_used_size": 0,
+          "space_size": 0,
+          "physical_space_size": 0
+        },
+        "trusted_space": {
+          "space_used_size": 46649320,
+          "space_size": 50659328,
+          "physical_space_size": 50855936
+        },
+        "shared_trusted_space": {
+          "space_used_size": 0,
+          "space_size": 0,
+          "physical_space_size": 0
+        },
+        "new_large_object_space": {
+          "space_used_size": 0,
+          "space_size": 0,
+          "physical_space_size": 0
+        },
+        "large_object_space": {
+          "space_used_size": 68031624,
+          "space_size": 68468736,
+          "physical_space_size": 68468736
+        },
+        "code_large_object_space": {
+          "space_used_size": 132896,
+          "space_size": 147456,
+          "physical_space_size": 147456
+        },
+        "shared_large_object_space": {
+          "space_used_size": 0,
+          "space_size": 0,
+          "physical_space_size": 0
+        },
+        "shared_trusted_large_object_space": {
+          "space_used_size": 0,
+          "space_size": 0,
+          "physical_space_size": 0
+        },
+        "trusted_large_object_space": {
+          "space_used_size": 2165032,
+          "space_size": 2195456,
+          "physical_space_size": 2195456
+        }
+      },
+      "firstOwnerSamples": [
+        {
+          "step": 32768,
+          "owner": "checker_core_steps_v1.CheckerRequest_equal_raw_distinct"
+        },
+        {
+          "step": 98304,
+          "owner": "checker_core_steps_v1.CheckerRequest_canonical_key"
+        },
+        {
+          "step": 163840,
+          "owner": "checker_core_steps_v1.CheckerRequest_lookup_binding_head"
+        },
+        {
+          "step": 180224,
+          "owner": "checker_core_steps_v1.CheckerRequest_scope_constructor_trees_are_closed"
+        },
+        {
+          "step": 212992,
+          "owner": "checker_core_steps_v1.CheckerRequest_arena_names_cons"
+        },
+        {
+          "step": 262144,
+          "owner": "checker_core_steps_v1.CheckerRequest_arena_put_node"
+        },
+        {
+          "step": 294912,
+          "owner": "checker_core_steps_v1.CheckerRequest_application_argument_bangs_valid_terms"
+        },
+        {
+          "step": 425984,
+          "owner": "checker_core_steps_v1.CheckerRequest_scope_constructor_lists_equal_open"
+        },
+        {
+          "step": 442368,
+          "owner": "checker_core_steps_v1.CheckerRequest_arena_subst_memo_lookup"
+        },
+        {
+          "step": 622592,
+          "owner": "checker_core_steps_v1.CheckerRequest_arena_names_cons"
+        }
+      ],
+      "lastOwnerSamples": [
+        {
+          "step": 1523712,
+          "owner": "checker_core_steps_v1.CheckerRequest_visible_lookup_key"
+        },
+        {
+          "step": 1736704,
+          "owner": "checker_core_steps_v1.CheckerRequest_pattern_row_index_select"
+        },
+        {
+          "step": 1769472,
+          "owner": "checker_core_steps_v1.CheckerRequest_arena_copy_word_range"
+        },
+        {
+          "step": 1785856,
+          "owner": "checker_core_steps_v1.CheckerRequest_arena_copy_word_range"
+        },
+        {
+          "step": 1900544,
+          "owner": "checker_core_steps_v1.CheckerRequest_canonical_key"
+        }
+      ],
+      "firstFinishedResumeSamples": [
+        {
+          "step": 16384,
+          "owner": {
+            "progressTag": "checker_core_steps_v1.CheckerFinished",
+            "requestChain": [],
+            "stackTag": "checker_core_steps_v1.CheckerStackMore",
+            "resumeName": "",
+            "resumeSource": "($v101799,$raw=undefined)=>{const $base0=$ksp,$sp0=$sp;return run_force(($td<64?$b17318($c0,$c1,$v101799,$td+1):run_named3($b17318,$c0,$c1,$v101799,$td)),$raw,$base0,$sp0);}"
+          }
+        },
+        {
+          "step": 49152,
+          "owner": {
+            "progressTag": "checker_core_steps_v1.CheckerFinished",
+            "requestChain": [],
+            "stackTag": "checker_core_steps_v1.CheckerStackMore",
+            "resumeName": "",
+            "resumeSource": "($v88314,$raw=undefined)=>{const $base0=$ksp,$sp0=$sp;return run_force(($td<64?$b16493($v88314,$td+1):run_named1($b16493,$v88314,$td)),$raw,$base0,$sp0);}"
+          }
+        },
+        {
+          "step": 65536,
+          "owner": {
+            "progressTag": "checker_core_steps_v1.CheckerFinished",
+            "requestChain": [],
+            "stackTag": "checker_core_steps_v1.CheckerStackMore",
+            "resumeName": "",
+            "resumeSource": "($v29954,$raw=undefined)=>{const $base0=$ksp,$sp0=$sp;return run_force(($td<64?$b13664($v29954,$td+1):run_named1($b13664,$v29954,$td)),$raw,$base0,$sp0);}"
+          }
+        }
+      ],
+      "guard": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 1117503488,
+        "peakFootprintBytes": 1107007072,
+        "elapsedMs": 68215,
+        "timeoutMs": 600000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--experimental-strip-types",
+          "--max-old-space-size=6144",
+          "--max-semi-space-size=128",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g70-peak-owners-obke30h6/gc-timeline.mjs",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g70-peak-owners-obke30h6/A-gc-request.json",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g70-peak-owners-obke30h6/A-gc-result.json"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793877013974-182665d7a817308d.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      },
+      "scope": "Twoinstrumenteddiagnostics,notqualifiedperformancecomparison; heapoccupiedincludesgarbage."
+    },
+    "C": {
+      "fullCheckStatus": "PASS_FULL_FROZEN_OWN_CHECK_GC_DIAGNOSTIC",
+      "samples": 121,
+      "checkGCEvents": 511,
+      "checkGCKinds": {
+        "1": 505,
+        "8": 3,
+        "4": 3
+      },
+      "checkGCPauseMs": 938.8498640060425,
+      "sampledOccupiedHeapMaximum": 629114128,
+      "sampledCheckOccupiedMaximum": 566674168,
+      "sampledCheckMaximumAtStep": 1425408,
+      "heapTotalAtSampledMaximum": 721616896,
+      "spacesAtSampledCheckMaximum": {
+        "read_only_space": {
+          "space_used_size": 0,
+          "space_size": 0,
+          "physical_space_size": 0
+        },
+        "new_space": {
+          "space_used_size": 126085664,
+          "space_size": 268435456,
+          "physical_space_size": 268435456
+        },
+        "old_space": {
+          "space_used_size": 277252688,
+          "space_size": 280199168,
+          "physical_space_size": 280231936
+        },
+        "code_space": {
+          "space_used_size": 55271712,
+          "space_size": 60555264,
+          "physical_space_size": 60555264
+        },
+        "shared_space": {
+          "space_used_size": 0,
+          "space_size": 0,
+          "physical_space_size": 0
+        },
+        "trusted_space": {
+          "space_used_size": 46550120,
+          "space_size": 50397184,
+          "physical_space_size": 50593792
+        },
+        "shared_trusted_space": {
+          "space_used_size": 0,
+          "space_size": 0,
+          "physical_space_size": 0
+        },
+        "new_large_object_space": {
+          "space_used_size": 0,
+          "space_size": 0,
+          "physical_space_size": 0
+        },
+        "large_object_space": {
+          "space_used_size": 60110192,
+          "space_size": 60588032,
+          "physical_space_size": 60588032
+        },
+        "code_large_object_space": {
+          "space_used_size": 132896,
+          "space_size": 147456,
+          "physical_space_size": 147456
+        },
+        "shared_large_object_space": {
+          "space_used_size": 0,
+          "space_size": 0,
+          "physical_space_size": 0
+        },
+        "shared_trusted_large_object_space": {
+          "space_used_size": 0,
+          "space_size": 0,
+          "physical_space_size": 0
+        },
+        "trusted_large_object_space": {
+          "space_used_size": 1272144,
+          "space_size": 1294336,
+          "physical_space_size": 1294336
+        }
+      },
+      "firstOwnerSamples": [
+        {
+          "step": 32768,
+          "owner": "checker_core_steps_v1.CheckerRequest_equal_raw_distinct"
+        },
+        {
+          "step": 98304,
+          "owner": "checker_core_steps_v1.CheckerRequest_canonical_key"
+        },
+        {
+          "step": 163840,
+          "owner": "checker_core_steps_v1.CheckerRequest_lookup_binding_head"
+        },
+        {
+          "step": 180224,
+          "owner": "checker_core_steps_v1.CheckerRequest_scope_constructor_trees_are_closed"
+        },
+        {
+          "step": 212992,
+          "owner": "checker_core_steps_v1.CheckerRequest_arena_names_cons"
+        },
+        {
+          "step": 262144,
+          "owner": "checker_core_steps_v1.CheckerRequest_arena_put_node"
+        },
+        {
+          "step": 294912,
+          "owner": "checker_core_steps_v1.CheckerRequest_application_argument_bangs_valid_terms"
+        },
+        {
+          "step": 425984,
+          "owner": "checker_core_steps_v1.CheckerRequest_scope_constructor_lists_equal_open"
+        },
+        {
+          "step": 442368,
+          "owner": "checker_core_steps_v1.CheckerRequest_arena_subst_memo_lookup"
+        },
+        {
+          "step": 622592,
+          "owner": "checker_core_steps_v1.CheckerRequest_arena_names_cons"
+        }
+      ],
+      "lastOwnerSamples": [
+        {
+          "step": 1523712,
+          "owner": "checker_core_steps_v1.CheckerRequest_visible_lookup_key"
+        },
+        {
+          "step": 1736704,
+          "owner": "checker_core_steps_v1.CheckerRequest_pattern_row_index_select"
+        },
+        {
+          "step": 1769472,
+          "owner": "checker_core_steps_v1.CheckerRequest_arena_copy_word_range"
+        },
+        {
+          "step": 1785856,
+          "owner": "checker_core_steps_v1.CheckerRequest_arena_copy_word_range"
+        },
+        {
+          "step": 1900544,
+          "owner": "checker_core_steps_v1.CheckerRequest_canonical_key"
+        }
+      ],
+      "firstFinishedResumeSamples": [
+        {
+          "step": 16384,
+          "owner": {
+            "progressTag": "checker_core_steps_v1.CheckerFinished",
+            "requestChain": [],
+            "stackTag": "checker_core_steps_v1.CheckerStackMore",
+            "resumeName": "",
+            "resumeSource": "($v101799,$raw=undefined)=>{const $base0=$ksp,$sp0=$sp;return run_force(($td<64?$b17348($c0,$c1,$v101799,$td+1):run_named3($b17348,$c0,$c1,$v101799,$td)),$raw,$base0,$sp0);}"
+          }
+        },
+        {
+          "step": 49152,
+          "owner": {
+            "progressTag": "checker_core_steps_v1.CheckerFinished",
+            "requestChain": [],
+            "stackTag": "checker_core_steps_v1.CheckerStackMore",
+            "resumeName": "",
+            "resumeSource": "($v88314,$raw=undefined)=>{const $base0=$ksp,$sp0=$sp;return run_force(($td<64?$b16523($v88314,$td+1):run_named1($b16523,$v88314,$td)),$raw,$base0,$sp0);}"
+          }
+        },
+        {
+          "step": 65536,
+          "owner": {
+            "progressTag": "checker_core_steps_v1.CheckerFinished",
+            "requestChain": [],
+            "stackTag": "checker_core_steps_v1.CheckerStackMore",
+            "resumeName": "",
+            "resumeSource": "($v29954,$raw=undefined)=>{const $base0=$ksp,$sp0=$sp;return run_force(($td<64?$b13694($v29954,$td+1):run_named1($b13694,$v29954,$td)),$raw,$base0,$sp0);}"
+          }
+        }
+      ],
+      "guard": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 1122402304,
+        "peakFootprintBytes": 1145967480,
+        "elapsedMs": 68434,
+        "timeoutMs": 600000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--experimental-strip-types",
+          "--max-old-space-size=6144",
+          "--max-semi-space-size=128",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g70-peak-owners-obke30h6/gc-timeline.mjs",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g70-peak-owners-obke30h6/C-gc-request.json",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g70-peak-owners-obke30h6/C-gc-result.json"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793877082225-61b0282aaae9e15e.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      },
+      "scope": "Twoinstrumenteddiagnostics,notqualifiedperformancecomparison; heapoccupiedincludesgarbage."
+    }
+  },
+  "sameWork": {
+    "files": 52,
+    "modules": 17,
+    "declarations": 2954,
+    "expand": 263032,
+    "check": 1975761
+  },
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "timeoutMs": 600000,
+    "pollMs": 10
+  },
+  "scope": "No inspectorprofile/snapshot/globalGC; occupiedheapincludesgarbage,major/minorcallbacksarepost-loopobservationsbystartTime; samplingspatialmaxnotexactlivepeak. No timing/RAMqualification or superseding G69R2."
+}

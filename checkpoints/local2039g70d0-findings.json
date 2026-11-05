@@ -1,0 +1,2131 @@
+{
+  "schemaVersion": 1,
+  "version": "G70D0",
+  "status": "DIAGNOSTIC_COMPLETE_HOST_INPUT_LIFETIME_HYPOTHESIS_SELECTED_NO_COMPILER_CHANGE_OR_GAIN_CLAIM",
+  "protocolCheckpoint": "ea9badba",
+  "mainBaseCheckpoint": "4b3d4894",
+  "snapshot": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/d0-A-snapshot.json.heapsnapshot",
+    "sha256": "81f05934374a4c3bd120070997a744ef1a793d4150e5fc8cd1ee326a9d82c043"
+  },
+  "rootQueryReports": [
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g70-peak-owners-obke30h6/accepted-A-full-root-paths.json",
+      "sha256": "654f9c757ab312362a8d018a2cf4fd8497aeade1ccf17b0c2fc292b309f9853b"
+    },
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g70-peak-owners-obke30h6/accepted-A-root-spines-and-literals.json",
+      "sha256": "e2dcab2ffc9594eb683985695e9ad97b1084c014c4d0fba44435f693727c14e0"
+    },
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g70-peak-owners-obke30h6/accepted-A-conditional-root-cuts.json",
+      "sha256": "955ebc5f7cbe0f32e3e67fb5064edc01a2a592c6a6782698f983b764116409b5"
+    }
+  ],
+  "gcEvidence": {
+    "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g70d0-gc-evidence.json",
+    "sha256": "dbdcad7f421812ca7a0e3e13a2b6d9a11d142ea611902c27da5aaca24a0d424c"
+  },
+  "actualStackRootWitnesses": [
+    {
+      "tag": "../bend2/selfhost/ast.TermCtr",
+      "node": 523499,
+      "depth": 274,
+      "rootPrefix": [
+        {
+          "from": {
+            "index": 0,
+            "type": "synthetic",
+            "name": "",
+            "tag": null,
+            "selfBytes": 0
+          },
+          "edgeType": "element",
+          "edge": "1",
+          "to": {
+            "index": 1,
+            "type": "synthetic",
+            "name": "(GC roots)",
+            "tag": null,
+            "selfBytes": 0
+          }
+        },
+        {
+          "from": {
+            "index": 1,
+            "type": "synthetic",
+            "name": "(GC roots)",
+            "tag": null,
+            "selfBytes": 0
+          },
+          "edgeType": "element",
+          "edge": "19",
+          "to": {
+            "index": 20,
+            "type": "synthetic",
+            "name": "(Stack roots)",
+            "tag": null,
+            "selfBytes": 0
+          }
+        },
+        {
+          "from": {
+            "index": 20,
+            "type": "synthetic",
+            "name": "(Stack roots)",
+            "tag": null,
+            "selfBytes": 0
+          },
+          "edgeType": "internal",
+          "edge": "94",
+          "to": {
+            "index": 3316,
+            "type": "object",
+            "name": "Object",
+            "tag": "Con",
+            "selfBytes": 48
+          }
+        },
+        {
+          "from": {
+            "index": 3316,
+            "type": "object",
+            "name": "Object",
+            "tag": "Con",
+            "selfBytes": 48
+          },
+          "edgeType": "property",
+          "edge": "head",
+          "to": {
+            "index": 1221367,
+            "type": "object",
+            "name": "Object",
+            "tag": "../bend2/selfhost/loaded_module.LoadedModule",
+            "selfBytes": 48
+          }
+        },
+        {
+          "from": {
+            "index": 1221367,
+            "type": "object",
+            "name": "Object",
+            "tag": "../bend2/selfhost/loaded_module.LoadedModule",
+            "selfBytes": 48
+          },
+          "edgeType": "property",
+          "edge": "module",
+          "to": {
+            "index": 1221368,
+            "type": "object",
+            "name": "Object",
+            "tag": "../bend2/selfhost/ast.Module",
+            "selfBytes": 56
+          }
+        },
+        {
+          "from": {
+            "index": 1221368,
+            "type": "object",
+            "name": "Object",
+            "tag": "../bend2/selfhost/ast.Module",
+            "selfBytes": 56
+          },
+          "edgeType": "property",
+          "edge": "declarations",
+          "to": {
+            "index": 1221394,
+            "type": "object",
+            "name": "Object",
+            "tag": "Con",
+            "selfBytes": 48
+          }
+        },
+        {
+          "from": {
+            "index": 1221394,
+            "type": "object",
+            "name": "Object",
+            "tag": "Con",
+            "selfBytes": 48
+          },
+          "edgeType": "property",
+          "edge": "tail",
+          "to": {
+            "index": 754512,
+            "type": "object",
+            "name": "Object",
+            "tag": "Con",
+            "selfBytes": 48
+          },
+          "consecutiveConTailEdges": 214
+        },
+        {
+          "from": {
+            "index": 754512,
+            "type": "object",
+            "name": "Object",
+            "tag": "Con",
+            "selfBytes": 48
+          },
+          "edgeType": "property",
+          "edge": "head",
+          "to": {
+            "index": 754543,
+            "type": "object",
+            "name": "Object",
+            "tag": "../bend2/selfhost/ast.DefTop",
+            "selfBytes": 40
+          }
+        }
+      ],
+      "shortcutEdges": 0,
+      "holeFields": []
+    },
+    {
+      "tag": "../bend2/selfhost/ast.TermCtr",
+      "node": 523505,
+      "depth": 276,
+      "rootPrefix": [
+        {
+          "from": {
+            "index": 0,
+            "type": "synthetic",
+            "name": "",
+            "tag": null,
+            "selfBytes": 0
+          },
+          "edgeType": "element",
+          "edge": "1",
+          "to": {
+            "index": 1,
+            "type": "synthetic",
+            "name": "(GC roots)",
+            "tag": null,
+            "selfBytes": 0
+          }
+        },
+        {
+          "from": {
+            "index": 1,
+            "type": "synthetic",
+            "name": "(GC roots)",
+            "tag": null,
+            "selfBytes": 0
+          },
+          "edgeType": "element",
+          "edge": "19",
+          "to": {
+            "index": 20,
+            "type": "synthetic",
+            "name": "(Stack roots)",
+            "tag": null,
+            "selfBytes": 0
+          }
+        },
+        {
+          "from": {
+            "index": 20,
+            "type": "synthetic",
+            "name": "(Stack roots)",
+            "tag": null,
+            "selfBytes": 0
+          },
+          "edgeType": "internal",
+          "edge": "94",
+          "to": {
+            "index": 3316,
+            "type": "object",
+            "name": "Object",
+            "tag": "Con",
+            "selfBytes": 48
+          }
+        },
+        {
+          "from": {
+            "index": 3316,
+            "type": "object",
+            "name": "Object",
+            "tag": "Con",
+            "selfBytes": 48
+          },
+          "edgeType": "property",
+          "edge": "head",
+          "to": {
+            "index": 1221367,
+            "type": "object",
+            "name": "Object",
+            "tag": "../bend2/selfhost/loaded_module.LoadedModule",
+            "selfBytes": 48
+          }
+        },
+        {
+          "from": {
+            "index": 1221367,
+            "type": "object",
+            "name": "Object",
+            "tag": "../bend2/selfhost/loaded_module.LoadedModule",
+            "selfBytes": 48
+          },
+          "edgeType": "property",
+          "edge": "module",
+          "to": {
+            "index": 1221368,
+            "type": "object",
+            "name": "Object",
+            "tag": "../bend2/selfhost/ast.Module",
+            "selfBytes": 56
+          }
+        },
+        {
+          "from": {
+            "index": 1221368,
+            "type": "object",
+            "name": "Object",
+            "tag": "../bend2/selfhost/ast.Module",
+            "selfBytes": 56
+          },
+          "edgeType": "property",
+          "edge": "declarations",
+          "to": {
+            "index": 1221394,
+            "type": "object",
+            "name": "Object",
+            "tag": "Con",
+            "selfBytes": 48
+          }
+        },
+        {
+          "from": {
+            "index": 1221394,
+            "type": "object",
+            "name": "Object",
+            "tag": "Con",
+            "selfBytes": 48
+          },
+          "edgeType": "property",
+          "edge": "tail",
+          "to": {
+            "index": 754544,
+            "type": "object",
+            "name": "Object",
+            "tag": "Con",
+            "selfBytes": 48
+          },
+          "consecutiveConTailEdges": 215
+        },
+        {
+          "from": {
+            "index": 754544,
+            "type": "object",
+            "name": "Object",
+            "tag": "Con",
+            "selfBytes": 48
+          },
+          "edgeType": "property",
+          "edge": "head",
+          "to": {
+            "index": 754555,
+            "type": "object",
+            "name": "Object",
+            "tag": "../bend2/selfhost/ast.DefTop",
+            "selfBytes": 40
+          }
+        }
+      ],
+      "shortcutEdges": 0,
+      "holeFields": []
+    },
+    {
+      "tag": "../bend2/selfhost/ast.TermCtr",
+      "node": 523509,
+      "depth": 278,
+      "rootPrefix": [
+        {
+          "from": {
+            "index": 0,
+            "type": "synthetic",
+            "name": "",
+            "tag": null,
+            "selfBytes": 0
+          },
+          "edgeType": "element",
+          "edge": "1",
+          "to": {
+            "index": 1,
+            "type": "synthetic",
+            "name": "(GC roots)",
+            "tag": null,
+            "selfBytes": 0
+          }
+        },
+        {
+          "from": {
+            "index": 1,
+            "type": "synthetic",
+            "name": "(GC roots)",
+            "tag": null,
+            "selfBytes": 0
+          },
+          "edgeType": "element",
+          "edge": "19",
+          "to": {
+            "index": 20,
+            "type": "synthetic",
+            "name": "(Stack roots)",
+            "tag": null,
+            "selfBytes": 0
+          }
+        },
+        {
+          "from": {
+            "index": 20,
+            "type": "synthetic",
+            "name": "(Stack roots)",
+            "tag": null,
+            "selfBytes": 0
+          },
+          "edgeType": "internal",
+          "edge": "94",
+          "to": {
+            "index": 3316,
+            "type": "object",
+            "name": "Object",
+            "tag": "Con",
+            "selfBytes": 48
+          }
+        },
+        {
+          "from": {
+            "index": 3316,
+            "type": "object",
+            "name": "Object",
+            "tag": "Con",
+            "selfBytes": 48
+          },
+          "edgeType": "property",
+          "edge": "head",
+          "to": {
+            "index": 1221367,
+            "type": "object",
+            "name": "Object",
+            "tag": "../bend2/selfhost/loaded_module.LoadedModule",
+            "selfBytes": 48
+          }
+        },
+        {
+          "from": {
+            "index": 1221367,
+            "type": "object",
+            "name": "Object",
+            "tag": "../bend2/selfhost/loaded_module.LoadedModule",
+            "selfBytes": 48
+          },
+          "edgeType": "property",
+          "edge": "module",
+          "to": {
+            "index": 1221368,
+            "type": "object",
+            "name": "Object",
+            "tag": "../bend2/selfhost/ast.Module",
+            "selfBytes": 56
+          }
+        },
+        {
+          "from": {
+            "index": 1221368,
+            "type": "object",
+            "name": "Object",
+            "tag": "../bend2/selfhost/ast.Module",
+            "selfBytes": 56
+          },
+          "edgeType": "property",
+          "edge": "declarations",
+          "to": {
+            "index": 1221394,
+            "type": "object",
+            "name": "Object",
+            "tag": "Con",
+            "selfBytes": 48
+          }
+        },
+        {
+          "from": {
+            "index": 1221394,
+            "type": "object",
+            "name": "Object",
+            "tag": "Con",
+            "selfBytes": 48
+          },
+          "edgeType": "property",
+          "edge": "tail",
+          "to": {
+            "index": 754544,
+            "type": "object",
+            "name": "Object",
+            "tag": "Con",
+            "selfBytes": 48
+          },
+          "consecutiveConTailEdges": 215
+        },
+        {
+          "from": {
+            "index": 754544,
+            "type": "object",
+            "name": "Object",
+            "tag": "Con",
+            "selfBytes": 48
+          },
+          "edgeType": "property",
+          "edge": "head",
+          "to": {
+            "index": 754555,
+            "type": "object",
+            "name": "Object",
+            "tag": "../bend2/selfhost/ast.DefTop",
+            "selfBytes": 40
+          }
+        }
+      ],
+      "shortcutEdges": 0,
+      "holeFields": []
+    },
+    {
+      "tag": "../bend2/selfhost/ast.TermRef",
+      "node": 537888,
+      "depth": 69,
+      "rootPrefix": [
+        {
+          "from": {
+            "index": 0,
+            "type": "synthetic",
+            "name": "",
+            "tag": null,
+            "selfBytes": 0
+          },
+          "edgeType": "element",
+          "edge": "1",
+          "to": {
+            "index": 1,
+            "type": "synthetic",
+            "name": "(GC roots)",
+            "tag": null,
+            "selfBytes": 0
+          }
+        },
+        {
+          "from": {
+            "index": 1,
+            "type": "synthetic",
+            "name": "(GC roots)",
+            "tag": null,
+            "selfBytes": 0
+          },
+          "edgeType": "element",
+          "edge": "19",
+          "to": {
+            "index": 20,
+            "type": "synthetic",
+            "name": "(Stack roots)",
+            "tag": null,
+            "selfBytes": 0
+          }
+        },
+        {
+          "from": {
+            "index": 20,
+            "type": "synthetic",
+            "name": "(Stack roots)",
+            "tag": null,
+            "selfBytes": 0
+          },
+          "edgeType": "internal",
+          "edge": "94",
+          "to": {
+            "index": 3316,
+            "type": "object",
+            "name": "Object",
+            "tag": "Con",
+            "selfBytes": 48
+          }
+        },
+        {
+          "from": {
+            "index": 3316,
+            "type": "object",
+            "name": "Object",
+            "tag": "Con",
+            "selfBytes": 48
+          },
+          "edgeType": "property",
+          "edge": "tail",
+          "to": {
+            "index": 1946865,
+            "type": "object",
+            "name": "Object",
+            "tag": "Con",
+            "selfBytes": 48
+          },
+          "consecutiveConTailEdges": 13
+        },
+        {
+          "from": {
+            "index": 1946865,
+            "type": "object",
+            "name": "Object",
+            "tag": "Con",
+            "selfBytes": 48
+          },
+          "edgeType": "property",
+          "edge": "head",
+          "to": {
+            "index": 1198220,
+            "type": "object",
+            "name": "Object",
+            "tag": "../bend2/selfhost/loaded_module.LoadedModule",
+            "selfBytes": 48
+          }
+        },
+        {
+          "from": {
+            "index": 1198220,
+            "type": "object",
+            "name": "Object",
+            "tag": "../bend2/selfhost/loaded_module.LoadedModule",
+            "selfBytes": 48
+          },
+          "edgeType": "property",
+          "edge": "module",
+          "to": {
+            "index": 1198221,
+            "type": "object",
+            "name": "Object",
+            "tag": "../bend2/selfhost/ast.Module",
+            "selfBytes": 56
+          }
+        },
+        {
+          "from": {
+            "index": 1198221,
+            "type": "object",
+            "name": "Object",
+            "tag": "../bend2/selfhost/ast.Module",
+            "selfBytes": 56
+          },
+          "edgeType": "property",
+          "edge": "declarations",
+          "to": {
+            "index": 1198223,
+            "type": "object",
+            "name": "Object",
+            "tag": "Con",
+            "selfBytes": 48
+          }
+        },
+        {
+          "from": {
+            "index": 1198223,
+            "type": "object",
+            "name": "Object",
+            "tag": "Con",
+            "selfBytes": 48
+          },
+          "edgeType": "property",
+          "edge": "tail",
+          "to": {
+            "index": 1198290,
+            "type": "object",
+            "name": "Object",
+            "tag": "Con",
+            "selfBytes": 48
+          },
+          "consecutiveConTailEdges": 11
+        }
+      ],
+      "shortcutEdges": 0,
+      "holeFields": []
+    },
+    {
+      "tag": "../bend2/selfhost/ast.TermRef",
+      "node": 537897,
+      "depth": 67,
+      "rootPrefix": [
+        {
+          "from": {
+            "index": 0,
+            "type": "synthetic",
+            "name": "",
+            "tag": null,
+            "selfBytes": 0
+          },
+          "edgeType": "element",
+          "edge": "1",
+          "to": {
+            "index": 1,
+            "type": "synthetic",
+            "name": "(GC roots)",
+            "tag": null,
+            "selfBytes": 0
+          }
+        },
+        {
+          "from": {
+            "index": 1,
+            "type": "synthetic",
+            "name": "(GC roots)",
+            "tag": null,
+            "selfBytes": 0
+          },
+          "edgeType": "element",
+          "edge": "19",
+          "to": {
+            "index": 20,
+            "type": "synthetic",
+            "name": "(Stack roots)",
+            "tag": null,
+            "selfBytes": 0
+          }
+        },
+        {
+          "from": {
+            "index": 20,
+            "type": "synthetic",
+            "name": "(Stack roots)",
+            "tag": null,
+            "selfBytes": 0
+          },
+          "edgeType": "internal",
+          "edge": "94",
+          "to": {
+            "index": 3316,
+            "type": "object",
+            "name": "Object",
+            "tag": "Con",
+            "selfBytes": 48
+          }
+        },
+        {
+          "from": {
+            "index": 3316,
+            "type": "object",
+            "name": "Object",
+            "tag": "Con",
+            "selfBytes": 48
+          },
+          "edgeType": "property",
+          "edge": "tail",
+          "to": {
+            "index": 1946865,
+            "type": "object",
+            "name": "Object",
+            "tag": "Con",
+            "selfBytes": 48
+          },
+          "consecutiveConTailEdges": 13
+        },
+        {
+          "from": {
+            "index": 1946865,
+            "type": "object",
+            "name": "Object",
+            "tag": "Con",
+            "selfBytes": 48
+          },
+          "edgeType": "property",
+          "edge": "head",
+          "to": {
+            "index": 1198220,
+            "type": "object",
+            "name": "Object",
+            "tag": "../bend2/selfhost/loaded_module.LoadedModule",
+            "selfBytes": 48
+          }
+        },
+        {
+          "from": {
+            "index": 1198220,
+            "type": "object",
+            "name": "Object",
+            "tag": "../bend2/selfhost/loaded_module.LoadedModule",
+            "selfBytes": 48
+          },
+          "edgeType": "property",
+          "edge": "module",
+          "to": {
+            "index": 1198221,
+            "type": "object",
+            "name": "Object",
+            "tag": "../bend2/selfhost/ast.Module",
+            "selfBytes": 56
+          }
+        },
+        {
+          "from": {
+            "index": 1198221,
+            "type": "object",
+            "name": "Object",
+            "tag": "../bend2/selfhost/ast.Module",
+            "selfBytes": 56
+          },
+          "edgeType": "property",
+          "edge": "declarations",
+          "to": {
+            "index": 1198223,
+            "type": "object",
+            "name": "Object",
+            "tag": "Con",
+            "selfBytes": 48
+          }
+        },
+        {
+          "from": {
+            "index": 1198223,
+            "type": "object",
+            "name": "Object",
+            "tag": "Con",
+            "selfBytes": 48
+          },
+          "edgeType": "property",
+          "edge": "tail",
+          "to": {
+            "index": 1198290,
+            "type": "object",
+            "name": "Object",
+            "tag": "Con",
+            "selfBytes": 48
+          },
+          "consecutiveConTailEdges": 11
+        }
+      ],
+      "shortcutEdges": 0,
+      "holeFields": []
+    },
+    {
+      "tag": "../bend2/selfhost/ast.TermRef",
+      "node": 537919,
+      "depth": 66,
+      "rootPrefix": [
+        {
+          "from": {
+            "index": 0,
+            "type": "synthetic",
+            "name": "",
+            "tag": null,
+            "selfBytes": 0
+          },
+          "edgeType": "element",
+          "edge": "1",
+          "to": {
+            "index": 1,
+            "type": "synthetic",
+            "name": "(GC roots)",
+            "tag": null,
+            "selfBytes": 0
+          }
+        },
+        {
+          "from": {
+            "index": 1,
+            "type": "synthetic",
+            "name": "(GC roots)",
+            "tag": null,
+            "selfBytes": 0
+          },
+          "edgeType": "element",
+          "edge": "19",
+          "to": {
+            "index": 20,
+            "type": "synthetic",
+            "name": "(Stack roots)",
+            "tag": null,
+            "selfBytes": 0
+          }
+        },
+        {
+          "from": {
+            "index": 20,
+            "type": "synthetic",
+            "name": "(Stack roots)",
+            "tag": null,
+            "selfBytes": 0
+          },
+          "edgeType": "internal",
+          "edge": "94",
+          "to": {
+            "index": 3316,
+            "type": "object",
+            "name": "Object",
+            "tag": "Con",
+            "selfBytes": 48
+          }
+        },
+        {
+          "from": {
+            "index": 3316,
+            "type": "object",
+            "name": "Object",
+            "tag": "Con",
+            "selfBytes": 48
+          },
+          "edgeType": "property",
+          "edge": "tail",
+          "to": {
+            "index": 1946865,
+            "type": "object",
+            "name": "Object",
+            "tag": "Con",
+            "selfBytes": 48
+          },
+          "consecutiveConTailEdges": 13
+        },
+        {
+          "from": {
+            "index": 1946865,
+            "type": "object",
+            "name": "Object",
+            "tag": "Con",
+            "selfBytes": 48
+          },
+          "edgeType": "property",
+          "edge": "head",
+          "to": {
+            "index": 1198220,
+            "type": "object",
+            "name": "Object",
+            "tag": "../bend2/selfhost/loaded_module.LoadedModule",
+            "selfBytes": 48
+          }
+        },
+        {
+          "from": {
+            "index": 1198220,
+            "type": "object",
+            "name": "Object",
+            "tag": "../bend2/selfhost/loaded_module.LoadedModule",
+            "selfBytes": 48
+          },
+          "edgeType": "property",
+          "edge": "module",
+          "to": {
+            "index": 1198221,
+            "type": "object",
+            "name": "Object",
+            "tag": "../bend2/selfhost/ast.Module",
+            "selfBytes": 56
+          }
+        },
+        {
+          "from": {
+            "index": 1198221,
+            "type": "object",
+            "name": "Object",
+            "tag": "../bend2/selfhost/ast.Module",
+            "selfBytes": 56
+          },
+          "edgeType": "property",
+          "edge": "declarations",
+          "to": {
+            "index": 1198223,
+            "type": "object",
+            "name": "Object",
+            "tag": "Con",
+            "selfBytes": 48
+          }
+        },
+        {
+          "from": {
+            "index": 1198223,
+            "type": "object",
+            "name": "Object",
+            "tag": "Con",
+            "selfBytes": 48
+          },
+          "edgeType": "property",
+          "edge": "tail",
+          "to": {
+            "index": 1198290,
+            "type": "object",
+            "name": "Object",
+            "tag": "Con",
+            "selfBytes": 48
+          },
+          "consecutiveConTailEdges": 11
+        }
+      ],
+      "shortcutEdges": 0,
+      "holeFields": []
+    }
+  ],
+  "conditionalRootCuts": {
+    "targetInputList": {
+      "node": {
+        "index": 3316,
+        "type": "object",
+        "name": "Object",
+        "tag": "Con",
+        "selfBytes": 48
+      },
+      "rootPath": {
+        "reachable": true,
+        "truncated": false,
+        "rawEdgeCount": 3,
+        "compressedEdgeCount": 3,
+        "nodes": [
+          {
+            "from": {
+              "index": 0,
+              "type": "synthetic",
+              "name": "",
+              "tag": null,
+              "selfBytes": 0
+            },
+            "edgeType": "element",
+            "edge": "1",
+            "to": {
+              "index": 1,
+              "type": "synthetic",
+              "name": "(GC roots)",
+              "tag": null,
+              "selfBytes": 0
+            }
+          },
+          {
+            "from": {
+              "index": 1,
+              "type": "synthetic",
+              "name": "(GC roots)",
+              "tag": null,
+              "selfBytes": 0
+            },
+            "edgeType": "element",
+            "edge": "19",
+            "to": {
+              "index": 20,
+              "type": "synthetic",
+              "name": "(Stack roots)",
+              "tag": null,
+              "selfBytes": 0
+            }
+          },
+          {
+            "from": {
+              "index": 20,
+              "type": "synthetic",
+              "name": "(Stack roots)",
+              "tag": null,
+              "selfBytes": 0
+            },
+            "edgeType": "internal",
+            "edge": "94",
+            "to": {
+              "index": 3316,
+              "type": "object",
+              "name": "Object",
+              "tag": "Con",
+              "selfBytes": 48
+            }
+          }
+        ],
+        "shortcutEdges": 0
+      },
+      "incomingCount": 4,
+      "incomingFirst40": [
+        {
+          "from": {
+            "index": 20,
+            "type": "synthetic",
+            "name": "(Stack roots)",
+            "tag": null,
+            "selfBytes": 0
+          },
+          "edgeType": "internal",
+          "edge": "94",
+          "weak": false
+        },
+        {
+          "from": {
+            "index": 20,
+            "type": "synthetic",
+            "name": "(Stack roots)",
+            "tag": null,
+            "selfBytes": 0
+          },
+          "edgeType": "internal",
+          "edge": "97",
+          "weak": false
+        },
+        {
+          "from": {
+            "index": 3313,
+            "type": "object",
+            "name": "Array",
+            "tag": null,
+            "selfBytes": 32
+          },
+          "edgeType": "element",
+          "edge": "0",
+          "weak": false
+        },
+        {
+          "from": {
+            "index": 1861625,
+            "type": "array",
+            "name": "(object elements)",
+            "tag": null,
+            "selfBytes": 24
+          },
+          "edgeType": "internal",
+          "edge": "0",
+          "weak": false
+        }
+      ],
+      "incomingTruncated": false,
+      "fields": {
+        "count": 3,
+        "first80": [
+          {
+            "edgeType": "property",
+            "edge": "$",
+            "to": {
+              "index": 50802,
+              "type": "string",
+              "name": "Con",
+              "tag": null,
+              "selfBytes": 24
+            }
+          },
+          {
+            "edgeType": "property",
+            "edge": "head",
+            "to": {
+              "index": 1221367,
+              "type": "object",
+              "name": "Object",
+              "tag": "../bend2/selfhost/loaded_module.LoadedModule",
+              "selfBytes": 48
+            }
+          },
+          {
+            "edgeType": "property",
+            "edge": "tail",
+            "to": {
+              "index": 1861626,
+              "type": "object",
+              "name": "Object",
+              "tag": "Con",
+              "selfBytes": 48
+            }
+          }
+        ],
+        "truncated": false
+      },
+      "holeFieldNames": []
+    },
+    "stackRootIndexes": [
+      20
+    ],
+    "stArgsTargets": [
+      368903
+    ],
+    "queries": [
+      {
+        "query": "only_observed_stack_input_edges",
+        "removedNodeIndexes": [],
+        "removedEdgeIndexes": [
+          10894,
+          10897
+        ],
+        "remainingReachableNodes": 4255927,
+        "lostPreviouslyNonweakReachableNodes": 0,
+        "lostShallowBytes": 0,
+        "inputListStillReachable": true,
+        "lostTaggedGroupShallowBytes": {},
+        "topLostTagShallowBytes": []
+      },
+      {
+        "query": "hypothetical_input_list_object_removal",
+        "removedNodeIndexes": [
+          3316
+        ],
+        "removedEdgeIndexes": [],
+        "remainingReachableNodes": 3632572,
+        "lostPreviouslyNonweakReachableNodes": 623355,
+        "lostShallowBytes": 28138680,
+        "inputListStillReachable": false,
+        "lostTaggedGroupShallowBytes": {
+          "1": 14048144,
+          "2": 661584
+        },
+        "topLostTagShallowBytes": [
+          {
+            "tag": "Con",
+            "bytes": 6952992
+          },
+          {
+            "tag": "Nil",
+            "bytes": 3076384
+          },
+          {
+            "tag": "../bend2/selfhost/ast.TermCtr",
+            "bytes": 2414216
+          },
+          {
+            "tag": "../bend2/selfhost/ast.TermRef",
+            "bytes": 2186256
+          },
+          {
+            "tag": "../bend2/selfhost/ast.Binder",
+            "bytes": 1453680
+          },
+          {
+            "tag": "../bend2/selfhost/ast.TermVar",
+            "bytes": 1364832
+          },
+          {
+            "tag": "../bend2/selfhost/ast.PatternCtr",
+            "bytes": 1322160
+          },
+          {
+            "tag": "../bend2/selfhost/ast.TermApp",
+            "bytes": 1246504
+          },
+          {
+            "tag": "../bend2/selfhost/ast.PatternVar",
+            "bytes": 1176832
+          },
+          {
+            "tag": "../bend2/selfhost/ast.SpanOf",
+            "bytes": 661584
+          },
+          {
+            "tag": "../bend2/selfhost/ast.TermFill",
+            "bytes": 537880
+          },
+          {
+            "tag": "../bend2/selfhost/ast.BodyReply",
+            "bytes": 414672
+          },
+          {
+            "tag": "../bend2/selfhost/ast.TermQuantity",
+            "bytes": 409728
+          },
+          {
+            "tag": "../bend2/selfhost/ast.BodyCase",
+            "bytes": 380688
+          },
+          {
+            "tag": "../bend2/selfhost/ast.Definition",
+            "bytes": 196240
+          }
+        ]
+      },
+      {
+        "query": "hypothetical_stArgs_object_removal",
+        "removedNodeIndexes": [
+          368903
+        ],
+        "removedEdgeIndexes": [],
+        "remainingReachableNodes": 4230838,
+        "lostPreviouslyNonweakReachableNodes": 25089,
+        "lostShallowBytes": 1105816,
+        "inputListStillReachable": true,
+        "lostTaggedGroupShallowBytes": {
+          "4": 3392
+        },
+        "topLostTagShallowBytes": [
+          {
+            "tag": "template_steps_v1.CaptureName",
+            "bytes": 373248
+          },
+          {
+            "tag": "../bend2/selfhost/scope_lookup.ArenaGlobal",
+            "bytes": 89200
+          },
+          {
+            "tag": "../bend2/selfhost/checker_ir.NoTerm",
+            "bytes": 3392
+          },
+          {
+            "tag": "../bend2/selfhost/scope_lookup.GlobalDefinition",
+            "bytes": 3392
+          },
+          {
+            "tag": "MLeaf",
+            "bytes": 480
+          },
+          {
+            "tag": "MNode",
+            "bytes": 112
+          }
+        ]
+      },
+      {
+        "query": "hypothetical_both_input_and_stArgs_removal",
+        "removedNodeIndexes": [
+          3316,
+          368903
+        ],
+        "removedEdgeIndexes": [],
+        "remainingReachableNodes": 3607483,
+        "lostPreviouslyNonweakReachableNodes": 648444,
+        "lostShallowBytes": 29244496,
+        "inputListStillReachable": false,
+        "lostTaggedGroupShallowBytes": {
+          "1": 14048144,
+          "4": 3392,
+          "2": 661584
+        },
+        "topLostTagShallowBytes": [
+          {
+            "tag": "Con",
+            "bytes": 6952992
+          },
+          {
+            "tag": "Nil",
+            "bytes": 3076384
+          },
+          {
+            "tag": "../bend2/selfhost/ast.TermCtr",
+            "bytes": 2414216
+          },
+          {
+            "tag": "../bend2/selfhost/ast.TermRef",
+            "bytes": 2186256
+          },
+          {
+            "tag": "../bend2/selfhost/ast.Binder",
+            "bytes": 1453680
+          },
+          {
+            "tag": "../bend2/selfhost/ast.TermVar",
+            "bytes": 1364832
+          },
+          {
+            "tag": "../bend2/selfhost/ast.PatternCtr",
+            "bytes": 1322160
+          },
+          {
+            "tag": "../bend2/selfhost/ast.TermApp",
+            "bytes": 1246504
+          },
+          {
+            "tag": "../bend2/selfhost/ast.PatternVar",
+            "bytes": 1176832
+          },
+          {
+            "tag": "../bend2/selfhost/ast.SpanOf",
+            "bytes": 661584
+          },
+          {
+            "tag": "../bend2/selfhost/ast.TermFill",
+            "bytes": 537880
+          },
+          {
+            "tag": "../bend2/selfhost/ast.BodyReply",
+            "bytes": 414672
+          },
+          {
+            "tag": "../bend2/selfhost/ast.TermQuantity",
+            "bytes": 409728
+          },
+          {
+            "tag": "../bend2/selfhost/ast.BodyCase",
+            "bytes": 380688
+          },
+          {
+            "tag": "template_steps_v1.CaptureName",
+            "bytes": 373248
+          }
+        ]
+      }
+    ],
+    "scope": "Conditional removal queries on one postGC snapshot nonweak graph, NOT proof that removal is safe, exclusive retainedbytes, physical RAMsaving or peak. Nodecutremovesallaliases tothatobject; edgecutremovesonlyobserved StackRootinputlist edges. SourceFrameidentity ofStackRoot94unknown."
+  },
+  "realFinishedStateAndStore": [
+    {
+      "runState": {
+        "node": {
+          "index": 3294,
+          "type": "object",
+          "name": "Object",
+          "tag": "checker_core_steps_v1.CheckerRunState",
+          "selfBytes": 48
+        },
+        "rootPath": {
+          "reachable": true,
+          "truncated": false,
+          "rawEdgeCount": 3,
+          "compressedEdgeCount": 3,
+          "nodes": [
+            {
+              "from": {
+                "index": 0,
+                "type": "synthetic",
+                "name": "",
+                "tag": null,
+                "selfBytes": 0
+              },
+              "edgeType": "element",
+              "edge": "1",
+              "to": {
+                "index": 1,
+                "type": "synthetic",
+                "name": "(GC roots)",
+                "tag": null,
+                "selfBytes": 0
+              }
+            },
+            {
+              "from": {
+                "index": 1,
+                "type": "synthetic",
+                "name": "(GC roots)",
+                "tag": null,
+                "selfBytes": 0
+              },
+              "edgeType": "element",
+              "edge": "19",
+              "to": {
+                "index": 20,
+                "type": "synthetic",
+                "name": "(Stack roots)",
+                "tag": null,
+                "selfBytes": 0
+              }
+            },
+            {
+              "from": {
+                "index": 20,
+                "type": "synthetic",
+                "name": "(Stack roots)",
+                "tag": null,
+                "selfBytes": 0
+              },
+              "edgeType": "internal",
+              "edge": "39",
+              "to": {
+                "index": 3294,
+                "type": "object",
+                "name": "Object",
+                "tag": "checker_core_steps_v1.CheckerRunState",
+                "selfBytes": 48
+              }
+            }
+          ],
+          "shortcutEdges": 0
+        },
+        "incomingCount": 2,
+        "incomingFirst40": [
+          {
+            "from": {
+              "index": 20,
+              "type": "synthetic",
+              "name": "(Stack roots)",
+              "tag": null,
+              "selfBytes": 0
+            },
+            "edgeType": "internal",
+            "edge": "39",
+            "weak": false
+          },
+          {
+            "from": {
+              "index": 20,
+              "type": "synthetic",
+              "name": "(Stack roots)",
+              "tag": null,
+              "selfBytes": 0
+            },
+            "edgeType": "internal",
+            "edge": "46",
+            "weak": false
+          }
+        ],
+        "incomingTruncated": false,
+        "fields": {
+          "count": 3,
+          "first80": [
+            {
+              "edgeType": "property",
+              "edge": "$",
+              "to": {
+                "index": 3296,
+                "type": "string",
+                "name": "checker_core_steps_v1.CheckerRunState",
+                "tag": null,
+                "selfBytes": 56
+              }
+            },
+            {
+              "edgeType": "property",
+              "edge": "progress",
+              "to": {
+                "index": 3645623,
+                "type": "object",
+                "name": "Object",
+                "tag": "checker_core_steps_v1.CheckerFinished",
+                "selfBytes": 40
+              }
+            },
+            {
+              "edgeType": "property",
+              "edge": "stack",
+              "to": {
+                "index": 3645624,
+                "type": "object",
+                "name": "Object",
+                "tag": "checker_core_steps_v1.CheckerStackMore",
+                "selfBytes": 48
+              }
+            }
+          ],
+          "truncated": false
+        },
+        "holeFieldNames": []
+      },
+      "progress": {
+        "node": {
+          "index": 3645623,
+          "type": "object",
+          "name": "Object",
+          "tag": "checker_core_steps_v1.CheckerFinished",
+          "selfBytes": 40
+        },
+        "rootPath": {
+          "reachable": true,
+          "truncated": false,
+          "rawEdgeCount": 4,
+          "compressedEdgeCount": 4,
+          "nodes": [
+            {
+              "from": {
+                "index": 0,
+                "type": "synthetic",
+                "name": "",
+                "tag": null,
+                "selfBytes": 0
+              },
+              "edgeType": "element",
+              "edge": "1",
+              "to": {
+                "index": 1,
+                "type": "synthetic",
+                "name": "(GC roots)",
+                "tag": null,
+                "selfBytes": 0
+              }
+            },
+            {
+              "from": {
+                "index": 1,
+                "type": "synthetic",
+                "name": "(GC roots)",
+                "tag": null,
+                "selfBytes": 0
+              },
+              "edgeType": "element",
+              "edge": "19",
+              "to": {
+                "index": 20,
+                "type": "synthetic",
+                "name": "(Stack roots)",
+                "tag": null,
+                "selfBytes": 0
+              }
+            },
+            {
+              "from": {
+                "index": 20,
+                "type": "synthetic",
+                "name": "(Stack roots)",
+                "tag": null,
+                "selfBytes": 0
+              },
+              "edgeType": "internal",
+              "edge": "39",
+              "to": {
+                "index": 3294,
+                "type": "object",
+                "name": "Object",
+                "tag": "checker_core_steps_v1.CheckerRunState",
+                "selfBytes": 48
+              }
+            },
+            {
+              "from": {
+                "index": 3294,
+                "type": "object",
+                "name": "Object",
+                "tag": "checker_core_steps_v1.CheckerRunState",
+                "selfBytes": 48
+              },
+              "edgeType": "property",
+              "edge": "progress",
+              "to": {
+                "index": 3645623,
+                "type": "object",
+                "name": "Object",
+                "tag": "checker_core_steps_v1.CheckerFinished",
+                "selfBytes": 40
+              }
+            }
+          ],
+          "shortcutEdges": 0
+        },
+        "incomingCount": 0,
+        "incomingFirst40": [],
+        "incomingTruncated": false,
+        "fields": {
+          "count": 2,
+          "first80": [
+            {
+              "edgeType": "property",
+              "edge": "$",
+              "to": {
+                "index": 27780,
+                "type": "string",
+                "name": "checker_core_steps_v1.CheckerFinished",
+                "tag": null,
+                "selfBytes": 56
+              }
+            },
+            {
+              "edgeType": "property",
+              "edge": "box",
+              "to": {
+                "index": 3645622,
+                "type": "object",
+                "name": "Object",
+                "tag": "checker_core_steps_v1.CheckerValue",
+                "selfBytes": 40
+              }
+            }
+          ],
+          "truncated": false
+        },
+        "holeFieldNames": []
+      },
+      "requestChain": [],
+      "stack": {
+        "node": {
+          "index": 3645624,
+          "type": "object",
+          "name": "Object",
+          "tag": "checker_core_steps_v1.CheckerStackMore",
+          "selfBytes": 48
+        },
+        "rootPath": {
+          "reachable": true,
+          "truncated": false,
+          "rawEdgeCount": 4,
+          "compressedEdgeCount": 4,
+          "nodes": [
+            {
+              "from": {
+                "index": 0,
+                "type": "synthetic",
+                "name": "",
+                "tag": null,
+                "selfBytes": 0
+              },
+              "edgeType": "element",
+              "edge": "1",
+              "to": {
+                "index": 1,
+                "type": "synthetic",
+                "name": "(GC roots)",
+                "tag": null,
+                "selfBytes": 0
+              }
+            },
+            {
+              "from": {
+                "index": 1,
+                "type": "synthetic",
+                "name": "(GC roots)",
+                "tag": null,
+                "selfBytes": 0
+              },
+              "edgeType": "element",
+              "edge": "19",
+              "to": {
+                "index": 20,
+                "type": "synthetic",
+                "name": "(Stack roots)",
+                "tag": null,
+                "selfBytes": 0
+              }
+            },
+            {
+              "from": {
+                "index": 20,
+                "type": "synthetic",
+                "name": "(Stack roots)",
+                "tag": null,
+                "selfBytes": 0
+              },
+              "edgeType": "internal",
+              "edge": "39",
+              "to": {
+                "index": 3294,
+                "type": "object",
+                "name": "Object",
+                "tag": "checker_core_steps_v1.CheckerRunState",
+                "selfBytes": 48
+              }
+            },
+            {
+              "from": {
+                "index": 3294,
+                "type": "object",
+                "name": "Object",
+                "tag": "checker_core_steps_v1.CheckerRunState",
+                "selfBytes": 48
+              },
+              "edgeType": "property",
+              "edge": "stack",
+              "to": {
+                "index": 3645624,
+                "type": "object",
+                "name": "Object",
+                "tag": "checker_core_steps_v1.CheckerStackMore",
+                "selfBytes": 48
+              }
+            }
+          ],
+          "shortcutEdges": 0
+        },
+        "incomingCount": 0,
+        "incomingFirst40": [],
+        "incomingTruncated": false,
+        "fields": {
+          "count": 3,
+          "first80": [
+            {
+              "edgeType": "property",
+              "edge": "$",
+              "to": {
+                "index": 51535,
+                "type": "string",
+                "name": "checker_core_steps_v1.CheckerStackMore",
+                "tag": null,
+                "selfBytes": 56
+              }
+            },
+            {
+              "edgeType": "property",
+              "edge": "resume",
+              "to": {
+                "index": 368904,
+                "type": "closure",
+                "name": "",
+                "tag": null,
+                "selfBytes": 56
+              }
+            },
+            {
+              "edgeType": "property",
+              "edge": "rest",
+              "to": {
+                "index": 368905,
+                "type": "object",
+                "name": "Object",
+                "tag": "checker_core_steps_v1.CheckerStackMore",
+                "selfBytes": 48
+              }
+            }
+          ],
+          "truncated": false
+        },
+        "holeFieldNames": []
+      },
+      "topResume": {
+        "node": {
+          "index": 368904,
+          "type": "closure",
+          "name": "",
+          "tag": null,
+          "selfBytes": 56
+        },
+        "rootPath": {
+          "reachable": true,
+          "truncated": false,
+          "rawEdgeCount": 5,
+          "compressedEdgeCount": 5,
+          "nodes": [
+            {
+              "from": {
+                "index": 0,
+                "type": "synthetic",
+                "name": "",
+                "tag": null,
+                "selfBytes": 0
+              },
+              "edgeType": "element",
+              "edge": "1",
+              "to": {
+                "index": 1,
+                "type": "synthetic",
+                "name": "(GC roots)",
+                "tag": null,
+                "selfBytes": 0
+              }
+            },
+            {
+              "from": {
+                "index": 1,
+                "type": "synthetic",
+                "name": "(GC roots)",
+                "tag": null,
+                "selfBytes": 0
+              },
+              "edgeType": "element",
+              "edge": "19",
+              "to": {
+                "index": 20,
+                "type": "synthetic",
+                "name": "(Stack roots)",
+                "tag": null,
+                "selfBytes": 0
+              }
+            },
+            {
+              "from": {
+                "index": 20,
+                "type": "synthetic",
+                "name": "(Stack roots)",
+                "tag": null,
+                "selfBytes": 0
+              },
+              "edgeType": "internal",
+              "edge": "39",
+              "to": {
+                "index": 3294,
+                "type": "object",
+                "name": "Object",
+                "tag": "checker_core_steps_v1.CheckerRunState",
+                "selfBytes": 48
+              }
+            },
+            {
+              "from": {
+                "index": 3294,
+                "type": "object",
+                "name": "Object",
+                "tag": "checker_core_steps_v1.CheckerRunState",
+                "selfBytes": 48
+              },
+              "edgeType": "property",
+              "edge": "stack",
+              "to": {
+                "index": 3645624,
+                "type": "object",
+                "name": "Object",
+                "tag": "checker_core_steps_v1.CheckerStackMore",
+                "selfBytes": 48
+              }
+            },
+            {
+              "from": {
+                "index": 3645624,
+                "type": "object",
+                "name": "Object",
+                "tag": "checker_core_steps_v1.CheckerStackMore",
+                "selfBytes": 48
+              },
+              "edgeType": "property",
+              "edge": "resume",
+              "to": {
+                "index": 368904,
+                "type": "closure",
+                "name": "",
+                "tag": null,
+                "selfBytes": 56
+              }
+            }
+          ],
+          "shortcutEdges": 0
+        },
+        "incomingCount": 0,
+        "incomingFirst40": [],
+        "incomingTruncated": false,
+        "fields": {
+          "count": 1,
+          "first80": [
+            {
+              "edgeType": "property",
+              "edge": "<symbol bend.tail>",
+              "to": {
+                "index": 368904,
+                "type": "closure",
+                "name": "",
+                "tag": null,
+                "selfBytes": 56
+              }
+            }
+          ],
+          "truncated": false
+        },
+        "holeFieldNames": [],
+        "closureContexts": [
+          {
+            "context": {
+              "index": 3645617,
+              "type": "object",
+              "name": "system / Context",
+              "tag": null,
+              "selfBytes": 80
+            },
+            "fields": {
+              "count": 4,
+              "first80": [
+                {
+                  "edgeType": "context",
+                  "edge": "$c5",
+                  "to": {
+                    "index": 3645615,
+                    "type": "object",
+                    "name": "Object",
+                    "tag": "../bend2/selfhost/checker_ir.TypedOccurrence",
+                    "selfBytes": 80
+                  }
+                },
+                {
+                  "edgeType": "context",
+                  "edge": "$c4",
+                  "to": {
+                    "index": 368907,
+                    "type": "object",
+                    "name": "Object",
+                    "tag": "../bend2/selfhost/scope_lookup.ArenaVisibleScope",
+                    "selfBytes": 48
+                  }
+                },
+                {
+                  "edgeType": "context",
+                  "edge": "$c3",
+                  "to": {
+                    "index": 3645546,
+                    "type": "object",
+                    "name": "Object",
+                    "tag": "Con",
+                    "selfBytes": 48
+                  }
+                },
+                {
+                  "edgeType": "context",
+                  "edge": "$c2",
+                  "to": {
+                    "index": 1131469,
+                    "type": "object",
+                    "name": "Object",
+                    "tag": "../bend2/selfhost/ast.SpanOf",
+                    "selfBytes": 56
+                  }
+                }
+              ],
+              "truncated": false
+            }
+          }
+        ]
+      },
+      "finishedValue": {
+        "node": {
+          "index": 3645621,
+          "type": "object",
+          "name": "Object",
+          "tag": "checker_core_steps_v1.ArenaResult",
+          "selfBytes": 48
+        },
+        "rootPath": {
+          "reachable": true,
+          "truncated": false,
+          "rawEdgeCount": 6,
+          "compressedEdgeCount": 6,
+          "nodes": [
+            {
+              "from": {
+                "index": 0,
+                "type": "synthetic",
+                "name": "",
+                "tag": null,
+                "selfBytes": 0
+              },
+              "edgeType": "element",
+              "edge": "1",
+              "to": {
+                "index": 1,
+                "type": "synthetic",
+                "name": "(GC roots)",
+                "tag": null,
+                "selfBytes": 0
+              }
+            },
+            {
+              "from": {
+                "index": 1,
+                "type": "synthetic",
+                "name": "(GC roots)",
+                "tag": null,
+                "selfBytes": 0
+              },
+              "edgeType": "element",
+              "edge": "19",
+              "to": {
+                "index": 20,
+                "type": "synthetic",
+                "name": "(Stack roots)",
+                "tag": null,
+                "selfBytes": 0
+              }
+            },
+            {
+              "from": {
+                "index": 20,
+                "type": "synthetic",
+                "name": "(Stack roots)",
+                "tag": null,
+                "selfBytes": 0
+              },
+              "edgeType": "internal",
+              "edge": "39",
+              "to": {
+                "index": 3294,
+                "type": "object",
+                "name": "Object",
+                "tag": "checker_core_steps_v1.CheckerRunState",
+                "selfBytes": 48
+              }
+            },
+            {
+              "from": {
+                "index": 3294,
+                "type": "object",
+                "name": "Object",
+                "tag": "checker_core_steps_v1.CheckerRunState",
+                "selfBytes": 48
+              },
+              "edgeType": "property",
+              "edge": "progress",
+              "to": {
+                "index": 3645623,
+                "type": "object",
+                "name": "Object",
+                "tag": "checker_core_steps_v1.CheckerFinished",
+                "selfBytes": 40
+              }
+            },
+            {
+              "from": {
+                "index": 3645623,
+                "type": "object",
+                "name": "Object",
+                "tag": "checker_core_steps_v1.CheckerFinished",
+                "selfBytes": 40
+              },
+              "edgeType": "property",
+              "edge": "box",
+              "to": {
+                "index": 3645622,
+                "type": "object",
+                "name": "Object",
+                "tag": "checker_core_steps_v1.CheckerValue",
+                "selfBytes": 40
+              }
+            },
+            {
+              "from": {
+                "index": 3645622,
+                "type": "object",
+                "name": "Object",
+                "tag": "checker_core_steps_v1.CheckerValue",
+                "selfBytes": 40
+              },
+              "edgeType": "property",
+              "edge": "value",
+              "to": {
+                "index": 3645621,
+                "type": "object",
+                "name": "Object",
+                "tag": "checker_core_steps_v1.ArenaResult",
+                "selfBytes": 48
+              }
+            }
+          ],
+          "shortcutEdges": 0
+        },
+        "incomingCount": 0,
+        "incomingFirst40": [],
+        "incomingTruncated": false,
+        "fields": {
+          "count": 2,
+          "first80": [
+            {
+              "edgeType": "property",
+              "edge": "$",
+              "to": {
+                "index": 49338,
+                "type": "string",
+                "name": "checker_core_steps_v1.ArenaResult",
+                "tag": null,
+                "selfBytes": 56
+              }
+            },
+            {
+              "edgeType": "property",
+              "edge": "store",
+              "to": {
+                "index": 3645620,
+                "type": "object",
+                "name": "Object",
+                "tag": "checker_core_steps_v1.ArenaStore",
+                "selfBytes": 48
+              }
+            }
+          ],
+          "truncated": false
+        },
+        "holeFieldNames": []
+      }
+    }
+  ],
+  "boilerplateCorrection": "3of4taggedRunStateobjectsareAllocationSite.transition_info templateswithHolefields,notruntimeRunStates. Tagcountsarenotliveruntimeinstancecounts.",
+  "literalCacheWitness": {
+    "actualLiteralNodesWithAllThreeFields": 1122,
+    "distinctPointerTriples": 1122,
+    "duplicateTriples": 0,
+    "extraNodesInDuplicateTriples": 0,
+    "largestDuplicateGroups": [],
+    "scope": "Same chars/names/span pointer triple only; source-vs-transient pool membership and structuralCtr dedupe not inferred. Boilerplate-like Hole fields excluded. No retained/peak-byte or causal cost claim."
+  },
+  "perDeclarationRegionAlreadyExists": {
+    "source": "bend2/selfhost/checker.bend:11067-11079",
+    "publishedBeforeRelease": [
+      "top_level",
+      "carried_law_tape"
+    ],
+    "decision": "NO_GO_ALREADY_IMPLEMENTED_NOT_NEW_OPTIMIZATION"
+  },
+  "samplingSemanticCorrection": {
+    "inspectorAlwaysSetsForceGC": "https://github.com/v8/v8/blob/12.9.202/src/inspector/v8-heap-profiler-agent-impl.cc#L556-L590",
+    "retrievalFullGC": "https://github.com/v8/v8/blob/12.9.202/src/profiler/sampling-heap-profiler.cc#L281-L285",
+    "oldUncollectedBound": "Retrieval-boundary stack-rooted survivorsafteroneforcedfullGC,notnaturalpeak-live. Include-collectedprofilesstillstatisticalallocationvolume,withGCperturbation.",
+    "doesNotInvalidate": "CleanG69R2costrowswerenotprofiled;theirrejecteddecisionunchanged."
+  },
+  "selectedNextDiagnostic": {
+    "mechanism": "Factory-initializedopaqueRun drives checker after input-argument frame has returned; no long-running publicwrapper parameterholdingoriginalexpandedmodules.",
+    "sourceAnchor": "evals/checker_core_step_runtime.mjs:187-205,307-313",
+    "conservativeHypothesis": "Synchronousoutermodulesparameter/startargumentarray/temporariescanrootcompletedinputAST. ClearinginnerstartArgumentsdoesnotprovetheouterframegone. SnapshotRootStack94exactJSframeidentityunknown.",
+    "falsification": "SameimmutableA+same52sourcehashes+same1mstepGCsnapshotprefixwithstartfactoryratherthanrawmoduleargument. PreserveBendABIandRunvalidation. RequireactualmoduleASTrootabsence/reduction,notonlyGCbytes;timingsandpeakRAMnotqualification.",
+    "cheapIteration": "No sourcegenerators/nativeC1/C2rebuild; onlyorchestration changes inthrowawaydiagnostic,notmain."
+  },
+  "negativeOrUnsupportedMechanisms": [
+    "scratch-onlycleanupalreadyrejectedG64;doNotrepackage",
+    "per-definitiontransientreleasealreadyexists",
+    "newliteralcacheunsupportedby1122uniquechars/names/spantriples",
+    "allASTisgarbageorSpanOfisdeadfalseinferences",
+    "onepointG64footestimateisnotaceiling"
+  ],
+  "limits": "OldsnapshotmidprefixafterimplicitGC;nonweakgraphincludingVMrelationshipsnotexclusive-retainedorproperdominatorproof;conditionalnodecutsarenotsafereclamationprooforphysicalpeakprediction. FreshGCsamplesoccupiednotlive;noCPU/RAMgainclaim.",
+  "performanceAcceptance": false,
+  "selfhostGreen": false
+}
