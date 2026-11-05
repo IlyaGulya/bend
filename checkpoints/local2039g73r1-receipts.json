@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 1,
+  "version": "local2039g73r1",
+  "status": "REJECTED_FOR_PEAK_RAM_AND_INCONCLUSIVE_SPEED_QUALIFICATION",
+  "experimentalBranch": "selfhost/g73-leaf-3fvdekrb",
+  "protocolCheckpoint": "31b8911c",
+  "canonicalSourceCheckpoint": "f7f5bc4b",
+  "requiredGeneratedSourceCheckpoint": "16f497e7",
+  "sourceReceiptFiles": [
+    {
+      "repositoryPath": "checkpoints/local2039g73r1-protocol.json",
+      "sha256": "38f9687418ea637ef5d316b8f9fc4696351e0ab8e2f0072ba62c28ce3856158b"
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g73r1-generation-control-plan.json",
+      "sha256": "b6c9ffaec538d9e804ab5a5ce14b7ac95b7bf59863077fdc9171676cac561a64"
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g73r1-generation-control.json",
+      "sha256": "23c88b21dc38af2e4768e417f4b291e8a41da3b71737544d290e31d682da4f88"
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g73r1-source.json",
+      "sha256": "b8356f781fc5b0be3481862e4bcf1fb69d48ce6aa0560239439eee5cacfc0069"
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g73r1-generation.json",
+      "sha256": "2ed649bb3ed45fb9d0d132a1157d314843e35faedd1349e14a2884f633ebca51"
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g73r1-compiler-source.corpus.json",
+      "sha256": "ce94151573d9b739dc60f0b842c4a5c897486e299cb234296d95382eef6637aa"
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g73r1-native-c1-plan.json",
+      "sha256": "bdc8bfb5692ecadc4ee3c411c80fe9f94000e91c07e7268ebbd9be67e2853109"
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g73r1-native-c1.json",
+      "sha256": "f0a63a867260bc45eb386f90eff5c5c7ff51162cdaaa8efb2c805f901fa6c853"
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g73r1-early-consumers-plan.json",
+      "sha256": "a294c420e919e10375d7b371692323f4183aa88b962730ec0b4a8750019fd3d1"
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g73r1-early-consumers.json",
+      "sha256": "80ab7a37300f4eeb001ef72007ce712cbdcf1aaca6a696679a0b187320955a24"
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g73r1-own-c2-plan.json",
+      "sha256": "b7bd0cd1be2d4cf7f4d3b147138803289c11316fb6a189f5bd3605c061c6626d"
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g73r1-own-c2.json",
+      "sha256": "1f81ed54a89d5e19b31afc0f879c926d9ce553668af23b1fef0c731d52680cb6"
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g73r1-c2-consumers-plan.json",
+      "sha256": "ac5e1f7702a9800611ae1d8a83e4f7f1ada98878fb7bf2068c53531a46aac829"
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g73r1-c2-consumers.json",
+      "sha256": "77e544a4c45378906f0bc3d598a51fa9e307025eaa7e23f1f7fc4af2108fa883"
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g73r1-selected-plan.json",
+      "sha256": "86abff65311b37c164d3c512a11af6cf89287653d3ba5dcb2ba024e44396c559"
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g73r1-request-alias-fix.json",
+      "sha256": "be2600d0332465873ab617c6a5e38eec1dc08c67ca931d8a730734d04ef8f576"
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g73r1-selected-cost.json",
+      "sha256": "846d23d7d0d586252fa6b8632c919bca74258f33a3c81c763609bf18736efdbe"
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g73r1-decision.json",
+      "sha256": "d81465892385f1131ed9df7db803237f4e065c69bde0e3262bbabc4dd3e9f875"
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g73r1-closing-hashes.json",
+      "sha256": "acdc215463935c3f68c87463dc53e4d08e0225393ff06cf9f729f552dbf4bf69"
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g73r1-cleanup.json",
+      "sha256": "98b2b3fb273626164e879e4b09432f30b09ed95723c16ed23885fe5eb1611b33"
+    }
+  ],
+  "requiredSourcePaths": [
+    "bend2/selfhost/js_backend.bend",
+    "checkpoints/emitter_owned_v1.bend",
+    "checkpoints/emitter_steps_v1.bend",
+    "checkpoints/emitter_steps_component_v1.bend",
+    "checkpoints/local2039g49-compiler-root.bend",
+    "checkpoints/local2039g73r1-readback.bend"
+  ],
+  "allRequiredCompilerInputsPreserved": 53,
+  "allSelectedInputsPreserved": 52,
+  "allConditionalFullInputsPreserved": 53,
+  "ownedScriptsRemoved": 4,
+  "exactRemovedScriptSourcesPreservedIn": "checkpoints/local2039g73r1-cleanup.json",
+  "actualConsumerProcessesPassed": 41,
+  "actualCostProcessesPassed": 6,
+  "fullConfirmation": "NOT_RUN_NOT_EARNED",
+  "newOwnC3ByteFixedpoint": "NOT_RUN_NOT_EARNED",
+  "defaultCutover": false,
+  "scope": "Completeexplicitlyrejectedsourcecheckpoint,notacceptedcompileroptimization;noimages/ASTtransports/caches/bulkprofiles/logsinGit. Mainkeepsacceptedsourceandcopiesonlyjournal+structuredreceipts."
+}

@@ -1,0 +1,453 @@
+{
+  "schemaVersion": 1,
+  "version": "local2039g73r1",
+  "status": "REJECTED_POINT_PEAK_MEMORY_AND_INCONCLUSIVE_CPU_CI",
+  "prospectiveProtocolCheckpoint": "31b8911c",
+  "prospectiveCostCheckpoint": "b6595273",
+  "aliasRepairCheckpoint": "c9ab14e2",
+  "aliasRepair": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/repository/checkpoints/local2039g73r1-request-alias-fix.json",
+    "sha256": "be2600d0332465873ab617c6a5e38eec1dc08c67ca931d8a730734d04ef8f576"
+  },
+  "commands": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun --smol /var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/experiment-controller.mjs /var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/selected-plan.json",
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun --smol /var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/experiment-controller.mjs /var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/selected-canonical-resume-plan.json"
+  ],
+  "originalExecution": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/selected-execution.json",
+    "sha256": "9eb41a75c5b650a8376b28364282a20436d52a1a66da086e3fcb1f96b7094f27"
+  },
+  "resumeExecution": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/selected-canonical-resume-execution.json",
+    "sha256": "26c2dd49991ac521f62723ef53a8487ef3b4cd5ed106f298788612f10d7fabd3"
+  },
+  "allSixActualPairs": [
+    {
+      "A": {
+        "id": "selected-1-A",
+        "report": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/selected-1-A-report.json",
+          "sha256": "6cb89dd920d884a23dd4ba881c197bd937010b650c38ba4716ccfe43405c2d1a"
+        },
+        "request": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/selected-1-A-request.json",
+          "sha256": "60645d9351f846f78beb0faac32d32aa81c3e765dc1c15aec1b63de7633d9c4c"
+        },
+        "image": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs",
+          "sha256": "4636c05aa8c75e72212cb03949937e25561942bc00da250f876f37f001b9fc18"
+        },
+        "checkerCpuMs": 74383.006,
+        "checkerWallMs": 62792.248458,
+        "footprintBytes": 1103762248,
+        "rssBytes": 1041121280,
+        "modules": 17,
+        "declarations": 2954,
+        "steps": {
+          "expand": 263032,
+          "check": 1975761
+        },
+        "guardianElapsedMs": 68502
+      },
+      "C": {
+        "id": "selected-1-C",
+        "report": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/selected-1-C-report.json",
+          "sha256": "8ed1b6c8686f91308fde9670f081b275839e33f5e6245cd9db683d959d280fb6"
+        },
+        "request": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/selected-1-C-canonical-request.json",
+          "sha256": "e71ce14c147884e6ce35e66ae3d375a3b3d03e3c0949c30234f8c8e4aa61f7ec"
+        },
+        "image": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/real-own-c2.json.output.mjs",
+          "sha256": "505d4c08336e6f6312346806d97e2d189b6e0bd5783f829ead6723e62c24edaa"
+        },
+        "checkerCpuMs": 73194.398,
+        "checkerWallMs": 70394.098125,
+        "footprintBytes": 1322685456,
+        "rssBytes": 1080246272,
+        "modules": 17,
+        "declarations": 2954,
+        "steps": {
+          "expand": 263032,
+          "check": 1975761
+        },
+        "guardianElapsedMs": 76350
+      }
+    },
+    {
+      "C": {
+        "id": "selected-2-C",
+        "report": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/selected-2-C-report.json",
+          "sha256": "6af5f770689cac773b3d571f7a7da51bee2501bd171f7c64e0a4b3d0ce861792"
+        },
+        "request": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/selected-2-C-canonical-request.json",
+          "sha256": "ca1e4c03c350f7eb8616ea8dfb09f52771e8c52bc11203caf6929ca30c147bf7"
+        },
+        "image": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/real-own-c2.json.output.mjs",
+          "sha256": "505d4c08336e6f6312346806d97e2d189b6e0bd5783f829ead6723e62c24edaa"
+        },
+        "checkerCpuMs": 69863.198,
+        "checkerWallMs": 62238.796707999994,
+        "footprintBytes": 1332417792,
+        "rssBytes": 1126072320,
+        "modules": 17,
+        "declarations": 2954,
+        "steps": {
+          "expand": 263032,
+          "check": 1975761
+        },
+        "guardianElapsedMs": 69700
+      },
+      "A": {
+        "id": "selected-2-A",
+        "report": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/selected-2-A-report.json",
+          "sha256": "bb93bf9081ca486d0c00aca1a780e34f1440be3a0b82f391305e6284864164b6"
+        },
+        "request": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/selected-2-A-request.json",
+          "sha256": "1a1f18494e869dfc680fae1d89c1ea1b99f6a9530670f91a14a494da63e73495"
+        },
+        "image": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs",
+          "sha256": "4636c05aa8c75e72212cb03949937e25561942bc00da250f876f37f001b9fc18"
+        },
+        "checkerCpuMs": 75382.963,
+        "checkerWallMs": 65282.835957999996,
+        "footprintBytes": 1134337936,
+        "rssBytes": 1069596672,
+        "modules": 17,
+        "declarations": 2954,
+        "steps": {
+          "expand": 263032,
+          "check": 1975761
+        },
+        "guardianElapsedMs": 70777
+      }
+    },
+    {
+      "A": {
+        "id": "selected-3-A",
+        "report": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/selected-3-A-report.json",
+          "sha256": "b1cf4318420fa9593c88e4212fbea20a6187247b2a201f4dc958a868acd82acf"
+        },
+        "request": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/selected-3-A-request.json",
+          "sha256": "715fb484951540074f77f1410af511a59e8759a57b25b82b3dbfd4d5d9e0b15a"
+        },
+        "image": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs",
+          "sha256": "4636c05aa8c75e72212cb03949937e25561942bc00da250f876f37f001b9fc18"
+        },
+        "checkerCpuMs": 78624.964,
+        "checkerWallMs": 68175.43304199999,
+        "footprintBytes": 1126782800,
+        "rssBytes": 1049624576,
+        "modules": 17,
+        "declarations": 2954,
+        "steps": {
+          "expand": 263032,
+          "check": 1975761
+        },
+        "guardianElapsedMs": 73791
+      },
+      "C": {
+        "id": "selected-3-C",
+        "report": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/selected-3-C-report.json",
+          "sha256": "e6edd86879042ebe4a5fc209a3d6e7f2bf3620de002cae04040c4194d21e75fb"
+        },
+        "request": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/selected-3-C-canonical-request.json",
+          "sha256": "b2a9e7f6e3cef6bd6f93b6d319c9e9d0e1cf97b0d4de289f1d5da7a0446ae04e"
+        },
+        "image": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/real-own-c2.json.output.mjs",
+          "sha256": "505d4c08336e6f6312346806d97e2d189b6e0bd5783f829ead6723e62c24edaa"
+        },
+        "checkerCpuMs": 66532.14,
+        "checkerWallMs": 57275.509583,
+        "footprintBytes": 1322964368,
+        "rssBytes": 1304018944,
+        "modules": 17,
+        "declarations": 2954,
+        "steps": {
+          "expand": 263032,
+          "check": 1975761
+        },
+        "guardianElapsedMs": 63016
+      }
+    }
+  ],
+  "statistics": {
+    "schemaVersion": 1,
+    "pairs": [
+      {
+        "A": {
+          "id": "selected-1-A",
+          "report": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/selected-1-A-report.json",
+            "sha256": "6cb89dd920d884a23dd4ba881c197bd937010b650c38ba4716ccfe43405c2d1a"
+          },
+          "request": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/selected-1-A-request.json",
+            "sha256": "60645d9351f846f78beb0faac32d32aa81c3e765dc1c15aec1b63de7633d9c4c"
+          },
+          "image": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs",
+            "sha256": "4636c05aa8c75e72212cb03949937e25561942bc00da250f876f37f001b9fc18"
+          },
+          "checkerCpuMs": 74383.006,
+          "checkerWallMs": 62792.248458,
+          "footprintBytes": 1103762248,
+          "rssBytes": 1041121280,
+          "modules": 17,
+          "declarations": 2954,
+          "steps": {
+            "expand": 263032,
+            "check": 1975761
+          },
+          "guardianElapsedMs": 68502
+        },
+        "C": {
+          "id": "selected-1-C",
+          "report": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/selected-1-C-report.json",
+            "sha256": "8ed1b6c8686f91308fde9670f081b275839e33f5e6245cd9db683d959d280fb6"
+          },
+          "request": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/selected-1-C-canonical-request.json",
+            "sha256": "e71ce14c147884e6ce35e66ae3d375a3b3d03e3c0949c30234f8c8e4aa61f7ec"
+          },
+          "image": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/real-own-c2.json.output.mjs",
+            "sha256": "505d4c08336e6f6312346806d97e2d189b6e0bd5783f829ead6723e62c24edaa"
+          },
+          "checkerCpuMs": 73194.398,
+          "checkerWallMs": 70394.098125,
+          "footprintBytes": 1322685456,
+          "rssBytes": 1080246272,
+          "modules": 17,
+          "declarations": 2954,
+          "steps": {
+            "expand": 263032,
+            "check": 1975761
+          },
+          "guardianElapsedMs": 76350
+        }
+      },
+      {
+        "C": {
+          "id": "selected-2-C",
+          "report": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/selected-2-C-report.json",
+            "sha256": "6af5f770689cac773b3d571f7a7da51bee2501bd171f7c64e0a4b3d0ce861792"
+          },
+          "request": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/selected-2-C-canonical-request.json",
+            "sha256": "ca1e4c03c350f7eb8616ea8dfb09f52771e8c52bc11203caf6929ca30c147bf7"
+          },
+          "image": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/real-own-c2.json.output.mjs",
+            "sha256": "505d4c08336e6f6312346806d97e2d189b6e0bd5783f829ead6723e62c24edaa"
+          },
+          "checkerCpuMs": 69863.198,
+          "checkerWallMs": 62238.796707999994,
+          "footprintBytes": 1332417792,
+          "rssBytes": 1126072320,
+          "modules": 17,
+          "declarations": 2954,
+          "steps": {
+            "expand": 263032,
+            "check": 1975761
+          },
+          "guardianElapsedMs": 69700
+        },
+        "A": {
+          "id": "selected-2-A",
+          "report": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/selected-2-A-report.json",
+            "sha256": "bb93bf9081ca486d0c00aca1a780e34f1440be3a0b82f391305e6284864164b6"
+          },
+          "request": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/selected-2-A-request.json",
+            "sha256": "1a1f18494e869dfc680fae1d89c1ea1b99f6a9530670f91a14a494da63e73495"
+          },
+          "image": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs",
+            "sha256": "4636c05aa8c75e72212cb03949937e25561942bc00da250f876f37f001b9fc18"
+          },
+          "checkerCpuMs": 75382.963,
+          "checkerWallMs": 65282.835957999996,
+          "footprintBytes": 1134337936,
+          "rssBytes": 1069596672,
+          "modules": 17,
+          "declarations": 2954,
+          "steps": {
+            "expand": 263032,
+            "check": 1975761
+          },
+          "guardianElapsedMs": 70777
+        }
+      },
+      {
+        "A": {
+          "id": "selected-3-A",
+          "report": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/selected-3-A-report.json",
+            "sha256": "b1cf4318420fa9593c88e4212fbea20a6187247b2a201f4dc958a868acd82acf"
+          },
+          "request": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/selected-3-A-request.json",
+            "sha256": "715fb484951540074f77f1410af511a59e8759a57b25b82b3dbfd4d5d9e0b15a"
+          },
+          "image": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs",
+            "sha256": "4636c05aa8c75e72212cb03949937e25561942bc00da250f876f37f001b9fc18"
+          },
+          "checkerCpuMs": 78624.964,
+          "checkerWallMs": 68175.43304199999,
+          "footprintBytes": 1126782800,
+          "rssBytes": 1049624576,
+          "modules": 17,
+          "declarations": 2954,
+          "steps": {
+            "expand": 263032,
+            "check": 1975761
+          },
+          "guardianElapsedMs": 73791
+        },
+        "C": {
+          "id": "selected-3-C",
+          "report": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/selected-3-C-report.json",
+            "sha256": "e6edd86879042ebe4a5fc209a3d6e7f2bf3620de002cae04040c4194d21e75fb"
+          },
+          "request": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/selected-3-C-canonical-request.json",
+            "sha256": "b2a9e7f6e3cef6bd6f93b6d319c9e9d0e1cf97b0d4de289f1d5da7a0446ae04e"
+          },
+          "image": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/real-own-c2.json.output.mjs",
+            "sha256": "505d4c08336e6f6312346806d97e2d189b6e0bd5783f829ead6723e62c24edaa"
+          },
+          "checkerCpuMs": 66532.14,
+          "checkerWallMs": 57275.509583,
+          "footprintBytes": 1322964368,
+          "rssBytes": 1304018944,
+          "modules": 17,
+          "declarations": 2954,
+          "steps": {
+            "expand": 263032,
+            "check": 1975761
+          },
+          "guardianElapsedMs": 63016
+        }
+      }
+    ],
+    "C_over_A": {
+      "checkerCpuMs": {
+        "n": 3,
+        "logRatios": [
+          -0.01610861378605863,
+          -0.0760422789753304,
+          -0.16700411797420478
+        ],
+        "meanLog": -0.08638500357853128,
+        "varianceLog": 0.005772592260211951,
+        "geometricMeanRatio": 0.9172410221552315,
+        "ci95": [
+          0.7594781177693466,
+          1.107775290742328
+        ],
+        "baselineMedian": 75382.963,
+        "variantMedian": 69863.198,
+        "direction": "inconclusive"
+      },
+      "checkerWallMs": {
+        "n": 3,
+        "logRatios": [
+          0.11427779253975175,
+          -0.04775060611073813,
+          -0.1742111552014655
+        ],
+        "meanLog": -0.035894656257483955,
+        "varianceLog": 0.020911890902400854,
+        "geometricMeanRatio": 0.9647419176544616,
+        "ci95": [
+          0.6735962210097142,
+          1.3817283094083535
+        ],
+        "baselineMedian": 65282.835957999996,
+        "variantMedian": 62238.796707999994,
+        "direction": "inconclusive"
+      },
+      "footprintBytes": {
+        "n": 3,
+        "logRatios": [
+          0.1809395367085724,
+          0.16094601615691004,
+          0.1605084596036455
+        ],
+        "meanLog": 0.16746467082304264,
+        "varianceLog": 0.00013622687190908655,
+        "geometricMeanRatio": 1.1823035196368041,
+        "ci95": [
+          1.1485160784363195,
+          1.2170849314088026
+        ],
+        "baselineMedian": 1126782800,
+        "variantMedian": 1322964368,
+        "direction": "regression"
+      },
+      "rssBytes": {
+        "n": 3,
+        "logRatios": [
+          0.03689075856195969,
+          0.05145411965124858,
+          0.21701843743858285
+        ],
+        "meanLog": 0.10178777188393036,
+        "varianceLog": 0.010011602584680382,
+        "geometricMeanRatio": 1.1071484787569017,
+        "ci95": [
+          0.8634924977642012,
+          1.4195580820766456
+        ],
+        "baselineMedian": 1049624576,
+        "variantMedian": 1126072320,
+        "direction": "inconclusive"
+      },
+      "medianFootprintRatio": 1.1741077055844302,
+      "medianRSSRatio": 1.0728334165834166
+    },
+    "pointScreen": {
+      "cpu": true,
+      "everyCPU": true,
+      "wall": true,
+      "medianFootprint": false
+    },
+    "pointScreenPassed": false,
+    "selectedCPUQualified": false,
+    "scope": "ExistingpairedlogStudent95/practicalband2%;nofull-sourcepooling,rowsorlimitsretuned. PointscreenonlyearnsindependentfullconfirmationandownC3;memorymedianisnotCIequivalence."
+  },
+  "statisticsCommand": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/paired-statistics.ts",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/selected-pairs.json",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/repository/checkpoints/local2039g73r1-protocol.json"
+  ],
+  "collectorSource": "def g73_collect_actual_rows_acc(cells, expected):\n    import math\n    pairs={}\n    for cell in cells:\n        report=json.loads(read(cell['report']))\n        request=json.loads(read(cell['command'][-2]))\n        assert report['status']=='PASS' and report['mode']=='js' and report['stopAfter']=='check'\n        assert report['requestSha256']==g56_ref_acc(cell['command'][-2])['sha256']\n        assert report['exports']==request['exports']==g73_c2_acc['exports']\n        assert report['moduleCount']==expected['modules'] and report['sourceDeclarations']==expected['declarations']\n        assert report['stepCounts']['expand']==expected['expand'] and report['stepCounts']['check']==expected['check']\n        assert report['checksExcluded']==0 and report['outputPatches']==0 and report.get('output') is None\n        assert len(request['inputs'])==expected['files']\n        assert report['workerPolicy']=={'stackMiB':256,'oldGenerationMiB':6144,'youngGenerationMiB':128}\n        assert report['runtime']['versions']['node']=='23.11.0' and report['runtime']['versions']['v8']=='12.9.202.28-node.14'\n        assert report['runtime']['execArgv']==['--experimental-strip-types','--max-old-space-size=6144','--max-semi-space-size=128']\n        assert Path(report['runtime']['execPath']).resolve()==Path(g43_tools_acc['node']).resolve()\n        assert report['limits']=={'memoryMiB':8192,'rssMiB':8192,'pollMs':10,'timeoutMs':600000}\n        guard=report['guardian']\n        assert guard['status']=='PASS' and guard['ownedTreeStopped']is True and guard['timeoutMs']==600000\n        assert guard['memoryLimitBytes']==8589934592 and guard['rssLimitBytes']==8589934592\n        assert all(Path(p).resolve().as_posix()==p and g56_ref_acc(p)['sha256']==h for p,h in request['pins'].items())\n        assert all(g56_ref_acc(p)['sha256']==h for p,h in request['inputs'].items())\n        image=g56_ref_acc(request['image'])\n        assert request['pins'][image['path']]==image['sha256']\n        phase=next(p for p in report['phases']if p['phase']=='check')\n        row={'id':cell['id'],'report':g56_ref_acc(cell['report']),'request':g56_ref_acc(cell['command'][-2]),'image':image,'checkerCpuMs':phase['userCpuMs']+phase['systemCpuMs'],'checkerWallMs':phase['elapsedMs'],'footprintBytes':guard['peakFootprintBytes'],'rssBytes':guard['peakRssBytes'],'modules':report['moduleCount'],'declarations':report['sourceDeclarations'],'steps':report['stepCounts'],'guardianElapsedMs':guard['elapsedMs']}\n        assert all(math.isfinite(row[m])and row[m]>0 for m in ['checkerCpuMs','checkerWallMs','footprintBytes','rssBytes'])\n        pairs.setdefault(cell['pair'],{})[cell['role']]=row\n    assert all(set(pair)=={'A','C'}for pair in pairs.values())\n    return [pairs[i]for i in sorted(pairs)]\n",
+  "fullFrozen": "NOT_RUN_NOT_EARNED_POINT_MEMORY_SCREEN_FAILED",
+  "ownC3ByteFixedpoint": "NOT_RUN_NOT_EARNED_POINT_MEMORY_SCREEN_FAILED",
+  "qualifiedSpeedOrMemoryGain": false,
+  "defaultCutover": false,
+  "scope": "ActualCPUpoint-8.28percentbutCI[.7595,1.1078]inconclusive. Medianphysicalfootprint+17.41percent;pairedgeometricmemoryCI[1.1485,1.2171]practicalregressionontheseselectedrows. AllsixvalidcostrowsretainedincludingfirstA;preworkerpin-aliasfailurealsoretainedseparately. Noextracostrows,limits,workloadchangesorposthocrescore."
+}

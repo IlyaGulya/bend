@@ -3550,3 +3550,85 @@ and executions are recorded. Reusing this handoff as an accepted memory/speed
 optimization would require new prospective qualification, not rescoring G71.
 
 
+### G73R1: real terminal-leaf eager-frame elision fails the RAM screen
+
+Status: **REJECTED_FOR_PEAK_RAM_AND_INCONCLUSIVE_SPEED_QUALIFICATION**.
+The canonical implementation, regenerated emitter, authentic native C1,
+actual own-source C2 and all real consumers pass. Main keeps its accepted
+compiler; source and required generated inputs remain in
+`selfhost/g73-leaf-3fvdekrb`. Evidence is indexed by
+`checkpoints/local2039g73r1-receipts.json`.
+
+`31b8911c` freezes the source/qualification protocol; `f7f5bc4b` checkpoints
+the canonical backend; `16f497e7` checkpoints regenerated compiler inputs and
+the full source manifest; `b6595273` freezes the six fresh cost requests and
+existing paired analysis. An untouched-generator control reproduces all three
+active Bend emitter outputs byte-for-byte before the source delta is measured.
+Bun1.4.3 performs generation; its compatibility version fields are not a change
+to the measured Node23.11.0 / V812.9.202.28-node.14 runtime.
+
+`js_backend.bend` classifies scalarized BIR once per Program, using code-ID-keyed
+compile-time metadata. A closed terminal-operation whitelist excludes calls,
+lazy symbol loads, closures, regions/leaves and Symbol operands. Only eligible
+bounded Direct eager calls omit the continuation-frame push/pop; captures,
+argument order, continuation, exception abort and the depth-exhausted generic
+path remain. No per-emitted-call eligibility allocation/table or new BIR/runtime
+variant is introduced. Real C2 contains1268 elided and13814 ordinary eager
+sites; this narrower BIR rule is not the10739-site G72 AST counterfactual.
+
+Native C1 production finishes under its original300s/8GiB guard; actual C1
+own-self-emission produces C2 under the original600s/8GiB guard. Their guard
+elapsed times are95477ms and341929ms, peak physical footprints1768327640B
+and2872269304B. These changed-source production runs are not matched speedup
+measurements. Real C1 emits four programs that pass ordinary Node capture,
+exception/reentry, host-extra-argument and deep non-tail behavior. Real C2
+passes69 own cases,15 standalone JS programs, three clang-O3 C programs and28
+actual native inspection/recheck/library contracts: all41 consumer processes.
+No cached/serialized AST substitutes for parsing/checking these programs.
+
+The clean screen retains all six fresh AC/CA/AC processes on the unchanged
+52-file/17-module/2954-declaration representative corpus. Every row performs
+native expand263032/check1975761 steps, with ABI13, quantum64, worker
+256/6144/128MiB, original600s/8GiB guards and no profiler/explicit GC or image
+patch. Different own-compiler source counts are never substituted for this
+frozen workload. Ratios below are actual C2/accepted A; geometric rows show
+paired log-Student95% intervals. Median ratios are point statistics, not CIs.
+
+| Selected metric | C2 / accepted A |
+| --- | ---: |
+| Checker CPU, geometric | 0.917241 [0.759478,1.107775] |
+| Checker wall, geometric | 0.964742 [0.673596,1.381728] |
+| Physical footprint, geometric | 1.182304 [1.148516,1.217085] |
+| Physical footprint, median | 1.174108 |
+| RSS, geometric | 1.107148 [0.863492,1.419558] |
+| RSS, median | 1.072833 |
+
+Three original point filters pass: CPU mean, every paired CPU, and wall mean.
+The original2% median-footprint retention filter fails; selected CPU inference
+is inconclusive, and the selected footprint interval is a practical regression.
+The four full-frozen processes and actual own C3 byte fixedpoint are
+**NOT_RUN_NOT_EARNED**. No qualified speed/memory gain or selfhost-green claim.
+
+The first C request fails strict canonical-pin validation before any worker,
+guardian, report or timing starts: `/var` versus `/private/var`. `c9ab14e2`
+retains that failure and canonicalizes only aliases, preserving all physical
+bytes, counters, limits, order and thresholds. The already-valid first A is
+retained without rerun; the five not-yet-measured cells complete the original
+six cost rows. This infrastructure failure is not hidden or treated as a cost
+sample, and no completed timing row is retried, excluded or replaced.
+
+Natural phase-end telemetry shows a larger final checker heap; it does not
+identify live roots or prove why peak footprint grows. The next falsifiable
+hypothesis is the lifetime of the new `const $x` result across the direct
+continuation call. An argument-expression form could preserve evaluation/SP
+order without that local, but is untested at this checkpoint. Diagnose it on
+an immutable-image AST counterfactual before another expensive source build;
+never promote the patched artifact or call fewer frame stores lower RAM.
+
+All53 changed compiler inputs,52 selected inputs,53 conditional-full inputs
+and both real images preserve their closing hashes. Four owned throwaway
+scripts are removed after preserving exact sources and commands. Canonical and
+required generated Bend source stays committed; images, transports and bulk
+logs remain outside Git. Main receives this journal and structured evidence,
+not the rejected compiler cutover.
+
