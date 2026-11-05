@@ -1,0 +1,272 @@
+{
+  "schemaVersion": 1,
+  "version": "G72D1",
+  "status": "CONSERVATIVE_AST_CENSUS_COMPLETED_ACTUAL_MATCHED_IMAGE",
+  "preflightCheckpoint": "ee4801db",
+  "command": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+    "--memory-mib=8192",
+    "--rss-mib=8192",
+    "--poll-ms=10",
+    "--timeout-ms=120000",
+    "--",
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+    "--max-old-space-size=6144",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g72-cpu-causality-o2arrjf5/leaf-call-census.mjs",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g72-cpu-causality-o2arrjf5/cpu-only-check-summary.json"
+  ],
+  "cwd": "/Users/ilyagulya/Projects/My/bend",
+  "guardian": {
+    "status": "PASS",
+    "reason": "command_exit",
+    "commandExitCode": 0,
+    "commandSignal": 0,
+    "peakRssBytes": 1824948224,
+    "peakFootprintBytes": 1965483520,
+    "elapsedMs": 116802,
+    "timeoutMs": 120000,
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 0,
+    "command": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "--max-old-space-size=6144",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g72-cpu-causality-o2arrjf5/leaf-call-census.mjs",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g72-cpu-causality-o2arrjf5/cpu-only-check-summary.json"
+    ],
+    "label": "heavy command",
+    "exitCode": 0,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793883677211-a7a79a2a1641cc2e.json",
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592
+  },
+  "result": {
+    "kind": "CONSERVATIVE_AST_PROVEN_TERMINAL_LEAF_EAGER_FRAME_CENSUS",
+    "image": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs",
+      "sha256": "4636c05aa8c75e72212cb03949937e25561942bc00da250f876f37f001b9fc18"
+    },
+    "parser": "Acorn bundled in pinned Node 23.11.0",
+    "sourceBytes": 31758525,
+    "terminalPrimitiveCount": 50,
+    "leafBodies": 1423,
+    "sites": 10739,
+    "affectedParentBodies": 10403,
+    "continuations": 10739,
+    "parentExclusiveShare": 0.08907156210302208,
+    "continuationExclusiveShare": 0.12212377520095247,
+    "invariants": [
+      "AST-proven terminal leaf: no scheduler globals, no closures, no opaque/member/foreign call, only call-free primitive functions",
+      "Only eager td<64 branch changes; original depth-exhausted fallback and all public aliases unchanged",
+      "Arguments/capture stores/native bodies/quantum64 unchanged; only split_enter frame and split_done marker checks removed",
+      "Original catch uses saved pre-frame ksp and split_abort; continuation and its exceptions remain",
+      "This is a counterfactual image, NOT source compiler, qualification, fixedpoint or product"
+    ],
+    "scope": "Affected-parent/continuation self shares contain semantic work; neither is removable overhead or speedup ceiling."
+  },
+  "topAffectedParentRows": [
+    {
+      "functionName": "$b6849",
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs",
+      "lineNumber": 30590,
+      "columnNumber": 15,
+      "selfSamples": 537,
+      "inclusiveSamples": 537,
+      "selfSampledMs": 723.214,
+      "inclusiveSampledMs": 723.214,
+      "selfShare": 0.010698372605181554,
+      "inclusiveShare": 0.010698372605181554
+    },
+    {
+      "functionName": "$b1379",
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs",
+      "lineNumber": 15600,
+      "columnNumber": 15,
+      "selfSamples": 148,
+      "inclusiveSamples": 540,
+      "selfSampledMs": 189.132,
+      "inclusiveSampledMs": 695.425,
+      "selfShare": 0.0027977951305743496,
+      "inclusiveShare": 0.010287295003910851
+    },
+    {
+      "functionName": "$b1380",
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs",
+      "lineNumber": 15605,
+      "columnNumber": 15,
+      "selfSamples": 124,
+      "inclusiveSamples": 722,
+      "selfSampledMs": 160.298,
+      "inclusiveSampledMs": 928.888,
+      "selfShare": 0.0023712590351754707,
+      "inclusiveShare": 0.01374087052031886
+    },
+    {
+      "functionName": "$b1366",
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs",
+      "lineNumber": 15566,
+      "columnNumber": 15,
+      "selfSamples": 86,
+      "inclusiveSamples": 275,
+      "selfSampledMs": 108.378,
+      "inclusiveSampledMs": 353.911,
+      "selfShare": 0.0016032159584913545,
+      "inclusiveShare": 0.005235340780284133
+    },
+    {
+      "functionName": "$b1953",
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs",
+      "lineNumber": 17133,
+      "columnNumber": 15,
+      "selfSamples": 73,
+      "inclusiveSamples": 422,
+      "selfSampledMs": 103.203,
+      "inclusiveSampledMs": 570.546,
+      "selfShare": 0.001526663128717851,
+      "inclusiveShare": 0.00843998276636779
+    },
+    {
+      "functionName": "$b496",
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs",
+      "lineNumber": 12667,
+      "columnNumber": 14,
+      "selfSamples": 71,
+      "inclusiveSamples": 159,
+      "selfSampledMs": 94.253,
+      "inclusiveSampledMs": 206.168,
+      "selfShare": 0.0013942674134573957,
+      "inclusiveShare": 0.0030498055669069884
+    },
+    {
+      "functionName": "$k8175",
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs",
+      "lineNumber": 12992,
+      "columnNumber": 15,
+      "selfSamples": 65,
+      "inclusiveSamples": 163,
+      "selfSampledMs": 87.088,
+      "inclusiveSampledMs": 162.666,
+      "selfShare": 0.0012882768771622938,
+      "inclusiveShare": 0.002406288426654438
+    },
+    {
+      "functionName": "$b1367",
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs",
+      "lineNumber": 15571,
+      "columnNumber": 15,
+      "selfSamples": 60,
+      "inclusiveSamples": 373,
+      "selfSampledMs": 82.376,
+      "inclusiveSampledMs": 484.542,
+      "selfShare": 0.0012185731218207,
+      "inclusiveShare": 0.007167741303210226
+    }
+  ],
+  "topAffectedContinuationRows": [
+    {
+      "functionName": "$k25982",
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs",
+      "lineNumber": 15603,
+      "columnNumber": 16,
+      "selfSamples": 143,
+      "inclusiveSamples": 196,
+      "selfSampledMs": 185.459,
+      "inclusiveSampledMs": 253.251,
+      "selfShare": 0.0027434611124568468,
+      "inclusiveShare": 0.0037462957860810685
+    },
+    {
+      "functionName": "$k25977",
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs",
+      "lineNumber": 15601,
+      "columnNumber": 16,
+      "selfSamples": 138,
+      "inclusiveSamples": 181,
+      "selfSampledMs": 178.457,
+      "inclusiveSampledMs": 233.585,
+      "selfShare": 0.0026398818053893934,
+      "inclusiveShare": 0.0034553802401244074
+    },
+    {
+      "functionName": "$k5144",
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs",
+      "lineNumber": 12668,
+      "columnNumber": 15,
+      "selfSamples": 119,
+      "inclusiveSamples": 121,
+      "selfSampledMs": 154.041,
+      "inclusiveSampledMs": 156.208,
+      "selfShare": 0.002278700377031932,
+      "inclusiveShare": 0.0023107564122240446
+    },
+    {
+      "functionName": "$k25868",
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs",
+      "lineNumber": 15567,
+      "columnNumber": 16,
+      "selfSamples": 102,
+      "inclusiveSamples": 137,
+      "selfSampledMs": 136.416,
+      "inclusiveSampledMs": 180.206,
+      "selfShare": 0.002017976971281594,
+      "inclusiveShare": 0.0026657544429302352
+    },
+    {
+      "functionName": "$k35481",
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs",
+      "lineNumber": 17134,
+      "columnNumber": 16,
+      "selfSamples": 86,
+      "inclusiveSamples": 237,
+      "selfSampledMs": 125.795,
+      "inclusiveSampledMs": 324.301,
+      "selfShare": 0.0018608624582334048,
+      "inclusiveShare": 0.004797325458623565
+    },
+    {
+      "functionName": "$k25428",
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs",
+      "lineNumber": 15493,
+      "columnNumber": 16,
+      "selfSamples": 86,
+      "inclusiveSamples": 569,
+      "selfSampledMs": 121.164,
+      "inclusiveSampledMs": 761.576,
+      "selfShare": 0.0017923569210969614,
+      "inclusiveShare": 0.011265854664267765
+    },
+    {
+      "functionName": "$k25991",
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs",
+      "lineNumber": 15606,
+      "columnNumber": 16,
+      "selfSamples": 74,
+      "inclusiveSamples": 601,
+      "selfSampledMs": 90.918,
+      "inclusiveSampledMs": 768.925,
+      "selfShare": 0.0013449333676033603,
+      "inclusiveShare": 0.011374567078954814
+    },
+    {
+      "functionName": "$k7688",
+      "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs",
+      "lineNumber": 12953,
+      "columnNumber": 15,
+      "selfSamples": 55,
+      "inclusiveSamples": 801,
+      "selfSampledMs": 76.128,
+      "inclusiveSampledMs": 1083.669,
+      "selfShare": 0.0011261475990332894,
+      "inclusiveShare": 0.01603051758218797
+    }
+  ],
+  "fullCensus": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g72-cpu-causality-o2arrjf5/leaf-call-census.json",
+    "sha256": "0f37a742fed94857709fc18d3194f31ba1f53056c502b757b8e0c3449513a8b7"
+  },
+  "caveat": "Affected-selfincludessemanticwork;notremovableCPUshare. L0sourceincludedO(sites*imagebytes)temporarycollisionscan;removeavoidableanalysiscostbeforeemission,notretimingcompiler. No image or compiler was changed by this census."
+}
