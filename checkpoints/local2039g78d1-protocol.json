@@ -1,0 +1,138 @@
+{
+  "schemaVersion": 1,
+  "version": "local2039g78d1",
+  "status": "PROSPECTIVE_SINGLE_BOUNDED_HASH_FIX_BEFORE_IMPLEMENTATION_OR_DATA",
+  "baseCheckpoint": "51c3336b",
+  "previousDiagnostic": {
+    "experimentalCheckpoint": "be75a9b4",
+    "mainCheckpoint": "51c3336b"
+  },
+  "sourceTarget": "evals/selfhost_throughput.mjs",
+  "singleChange": "Replace whole-file hash(path)=sha(readFileSync(path)) with synchronous SHA-256 using ONE reusable65536BBufferperisolate,readSyncopen/try/finally/close,full-chunkno-viewallocationandshort-finalsubarray. Remove obsolete sha(bytes). Reuse native_compiler_llvm.ts:77-85 pattern. No shared utility/export/dependency/new mode/cache/caller changes.",
+  "unalteredContract": "Allcanonicalrealpathandinput/pinchecks,preANDpost,request/outputSHAvalues,13ABIexports/quantum64,corpus,workcounters,worker/heap/whole-treeguards unchanged. No hash-validation omissions,forcedGC,profiler,snapshot,changedcompilerimage/source/ASTcache.",
+  "workload": {
+    "manifest": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/main-complete.corpus.json",
+      "sha256": "1a269e15bf70257b019ab572c003b6eb130b4e3f63ad507783525e28d307b0e4"
+    },
+    "expected": {
+      "files": 52,
+      "modules": 17,
+      "declarations": 2954,
+      "expand": 263032,
+      "check": 1975761
+    }
+  },
+  "image": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs",
+    "sha256": "4636c05aa8c75e72212cb03949937e25561942bc00da250f876f37f001b9fc18"
+  },
+  "runtime": {
+    "node": "23.11.0",
+    "v8": "12.9.202.28-node.14",
+    "nodeBinary": {
+      "path": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "sha256": "ead5889f15f4e17b37f941c7d9e92b624396786bd74d8155ef470f6381f032c5"
+    },
+    "execArgv": [
+      "--experimental-strip-types",
+      "--max-old-space-size=6144",
+      "--max-semi-space-size=128"
+    ],
+    "workerPolicy": {
+      "stackMiB": 256,
+      "oldGenerationMiB": 6144,
+      "youngGenerationMiB": 128
+    },
+    "ABIExports": [
+      "parsed_module",
+      "parse_with_fuel",
+      "expand_modules_start",
+      "template_step",
+      "check_expanded_start",
+      "inspect_checked_start",
+      "checker_step",
+      "emit_modules_start",
+      "emit_library_start",
+      "emitter_step",
+      "emit_c_modules_start",
+      "emit_c_library_start",
+      "c_emitter_step"
+    ],
+    "schedulerQuantum": 64
+  },
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000
+  },
+  "design": [
+    {
+      "sequence": 1,
+      "block": 1,
+      "variant": "baseline",
+      "id": "hash-1-baseline"
+    },
+    {
+      "sequence": 2,
+      "block": 1,
+      "variant": "bounded",
+      "id": "hash-2-bounded"
+    },
+    {
+      "sequence": 3,
+      "block": 1,
+      "variant": "bounded",
+      "id": "hash-3-bounded"
+    },
+    {
+      "sequence": 4,
+      "block": 1,
+      "variant": "baseline",
+      "id": "hash-4-baseline"
+    },
+    {
+      "sequence": 5,
+      "block": 2,
+      "variant": "baseline",
+      "id": "hash-5-baseline"
+    },
+    {
+      "sequence": 6,
+      "block": 2,
+      "variant": "bounded",
+      "id": "hash-6-bounded"
+    },
+    {
+      "sequence": 7,
+      "block": 2,
+      "variant": "bounded",
+      "id": "hash-7-bounded"
+    },
+    {
+      "sequence": 8,
+      "block": 2,
+      "variant": "baseline",
+      "id": "hash-8-baseline"
+    }
+  ],
+  "observation": "Shared diagnostic-only physical sampler/scaffolding on BOTH variants: unchanged G77 RAW native binary,200ms/4096records,directparentNodePIDbirthchecked,sameoriginalguard. Noheap/GCprobes,stepcallbacks/Runownerreading. Shared phase start/end and postverificationtimemarkers,MAINclockbridge. InstrumentedvariantURI fixed across8cells and explicitactivationledgerpre/postfileSHA;imagesimmutableoriginalURI. Canonical production candidate differs only hash.",
+  "infrastructureSmokeBeforeCost": "Exactdigestsover0/1/65535/65536/65537/131072/131073bytesincludinghigh-bit/zero/Unicodebytesandback-to-backdifferentlengths. Checkmissingfile/readfailureclose,actualcanonicalpinmismatch/driftrejectedwithoutcompilerimport. Actual image and Node digests match baseline independentknownpins. No newpermanenttest-onlyexport or extraCLI mode.",
+  "qualification": {
+    "allEightActualFullChecksRequired": true,
+    "physicalMedianBoundedOverBaselineAtMost": 0.95,
+    "physicalEveryPairedRatioBelow": 1,
+    "cpuCheckPairedCI95UpperAtMost": 1.05,
+    "cpuEveryPairedRatioAtMost": 1.1,
+    "allNativeTelemetryHealthyRequired": true,
+    "allSourceHashesRequired": true,
+    "ifFail": "Do NOT promote source. Explicitly record rejected/inconclusive; retain every original row, no retries/resampling/old pooling/loosenedgates.",
+    "ifPass": "Promote only canonical 2-hunk bounded-hash change to main, document internal contract in existing source comment and compact version receipt. Run actual uninstrumented production driver selected-check smoke with fresh candidate pins. Compiler/sourcealgorithm speedup NOT claimed.",
+    "qualificationScope": "HARNESSONLY,notcompileroptimizationG73-G76rescoring,notC2/C3acceptance."
+  },
+  "frozenStatistics": "Fourwithin-fixed-imageadjacentpairs(1vs2,4vs3,5vs6,8vs7),pairedStats/classifyRatio/median from existing calibration. CPUcheckNodeprocessincludeshelperthreads,notCsamplerchild. Guardphysicalwholeownedtree unchanged; physicalseriesNodePID,recordphasegaps/lifetimeHWMwindows,notexactcheckerpeak.",
+  "newCompilerBuilds": 0,
+  "byteFixedpoint": "NOT_RUN_NOCOMPILERSOURCECHANGE",
+  "historicalContextSearch": "Two bounded ctx queries returned no hits; G77 committed receipts primary. LSP references unavailable: no server for MJS action."
+}
