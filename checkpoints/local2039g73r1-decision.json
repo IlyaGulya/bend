@@ -1,0 +1,139 @@
+{
+  "schemaVersion": 1,
+  "version": "local2039g73r1",
+  "status": "REJECTED_FOR_PEAK_RAM_AND_INCONCLUSIVE_SPEED_QUALIFICATION",
+  "branch": "selfhost/g73-leaf-3fvdekrb",
+  "prospectiveProtocolCheckpoint": "31b8911c",
+  "sourceCheckpoint": "f7f5bc4b",
+  "generatedSourceCheckpoint": "16f497e7",
+  "actualC2ConsumerCheckpoint": "3e189df8",
+  "costReceipt": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/repository/checkpoints/local2039g73r1-selected-cost.json",
+    "sha256": "846d23d7d0d586252fa6b8632c919bca74258f33a3c81c763609bf18736efdbe"
+  },
+  "source": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/repository/bend2/selfhost/js_backend.bend",
+    "sha256": "64fb208dbfa771f9f784ad6503aab77de99be7c89324fcabd829dabf66ebf0df"
+  },
+  "nativeC1": "PASS_95477ms_1732837376RSS_1768327640FOOT",
+  "actualOwnC2": "PASS_341929ms_2369110016RSS_2872269304FOOT",
+  "actualC1C2ByteFixedpoint": false,
+  "actualOwnC3ByteFixedpoint": "NOT_RUN_NOT_EARNED",
+  "actualConsumerContracts": {
+    "own69": 69,
+    "standaloneJS": 15,
+    "clangO3C": 3,
+    "typedReadback": 28,
+    "realProcesses": 41,
+    "allPassed": true
+  },
+  "activation": {
+    "C1GenericEagerSites": 15082,
+    "C2GenericEagerSites": 13814,
+    "C2ElidedEagerSites": 1268,
+    "notEquivalentToG72ASTSiteCount": 10739
+  },
+  "selected": {
+    "schemaVersion": 1,
+    "C_over_A": {
+      "checkerCpuMs": {
+        "n": 3,
+        "logRatios": [
+          -0.01610861378605863,
+          -0.0760422789753304,
+          -0.16700411797420478
+        ],
+        "meanLog": -0.08638500357853128,
+        "varianceLog": 0.005772592260211951,
+        "geometricMeanRatio": 0.9172410221552315,
+        "ci95": [
+          0.7594781177693466,
+          1.107775290742328
+        ],
+        "baselineMedian": 75382.963,
+        "variantMedian": 69863.198,
+        "direction": "inconclusive"
+      },
+      "checkerWallMs": {
+        "n": 3,
+        "logRatios": [
+          0.11427779253975175,
+          -0.04775060611073813,
+          -0.1742111552014655
+        ],
+        "meanLog": -0.035894656257483955,
+        "varianceLog": 0.020911890902400854,
+        "geometricMeanRatio": 0.9647419176544616,
+        "ci95": [
+          0.6735962210097142,
+          1.3817283094083535
+        ],
+        "baselineMedian": 65282.835957999996,
+        "variantMedian": 62238.796707999994,
+        "direction": "inconclusive"
+      },
+      "footprintBytes": {
+        "n": 3,
+        "logRatios": [
+          0.1809395367085724,
+          0.16094601615691004,
+          0.1605084596036455
+        ],
+        "meanLog": 0.16746467082304264,
+        "varianceLog": 0.00013622687190908655,
+        "geometricMeanRatio": 1.1823035196368041,
+        "ci95": [
+          1.1485160784363195,
+          1.2170849314088026
+        ],
+        "baselineMedian": 1126782800,
+        "variantMedian": 1322964368,
+        "direction": "regression"
+      },
+      "rssBytes": {
+        "n": 3,
+        "logRatios": [
+          0.03689075856195969,
+          0.05145411965124858,
+          0.21701843743858285
+        ],
+        "meanLog": 0.10178777188393036,
+        "varianceLog": 0.010011602584680382,
+        "geometricMeanRatio": 1.1071484787569017,
+        "ci95": [
+          0.8634924977642012,
+          1.4195580820766456
+        ],
+        "baselineMedian": 1049624576,
+        "variantMedian": 1126072320,
+        "direction": "inconclusive"
+      },
+      "medianFootprintRatio": 1.1741077055844302,
+      "medianRSSRatio": 1.0728334165834166
+    },
+    "pointScreen": {
+      "cpu": true,
+      "everyCPU": true,
+      "wall": true,
+      "medianFootprint": false
+    },
+    "pointScreenPassed": false,
+    "selectedCPUQualified": false,
+    "scope": "ExistingpairedlogStudent95/practicalband2%;nofull-sourcepooling,rowsorlimitsretuned. PointscreenonlyearnsindependentfullconfirmationandownC3;memorymedianisnotCIequivalence."
+  },
+  "fullFrozenConfirmation": "NOT_RUN_NOT_EARNED_ORIGINAL_MEMORY_FILTER_FAILED",
+  "qualifiedSpeedGain": false,
+  "qualifiedMemoryRetention": false,
+  "selfhostGreen": false,
+  "defaultCompilerCutover": false,
+  "retainedPreworkerInfrastructureError": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/repository/checkpoints/local2039g73r1-request-alias-fix.json",
+    "sha256": "be2600d0332465873ab617c6a5e38eec1dc08c67ca931d8a730734d04ef8f576"
+  },
+  "nextInvestigation": {
+    "hypothesis": "Newconst$xreturnvaluebindingsmayoutlivetheirlastuseacrossthedirectcontinuationcall;phase-endheapsarenotlive-rootproof. Testargument-expressionequivalentonimmutableactualC2beforeanotherfullsourcebuild.",
+    "status": "UNTESTED_NOT_CAUSAL_FINDING",
+    "requirements": "AST-onlynewdiagnosticartifact,samephysicalbytes/sourcecounters/runtime/limits;preserveleafresultthenrestoreSPbeforeK;allrealimagesunchanged,noacceptancefrompatchedimages."
+  },
+  "scope": "Sourcealgorithmworksandallactualconsumerspass,notacceptedperformanceoptimization. Everycostrowandfailedpreworkerpinrequestretained. BroadCPUCIisnotproofspeedup;naturalphase-endheapusageisnotproofliveownership. Mainkeepsacceptedcompiler."
+}

@@ -1,0 +1,156 @@
+{
+  "schemaVersion": 1,
+  "status": "PROSPECTIVE_REAL_SOURCE_IMPLEMENTATION_BEFORE_EDITS",
+  "version": "G73R1",
+  "policy": {
+    "sourceVersion": "G73R1",
+    "baseCheckpoint": "0ad00e63",
+    "mechanism": "Typed-BIR conservative terminal-leaf eager Direct call frame elision; only the G72 measured mechanism, not general recursion/purity/continuation inlining",
+    "sourceScope": [
+      "bend2/selfhost/js_backend.bend",
+      "generated owned emitter and production step artifacts required by canonical regeneration"
+    ],
+    "constraints": [
+      "One eligibility census per Program with code-ID-keyed metadata; no per-emitted-runtime-call metadata or allocations",
+      "Only closed explicitly non-suspending terminal operations; no Apply,Direct/TailDirect,LoadSymbol,Closure,Region/LeaveRegion or opaque calls inside a classified leaf; Symbol operands conservative excluded",
+      "All argument evaluations and capture stores preserve order; generic depth-exhausted path and continuation calls unchanged",
+      "Foreign/public closure arity, marker isolation, exception unwind, reentry and source input ownership unchanged",
+      "No new BIR variant, runtime shim, compiler image patch or promoted G71 helper",
+      "Canonical generator and active emitter must agree; unchanged-generator control first, with input/output hash delta bounded before interpreting activation"
+    ],
+    "runtime": {
+      "release": "2.0.39",
+      "releaseCommit": "a3efe8a3801f423827424227172eed9802c5e6cb",
+      "bun": "1.4.3",
+      "node": "23.11.0",
+      "v8": "12.9.202.28-node.14",
+      "tools": {
+        "bun": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "node": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "clang": "/usr/bin/clang",
+        "llvmBin": "/opt/homebrew/opt/llvm@21/bin"
+      },
+      "host": "Darwin25.6arm64",
+      "isolated": false
+    },
+    "production": [
+      "Generate canonical source and early emitted programs under120s/8GiB guards",
+      "Real immutable native C seed compiles full candidate compiler-source corpus with existing native deadline/limits",
+      "Actual C1 emitter first compiles behavior falsifiers, then full own-source C2 to activate leaf emission",
+      "C2 actual own69 and JS/C/typed-readback consumers before clean cost screen",
+      "No patched diagnostic image or historical timing accepted as C2 evidence"
+    ],
+    "limits": {
+      "rssMiB": 8192,
+      "footprintMiB": 8192,
+      "pollMs": 10,
+      "JSCheckAndSelfEmissionTimeoutMs": 600000,
+      "semanticTimeoutMs": 120000,
+      "worker": {
+        "stackMiB": 256,
+        "oldMiB": 6144,
+        "youngMiB": 128
+      },
+      "parserFuelPerModule": 8000000,
+      "quantum": 64,
+      "ABI": [
+        "parsed_module",
+        "parse_with_fuel",
+        "expand_modules_start",
+        "template_step",
+        "check_expanded_start",
+        "inspect_checked_start",
+        "checker_step",
+        "emit_modules_start",
+        "emit_library_start",
+        "emitter_step",
+        "emit_c_modules_start",
+        "emit_c_library_start",
+        "c_emitter_step"
+      ]
+    },
+    "selected": {
+      "manifest": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/main-complete.corpus.json",
+        "sha256": "1a269e15bf70257b019ab572c003b6eb130b4e3f63ad507783525e28d307b0e4"
+      },
+      "orders": [
+        [
+          "A",
+          "C"
+        ],
+        [
+          "C",
+          "A"
+        ],
+        [
+          "A",
+          "C"
+        ]
+      ],
+      "freshProcesses": 6,
+      "expected": {
+        "files": 52,
+        "modules": 17,
+        "declarations": 2954,
+        "expand": 263032,
+        "check": 1975761
+      },
+      "pointScreen": {
+        "geometricCPU_CA_atMost": 0.95,
+        "everyCPU_CA_below": 1.0,
+        "geometricWall_CA_atMost": 1.02,
+        "medianPhysicalFootprint_CA_atMost": 1.02
+      },
+      "onlyIfPointScreenPass": "Four full-frozen fresh AB/BA confirmation cells and true own C3 fixedpoint may run",
+      "noRetryExclusionOldTimingProfilerHeapSamplingForcedGCOrCorpusNarrowing": true
+    },
+    "fullConditional": {
+      "manifest": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/full-frozen.corpus.json",
+        "sha256": "60bf820e76a9c336e58c848eec6a40b3f8fbb4b7ac2ae45ffd1abdb1d217ebc6"
+      },
+      "orders": [
+        [
+          "A",
+          "C"
+        ],
+        [
+          "C",
+          "A"
+        ]
+      ],
+      "expected": {
+        "files": 53,
+        "modules": 18,
+        "declarations": 13059,
+        "expand": 1072965,
+        "check": 10409462
+      }
+    },
+    "qualification": {
+      "statistics": "Existing paired log Student95, practical band2%; never pool different workloads into a single CI",
+      "acceptedSpeedClaimRequires": "SelectedCPUupper95<=.98 and fullbothCPUratios<1,fullgeometric<=.95; real consumer contracts and own C3 byte fixedpoint PASS",
+      "acceptedMemoryRetentionRequires": "Selectedandfullmedianfootprint<=1.02; broadRAMCIreportednotguaranteedmemoryequivalence",
+      "ifScreenOrSourceProductionFails": "Explicitfailedorrejectedcheckpoint, noexpensiveconditionalrunsandnodefaultcutover",
+      "ifCIInconclusive": "Noqualifiedspeedclaim;implementation/evidencepreservedseparately,donotretunethresholds"
+    },
+    "baseline": "Actual immutable A image4636c05a... remains original driver/helper, no rejected algorithms carried. Candidate source compiler and generated images must be genuine.",
+    "requiredSourceRegressionPolicy": "Reuse real existing FFI/reentry/throws and affine/semantic consumers. Add permanent tests only for a newly uncovered consumer-visible boundary, not source-text/wiring snapshots."
+  },
+  "candidateRepository": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/repository",
+  "baselineGeneratorRepository": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/baseline-repository",
+  "canonicalBaseline": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/repository/bend2/selfhost/js_backend.bend",
+    "sha256": "9ad0e83cafd243745d7d1b256d3e053258a801350fc5d0e16dd65fec89a35aa0"
+  },
+  "activeEmitterBaseline": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/repository/checkpoints/emitter_steps_v1.bend",
+    "sha256": "7f7c8d2e57a3fcd3925b4286a8300668ae91b7e11a26317cea6da2df5c9ea425"
+  },
+  "earnedBy": {
+    "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g72d1-results.json",
+    "sha256": "99dc2142e7eaa52faa261df2c35f7e9dcd524982ef4de7bd32fa3425abb08aab"
+  },
+  "toolPrerequisite": "Persistentbashlauncherfailed127beforemutation;direct/usr/bin/gitused,pinnedBun/Nodeversionsconfirmedunchanged"
+}
