@@ -2,7 +2,7 @@
 // Comparable clean root-to-JS runs. Source algorithms and artifacts are pinned;
 // this driver performs IO and advances opaque native-owned Run values only.
 import {createHash} from 'node:crypto';
-import {readFileSync,writeFileSync,existsSync,realpathSync} from 'node:fs';
+import {readFileSync,writeFileSync,existsSync,realpathSync,openSync,readSync,closeSync} from 'node:fs';
 import {resolve,dirname,posix,isAbsolute} from 'node:path';
 import {pathToFileURL,fileURLToPath} from 'node:url';
 import {Worker,isMainThread,workerData} from 'node:worker_threads';
@@ -13,8 +13,17 @@ import {runTemplateSteps,runCheckerSteps,runLibraryEmitterSteps,sourceFiles,sour
 import {createCpuProfiler} from './selfhost_cpu_profile.mjs';
 
 const script=fileURLToPath(import.meta.url);
-const sha=bytes=>createHash('sha256').update(bytes).digest('hex');
-const hash=path=>sha(readFileSync(path));
+// Bound pin verification's temporary memory without omitting pre/post checks.
+const hashBuffer=Buffer.allocUnsafe(65536);
+function hash(path){
+  const digest=createHash('sha256'),fd=openSync(path,'r');
+  try{
+    for(let size;(size=readSync(fd,hashBuffer,0,hashBuffer.length,null))!==0;){
+      digest.update(size===hashBuffer.length?hashBuffer:hashBuffer.subarray(0,size));
+    }
+  }finally{closeSync(fd);}
+  return digest.digest('hex');
+}
 const save=(path,value)=>writeFileSync(path,JSON.stringify(value,null,2)+'\n');
 const tag=value=>typeof value?.$==='string'?value.$.split('.').at(-1):null;
 const items=value=>{const out=[];while(tag(value)==='Con'){out.push(value.head);value=value.tail;}if(tag(value)!=='Nil')throw Error('Malformed native list');return out;};
