@@ -1,0 +1,297 @@
+{
+  "schemaVersion": 1,
+  "version": "G70D0",
+  "status": "PROSPECTIVE_DIAGNOSTIC_ONLY_NO_COMPILER_CHANGE",
+  "mainCheckpoint": "4b3d4894",
+  "previousExperimentalClosure": "21b720f7",
+  "goal": "IdentifycheckerheapownersandGCtransitionsbeforeanotherDODmemorymechanism;notCPU/RAMqualification.",
+  "immutableInputs": {
+    "acceptedA": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs",
+      "sha256": "4636c05aa8c75e72212cb03949937e25561942bc00da250f876f37f001b9fc18"
+    },
+    "rejectedG69C2": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69r2-production-fl4casug/c2-production.json.output.mjs",
+      "sha256": "1f19469354bc6fd57bf7e1a2e42a23b8b12a2c2fdda42597533c22e6229f932b"
+    },
+    "selectedManifest": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/main-complete.corpus.json",
+      "sha256": "1a269e15bf70257b019ab572c003b6eb130b4e3f63ad507783525e28d307b0e4"
+    },
+    "oldFullSnapshot": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/d0-A-snapshot.json.heapsnapshot",
+      "sha256": "81f05934374a4c3bd120070997a744ef1a793d4150e5fc8cd1ee326a9d82c043"
+    },
+    "oldSnapshotCapture": {
+      "step": 1000000,
+      "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/d0-A-snapshot.json.heapsnapshot",
+      "memoryBefore": {
+        "memory": {
+          "rss": 793690112,
+          "heapTotal": 688783360,
+          "heapUsed": 534290016,
+          "external": 3099930,
+          "arrayBuffers": 25035
+        },
+        "heapStatistics": {
+          "total_heap_size": 688783360,
+          "total_heap_size_executable": 59654144,
+          "total_physical_size": 689012736,
+          "total_available_size": 6308041232,
+          "used_heap_size": 534290240,
+          "heap_size_limit": 6845104128,
+          "malloced_memory": 2113640,
+          "peak_malloced_memory": 282861568,
+          "does_zap_garbage": 0,
+          "number_of_native_contexts": 1,
+          "number_of_detached_contexts": 0,
+          "total_global_handles_size": 8192,
+          "used_global_handles_size": 3648,
+          "external_memory": 3099930
+        },
+        "spaces": [
+          {
+            "space_name": "read_only_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "new_space",
+            "space_size": 268435456,
+            "space_used_size": 123380048,
+            "space_available_size": 10829488,
+            "physical_space_size": 268435456
+          },
+          {
+            "space_name": "old_space",
+            "space_size": 242974720,
+            "space_used_size": 240032912,
+            "space_available_size": 761008,
+            "physical_space_size": 243007488
+          },
+          {
+            "space_name": "code_space",
+            "space_size": 59506688,
+            "space_used_size": 55493376,
+            "space_available_size": 4006048,
+            "physical_space_size": 59506688
+          },
+          {
+            "space_name": "shared_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "trusted_space",
+            "space_size": 48562176,
+            "space_used_size": 46646872,
+            "space_available_size": 1905248,
+            "physical_space_size": 48758784
+          },
+          {
+            "space_name": "shared_trusted_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "new_large_object_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 134217728,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "large_object_space",
+            "space_size": 66961408,
+            "space_used_size": 66440048,
+            "space_available_size": 0,
+            "physical_space_size": 66961408
+          },
+          {
+            "space_name": "code_large_object_space",
+            "space_size": 147456,
+            "space_used_size": 132896,
+            "space_available_size": 0,
+            "physical_space_size": 147456
+          },
+          {
+            "space_name": "shared_large_object_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "shared_trusted_large_object_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "trusted_large_object_space",
+            "space_size": 2195456,
+            "space_used_size": 2165032,
+            "space_available_size": 0,
+            "physical_space_size": 2195456
+          }
+        ]
+      },
+      "implicitGC": true,
+      "notPeakMemoryEvidence": true,
+      "memoryAfter": {
+        "memory": {
+          "rss": 1913110528,
+          "heapTotal": 342949888,
+          "heapUsed": 324407296,
+          "external": 3096987,
+          "arrayBuffers": 25037
+        },
+        "heapStatistics": {
+          "total_heap_size": 342949888,
+          "total_heap_size_executable": 49692672,
+          "total_physical_size": 341606400,
+          "total_available_size": 6519954544,
+          "used_heap_size": 324407520,
+          "heap_size_limit": 6845104128,
+          "malloced_memory": 2113640,
+          "peak_malloced_memory": 282861568,
+          "does_zap_garbage": 0,
+          "number_of_native_contexts": 1,
+          "number_of_detached_contexts": 0,
+          "total_global_handles_size": 8192,
+          "used_global_handles_size": 3648,
+          "external_memory": 3096987
+        },
+        "spaces": [
+          {
+            "space_name": "read_only_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "new_space",
+            "space_size": 1048576,
+            "space_used_size": 1216,
+            "space_available_size": 1047296,
+            "physical_space_size": 311296
+          },
+          {
+            "space_name": "old_space",
+            "space_size": 193429504,
+            "space_used_size": 179215344,
+            "space_available_size": 12821008,
+            "physical_space_size": 192823296
+          },
+          {
+            "space_name": "code_space",
+            "space_size": 49545216,
+            "space_used_size": 47413312,
+            "space_available_size": 2125856,
+            "physical_space_size": 49545216
+          },
+          {
+            "space_name": "shared_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "trusted_space",
+            "space_size": 38600704,
+            "space_used_size": 37822632,
+            "space_available_size": 756624,
+            "physical_space_size": 38600704
+          },
+          {
+            "space_name": "shared_trusted_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "new_large_object_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 1048576,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "large_object_space",
+            "space_size": 57982976,
+            "space_used_size": 57658032,
+            "space_available_size": 0,
+            "physical_space_size": 57982976
+          },
+          {
+            "space_name": "code_large_object_space",
+            "space_size": 147456,
+            "space_used_size": 132896,
+            "space_available_size": 0,
+            "physical_space_size": 147456
+          },
+          {
+            "space_name": "shared_large_object_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "shared_trusted_large_object_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "trusted_large_object_space",
+            "space_size": 2195456,
+            "space_used_size": 2165032,
+            "space_available_size": 0,
+            "physical_space_size": 2195456
+          }
+        ]
+      },
+      "sha256": "81f05934374a4c3bd120070997a744ef1a793d4150e5fc8cd1ee326a9d82c043"
+    },
+    "oldSnapshotScope": {
+      "step": 1000000,
+      "modules": 17,
+      "declarations": 2954,
+      "expandSteps": 263032,
+      "prefixOnly": true,
+      "implicitGC": true,
+      "notPeakEvidence": true
+    }
+  },
+  "stages": [
+    "Reusefull4255935node17964503edgeacceptedA snapshot, analyzeobservednonweakVMrootpaths includingclosure/context/code;NOexclusive/dominatorclaim fromconservativeedgegraph.",
+    "Freshunchangedownparse/expand/fullcheckon52filefrozenselectedcorpus:coarsestepheapspaces+realGCtimestamps, no forcedGC/snapshot/imagepatch/ASTtransport; diagnosticnotcleanperformance.",
+    "UseprimaryAPIfacts+fullrootpaths+sourceowninglifecycletochoosefalsifiableDODmechanism;unknownownerstatedexplicitly."
+  ],
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "diagnosticTimeoutMs": 600000,
+    "workerStackMiB": 256,
+    "oldMiB": 6144,
+    "youngMiB": 128,
+    "oneHeavyLane": true
+  },
+  "snapshotAnalysisLimits": "Postimplicit-GCmidcheckgraphdoesnotrepresentphysicalpeak. Allnonweak observedpaths aredescriptive,notexclusive retentionorephemeronproof. No AST-garbage inference fromrestrictedtaggraph unions.",
+  "freshCaptureLimits": "Instrumented runs notspeed/memorycomparison; no statistics/gain claim, no excludedrows or retry toconfirmearliercostfailure. ExactcaptureAPIdeclaredbeforelaunchafterprimary-sourceconsult.",
+  "selfhostGreen": false,
+  "accepted": false
+}
