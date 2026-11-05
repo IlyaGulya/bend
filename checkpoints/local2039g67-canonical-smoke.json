@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "version": "G67R1",
+  "status": "CANONICAL_JS_FIXTURE_PASSED",
+  "sourceCheckpoint": "6138439f",
+  "emissionGuardian": {
+    "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793851967808-bf713e415ef9e40d.json"
+  },
+  "runtimeGuardian": {
+    "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793851968096-70bdfa86539e1859.json"
+  },
+  "output": "42\n",
+  "actualArtifact": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/canonical-zero-live.js",
+    "sha256": "d608fe753cb4eee22c840fb8847b0b2a6a02edc72f48ca6abe7a3f7eb7fafdd2"
+  },
+  "nodeCommand": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/canonical-zero-live.js"
+  ],
+  "runtimePolicy": "default-stack Node, no node resource flags; separately guarded8GiB/120s",
+  "scope": "Fixture semantic validity via canonical compiler only; not changed selfhost emitter or compiler-image proof"
+}

@@ -1,0 +1,1172 @@
+{
+  "schemaVersion": 1,
+  "version": "G67R1-D1",
+  "status": "ZERO_VALUE_POPULATION_MECHANISM_CONFIRMED_QUALIFICATION_REMAINS_REJECTED",
+  "rejectionCheckpoint": "99786615",
+  "request": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-d1-snapshot-request.json",
+    "sha256": "9aeaf2411a87d70678ac350e4b0f9ce045839c4ca57782b2f5fe6599f95ccd5c"
+  },
+  "report": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-d1-snapshot.json",
+    "sha256": "57b8588a49c77bd96731b2eb6eeb566376a5c235879e78468fd935e75d597459"
+  },
+  "observer": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/repository/evals/selfhost_heap_ownership_probe.mjs",
+    "sha256": "4461be56a6b53ab866cb8156503a76518fbaf0abbf64333a3b30b9568d70c32c"
+  },
+  "command": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+    "--memory-mib=8192",
+    "--rss-mib=8192",
+    "--poll-ms=10",
+    "--timeout-ms=600000",
+    "--",
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+    "--experimental-strip-types",
+    "--max-old-space-size=6144",
+    "--max-semi-space-size=128",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/repository/evals/selfhost_heap_ownership_probe.mjs",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-d1-snapshot-request.json",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-d1-snapshot.json"
+  ],
+  "guardian": {
+    "status": "PASS",
+    "reason": "command_exit",
+    "commandExitCode": 0,
+    "commandSignal": 0,
+    "peakRssBytes": 2640216064,
+    "peakFootprintBytes": 2712743664,
+    "elapsedMs": 51270,
+    "timeoutMs": 600000,
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 0,
+    "command": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "--experimental-strip-types",
+      "--max-old-space-size=6144",
+      "--max-semi-space-size=128",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/repository/evals/selfhost_heap_ownership_probe.mjs",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-d1-snapshot-request.json",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-d1-snapshot.json"
+    ],
+    "label": "heavy command",
+    "exitCode": 0,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793854730968-1acac5beaa4a18fa.json",
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592
+  },
+  "actualDiagnostic": {
+    "schemaVersion": 1,
+    "status": "SNAPSHOT_PREFIX_ONLY_NOT_FULL_CHECK",
+    "diagnosticOnly": true,
+    "acceptanceEvidence": false,
+    "performanceEvidence": false,
+    "kind": "snapshot",
+    "image": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-c2-generation.json.output.mjs",
+    "imageSha256": "bfca2271434ad8de2a74c9aceaa0e0f1007ab63b68ba31ffca2383a7f2afc675",
+    "request": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-d1-snapshot-request.json",
+    "requestSha256": "9aeaf2411a87d70678ac350e4b0f9ce045839c4ca57782b2f5fe6599f95ccd5c",
+    "runtime": {
+      "versions": {
+        "node": "23.11.0",
+        "acorn": "8.14.1",
+        "ada": "3.2.1",
+        "amaro": "0.4.1",
+        "ares": "1.34.4",
+        "brotli": "1.1.0",
+        "cjs_module_lexer": "2.1.0",
+        "cldr": "46.0",
+        "icu": "76.1",
+        "llhttp": "9.2.1",
+        "modules": "131",
+        "napi": "10",
+        "nbytes": "0.1.1",
+        "ncrypto": "0.0.1",
+        "nghttp2": "1.64.0",
+        "openssl": "3.0.16",
+        "simdjson": "3.12.2",
+        "simdutf": "6.0.3",
+        "sqlite": "3.49.1",
+        "tz": "2025a",
+        "undici": "6.21.2",
+        "unicode": "16.0",
+        "uv": "1.50.0",
+        "uvwasi": "0.0.21",
+        "v8": "12.9.202.28-node.14",
+        "zlib": "1.3.0.1-motley-788cb3c",
+        "zstd": "1.5.6"
+      },
+      "execArgv": [
+        "--experimental-strip-types",
+        "--max-old-space-size=6144",
+        "--max-semi-space-size=128"
+      ],
+      "heapLimitBytes": 6845104128
+    },
+    "workerPolicy": {
+      "stackMiB": 256,
+      "oldGenerationMiB": 6144,
+      "youngGenerationMiB": 128
+    },
+    "samplingIntervalBytes": 1048576,
+    "phases": [
+      {
+        "phase": "startup",
+        "elapsedMs": 603.377041,
+        "memory": {
+          "rss": 484409344,
+          "heapTotal": 90701824,
+          "heapUsed": 78064856,
+          "external": 34846198,
+          "arrayBuffers": 31765718
+        },
+        "heapStatistics": {
+          "total_heap_size": 90701824,
+          "total_heap_size_executable": 524288,
+          "total_physical_size": 88473600,
+          "total_available_size": 6766842224,
+          "used_heap_size": 78068232,
+          "heap_size_limit": 6845104128,
+          "malloced_memory": 8143048,
+          "peak_malloced_memory": 283484160,
+          "does_zap_garbage": 0,
+          "number_of_native_contexts": 1,
+          "number_of_detached_contexts": 0,
+          "total_global_handles_size": 8192,
+          "used_global_handles_size": 3584,
+          "external_memory": 34846238
+        },
+        "spaces": [
+          {
+            "space_name": "read_only_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "new_space",
+            "space_size": 16777216,
+            "space_used_size": 5652736,
+            "space_available_size": 2735360,
+            "physical_space_size": 14319616
+          },
+          {
+            "space_name": "old_space",
+            "space_size": 31948800,
+            "space_used_size": 31295568,
+            "space_available_size": 627000,
+            "physical_space_size": 31981568
+          },
+          {
+            "space_name": "code_space",
+            "space_size": 524288,
+            "space_used_size": 161376,
+            "space_available_size": 362848,
+            "physical_space_size": 524288
+          },
+          {
+            "space_name": "shared_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "trusted_space",
+            "space_size": 2686976,
+            "space_used_size": 2381976,
+            "space_available_size": 304400,
+            "physical_space_size": 2883584
+          },
+          {
+            "space_name": "shared_trusted_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "new_large_object_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 8388608,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "large_object_space",
+            "space_size": 36552704,
+            "space_used_size": 36412976,
+            "space_available_size": 0,
+            "physical_space_size": 36552704
+          },
+          {
+            "space_name": "code_large_object_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "shared_large_object_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "shared_trusted_large_object_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "trusted_large_object_space",
+            "space_size": 2211840,
+            "space_used_size": 2185304,
+            "space_available_size": 0,
+            "physical_space_size": 2211840
+          }
+        ]
+      },
+      {
+        "phase": "load-parse",
+        "elapsedMs": 2376.0925,
+        "userCpuMs": 4014.542,
+        "systemCpuMs": 135.145,
+        "memory": {
+          "rss": 817364992,
+          "heapTotal": 448249856,
+          "heapUsed": 268348392,
+          "external": 3105555,
+          "arrayBuffers": 25035
+        },
+        "heapStatistics": {
+          "total_heap_size": 448249856,
+          "total_heap_size_executable": 9846784,
+          "total_physical_size": 411123712,
+          "total_available_size": 6575751336,
+          "used_heap_size": 268348616,
+          "heap_size_limit": 6845104128,
+          "malloced_memory": 1065064,
+          "peak_malloced_memory": 283484160,
+          "does_zap_garbage": 0,
+          "number_of_native_contexts": 1,
+          "number_of_detached_contexts": 0,
+          "total_global_handles_size": 8192,
+          "used_global_handles_size": 3584,
+          "external_memory": 3105555
+        },
+        "spaces": [
+          {
+            "space_name": "read_only_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "new_space",
+            "space_size": 268435456,
+            "space_used_size": 94238216,
+            "space_available_size": 39971320,
+            "physical_space_size": 231079936
+          },
+          {
+            "space_name": "old_space",
+            "space_size": 120291328,
+            "space_used_size": 118748200,
+            "space_available_size": 736840,
+            "physical_space_size": 120324096
+          },
+          {
+            "space_name": "code_space",
+            "space_size": 9699328,
+            "space_used_size": 7612192,
+            "space_available_size": 2085952,
+            "physical_space_size": 9699328
+          },
+          {
+            "space_name": "shared_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "trusted_space",
+            "space_size": 10027008,
+            "space_used_size": 8141792,
+            "space_available_size": 1883936,
+            "physical_space_size": 10223616
+          },
+          {
+            "space_name": "shared_trusted_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "new_large_object_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 134217728,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "large_object_space",
+            "space_size": 37437440,
+            "space_used_size": 37291272,
+            "space_available_size": 0,
+            "physical_space_size": 37437440
+          },
+          {
+            "space_name": "code_large_object_space",
+            "space_size": 147456,
+            "space_used_size": 132928,
+            "space_available_size": 0,
+            "physical_space_size": 147456
+          },
+          {
+            "space_name": "shared_large_object_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "shared_trusted_large_object_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "trusted_large_object_space",
+            "space_size": 2211840,
+            "space_used_size": 2185304,
+            "space_available_size": 0,
+            "physical_space_size": 2211840
+          }
+        ]
+      },
+      {
+        "phase": "expand",
+        "elapsedMs": 1725.9988750000002,
+        "userCpuMs": 2495.663,
+        "systemCpuMs": 60.575,
+        "memory": {
+          "rss": 872398848,
+          "heapTotal": 502939648,
+          "heapUsed": 289323928,
+          "external": 3105555,
+          "arrayBuffers": 25035
+        },
+        "heapStatistics": {
+          "total_heap_size": 502939648,
+          "total_heap_size_executable": 12206080,
+          "total_physical_size": 503169024,
+          "total_available_size": 6554858880,
+          "used_heap_size": 289324152,
+          "heap_size_limit": 6845104128,
+          "malloced_memory": 1065064,
+          "peak_malloced_memory": 283484160,
+          "does_zap_garbage": 0,
+          "number_of_native_contexts": 1,
+          "number_of_detached_contexts": 0,
+          "total_global_handles_size": 8192,
+          "used_global_handles_size": 3584,
+          "external_memory": 3105555
+        },
+        "spaces": [
+          {
+            "space_name": "read_only_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "new_space",
+            "space_size": 268435456,
+            "space_used_size": 59161288,
+            "space_available_size": 75048248,
+            "physical_space_size": 268435456
+          },
+          {
+            "space_name": "old_space",
+            "space_size": 172457984,
+            "space_used_size": 170683920,
+            "space_available_size": 1045272,
+            "physical_space_size": 172490752
+          },
+          {
+            "space_name": "code_space",
+            "space_size": 12058624,
+            "space_used_size": 10883552,
+            "space_available_size": 1173600,
+            "physical_space_size": 12058624
+          },
+          {
+            "space_name": "shared_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "trusted_space",
+            "space_size": 11075584,
+            "space_used_size": 9865128,
+            "space_available_size": 1208608,
+            "physical_space_size": 11272192
+          },
+          {
+            "space_name": "shared_trusted_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "new_large_object_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 134217728,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "large_object_space",
+            "space_size": 36552704,
+            "space_used_size": 36412976,
+            "space_available_size": 0,
+            "physical_space_size": 36552704
+          },
+          {
+            "space_name": "code_large_object_space",
+            "space_size": 147456,
+            "space_used_size": 132928,
+            "space_available_size": 0,
+            "physical_space_size": 147456
+          },
+          {
+            "space_name": "shared_large_object_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "shared_trusted_large_object_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "trusted_large_object_space",
+            "space_size": 2211840,
+            "space_used_size": 2185304,
+            "space_available_size": 0,
+            "physical_space_size": 2211840
+          }
+        ]
+      }
+    ],
+    "boundaries": [
+      {
+        "step": 1000000,
+        "memory": {
+          "rss": 580894720,
+          "heapTotal": 659914752,
+          "heapUsed": 388445136,
+          "external": 3098865,
+          "arrayBuffers": 25035
+        },
+        "heapStatistics": {
+          "total_heap_size": 659914752,
+          "total_heap_size_executable": 58343424,
+          "total_physical_size": 660144128,
+          "total_available_size": 6454385864,
+          "used_heap_size": 388445360,
+          "heap_size_limit": 6845104128,
+          "malloced_memory": 2113640,
+          "peak_malloced_memory": 283484160,
+          "does_zap_garbage": 0,
+          "number_of_native_contexts": 1,
+          "number_of_detached_contexts": 0,
+          "total_global_handles_size": 8192,
+          "used_global_handles_size": 3648,
+          "external_memory": 3098865
+        },
+        "spaces": [
+          {
+            "space_name": "read_only_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "new_space",
+            "space_size": 268435456,
+            "space_used_size": 9509632,
+            "space_available_size": 124699904,
+            "physical_space_size": 268435456
+          },
+          {
+            "space_name": "old_space",
+            "space_size": 221741056,
+            "space_used_size": 217757832,
+            "space_available_size": 2259208,
+            "physical_space_size": 221773824
+          },
+          {
+            "space_name": "code_space",
+            "space_size": 58195968,
+            "space_used_size": 53741760,
+            "space_available_size": 4447104,
+            "physical_space_size": 58195968
+          },
+          {
+            "space_name": "shared_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "trusted_space",
+            "space_size": 48562176,
+            "space_used_size": 44981504,
+            "space_available_size": 3571600,
+            "physical_space_size": 48758784
+          },
+          {
+            "space_name": "shared_trusted_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "new_large_object_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 134217728,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "large_object_space",
+            "space_size": 60620800,
+            "space_used_size": 60137344,
+            "space_available_size": 0,
+            "physical_space_size": 60620800
+          },
+          {
+            "space_name": "code_large_object_space",
+            "space_size": 147456,
+            "space_used_size": 132928,
+            "space_available_size": 0,
+            "physical_space_size": 147456
+          },
+          {
+            "space_name": "shared_large_object_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "shared_trusted_large_object_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "trusted_large_object_space",
+            "space_size": 2211840,
+            "space_used_size": 2185304,
+            "space_available_size": 0,
+            "physical_space_size": 2211840
+          }
+        ]
+      }
+    ],
+    "samples": [],
+    "stepCounts": {
+      "expand": 263032
+    },
+    "note": "Actual own parser/expander/checker and unchanged opaque drivers; no image patch, AST replay or replacement checker. Diagnostics are not clean CPU/peak-RAM evidence. Uncollected samples may include garbage not yet collected; they are not strong-retention proof. A heap snapshot can induce GC and pause execution, and is a separate diagnostic prefix.",
+    "moduleCount": 17,
+    "sourceDeclarations": 2954,
+    "activePhase": "check",
+    "snapshot": {
+      "step": 1000000,
+      "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-d1-snapshot.json.heapsnapshot",
+      "memoryBefore": {
+        "memory": {
+          "rss": 581369856,
+          "heapTotal": 659914752,
+          "heapUsed": 388451128,
+          "external": 3098865,
+          "arrayBuffers": 25035
+        },
+        "heapStatistics": {
+          "total_heap_size": 659914752,
+          "total_heap_size_executable": 58343424,
+          "total_physical_size": 660144128,
+          "total_available_size": 6454379872,
+          "used_heap_size": 388451352,
+          "heap_size_limit": 6845104128,
+          "malloced_memory": 2113640,
+          "peak_malloced_memory": 283484160,
+          "does_zap_garbage": 0,
+          "number_of_native_contexts": 1,
+          "number_of_detached_contexts": 0,
+          "total_global_handles_size": 8192,
+          "used_global_handles_size": 3648,
+          "external_memory": 3098865
+        },
+        "spaces": [
+          {
+            "space_name": "read_only_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "new_space",
+            "space_size": 268435456,
+            "space_used_size": 9514672,
+            "space_available_size": 124694864,
+            "physical_space_size": 268435456
+          },
+          {
+            "space_name": "old_space",
+            "space_size": 221741056,
+            "space_used_size": 217758568,
+            "space_available_size": 2258472,
+            "physical_space_size": 221773824
+          },
+          {
+            "space_name": "code_space",
+            "space_size": 58195968,
+            "space_used_size": 53741760,
+            "space_available_size": 4447104,
+            "physical_space_size": 58195968
+          },
+          {
+            "space_name": "shared_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "trusted_space",
+            "space_size": 48562176,
+            "space_used_size": 44981720,
+            "space_available_size": 3571384,
+            "physical_space_size": 48758784
+          },
+          {
+            "space_name": "shared_trusted_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "new_large_object_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 134217728,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "large_object_space",
+            "space_size": 60620800,
+            "space_used_size": 60137344,
+            "space_available_size": 0,
+            "physical_space_size": 60620800
+          },
+          {
+            "space_name": "code_large_object_space",
+            "space_size": 147456,
+            "space_used_size": 132928,
+            "space_available_size": 0,
+            "physical_space_size": 147456
+          },
+          {
+            "space_name": "shared_large_object_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "shared_trusted_large_object_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "trusted_large_object_space",
+            "space_size": 2211840,
+            "space_used_size": 2185304,
+            "space_available_size": 0,
+            "physical_space_size": 2211840
+          }
+        ]
+      },
+      "implicitGC": true,
+      "notPeakMemoryEvidence": true,
+      "memoryAfter": {
+        "memory": {
+          "rss": 1891844096,
+          "heapTotal": 322781184,
+          "heapUsed": 308941856,
+          "external": 3096987,
+          "arrayBuffers": 25037
+        },
+        "heapStatistics": {
+          "total_heap_size": 322781184,
+          "total_heap_size_executable": 49954816,
+          "total_physical_size": 321830912,
+          "total_available_size": 6535642048,
+          "used_heap_size": 308942080,
+          "heap_size_limit": 6845104128,
+          "malloced_memory": 2113640,
+          "peak_malloced_memory": 283484160,
+          "does_zap_garbage": 0,
+          "number_of_native_contexts": 1,
+          "number_of_detached_contexts": 0,
+          "total_global_handles_size": 8192,
+          "used_global_handles_size": 3648,
+          "external_memory": 3096987
+        },
+        "spaces": [
+          {
+            "space_name": "read_only_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "new_space",
+            "space_size": 1048576,
+            "space_used_size": 1216,
+            "space_available_size": 1047296,
+            "physical_space_size": 311296
+          },
+          {
+            "space_name": "old_space",
+            "space_size": 173244416,
+            "space_used_size": 163822552,
+            "space_available_size": 8257392,
+            "physical_space_size": 173031424
+          },
+          {
+            "space_name": "code_space",
+            "space_size": 49807360,
+            "space_used_size": 47351328,
+            "space_available_size": 2449952,
+            "physical_space_size": 49807360
+          },
+          {
+            "space_name": "shared_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "trusted_space",
+            "space_size": 38338560,
+            "space_used_size": 37802864,
+            "space_available_size": 514944,
+            "physical_space_size": 38338560
+          },
+          {
+            "space_name": "shared_trusted_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "new_large_object_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 1048576,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "large_object_space",
+            "space_size": 57982976,
+            "space_used_size": 57646832,
+            "space_available_size": 0,
+            "physical_space_size": 57982976
+          },
+          {
+            "space_name": "code_large_object_space",
+            "space_size": 147456,
+            "space_used_size": 132928,
+            "space_available_size": 0,
+            "physical_space_size": 147456
+          },
+          {
+            "space_name": "shared_large_object_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "shared_trusted_large_object_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "trusted_large_object_space",
+            "space_size": 2211840,
+            "space_used_size": 2185304,
+            "space_available_size": 0,
+            "physical_space_size": 2211840
+          }
+        ]
+      },
+      "sha256": "f427fd3aca5a78d96795b9e809f51d527aa68a2888ab32ea7ba79f2c3414c8b1"
+    },
+    "finalMemory": {
+      "memory": {
+        "rss": 1941209088,
+        "heapTotal": 301940736,
+        "heapUsed": 216050040,
+        "external": 4863196,
+        "arrayBuffers": 1791246
+      },
+      "heapStatistics": {
+        "total_heap_size": 301940736,
+        "total_heap_size_executable": 49430528,
+        "total_physical_size": 300990464,
+        "total_available_size": 6545806856,
+        "used_heap_size": 216050264,
+        "heap_size_limit": 6845104128,
+        "malloced_memory": 2154600,
+        "peak_malloced_memory": 283484160,
+        "does_zap_garbage": 0,
+        "number_of_native_contexts": 1,
+        "number_of_detached_contexts": 0,
+        "total_global_handles_size": 8192,
+        "used_global_handles_size": 5376,
+        "external_memory": 4863196
+      },
+      "spaces": [
+        {
+          "space_name": "read_only_space",
+          "space_size": 0,
+          "space_used_size": 0,
+          "space_available_size": 0,
+          "physical_space_size": 0
+        },
+        {
+          "space_name": "new_space",
+          "space_size": 1048576,
+          "space_used_size": 220880,
+          "space_available_size": 827632,
+          "physical_space_size": 311296
+        },
+        {
+          "space_name": "old_space",
+          "space_size": 172457984,
+          "space_used_size": 90098552,
+          "space_available_size": 214928,
+          "physical_space_size": 172244992
+        },
+        {
+          "space_name": "code_space",
+          "space_size": 49283072,
+          "space_used_size": 47356256,
+          "space_available_size": 42816,
+          "physical_space_size": 49283072
+        },
+        {
+          "space_name": "shared_space",
+          "space_size": 0,
+          "space_used_size": 0,
+          "space_available_size": 0,
+          "physical_space_size": 0
+        },
+        {
+          "space_name": "trusted_space",
+          "space_size": 38338560,
+          "space_used_size": 37809240,
+          "space_available_size": 508568,
+          "physical_space_size": 38338560
+        },
+        {
+          "space_name": "shared_trusted_space",
+          "space_size": 0,
+          "space_used_size": 0,
+          "space_available_size": 0,
+          "physical_space_size": 0
+        },
+        {
+          "space_name": "new_large_object_space",
+          "space_size": 0,
+          "space_used_size": 0,
+          "space_available_size": 1048576,
+          "physical_space_size": 0
+        },
+        {
+          "space_name": "large_object_space",
+          "space_size": 38453248,
+          "space_used_size": 38248048,
+          "space_available_size": 0,
+          "physical_space_size": 38453248
+        },
+        {
+          "space_name": "code_large_object_space",
+          "space_size": 147456,
+          "space_used_size": 132928,
+          "space_available_size": 0,
+          "physical_space_size": 147456
+        },
+        {
+          "space_name": "shared_large_object_space",
+          "space_size": 0,
+          "space_used_size": 0,
+          "space_available_size": 0,
+          "physical_space_size": 0
+        },
+        {
+          "space_name": "shared_trusted_large_object_space",
+          "space_size": 0,
+          "space_used_size": 0,
+          "space_available_size": 0,
+          "physical_space_size": 0
+        },
+        {
+          "space_name": "trusted_large_object_space",
+          "space_size": 2211840,
+          "space_used_size": 2185304,
+          "space_available_size": 0,
+          "physical_space_size": 2211840
+        }
+      ]
+    }
+  },
+  "snapshots": {
+    "A": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/d0-A-snapshot.json.heapsnapshot",
+      "sha256": "81f05934374a4c3bd120070997a744ef1a793d4150e5fc8cd1ee326a9d82c043",
+      "bytes": 394243015
+    },
+    "C": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-d1-snapshot.json.heapsnapshot",
+      "sha256": "f427fd3aca5a78d96795b9e809f51d527aa68a2888ab32ea7ba79f2c3414c8b1",
+      "bytes": 358890016
+    }
+  },
+  "population": {
+    "A": {
+      "schemaVersion": 1,
+      "snapshot": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/d0-A-snapshot.json.heapsnapshot",
+      "snapshotBytes": 394243015,
+      "nodes": 4255935,
+      "edges": 17964503,
+      "exactFlatTagObjects": {
+        "Nil": {
+          "count": 239617,
+          "shallowBytes": 7667744
+        },
+        "None": {
+          "count": 107590,
+          "shallowBytes": 3442880
+        }
+      },
+      "nonflatOtherTagObjectsNotDecoded": 0,
+      "scope": "Real object nodes with own property $ pointing to exact flat string Nil/None. No numeric artificial nodes, allocation traffic, retained-union or clean peak-memory claim. Analyze baseline and candidate with same script."
+    },
+    "C": {
+      "schemaVersion": 1,
+      "snapshot": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-d1-snapshot.json.heapsnapshot",
+      "snapshotBytes": 358890016,
+      "nodes": 3778427,
+      "edges": 16531836,
+      "exactFlatTagObjects": {
+        "Nil": {
+          "count": 2,
+          "shallowBytes": 64
+        },
+        "None": {
+          "count": 1,
+          "shallowBytes": 32
+        }
+      },
+      "nonflatOtherTagObjectsNotDecoded": 0,
+      "scope": "Real object nodes with own property $ pointing to exact flat string Nil/None. No numeric artificial nodes, allocation traffic, retained-union or clean peak-memory claim. Analyze baseline and candidate with same script."
+    }
+  },
+  "sameAnalyzerReproducesPriorA": true,
+  "analysisExecution": {
+    "schemaVersion": 1,
+    "status": "ALL_CELLS_FINISHED",
+    "cells": [
+      {
+        "id": "r1-d1-A-census",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000",
+          "--",
+          "/Library/Frameworks/Python.framework/Versions/3.12/bin/python3",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/count-zero-values.py",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/d0-A-snapshot.json.heapsnapshot",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-d1-A-census.json"
+        ],
+        "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/repository",
+        "report": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-d1-A-census.json",
+        "exitCode": 0,
+        "elapsedMs": 27746.496208999997,
+        "stdout": "{\"schemaVersion\": 1, \"snapshot\": \"/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/d0-A-snapshot.json.heapsnapshot\", \"snapshotBytes\": 394243015, \"nodes\": 4255935, \"edges\": 17964503, \"exactFlatTagObjects\": {\"Nil\": {\"count\": 239617, \"shallowBytes\": 7667744}, \"None\": {\"count\": 107590, \"shallowBytes\": 3442880}}, \"nonflatOtherTagObjectsNotDecoded\": 0, \"scope\": \"Real object nodes with own property $ pointing to exact flat string Nil/None. No numeric artificial nodes, allocation traffic, retained-union or clean peak-memory claim. Analyze baseline and candidate with same script.\"}\n",
+        "stderr": "HEAVY_GATE {\"status\":\"PASS\",\"reason\":\"command_exit\",\"commandExitCode\":0,\"commandSignal\":0,\"peakRssBytes\":689274880,\"peakFootprintBytes\":685475088,\"elapsedMs\":27677,\"timeoutMs\":120000,\"reportPhase\":\"complete\",\"ownedTreeStopped\":true,\"supervisorExitCode\":0,\"command\":[\"/Library/Frameworks/Python.framework/Versions/3.12/bin/python3\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/count-zero-values.py\",\"/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/d0-A-snapshot.json.heapsnapshot\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-d1-A-census.json\"],\"label\":\"heavy command\",\"exitCode\":0,\"reportPath\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793855047947-14baddfe0d2c665f.json\",\"memoryLimitBytes\":8589934592,\"rssLimitBytes\":8589934592}\n",
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "commandExitCode": 0,
+          "commandSignal": 0,
+          "peakRssBytes": 689274880,
+          "peakFootprintBytes": 685475088,
+          "elapsedMs": 27677,
+          "timeoutMs": 120000,
+          "reportPhase": "complete",
+          "ownedTreeStopped": true,
+          "supervisorExitCode": 0,
+          "command": [
+            "/Library/Frameworks/Python.framework/Versions/3.12/bin/python3",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/count-zero-values.py",
+            "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/d0-A-snapshot.json.heapsnapshot",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-d1-A-census.json"
+          ],
+          "label": "heavy command",
+          "exitCode": 0,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793855047947-14baddfe0d2c665f.json",
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592
+        },
+        "passed": true
+      },
+      {
+        "id": "r1-d1-C-census",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000",
+          "--",
+          "/Library/Frameworks/Python.framework/Versions/3.12/bin/python3",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/count-zero-values.py",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-d1-snapshot.json.heapsnapshot",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-d1-C-census.json"
+        ],
+        "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/repository",
+        "report": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-d1-C-census.json",
+        "exitCode": 0,
+        "elapsedMs": 23551.657041000002,
+        "stdout": "{\"schemaVersion\": 1, \"snapshot\": \"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-d1-snapshot.json.heapsnapshot\", \"snapshotBytes\": 358890016, \"nodes\": 3778427, \"edges\": 16531836, \"exactFlatTagObjects\": {\"Nil\": {\"count\": 2, \"shallowBytes\": 64}, \"None\": {\"count\": 1, \"shallowBytes\": 32}}, \"nonflatOtherTagObjectsNotDecoded\": 0, \"scope\": \"Real object nodes with own property $ pointing to exact flat string Nil/None. No numeric artificial nodes, allocation traffic, retained-union or clean peak-memory claim. Analyze baseline and candidate with same script.\"}\n",
+        "stderr": "HEAVY_GATE {\"status\":\"PASS\",\"reason\":\"command_exit\",\"commandExitCode\":0,\"commandSignal\":0,\"peakRssBytes\":639582208,\"peakFootprintBytes\":619250864,\"elapsedMs\":23497,\"timeoutMs\":120000,\"reportPhase\":\"complete\",\"ownedTreeStopped\":true,\"supervisorExitCode\":0,\"command\":[\"/Library/Frameworks/Python.framework/Versions/3.12/bin/python3\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/count-zero-values.py\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-d1-snapshot.json.heapsnapshot\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-d1-C-census.json\"],\"label\":\"heavy command\",\"exitCode\":0,\"reportPath\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793855075687-f37b681275a8a47d.json\",\"memoryLimitBytes\":8589934592,\"rssLimitBytes\":8589934592}\n",
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "commandExitCode": 0,
+          "commandSignal": 0,
+          "peakRssBytes": 639582208,
+          "peakFootprintBytes": 619250864,
+          "elapsedMs": 23497,
+          "timeoutMs": 120000,
+          "reportPhase": "complete",
+          "ownedTreeStopped": true,
+          "supervisorExitCode": 0,
+          "command": [
+            "/Library/Frameworks/Python.framework/Versions/3.12/bin/python3",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/count-zero-values.py",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-d1-snapshot.json.heapsnapshot",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-d1-C-census.json"
+          ],
+          "label": "heavy command",
+          "exitCode": 0,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793855075687-f37b681275a8a47d.json",
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592
+        },
+        "passed": true
+      }
+    ]
+  },
+  "baselineShallowBytes": 11110624,
+  "candidateShallowBytes": 96,
+  "observedShallowDeltaBytes": 11110528,
+  "observedShallowDeltaMiB": 10.5958251953125,
+  "arithmeticCorrection": "Prospective protocol prose10.596870422MiB was a unit-conversion typo; its counts/byte totals were correct. Baseline bytes11110624/1048576=10.595916748046875MiB; after96bytes, delta11110528/1048576=10.5958251953125MiB. No threshold, source input or outcome changed.",
+  "scope": [
+    "Real object nodes, exact property$ flat literal tags; both snapshots nonflatOtherTagObjectsNotDecoded=0, no artificial numeric nodes.",
+    "Same scheduler checkpoint1000000,quantum64,52inputs/17modules/2954decls. All9complete-check countersmatch; no universal state-equivalence or exclusive retained-union claim.",
+    "Snapshot forcesGC andpauses.10.596MiB shallow-object reduction is not clean peak-RAM evidence and does not reverse failed9cleanfilters.",
+    "Original A compiler was not rerun: same analyzer reads old immutable snapshot; only actual C2 new snapshot was run.",
+    "No fullsix, ownbytefixedpoint or code cutover after rejection."
+  ],
+  "nextArchitectureEvidence": {
+    "source": "Existing G65D0 unchangedA sampling; not a new clean timing or candidate allocation comparison",
+    "sampledWorkerAllocationSelfBytes": 67390614720,
+    "advanceAndPopAttributedBytes": 8469680648,
+    "share": 0.12568041830736398,
+    "owners": [
+      "checker_core_steps_v1.checker_advance",
+      "checker_core_steps_v1.checker_pop"
+    ],
+    "sourceSites": [
+      {
+        "function": "$k118856",
+        "line1": 30593,
+        "observed": "one CheckerRunState record"
+      },
+      {
+        "function": "$k118869",
+        "line1": 30595,
+        "observed": "one CheckerStackMore and one CheckerRunState record"
+      },
+      {
+        "function": "$k118880",
+        "line1": 30596,
+        "observed": "one CheckerStackMore and one CheckerRunState record"
+      }
+    ],
+    "emitterTemplate": "evals/checker_core_step_lower.ts:2531-2560",
+    "proposedOnly": "Carry typed progress/stack as scalar parameters inside native fuel chunk; box RunState only at external quantum boundary. Preservefuel0 whole input, quantum64, affine heterogeneous stack/equality transport, resume/invoke order, trace suspension, API13. No mutation, newBIR or memoization required for first fusion. Not implemented or measured in G67.",
+    "risk": "Only one structurally decreasing Nat-recursive loop; no unproved mutual recursion. TracedRun suspension and budget accounting must remain exact."
+  },
+  "acceptedG24R12": "UNCHANGED",
+  "selfhostGreen": false
+}

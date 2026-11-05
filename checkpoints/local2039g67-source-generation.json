@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "version": "G67R1",
+  "status": "SOURCE_GENERATED_RUNTIME_NOT_RUN",
+  "protocolCheckpoint": "290dbe78",
+  "baseCheckpoint": "354f2af9",
+  "branch": "selfhost/g67-nullary-kbnbprog",
+  "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/repository",
+  "generationCommands": [
+    [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/repository/evals/checker_core_owned_source.ts"
+    ],
+    [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/repository/evals/checker_core_step_lower.ts"
+    ],
+    [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/repository/evals/emitter_step_lower.ts"
+    ]
+  ],
+  "generatorObservedWallSeconds": 12.36,
+  "cpuAndMemory": "NOT_MEASURED_SOURCE_GENERATION_ONLY",
+  "counts": {
+    "ownedDefinitions": 1161,
+    "checkerDefinitions": 1161,
+    "checkerSourceCalls": 4171,
+    "checkerPendingSites": 1114,
+    "checkerHelpers": 5618,
+    "emitterDefinitions": 2149,
+    "emitterSourceCalls": 5557,
+    "emitterPendingSites": 1617,
+    "emitterHelpers": 3867
+  },
+  "manifest": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-source.corpus.json",
+    "sha256": "ea4a52b12e78f19c73960e6817386d5f58a03b03c0e5d8b49d641c7ce3123f7d"
+  },
+  "requiredInputs": {
+    "checkpoints/checker_core_steps_v1.bend": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/repository/checkpoints/checker_core_steps_v1.bend",
+      "sha256": "e4c1197d63129394551d5643ef2934be84af82eaeacfa3da1e4e660c6ff603a4"
+    },
+    "checkpoints/emitter_steps_v1.bend": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/repository/checkpoints/emitter_steps_v1.bend",
+      "sha256": "b3fa916e75205a146b399ed2f37142b568815b988b289bfbbedb320c4aa93b50"
+    },
+    "checkpoints/template_steps_v1.bend": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/repository/checkpoints/template_steps_v1.bend",
+      "sha256": "b9f4d860de0c58a274e1f23e90558191e23d7ac0de18d1fd452914160b9a5ae5"
+    },
+    "checkpoints/local2039g49-compiler-root.bend": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/repository/checkpoints/local2039g49-compiler-root.bend",
+      "sha256": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed"
+    }
+  },
+  "changedCanonical": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/repository/bend2/selfhost/js_backend.bend",
+    "sha256": "9cf02f5121085e2c204cdf8a011d01a7949667542e696699d26707104f1a3482"
+  },
+  "scope": "Native Bend source generation only; no compiler image produced yet. C1 would have old storage; C2 is required before optimized-compiler timing. Bulk owned metadata and generated JS images are not Git inputs."
+}

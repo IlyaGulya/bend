@@ -1,0 +1,1542 @@
+{
+  "schemaVersion": 1,
+  "version": "G67R1",
+  "status": "REJECTED_ALL_SIX_SELECTED_COST_FILTERS",
+  "semanticCheckpoint": "b2bbe4b2",
+  "measurements": {
+    "schemaVersion": 1,
+    "rows": [
+      {
+        "id": "r1-selected-0-A",
+        "role": "A",
+        "triad": 0,
+        "checkerCpuMs": 71572.108,
+        "checkerWallMs": 58899.671125,
+        "footprintBytes": 1174692832,
+        "rssBytes": 1081704448,
+        "processWallMs": 64383,
+        "pipelineWallMs": 63892.782708,
+        "phaseCpuScope": "Node process-wide CPU; includes worker/helper threads, excludes child processes",
+        "stepCounts": {
+          "expand": 263032,
+          "check": 1975761
+        },
+        "checks": {
+          "freshExecutionCell": true,
+          "completed": true,
+          "requestPinned": true,
+          "actualImage": true,
+          "sourceNotImageHash": true,
+          "sameInputs": true,
+          "sameWork": true,
+          "completeCheckNotEmit": true,
+          "noImagePatches": true,
+          "sameLimits": true,
+          "sameWorker": true,
+          "sameRuntime": true,
+          "sameCpuScope": true
+        },
+        "allChecksPassed": true,
+        "report": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-0-A.json",
+          "sha256": "cfbbd5513aa318fd7acefa24b2071b4f4d934f8db0e7fff4c5ef073498b7c114"
+        },
+        "request": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-A-request.json",
+          "sha256": "08306501818c891d5b6a486b2fb1a77a4c77c4aad583744dd1a83f767374f8bb"
+        }
+      },
+      {
+        "id": "r1-selected-0-B",
+        "role": "B",
+        "triad": 0,
+        "checkerCpuMs": 66878.933,
+        "checkerWallMs": 55383.577917,
+        "footprintBytes": 1091999976,
+        "rssBytes": 1097826304,
+        "processWallMs": 60564,
+        "pipelineWallMs": 60109.133125,
+        "phaseCpuScope": "Node process-wide CPU; includes worker/helper threads, excludes child processes",
+        "stepCounts": {
+          "expand": 263032,
+          "check": 1975761
+        },
+        "checks": {
+          "freshExecutionCell": true,
+          "completed": true,
+          "requestPinned": true,
+          "actualImage": true,
+          "sourceNotImageHash": true,
+          "sameInputs": true,
+          "sameWork": true,
+          "completeCheckNotEmit": true,
+          "noImagePatches": true,
+          "sameLimits": true,
+          "sameWorker": true,
+          "sameRuntime": true,
+          "sameCpuScope": true
+        },
+        "allChecksPassed": true,
+        "report": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-0-B.json",
+          "sha256": "44fb7557b172beb7f88be4fc22b635a40912214258cae18fb7ca9df4fb0308de"
+        },
+        "request": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-B-request.json",
+          "sha256": "4970a7412263f187f387a626900fefaa6806898859e391b3a56046a290c4f352"
+        }
+      },
+      {
+        "id": "r1-selected-0-C",
+        "role": "C",
+        "triad": 0,
+        "checkerCpuMs": 66821.7,
+        "checkerWallMs": 56965.5215,
+        "footprintBytes": 1306526440,
+        "rssBytes": 1143586816,
+        "processWallMs": 62229,
+        "pipelineWallMs": 61691.340000000004,
+        "phaseCpuScope": "Node process-wide CPU; includes worker/helper threads, excludes child processes",
+        "stepCounts": {
+          "expand": 263032,
+          "check": 1975761
+        },
+        "checks": {
+          "freshExecutionCell": true,
+          "completed": true,
+          "requestPinned": true,
+          "actualImage": true,
+          "sourceNotImageHash": true,
+          "sameInputs": true,
+          "sameWork": true,
+          "completeCheckNotEmit": true,
+          "noImagePatches": true,
+          "sameLimits": true,
+          "sameWorker": true,
+          "sameRuntime": true,
+          "sameCpuScope": true
+        },
+        "allChecksPassed": true,
+        "report": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-0-C.json",
+          "sha256": "19111485811402b62f09f4c2a420e388fa2450bd0e85d2c68583b2d2e4895936"
+        },
+        "request": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-C-request.json",
+          "sha256": "4eda13241e34359ebca16b220a41508dd0412665206de63b73420a14d14bdc83"
+        }
+      },
+      {
+        "id": "r1-selected-1-C",
+        "role": "C",
+        "triad": 1,
+        "checkerCpuMs": 120533.004,
+        "checkerWallMs": 74160.803833,
+        "footprintBytes": 2401494032,
+        "rssBytes": 2219180032,
+        "processWallMs": 79653,
+        "pipelineWallMs": 79023.965,
+        "phaseCpuScope": "Node process-wide CPU; includes worker/helper threads, excludes child processes",
+        "stepCounts": {
+          "expand": 263032,
+          "check": 1975761
+        },
+        "checks": {
+          "freshExecutionCell": true,
+          "completed": true,
+          "requestPinned": true,
+          "actualImage": true,
+          "sourceNotImageHash": true,
+          "sameInputs": true,
+          "sameWork": true,
+          "completeCheckNotEmit": true,
+          "noImagePatches": true,
+          "sameLimits": true,
+          "sameWorker": true,
+          "sameRuntime": true,
+          "sameCpuScope": true
+        },
+        "allChecksPassed": true,
+        "report": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-1-C.json",
+          "sha256": "00e6010aae8349b8fcc0290a5908704eb4976009a2c406771ac28ff6af89790c"
+        },
+        "request": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-C-request.json",
+          "sha256": "4eda13241e34359ebca16b220a41508dd0412665206de63b73420a14d14bdc83"
+        }
+      },
+      {
+        "id": "r1-selected-1-A",
+        "role": "A",
+        "triad": 1,
+        "checkerCpuMs": 71681.35800000001,
+        "checkerWallMs": 59679.007041,
+        "footprintBytes": 1153851904,
+        "rssBytes": 1073594368,
+        "processWallMs": 64831,
+        "pipelineWallMs": 64355.331416999994,
+        "phaseCpuScope": "Node process-wide CPU; includes worker/helper threads, excludes child processes",
+        "stepCounts": {
+          "expand": 263032,
+          "check": 1975761
+        },
+        "checks": {
+          "freshExecutionCell": true,
+          "completed": true,
+          "requestPinned": true,
+          "actualImage": true,
+          "sourceNotImageHash": true,
+          "sameInputs": true,
+          "sameWork": true,
+          "completeCheckNotEmit": true,
+          "noImagePatches": true,
+          "sameLimits": true,
+          "sameWorker": true,
+          "sameRuntime": true,
+          "sameCpuScope": true
+        },
+        "allChecksPassed": true,
+        "report": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-1-A.json",
+          "sha256": "e2396b08556bcf30f695abd77ae93372f3e05d1f5664c8ea80b665b9e4de06ca"
+        },
+        "request": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-A-request.json",
+          "sha256": "08306501818c891d5b6a486b2fb1a77a4c77c4aad583744dd1a83f767374f8bb"
+        }
+      },
+      {
+        "id": "r1-selected-1-B",
+        "role": "B",
+        "triad": 1,
+        "checkerCpuMs": 68177.566,
+        "checkerWallMs": 56726.160209,
+        "footprintBytes": 1140399656,
+        "rssBytes": 1106182144,
+        "processWallMs": 62233,
+        "pipelineWallMs": 61763.919834,
+        "phaseCpuScope": "Node process-wide CPU; includes worker/helper threads, excludes child processes",
+        "stepCounts": {
+          "expand": 263032,
+          "check": 1975761
+        },
+        "checks": {
+          "freshExecutionCell": true,
+          "completed": true,
+          "requestPinned": true,
+          "actualImage": true,
+          "sourceNotImageHash": true,
+          "sameInputs": true,
+          "sameWork": true,
+          "completeCheckNotEmit": true,
+          "noImagePatches": true,
+          "sameLimits": true,
+          "sameWorker": true,
+          "sameRuntime": true,
+          "sameCpuScope": true
+        },
+        "allChecksPassed": true,
+        "report": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-1-B.json",
+          "sha256": "3949656bca810018c1f72f2d13b239c91863d9c65155214427ad114694293a04"
+        },
+        "request": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-B-request.json",
+          "sha256": "4970a7412263f187f387a626900fefaa6806898859e391b3a56046a290c4f352"
+        }
+      },
+      {
+        "id": "r1-selected-2-B",
+        "role": "B",
+        "triad": 2,
+        "checkerCpuMs": 73339.038,
+        "checkerWallMs": 62256.521542,
+        "footprintBytes": 1166600624,
+        "rssBytes": 1107017728,
+        "processWallMs": 67897,
+        "pipelineWallMs": 67353.910583,
+        "phaseCpuScope": "Node process-wide CPU; includes worker/helper threads, excludes child processes",
+        "stepCounts": {
+          "expand": 263032,
+          "check": 1975761
+        },
+        "checks": {
+          "freshExecutionCell": true,
+          "completed": true,
+          "requestPinned": true,
+          "actualImage": true,
+          "sourceNotImageHash": true,
+          "sameInputs": true,
+          "sameWork": true,
+          "completeCheckNotEmit": true,
+          "noImagePatches": true,
+          "sameLimits": true,
+          "sameWorker": true,
+          "sameRuntime": true,
+          "sameCpuScope": true
+        },
+        "allChecksPassed": true,
+        "report": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-2-B.json",
+          "sha256": "49fd911464de3627fa2926236e2f5b8efa9081ba227fdfd61e7895e61fdae84f"
+        },
+        "request": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-B-request.json",
+          "sha256": "4970a7412263f187f387a626900fefaa6806898859e391b3a56046a290c4f352"
+        }
+      },
+      {
+        "id": "r1-selected-2-C",
+        "role": "C",
+        "triad": 2,
+        "checkerCpuMs": 70081.583,
+        "checkerWallMs": 60467.545207999996,
+        "footprintBytes": 1108377496,
+        "rssBytes": 1024786432,
+        "processWallMs": 66049,
+        "pipelineWallMs": 65364.693415999995,
+        "phaseCpuScope": "Node process-wide CPU; includes worker/helper threads, excludes child processes",
+        "stepCounts": {
+          "expand": 263032,
+          "check": 1975761
+        },
+        "checks": {
+          "freshExecutionCell": true,
+          "completed": true,
+          "requestPinned": true,
+          "actualImage": true,
+          "sourceNotImageHash": true,
+          "sameInputs": true,
+          "sameWork": true,
+          "completeCheckNotEmit": true,
+          "noImagePatches": true,
+          "sameLimits": true,
+          "sameWorker": true,
+          "sameRuntime": true,
+          "sameCpuScope": true
+        },
+        "allChecksPassed": true,
+        "report": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-2-C.json",
+          "sha256": "e56fe523c8c8d2fbc0af828ef987bbf76e005cf2c13af74b77915116069a734a"
+        },
+        "request": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-C-request.json",
+          "sha256": "4eda13241e34359ebca16b220a41508dd0412665206de63b73420a14d14bdc83"
+        }
+      },
+      {
+        "id": "r1-selected-2-A",
+        "role": "A",
+        "triad": 2,
+        "checkerCpuMs": 66069.69900000001,
+        "checkerWallMs": 56518.263208,
+        "footprintBytes": 1375593880,
+        "rssBytes": 1188937728,
+        "processWallMs": 61952,
+        "pipelineWallMs": 61437.978375,
+        "phaseCpuScope": "Node process-wide CPU; includes worker/helper threads, excludes child processes",
+        "stepCounts": {
+          "expand": 263032,
+          "check": 1975761
+        },
+        "checks": {
+          "freshExecutionCell": true,
+          "completed": true,
+          "requestPinned": true,
+          "actualImage": true,
+          "sourceNotImageHash": true,
+          "sameInputs": true,
+          "sameWork": true,
+          "completeCheckNotEmit": true,
+          "noImagePatches": true,
+          "sameLimits": true,
+          "sameWorker": true,
+          "sameRuntime": true,
+          "sameCpuScope": true
+        },
+        "allChecksPassed": true,
+        "report": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-2-A.json",
+          "sha256": "39b0a59404e4b979f054fcb9bd2bdf5705ad98d8f2cefbb80ad686359ef343f0"
+        },
+        "request": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-A-request.json",
+          "sha256": "08306501818c891d5b6a486b2fb1a77a4c77c4aad583744dd1a83f767374f8bb"
+        }
+      }
+    ],
+    "allChecksPassed": true,
+    "triads": [
+      {
+        "A": {
+          "id": "r1-selected-0-A",
+          "role": "A",
+          "triad": 0,
+          "checkerCpuMs": 71572.108,
+          "checkerWallMs": 58899.671125,
+          "footprintBytes": 1174692832,
+          "rssBytes": 1081704448,
+          "processWallMs": 64383,
+          "pipelineWallMs": 63892.782708,
+          "phaseCpuScope": "Node process-wide CPU; includes worker/helper threads, excludes child processes",
+          "stepCounts": {
+            "expand": 263032,
+            "check": 1975761
+          },
+          "checks": {
+            "freshExecutionCell": true,
+            "completed": true,
+            "requestPinned": true,
+            "actualImage": true,
+            "sourceNotImageHash": true,
+            "sameInputs": true,
+            "sameWork": true,
+            "completeCheckNotEmit": true,
+            "noImagePatches": true,
+            "sameLimits": true,
+            "sameWorker": true,
+            "sameRuntime": true,
+            "sameCpuScope": true
+          },
+          "allChecksPassed": true,
+          "report": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-0-A.json",
+            "sha256": "cfbbd5513aa318fd7acefa24b2071b4f4d934f8db0e7fff4c5ef073498b7c114"
+          },
+          "request": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-A-request.json",
+            "sha256": "08306501818c891d5b6a486b2fb1a77a4c77c4aad583744dd1a83f767374f8bb"
+          }
+        },
+        "B": {
+          "id": "r1-selected-0-B",
+          "role": "B",
+          "triad": 0,
+          "checkerCpuMs": 66878.933,
+          "checkerWallMs": 55383.577917,
+          "footprintBytes": 1091999976,
+          "rssBytes": 1097826304,
+          "processWallMs": 60564,
+          "pipelineWallMs": 60109.133125,
+          "phaseCpuScope": "Node process-wide CPU; includes worker/helper threads, excludes child processes",
+          "stepCounts": {
+            "expand": 263032,
+            "check": 1975761
+          },
+          "checks": {
+            "freshExecutionCell": true,
+            "completed": true,
+            "requestPinned": true,
+            "actualImage": true,
+            "sourceNotImageHash": true,
+            "sameInputs": true,
+            "sameWork": true,
+            "completeCheckNotEmit": true,
+            "noImagePatches": true,
+            "sameLimits": true,
+            "sameWorker": true,
+            "sameRuntime": true,
+            "sameCpuScope": true
+          },
+          "allChecksPassed": true,
+          "report": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-0-B.json",
+            "sha256": "44fb7557b172beb7f88be4fc22b635a40912214258cae18fb7ca9df4fb0308de"
+          },
+          "request": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-B-request.json",
+            "sha256": "4970a7412263f187f387a626900fefaa6806898859e391b3a56046a290c4f352"
+          }
+        },
+        "C": {
+          "id": "r1-selected-0-C",
+          "role": "C",
+          "triad": 0,
+          "checkerCpuMs": 66821.7,
+          "checkerWallMs": 56965.5215,
+          "footprintBytes": 1306526440,
+          "rssBytes": 1143586816,
+          "processWallMs": 62229,
+          "pipelineWallMs": 61691.340000000004,
+          "phaseCpuScope": "Node process-wide CPU; includes worker/helper threads, excludes child processes",
+          "stepCounts": {
+            "expand": 263032,
+            "check": 1975761
+          },
+          "checks": {
+            "freshExecutionCell": true,
+            "completed": true,
+            "requestPinned": true,
+            "actualImage": true,
+            "sourceNotImageHash": true,
+            "sameInputs": true,
+            "sameWork": true,
+            "completeCheckNotEmit": true,
+            "noImagePatches": true,
+            "sameLimits": true,
+            "sameWorker": true,
+            "sameRuntime": true,
+            "sameCpuScope": true
+          },
+          "allChecksPassed": true,
+          "report": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-0-C.json",
+            "sha256": "19111485811402b62f09f4c2a420e388fa2450bd0e85d2c68583b2d2e4895936"
+          },
+          "request": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-C-request.json",
+            "sha256": "4eda13241e34359ebca16b220a41508dd0412665206de63b73420a14d14bdc83"
+          }
+        }
+      },
+      {
+        "C": {
+          "id": "r1-selected-1-C",
+          "role": "C",
+          "triad": 1,
+          "checkerCpuMs": 120533.004,
+          "checkerWallMs": 74160.803833,
+          "footprintBytes": 2401494032,
+          "rssBytes": 2219180032,
+          "processWallMs": 79653,
+          "pipelineWallMs": 79023.965,
+          "phaseCpuScope": "Node process-wide CPU; includes worker/helper threads, excludes child processes",
+          "stepCounts": {
+            "expand": 263032,
+            "check": 1975761
+          },
+          "checks": {
+            "freshExecutionCell": true,
+            "completed": true,
+            "requestPinned": true,
+            "actualImage": true,
+            "sourceNotImageHash": true,
+            "sameInputs": true,
+            "sameWork": true,
+            "completeCheckNotEmit": true,
+            "noImagePatches": true,
+            "sameLimits": true,
+            "sameWorker": true,
+            "sameRuntime": true,
+            "sameCpuScope": true
+          },
+          "allChecksPassed": true,
+          "report": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-1-C.json",
+            "sha256": "00e6010aae8349b8fcc0290a5908704eb4976009a2c406771ac28ff6af89790c"
+          },
+          "request": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-C-request.json",
+            "sha256": "4eda13241e34359ebca16b220a41508dd0412665206de63b73420a14d14bdc83"
+          }
+        },
+        "A": {
+          "id": "r1-selected-1-A",
+          "role": "A",
+          "triad": 1,
+          "checkerCpuMs": 71681.35800000001,
+          "checkerWallMs": 59679.007041,
+          "footprintBytes": 1153851904,
+          "rssBytes": 1073594368,
+          "processWallMs": 64831,
+          "pipelineWallMs": 64355.331416999994,
+          "phaseCpuScope": "Node process-wide CPU; includes worker/helper threads, excludes child processes",
+          "stepCounts": {
+            "expand": 263032,
+            "check": 1975761
+          },
+          "checks": {
+            "freshExecutionCell": true,
+            "completed": true,
+            "requestPinned": true,
+            "actualImage": true,
+            "sourceNotImageHash": true,
+            "sameInputs": true,
+            "sameWork": true,
+            "completeCheckNotEmit": true,
+            "noImagePatches": true,
+            "sameLimits": true,
+            "sameWorker": true,
+            "sameRuntime": true,
+            "sameCpuScope": true
+          },
+          "allChecksPassed": true,
+          "report": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-1-A.json",
+            "sha256": "e2396b08556bcf30f695abd77ae93372f3e05d1f5664c8ea80b665b9e4de06ca"
+          },
+          "request": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-A-request.json",
+            "sha256": "08306501818c891d5b6a486b2fb1a77a4c77c4aad583744dd1a83f767374f8bb"
+          }
+        },
+        "B": {
+          "id": "r1-selected-1-B",
+          "role": "B",
+          "triad": 1,
+          "checkerCpuMs": 68177.566,
+          "checkerWallMs": 56726.160209,
+          "footprintBytes": 1140399656,
+          "rssBytes": 1106182144,
+          "processWallMs": 62233,
+          "pipelineWallMs": 61763.919834,
+          "phaseCpuScope": "Node process-wide CPU; includes worker/helper threads, excludes child processes",
+          "stepCounts": {
+            "expand": 263032,
+            "check": 1975761
+          },
+          "checks": {
+            "freshExecutionCell": true,
+            "completed": true,
+            "requestPinned": true,
+            "actualImage": true,
+            "sourceNotImageHash": true,
+            "sameInputs": true,
+            "sameWork": true,
+            "completeCheckNotEmit": true,
+            "noImagePatches": true,
+            "sameLimits": true,
+            "sameWorker": true,
+            "sameRuntime": true,
+            "sameCpuScope": true
+          },
+          "allChecksPassed": true,
+          "report": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-1-B.json",
+            "sha256": "3949656bca810018c1f72f2d13b239c91863d9c65155214427ad114694293a04"
+          },
+          "request": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-B-request.json",
+            "sha256": "4970a7412263f187f387a626900fefaa6806898859e391b3a56046a290c4f352"
+          }
+        }
+      },
+      {
+        "B": {
+          "id": "r1-selected-2-B",
+          "role": "B",
+          "triad": 2,
+          "checkerCpuMs": 73339.038,
+          "checkerWallMs": 62256.521542,
+          "footprintBytes": 1166600624,
+          "rssBytes": 1107017728,
+          "processWallMs": 67897,
+          "pipelineWallMs": 67353.910583,
+          "phaseCpuScope": "Node process-wide CPU; includes worker/helper threads, excludes child processes",
+          "stepCounts": {
+            "expand": 263032,
+            "check": 1975761
+          },
+          "checks": {
+            "freshExecutionCell": true,
+            "completed": true,
+            "requestPinned": true,
+            "actualImage": true,
+            "sourceNotImageHash": true,
+            "sameInputs": true,
+            "sameWork": true,
+            "completeCheckNotEmit": true,
+            "noImagePatches": true,
+            "sameLimits": true,
+            "sameWorker": true,
+            "sameRuntime": true,
+            "sameCpuScope": true
+          },
+          "allChecksPassed": true,
+          "report": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-2-B.json",
+            "sha256": "49fd911464de3627fa2926236e2f5b8efa9081ba227fdfd61e7895e61fdae84f"
+          },
+          "request": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-B-request.json",
+            "sha256": "4970a7412263f187f387a626900fefaa6806898859e391b3a56046a290c4f352"
+          }
+        },
+        "C": {
+          "id": "r1-selected-2-C",
+          "role": "C",
+          "triad": 2,
+          "checkerCpuMs": 70081.583,
+          "checkerWallMs": 60467.545207999996,
+          "footprintBytes": 1108377496,
+          "rssBytes": 1024786432,
+          "processWallMs": 66049,
+          "pipelineWallMs": 65364.693415999995,
+          "phaseCpuScope": "Node process-wide CPU; includes worker/helper threads, excludes child processes",
+          "stepCounts": {
+            "expand": 263032,
+            "check": 1975761
+          },
+          "checks": {
+            "freshExecutionCell": true,
+            "completed": true,
+            "requestPinned": true,
+            "actualImage": true,
+            "sourceNotImageHash": true,
+            "sameInputs": true,
+            "sameWork": true,
+            "completeCheckNotEmit": true,
+            "noImagePatches": true,
+            "sameLimits": true,
+            "sameWorker": true,
+            "sameRuntime": true,
+            "sameCpuScope": true
+          },
+          "allChecksPassed": true,
+          "report": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-2-C.json",
+            "sha256": "e56fe523c8c8d2fbc0af828ef987bbf76e005cf2c13af74b77915116069a734a"
+          },
+          "request": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-C-request.json",
+            "sha256": "4eda13241e34359ebca16b220a41508dd0412665206de63b73420a14d14bdc83"
+          }
+        },
+        "A": {
+          "id": "r1-selected-2-A",
+          "role": "A",
+          "triad": 2,
+          "checkerCpuMs": 66069.69900000001,
+          "checkerWallMs": 56518.263208,
+          "footprintBytes": 1375593880,
+          "rssBytes": 1188937728,
+          "processWallMs": 61952,
+          "pipelineWallMs": 61437.978375,
+          "phaseCpuScope": "Node process-wide CPU; includes worker/helper threads, excludes child processes",
+          "stepCounts": {
+            "expand": 263032,
+            "check": 1975761
+          },
+          "checks": {
+            "freshExecutionCell": true,
+            "completed": true,
+            "requestPinned": true,
+            "actualImage": true,
+            "sourceNotImageHash": true,
+            "sameInputs": true,
+            "sameWork": true,
+            "completeCheckNotEmit": true,
+            "noImagePatches": true,
+            "sameLimits": true,
+            "sameWorker": true,
+            "sameRuntime": true,
+            "sameCpuScope": true
+          },
+          "allChecksPassed": true,
+          "report": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-2-A.json",
+            "sha256": "39b0a59404e4b979f054fcb9bd2bdf5705ad98d8f2cefbb80ad686359ef343f0"
+          },
+          "request": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-A-request.json",
+            "sha256": "08306501818c891d5b6a486b2fb1a77a4c77c4aad583744dd1a83f767374f8bb"
+          }
+        }
+      }
+    ]
+  },
+  "statistics": {
+    "schemaVersion": 1,
+    "C_over_A": {
+      "checkerCpuMs": {
+        "n": 3,
+        "logRatios": [
+          -0.06867756690889822,
+          0.5196928937455791,
+          0.05894980458610191
+        ],
+        "meanLog": 0.16998837714092763,
+        "varianceLog": 0.09579212318895045,
+        "geometricMeanRatio": 1.1852910747691825,
+        "ci95": [
+          0.5494377688837483,
+          2.557004653651212
+        ],
+        "baselineMedian": 71572.108,
+        "variantMedian": 70081.583,
+        "direction": "inconclusive"
+      },
+      "checkerWallMs": {
+        "n": 3,
+        "logRatios": [
+          -0.0333893081733379,
+          0.2172554426667744,
+          0.06754294971665625
+        ],
+        "meanLog": 0.08380302807003093,
+        "varianceLog": 0.01590399039196891,
+        "geometricMeanRatio": 1.0874146825440183,
+        "ci95": [
+          0.7949515395794541,
+          1.487475189289978
+        ],
+        "baselineMedian": 58899.671125,
+        "variantMedian": 60467.545207999996,
+        "direction": "inconclusive"
+      },
+      "footprintBytes": {
+        "n": 3,
+        "logRatios": [
+          0.10636534920332098,
+          0.7329852299112609,
+          -0.21598831993744028
+        ],
+        "meanLog": 0.20778741972571388,
+        "varianceLog": 0.23285252686989827,
+        "geometricMeanRatio": 1.2309514657331004,
+        "ci95": [
+          0.37123197291180604,
+          4.081656811792032
+        ],
+        "baselineMedian": 1174692832,
+        "variantMedian": 1306526440,
+        "direction": "inconclusive"
+      },
+      "rssBytes": {
+        "n": 3,
+        "logRatios": [
+          0.05563166320158905,
+          0.7261255313810098,
+          -0.1485760110578406
+        ],
+        "meanLog": 0.21106039450825276,
+        "varianceLog": 0.2093942649729253,
+        "geometricMeanRatio": 1.2349869392380282,
+        "ci95": [
+          0.39626522343802323,
+          3.848918981221315
+        ],
+        "baselineMedian": 1081704448,
+        "variantMedian": 1143586816,
+        "direction": "inconclusive"
+      },
+      "medianFootprintRatio": 1.1122281539553993
+    },
+    "C_over_B": {
+      "checkerCpuMs": {
+        "n": 3,
+        "logRatios": [
+          -0.0008561366122454092,
+          0.5698080410914399,
+          -0.04543301072444693
+        ],
+        "meanLog": 0.1745062979182492,
+        "varianceLog": 0.11769437554322618,
+        "geometricMeanRatio": 1.1906582410296662,
+        "ci95": [
+          0.5077748009414025,
+          2.7919208363698584
+        ],
+        "baselineMedian": 68177.566,
+        "variantMedian": 70081.583,
+        "direction": "inconclusive"
+      },
+      "checkerWallMs": {
+        "n": 3,
+        "logRatios": [
+          0.028163076533365403,
+          0.26800027669249205,
+          -0.029156515327508275
+        ],
+        "meanLog": 0.08900227929944972,
+        "varianceLog": 0.024851596205813974,
+        "geometricMeanRatio": 1.093083147787308,
+        "ci95": [
+          0.7388895306868499,
+          1.617062792682866
+        ],
+        "baselineMedian": 56726.160209,
+        "variantMedian": 60467.545207999996,
+        "direction": "inconclusive"
+      },
+      "footprintBytes": {
+        "n": 3,
+        "logRatios": [
+          0.17936118770423073,
+          0.7447122805983933,
+          -0.05119683956405095
+        ],
+        "meanLog": 0.29095887624619104,
+        "varianceLog": 0.16770836495537034,
+        "geometricMeanRatio": 1.3377095711798042,
+        "ci95": [
+          0.48367094927628007,
+          3.699760962496602
+        ],
+        "baselineMedian": 1140399656,
+        "variantMedian": 1306526440,
+        "direction": "inconclusive"
+      },
+      "rssBytes": {
+        "n": 3,
+        "logRatios": [
+          0.04083751539792535,
+          0.6962231959992493,
+          -0.07718543619552361
+        ],
+        "meanLog": 0.219958425067217,
+        "varianceLog": 0.1736034532989133,
+        "geometricMeanRatio": 1.2460249261079555,
+        "ci95": [
+          0.442605631881938,
+          3.507813739018295
+        ],
+        "baselineMedian": 1106182144,
+        "variantMedian": 1143586816,
+        "direction": "inconclusive"
+      },
+      "medianFootprintRatio": 1.145674179333495
+    },
+    "B_over_A": {
+      "checkerCpuMs": {
+        "n": 3,
+        "logRatios": [
+          -0.06782143029665282,
+          -0.050115147345860915,
+          0.10438281531054895
+        ],
+        "meanLog": -0.004517920777321591,
+        "varianceLog": 0.008972905854343398,
+        "geometricMeanRatio": 0.9954922696744262,
+        "ci95": [
+          0.7867624508268504,
+          1.259598571258759
+        ],
+        "baselineMedian": 71572.108,
+        "variantMedian": 68177.566,
+        "direction": "inconclusive"
+      },
+      "checkerWallMs": {
+        "n": 3,
+        "logRatios": [
+          -0.061552384706703246,
+          -0.050744834025717625,
+          0.09669946504416459
+        ],
+        "meanLog": -0.005199251229418764,
+        "varianceLog": 0.007816712071583699,
+        "geometricMeanRatio": 0.9948142414831257,
+        "ci95": [
+          0.7986541658366868,
+          1.2391538382835117
+        ],
+        "baselineMedian": 58899.671125,
+        "variantMedian": 56726.160209,
+        "direction": "inconclusive"
+      },
+      "footprintBytes": {
+        "n": 3,
+        "logRatios": [
+          -0.07299583850090981,
+          -0.011727050687132553,
+          -0.16479148037338917
+        ],
+        "meanLog": -0.08317145652047718,
+        "varianceLog": 0.005934837310354858,
+        "geometricMeanRatio": 0.9201933605419691,
+        "ci95": [
+          0.7599184170592179,
+          1.11427200838526
+        ],
+        "baselineMedian": 1174692832,
+        "variantMedian": 1140399656,
+        "direction": "inconclusive"
+      },
+      "rssBytes": {
+        "n": 3,
+        "logRatios": [
+          0.014794147803663693,
+          0.029902335381760414,
+          -0.07139057486231694
+        ],
+        "meanLog": -0.008898030558964277,
+        "varianceLog": 0.0029860529031036104,
+        "geometricMeanRatio": 0.9911414397588295,
+        "ci95": [
+          0.8653309792537536,
+          1.1352434815801657
+        ],
+        "baselineMedian": 1081704448,
+        "variantMedian": 1106182144,
+        "direction": "inconclusive"
+      },
+      "medianFootprintRatio": 0.9708066865943045
+    },
+    "costGate": {
+      "cpuCAatMostPoint97": false,
+      "cpuCBatMost1Point02": false,
+      "everyCpuCAfaster": false,
+      "wallCAatMost1": false,
+      "medianFootCAatMost1": false,
+      "geometricFootCBatMostPoint95": false
+    },
+    "costGatePassed": false
+  },
+  "execution": {
+    "schemaVersion": 1,
+    "status": "ALL_CELLS_FINISHED",
+    "cells": [
+      {
+        "id": "r1-selected-0-A",
+        "triad": 0,
+        "compilerRole": "A",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+          "js",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-A-request.json",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-0-A.json"
+        ],
+        "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/repository",
+        "request": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-A-request.json",
+        "report": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-0-A.json",
+        "exitCode": 0,
+        "elapsedMs": 64570.959,
+        "stdout": "{\"status\":\"PASS\",\"mode\":\"js\",\"report\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-0-A.json\",\"pipelineElapsedMs\":63892.782708,\"phases\":[{\"phase\":\"startup\",\"elapsedMs\":561.517875},{\"phase\":\"load-parse\",\"elapsedMs\":2618.537875},{\"phase\":\"expand\",\"elapsedMs\":1811.4307079999999},{\"phase\":\"check\",\"elapsedMs\":58899.671125}]}\n",
+        "stderr": "(node:74068) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\n(node:74068) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\nHEAVY_GATE {\"status\":\"PASS\",\"reason\":\"command_exit\",\"commandExitCode\":0,\"commandSignal\":0,\"peakRssBytes\":1081704448,\"peakFootprintBytes\":1174692832,\"elapsedMs\":64383,\"timeoutMs\":600000,\"reportPhase\":\"complete\",\"ownedTreeStopped\":true,\"supervisorExitCode\":0,\"command\":[\"/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node\",\"--experimental-strip-types\",\"--max-old-space-size=6144\",\"--max-semi-space-size=128\",\"/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs\",\"--worker\",\"js\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-A-request.json\",\"08306501818c891d5b6a486b2fb1a77a4c77c4aad583744dd1a83f767374f8bb\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-0-A.json\"],\"label\":\"Frozen full-root throughput js\",\"exitCode\":0,\"reportPath\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793853975483-6a51847a851aab57.json\",\"memoryLimitBytes\":8589934592,\"rssLimitBytes\":8589934592}\n",
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "commandExitCode": 0,
+          "commandSignal": 0,
+          "peakRssBytes": 1081704448,
+          "peakFootprintBytes": 1174692832,
+          "elapsedMs": 64383,
+          "timeoutMs": 600000,
+          "reportPhase": "complete",
+          "ownedTreeStopped": true,
+          "supervisorExitCode": 0,
+          "command": [
+            "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+            "--experimental-strip-types",
+            "--max-old-space-size=6144",
+            "--max-semi-space-size=128",
+            "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+            "--worker",
+            "js",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-A-request.json",
+            "08306501818c891d5b6a486b2fb1a77a4c77c4aad583744dd1a83f767374f8bb",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-0-A.json"
+          ],
+          "label": "Frozen full-root throughput js",
+          "exitCode": 0,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793853975483-6a51847a851aab57.json",
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592
+        },
+        "passed": true
+      },
+      {
+        "id": "r1-selected-0-B",
+        "triad": 0,
+        "compilerRole": "B",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+          "js",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-B-request.json",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-0-B.json"
+        ],
+        "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/repository",
+        "request": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-B-request.json",
+        "report": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-0-B.json",
+        "exitCode": 0,
+        "elapsedMs": 60718.437374999994,
+        "stdout": "{\"status\":\"PASS\",\"mode\":\"js\",\"report\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-0-B.json\",\"pipelineElapsedMs\":60109.133125,\"phases\":[{\"phase\":\"startup\",\"elapsedMs\":565.240833},{\"phase\":\"load-parse\",\"elapsedMs\":2442.368375},{\"phase\":\"expand\",\"elapsedMs\":1716.0804170000006},{\"phase\":\"check\",\"elapsedMs\":55383.577917}]}\n",
+        "stderr": "(node:87868) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\n(node:87868) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\nHEAVY_GATE {\"status\":\"PASS\",\"reason\":\"command_exit\",\"commandExitCode\":0,\"commandSignal\":0,\"peakRssBytes\":1097826304,\"peakFootprintBytes\":1091999976,\"elapsedMs\":60564,\"timeoutMs\":600000,\"reportPhase\":\"complete\",\"ownedTreeStopped\":true,\"supervisorExitCode\":0,\"command\":[\"/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node\",\"--experimental-strip-types\",\"--max-old-space-size=6144\",\"--max-semi-space-size=128\",\"/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs\",\"--worker\",\"js\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-B-request.json\",\"4970a7412263f187f387a626900fefaa6806898859e391b3a56046a290c4f352\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-0-B.json\"],\"label\":\"Frozen full-root throughput js\",\"exitCode\":0,\"reportPath\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793854040029-a1292942bbeaafc0.json\",\"memoryLimitBytes\":8589934592,\"rssLimitBytes\":8589934592}\n",
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "commandExitCode": 0,
+          "commandSignal": 0,
+          "peakRssBytes": 1097826304,
+          "peakFootprintBytes": 1091999976,
+          "elapsedMs": 60564,
+          "timeoutMs": 600000,
+          "reportPhase": "complete",
+          "ownedTreeStopped": true,
+          "supervisorExitCode": 0,
+          "command": [
+            "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+            "--experimental-strip-types",
+            "--max-old-space-size=6144",
+            "--max-semi-space-size=128",
+            "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+            "--worker",
+            "js",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-B-request.json",
+            "4970a7412263f187f387a626900fefaa6806898859e391b3a56046a290c4f352",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-0-B.json"
+          ],
+          "label": "Frozen full-root throughput js",
+          "exitCode": 0,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793854040029-a1292942bbeaafc0.json",
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592
+        },
+        "passed": true
+      },
+      {
+        "id": "r1-selected-0-C",
+        "triad": 0,
+        "compilerRole": "C",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+          "js",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-C-request.json",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-0-C.json"
+        ],
+        "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/repository",
+        "request": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-C-request.json",
+        "report": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-0-C.json",
+        "exitCode": 0,
+        "elapsedMs": 62422.607875000016,
+        "stdout": "{\"status\":\"PASS\",\"mode\":\"js\",\"report\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-0-C.json\",\"pipelineElapsedMs\":61691.340000000004,\"phases\":[{\"phase\":\"startup\",\"elapsedMs\":562.0329999999999},{\"phase\":\"load-parse\",\"elapsedMs\":2380.0852079999995},{\"phase\":\"expand\",\"elapsedMs\":1781.877958},{\"phase\":\"check\",\"elapsedMs\":56965.5215}]}\n",
+        "stderr": "(node:1280) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\n(node:1280) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\nHEAVY_GATE {\"status\":\"PASS\",\"reason\":\"command_exit\",\"commandExitCode\":0,\"commandSignal\":0,\"peakRssBytes\":1143586816,\"peakFootprintBytes\":1306526440,\"elapsedMs\":62229,\"timeoutMs\":600000,\"reportPhase\":\"complete\",\"ownedTreeStopped\":true,\"supervisorExitCode\":0,\"command\":[\"/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node\",\"--experimental-strip-types\",\"--max-old-space-size=6144\",\"--max-semi-space-size=128\",\"/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs\",\"--worker\",\"js\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-C-request.json\",\"4eda13241e34359ebca16b220a41508dd0412665206de63b73420a14d14bdc83\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-0-C.json\"],\"label\":\"Frozen full-root throughput js\",\"exitCode\":0,\"reportPath\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793854100785-d1cb22a7422b49ea.json\",\"memoryLimitBytes\":8589934592,\"rssLimitBytes\":8589934592}\n",
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "commandExitCode": 0,
+          "commandSignal": 0,
+          "peakRssBytes": 1143586816,
+          "peakFootprintBytes": 1306526440,
+          "elapsedMs": 62229,
+          "timeoutMs": 600000,
+          "reportPhase": "complete",
+          "ownedTreeStopped": true,
+          "supervisorExitCode": 0,
+          "command": [
+            "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+            "--experimental-strip-types",
+            "--max-old-space-size=6144",
+            "--max-semi-space-size=128",
+            "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+            "--worker",
+            "js",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-C-request.json",
+            "4eda13241e34359ebca16b220a41508dd0412665206de63b73420a14d14bdc83",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-0-C.json"
+          ],
+          "label": "Frozen full-root throughput js",
+          "exitCode": 0,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793854100785-d1cb22a7422b49ea.json",
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592
+        },
+        "passed": true
+      },
+      {
+        "id": "r1-selected-1-C",
+        "triad": 1,
+        "compilerRole": "C",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+          "js",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-C-request.json",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-1-C.json"
+        ],
+        "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/repository",
+        "request": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-C-request.json",
+        "report": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-1-C.json",
+        "exitCode": 0,
+        "elapsedMs": 79837.09895900002,
+        "stdout": "{\"status\":\"PASS\",\"mode\":\"js\",\"report\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-1-C.json\",\"pipelineElapsedMs\":79023.965,\"phases\":[{\"phase\":\"startup\",\"elapsedMs\":560.474667},{\"phase\":\"load-parse\",\"elapsedMs\":2446.359792},{\"phase\":\"expand\",\"elapsedMs\":1854.543917},{\"phase\":\"check\",\"elapsedMs\":74160.803833}]}\n",
+        "stderr": "(node:15062) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\n(node:15062) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\nHEAVY_GATE {\"status\":\"PASS\",\"reason\":\"command_exit\",\"commandExitCode\":0,\"commandSignal\":0,\"peakRssBytes\":2219180032,\"peakFootprintBytes\":2401494032,\"elapsedMs\":79653,\"timeoutMs\":600000,\"reportPhase\":\"complete\",\"ownedTreeStopped\":true,\"supervisorExitCode\":0,\"command\":[\"/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node\",\"--experimental-strip-types\",\"--max-old-space-size=6144\",\"--max-semi-space-size=128\",\"/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs\",\"--worker\",\"js\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-C-request.json\",\"4eda13241e34359ebca16b220a41508dd0412665206de63b73420a14d14bdc83\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-1-C.json\"],\"label\":\"Frozen full-root throughput js\",\"exitCode\":0,\"reportPath\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793854163199-0d416bc232008005.json\",\"memoryLimitBytes\":8589934592,\"rssLimitBytes\":8589934592}\n",
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "commandExitCode": 0,
+          "commandSignal": 0,
+          "peakRssBytes": 2219180032,
+          "peakFootprintBytes": 2401494032,
+          "elapsedMs": 79653,
+          "timeoutMs": 600000,
+          "reportPhase": "complete",
+          "ownedTreeStopped": true,
+          "supervisorExitCode": 0,
+          "command": [
+            "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+            "--experimental-strip-types",
+            "--max-old-space-size=6144",
+            "--max-semi-space-size=128",
+            "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+            "--worker",
+            "js",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-C-request.json",
+            "4eda13241e34359ebca16b220a41508dd0412665206de63b73420a14d14bdc83",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-1-C.json"
+          ],
+          "label": "Frozen full-root throughput js",
+          "exitCode": 0,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793854163199-0d416bc232008005.json",
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592
+        },
+        "passed": true
+      },
+      {
+        "id": "r1-selected-1-A",
+        "triad": 1,
+        "compilerRole": "A",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+          "js",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-A-request.json",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-1-A.json"
+        ],
+        "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/repository",
+        "request": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-A-request.json",
+        "report": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-1-A.json",
+        "exitCode": 0,
+        "elapsedMs": 64980.347667000024,
+        "stdout": "{\"status\":\"PASS\",\"mode\":\"js\",\"report\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-1-A.json\",\"pipelineElapsedMs\":64355.331416999994,\"phases\":[{\"phase\":\"startup\",\"elapsedMs\":539.903458},{\"phase\":\"load-parse\",\"elapsedMs\":2347.128458},{\"phase\":\"expand\",\"elapsedMs\":1787.4847909999999},{\"phase\":\"check\",\"elapsedMs\":59679.007041}]}\n",
+        "stderr": "(node:32676) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\n(node:32676) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\nHEAVY_GATE {\"status\":\"PASS\",\"reason\":\"command_exit\",\"commandExitCode\":0,\"commandSignal\":0,\"peakRssBytes\":1073594368,\"peakFootprintBytes\":1153851904,\"elapsedMs\":64831,\"timeoutMs\":600000,\"reportPhase\":\"complete\",\"ownedTreeStopped\":true,\"supervisorExitCode\":0,\"command\":[\"/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node\",\"--experimental-strip-types\",\"--max-old-space-size=6144\",\"--max-semi-space-size=128\",\"/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs\",\"--worker\",\"js\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-A-request.json\",\"08306501818c891d5b6a486b2fb1a77a4c77c4aad583744dd1a83f767374f8bb\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-1-A.json\"],\"label\":\"Frozen full-root throughput js\",\"exitCode\":0,\"reportPath\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793854243002-e7de4aca00f81df5.json\",\"memoryLimitBytes\":8589934592,\"rssLimitBytes\":8589934592}\n",
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "commandExitCode": 0,
+          "commandSignal": 0,
+          "peakRssBytes": 1073594368,
+          "peakFootprintBytes": 1153851904,
+          "elapsedMs": 64831,
+          "timeoutMs": 600000,
+          "reportPhase": "complete",
+          "ownedTreeStopped": true,
+          "supervisorExitCode": 0,
+          "command": [
+            "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+            "--experimental-strip-types",
+            "--max-old-space-size=6144",
+            "--max-semi-space-size=128",
+            "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+            "--worker",
+            "js",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-A-request.json",
+            "08306501818c891d5b6a486b2fb1a77a4c77c4aad583744dd1a83f767374f8bb",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-1-A.json"
+          ],
+          "label": "Frozen full-root throughput js",
+          "exitCode": 0,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793854243002-e7de4aca00f81df5.json",
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592
+        },
+        "passed": true
+      },
+      {
+        "id": "r1-selected-1-B",
+        "triad": 1,
+        "compilerRole": "B",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+          "js",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-B-request.json",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-1-B.json"
+        ],
+        "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/repository",
+        "request": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-B-request.json",
+        "report": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-1-B.json",
+        "exitCode": 0,
+        "elapsedMs": 62398.78987500002,
+        "stdout": "{\"status\":\"PASS\",\"mode\":\"js\",\"report\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-1-B.json\",\"pipelineElapsedMs\":61763.919834,\"phases\":[{\"phase\":\"startup\",\"elapsedMs\":598.4920420000001},{\"phase\":\"load-parse\",\"elapsedMs\":2539.688625},{\"phase\":\"expand\",\"elapsedMs\":1898.1039589999996},{\"phase\":\"check\",\"elapsedMs\":56726.160209}]}\n",
+        "stderr": "(node:46539) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\n(node:46539) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\nHEAVY_GATE {\"status\":\"PASS\",\"reason\":\"command_exit\",\"commandExitCode\":0,\"commandSignal\":0,\"peakRssBytes\":1106182144,\"peakFootprintBytes\":1140399656,\"elapsedMs\":62233,\"timeoutMs\":600000,\"reportPhase\":\"complete\",\"ownedTreeStopped\":true,\"supervisorExitCode\":0,\"command\":[\"/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node\",\"--experimental-strip-types\",\"--max-old-space-size=6144\",\"--max-semi-space-size=128\",\"/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs\",\"--worker\",\"js\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-B-request.json\",\"4970a7412263f187f387a626900fefaa6806898859e391b3a56046a290c4f352\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-1-B.json\"],\"label\":\"Frozen full-root throughput js\",\"exitCode\":0,\"reportPath\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793854307998-22321e64fd7404f9.json\",\"memoryLimitBytes\":8589934592,\"rssLimitBytes\":8589934592}\n",
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "commandExitCode": 0,
+          "commandSignal": 0,
+          "peakRssBytes": 1106182144,
+          "peakFootprintBytes": 1140399656,
+          "elapsedMs": 62233,
+          "timeoutMs": 600000,
+          "reportPhase": "complete",
+          "ownedTreeStopped": true,
+          "supervisorExitCode": 0,
+          "command": [
+            "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+            "--experimental-strip-types",
+            "--max-old-space-size=6144",
+            "--max-semi-space-size=128",
+            "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+            "--worker",
+            "js",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-B-request.json",
+            "4970a7412263f187f387a626900fefaa6806898859e391b3a56046a290c4f352",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-1-B.json"
+          ],
+          "label": "Frozen full-root throughput js",
+          "exitCode": 0,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793854307998-22321e64fd7404f9.json",
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592
+        },
+        "passed": true
+      },
+      {
+        "id": "r1-selected-2-B",
+        "triad": 2,
+        "compilerRole": "B",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+          "js",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-B-request.json",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-2-B.json"
+        ],
+        "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/repository",
+        "request": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-B-request.json",
+        "report": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-2-B.json",
+        "exitCode": 0,
+        "elapsedMs": 68176.37062500004,
+        "stdout": "{\"status\":\"PASS\",\"mode\":\"js\",\"report\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-2-B.json\",\"pipelineElapsedMs\":67353.910583,\"phases\":[{\"phase\":\"startup\",\"elapsedMs\":547.013958},{\"phase\":\"load-parse\",\"elapsedMs\":2529.189584},{\"phase\":\"expand\",\"elapsedMs\":2017.938583},{\"phase\":\"check\",\"elapsedMs\":62256.521542}]}\n",
+        "stderr": "(node:60044) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\n(node:60044) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\nHEAVY_GATE {\"status\":\"PASS\",\"reason\":\"command_exit\",\"commandExitCode\":0,\"commandSignal\":0,\"peakRssBytes\":1107017728,\"peakFootprintBytes\":1166600624,\"elapsedMs\":67897,\"timeoutMs\":600000,\"reportPhase\":\"complete\",\"ownedTreeStopped\":true,\"supervisorExitCode\":0,\"command\":[\"/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node\",\"--experimental-strip-types\",\"--max-old-space-size=6144\",\"--max-semi-space-size=128\",\"/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs\",\"--worker\",\"js\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-B-request.json\",\"4970a7412263f187f387a626900fefaa6806898859e391b3a56046a290c4f352\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-2-B.json\"],\"label\":\"Frozen full-root throughput js\",\"exitCode\":0,\"reportPath\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793854370510-8635e846665e1464.json\",\"memoryLimitBytes\":8589934592,\"rssLimitBytes\":8589934592}\n",
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "commandExitCode": 0,
+          "commandSignal": 0,
+          "peakRssBytes": 1107017728,
+          "peakFootprintBytes": 1166600624,
+          "elapsedMs": 67897,
+          "timeoutMs": 600000,
+          "reportPhase": "complete",
+          "ownedTreeStopped": true,
+          "supervisorExitCode": 0,
+          "command": [
+            "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+            "--experimental-strip-types",
+            "--max-old-space-size=6144",
+            "--max-semi-space-size=128",
+            "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+            "--worker",
+            "js",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-B-request.json",
+            "4970a7412263f187f387a626900fefaa6806898859e391b3a56046a290c4f352",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-2-B.json"
+          ],
+          "label": "Frozen full-root throughput js",
+          "exitCode": 0,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793854370510-8635e846665e1464.json",
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592
+        },
+        "passed": true
+      },
+      {
+        "id": "r1-selected-2-C",
+        "triad": 2,
+        "compilerRole": "C",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+          "js",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-C-request.json",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-2-C.json"
+        ],
+        "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/repository",
+        "request": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-C-request.json",
+        "report": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-2-C.json",
+        "exitCode": 0,
+        "elapsedMs": 66425.37504200003,
+        "stdout": "{\"status\":\"PASS\",\"mode\":\"js\",\"report\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-2-C.json\",\"pipelineElapsedMs\":65364.693415999995,\"phases\":[{\"phase\":\"startup\",\"elapsedMs\":686.933958},{\"phase\":\"load-parse\",\"elapsedMs\":2401.3488749999997},{\"phase\":\"expand\",\"elapsedMs\":1807.0818329999997},{\"phase\":\"check\",\"elapsedMs\":60467.545207999996}]}\n",
+        "stderr": "(node:74756) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\n(node:74756) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\nHEAVY_GATE {\"status\":\"PASS\",\"reason\":\"command_exit\",\"commandExitCode\":0,\"commandSignal\":0,\"peakRssBytes\":1024786432,\"peakFootprintBytes\":1108377496,\"elapsedMs\":66049,\"timeoutMs\":600000,\"reportPhase\":\"complete\",\"ownedTreeStopped\":true,\"supervisorExitCode\":0,\"command\":[\"/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node\",\"--experimental-strip-types\",\"--max-old-space-size=6144\",\"--max-semi-space-size=128\",\"/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs\",\"--worker\",\"js\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-C-request.json\",\"4eda13241e34359ebca16b220a41508dd0412665206de63b73420a14d14bdc83\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-2-C.json\"],\"label\":\"Frozen full-root throughput js\",\"exitCode\":0,\"reportPath\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793854438781-eb4c701b383af1a7.json\",\"memoryLimitBytes\":8589934592,\"rssLimitBytes\":8589934592}\n",
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "commandExitCode": 0,
+          "commandSignal": 0,
+          "peakRssBytes": 1024786432,
+          "peakFootprintBytes": 1108377496,
+          "elapsedMs": 66049,
+          "timeoutMs": 600000,
+          "reportPhase": "complete",
+          "ownedTreeStopped": true,
+          "supervisorExitCode": 0,
+          "command": [
+            "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+            "--experimental-strip-types",
+            "--max-old-space-size=6144",
+            "--max-semi-space-size=128",
+            "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+            "--worker",
+            "js",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-C-request.json",
+            "4eda13241e34359ebca16b220a41508dd0412665206de63b73420a14d14bdc83",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-2-C.json"
+          ],
+          "label": "Frozen full-root throughput js",
+          "exitCode": 0,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793854438781-eb4c701b383af1a7.json",
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592
+        },
+        "passed": true
+      },
+      {
+        "id": "r1-selected-2-A",
+        "triad": 2,
+        "compilerRole": "A",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+          "js",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-A-request.json",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-2-A.json"
+        ],
+        "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/repository",
+        "request": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-A-request.json",
+        "report": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-2-A.json",
+        "exitCode": 0,
+        "elapsedMs": 62107.366041,
+        "stdout": "{\"status\":\"PASS\",\"mode\":\"js\",\"report\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-2-A.json\",\"pipelineElapsedMs\":61437.978375,\"phases\":[{\"phase\":\"startup\",\"elapsedMs\":570.341416},{\"phase\":\"load-parse\",\"elapsedMs\":2382.158833},{\"phase\":\"expand\",\"elapsedMs\":1965.3305840000003},{\"phase\":\"check\",\"elapsedMs\":56518.263208}]}\n",
+        "stderr": "(node:89604) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\n(node:89604) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\nHEAVY_GATE {\"status\":\"PASS\",\"reason\":\"command_exit\",\"commandExitCode\":0,\"commandSignal\":0,\"peakRssBytes\":1188937728,\"peakFootprintBytes\":1375593880,\"elapsedMs\":61952,\"timeoutMs\":600000,\"reportPhase\":\"complete\",\"ownedTreeStopped\":true,\"supervisorExitCode\":0,\"command\":[\"/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node\",\"--experimental-strip-types\",\"--max-old-space-size=6144\",\"--max-semi-space-size=128\",\"/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs\",\"--worker\",\"js\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-A-request.json\",\"08306501818c891d5b6a486b2fb1a77a4c77c4aad583744dd1a83f767374f8bb\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-2-A.json\"],\"label\":\"Frozen full-root throughput js\",\"exitCode\":0,\"reportPath\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793854504990-725f48cfc702cfe8.json\",\"memoryLimitBytes\":8589934592,\"rssLimitBytes\":8589934592}\n",
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "commandExitCode": 0,
+          "commandSignal": 0,
+          "peakRssBytes": 1188937728,
+          "peakFootprintBytes": 1375593880,
+          "elapsedMs": 61952,
+          "timeoutMs": 600000,
+          "reportPhase": "complete",
+          "ownedTreeStopped": true,
+          "supervisorExitCode": 0,
+          "command": [
+            "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+            "--experimental-strip-types",
+            "--max-old-space-size=6144",
+            "--max-semi-space-size=128",
+            "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+            "--worker",
+            "js",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-A-request.json",
+            "08306501818c891d5b6a486b2fb1a77a4c77c4aad583744dd1a83f767374f8bb",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-selected-2-A.json"
+          ],
+          "label": "Frozen full-root throughput js",
+          "exitCode": 0,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793854504990-725f48cfc702cfe8.json",
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592
+        },
+        "passed": true
+      }
+    ]
+  },
+  "policy": {
+    "schemaVersion": 1,
+    "version": "G67R1",
+    "prospectiveProtocolCheckpoint": "290dbe78",
+    "sourceCheckpoint": "6138439f",
+    "selected": {
+      "order": [
+        "ABC",
+        "CAB",
+        "BCA"
+      ],
+      "costGate": {
+        "geometricCpu_C_over_A_atMost": 0.97,
+        "geometricCpu_C_over_B_atMost": 1.02,
+        "everyCpuPair_C_over_A_below": 1,
+        "geometricWall_C_over_A_atMost": 1,
+        "medianFootprint_C_over_A_atMost": 1,
+        "geometricFootprint_C_over_B_atMost": 0.95
+      }
+    },
+    "statistics": "Existing pairedStats Student95 confidence interval, classifyRatio practical2percent band; no changed thresholds, retries, excluded runs or old timings",
+    "compilerCandidate": "C2 only: C1 produced from unchanged A and C2 produced by actual new C1 emitter on identical frozen source; C1 not performance candidate",
+    "sameWork": {
+      "moduleCount": 17,
+      "sourceDeclarations": 2954,
+      "stepCounts": {
+        "expand": 263032,
+        "check": 1975761
+      }
+    }
+  },
+  "preMeasurementSourceHashes": [
+    {
+      "corpus": "candidate-source",
+      "files": 53,
+      "mismatches": []
+    },
+    {
+      "corpus": "selected",
+      "files": 52,
+      "mismatches": []
+    }
+  ],
+  "compilerImages": {
+    "A": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs",
+      "sha256": "4636c05aa8c75e72212cb03949937e25561942bc00da250f876f37f001b9fc18"
+    },
+    "B": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/g63-baseline-self-stage2.json.output.mjs",
+      "sha256": "65a07432de9482e67a71a70d1a2696474c8aca08a75e4e7dfe13fa6c006df045"
+    },
+    "C": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-c2-generation.json.output.mjs",
+      "sha256": "bfca2271434ad8de2a74c9aceaa0e0f1007ab63b68ba31ffca2383a7f2afc675"
+    }
+  },
+  "candidateProvenance": {
+    "compilerImage": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-c2-generation.json.output.mjs",
+      "sha256": "bfca2271434ad8de2a74c9aceaa0e0f1007ab63b68ba31ffca2383a7f2afc675"
+    },
+    "sourceProductionReport": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-c2-generation.json",
+      "sha256": "99db694a61d62585a66a1c3c646686300251fb31799b517ec0d9b733ebd376f1"
+    },
+    "sourceProductionRequest": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-c2-request.json",
+      "sha256": "4f7b69483a0838552482e05aa3efd6d9d7959a9a29a6e77f026202cf52f8f080"
+    },
+    "compilerSourceManifest": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-source.corpus.json",
+      "sha256": "ea4a52b12e78f19c73960e6817386d5f58a03b03c0e5d8b49d641c7ce3123f7d"
+    },
+    "actualProducerImage": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-c1-generation.json.output.mjs",
+      "sha256": "00e1b8d52a82a97bfe2b5bc41c105d179377561bcb8ea9135023288163d8ec92"
+    },
+    "actualProducerOwnReport": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-c1-generation.json",
+      "sha256": "1f90b7f74da4539dd435159dc218e0191c3c86126f2892f45cabefd5723658d1"
+    },
+    "nativeAncestorReceipt": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json",
+      "sha256": "717ea720d6d117e4fb49ede7ea0d57f544571d336437bb992cdf78c055dc5135"
+    },
+    "directNativeProducedStage0": false,
+    "ownVersionByteFixedpoint": "NOT_RUN_NOT_YET_EARNED",
+    "description": "Actual C2 image: same frozen source built by actual C1 new emitter, so zero-live values are shared inside compiler itself; C1 is not used as C performance candidate."
+  },
+  "allRawCellsRetained": true,
+  "retries": 0,
+  "excludedSamples": 0,
+  "interpretation": "All9 primary reports PASS and all strict data checks true: same52input files,17modules,2954decls,263032expand,1975761check. All six precommitted point filters fail. Wide paired95CI are inconclusive; no qualified slowdown or speedup/memory-saving claim. Retain actual C triad1 spike rather than excluding it.",
+  "conditionalFullSix": "NOT_RUN_NOT_EARNED",
+  "candidateOwnByteFixedpoint": "NOT_RUN_NOT_EARNED",
+  "mainAlgorithmCutover": "NOT_PERFORMED",
+  "nativeABI": 13,
+  "selfhostGreen": false,
+  "acceptedG24R12": "UNCHANGED"
+}

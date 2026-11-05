@@ -3041,3 +3041,127 @@ drivers and analysis scripts were removed after proof; their exact source and
 invocations remain in the receipts. Current main FIR laws and the explicitly
 historical incremental-research baseline remain intentionally unchanged.
 
+### G67: zero-live constructor values remove objects, not the qualified peak-RAM cost
+
+Status: **REJECTED**. `checkpoints/local2039g67-index.json` indexes the complete
+source/production/consumer/timing/diagnostic receipts. Main keeps the accepted
+G24R12 algorithm; neither G65 Map.get nor G66 low-bit handle code is carried.
+This version changes only the experimental selfhost JS emitter/runtime, not
+FIR, BIR, native representations, ownership, quantities, API13 or the release.
+
+#### Reuse values, never factories or live-payload records
+
+Every zero-live `Construct` reads a static lexical `$z<constructor-id>`. Its
+value stays exactly `{$:<full canonical key>}`, with ordinary own-property
+attributes and prototype, no own marker, no freeze, and no hot cache lookup.
+Declared erased slots remain in metadata. Live-field constructors stay fresh;
+opaque host inputs and closure identity are untouched. Lazy getters, callback
+bodies and effects still execute rather than becoming memoized demands.
+
+The metadata cache contains only actual zero-live layouts and exact full keys.
+Native Cmp/Word/list helper values are separate, so a same-spelled live user
+constructor cannot hit that cache. Native Map.find binds its authoritative
+Maybe.None value only after layout initialization; generic `$ctr` validates
+arity before reuse. Native Bool/String/Nat/Array forms are unchanged. The
+experimental JS-1/JS-2 laws document the scope; main's BIR laws are unchanged.
+No source-backed zero-live freshness promise was found: existing identity
+regressions protect live-payload freshness and host input forwarding. Allocation
+identity remains outside the observation relation, not a new canonical-identity
+promise for foreign values, separate helpers or separately compiled modules.
+
+#### Actual two-round bootstrap, not a misleading C1 benchmark
+
+The unchanged actual A image builds C1 from the complete frozen53-file source
+closure. C1 contains the new emitter implementation but still uses the old
+object representation internally. Only C1's emission of that **identical**
+source produces C2 with zero-live reuse inside the compiler itself. There is
+no generated-image patch, AST transport/replay or direct-native-producer claim.
+
+| Actual production | C1, old internal storage | C2, new internal storage |
+|---|---|---|
+| Guard wall | 331002 ms | 318876 ms |
+| Guard peak physical footprint | 3170742280 B | 3079394304 B |
+| Output bytes | 31772141 | 31740699 |
+| Output SHA-256 prefix | `00e1b8d52a82` | `bfca2271434a` |
+| Source declarations / modules | 13017 / 18 | 13017 / 18 |
+| Expand / check chunks | 1069535 / 10393099 | 1069535 / 10393099 |
+| Emit chunks | 1284928 | 1282373 |
+
+These are production receipts, **not** matched optimized-compiler throughput:
+C2 is produced by C1, whose internal storage is still old. The changed emitter
+has different emission scheduling; its true counter difference is retained.
+The local validator initially assumed equal full dictionaries and was corrected
+without rerunning either successful production command. `outputPatches` is the
+observed numeric zero, not an empty list.
+
+Actual C1 emitted and ran three JS roots covering zero-live/erased shape,
+qualified tags, exception/resumption sequencing, host identity and live-payload
+freshness. Actual C2 then passed69 own parser/checker/emitter consumers,16
+actual default-stack JS programs,3 emitted/clang-O3 C binaries, and28 runtime
+assertions after inspecting CheckedProgram, discarding the original owner,
+rechecking reconstructed modules and emitting their15-export library.
+The existing own69 gate uses parser fuel2M; throughput uses8M/module.
+Neither this finite matrix nor source admission is a kernel/bootstrap proof.
+
+#### Nine fresh checks reject every unchanged cost filter
+
+Orders remain ABC/CAB/BCA: A unchanged main, B G63, C actual C2. All9 primary
+reports PASS and every strict data check passes: identical52 input files,
+17modules,2954declarations, expand263032 and check1975761. Node23.11.0,
+worker stack256MiB, old6144MiB/young128MiB, 8GiB physical-footprint/RSS,
+600s/10ms guard, quantum64, API13 and one heavy lane remain fixed.
+No retries, exclusions, old timings, image patches or workload changes.
+
+| Metric, geometric ratio [paired Student95 interval] | C / unchanged main | C / G63 |
+|---|---|---|
+| Checker process CPU | 1.185291 [0.549438, 2.557005] | 1.190658 [0.507775, 2.791921] |
+| Checker wall | 1.087415 [0.794952, 1.487475] | 1.093083 [0.738890, 1.617063] |
+| Peak physical footprint | 1.230951 [0.371232, 4.081657] | 1.337710 [0.483671, 3.699761] |
+| Peak RSS | 1.234987 [0.396265, 3.848919] | 1.246025 [0.442606, 3.507814] |
+
+All comparisons are inconclusive under the existing2% practical band; these
+points do not establish a qualified regression either. All six precommitted
+cost filters fail. The C second-triad observation (120533.004ms checker CPU,
+2401494032B peak footprint) remains in the data; it is not discarded as an
+outlier. Conditional full-source six and C2-to-C3 own byte fixedpoint are
+**NOT_RUN_NOT_EARNED**, not omitted acceptance work or failed commands.
+
+#### Population mechanism is real and does not reverse rejection
+
+After clean timings, a separate GC-inducing snapshot stops at checker counter
+1000000 on the same source/quantum. The identical streaming analyzer also reads
+the original immutable A snapshot without rerunning its compiler workload.
+It reproduces the prior A counts; no nonflat property-tag strings are omitted.
+
+| Exact real object tag | Original A objects / shallow bytes | Actual C2 objects / shallow bytes |
+|---|---|---|
+| Nil | 239617 / 7667744 | 2 / 64 |
+| None | 107590 / 3442880 | 1 / 32 |
+
+The observed shallow-object reduction is11110528B (10.595825MiB). It is not
+allocation traffic, exclusive retained bytes, a clean peak-memory saving or a
+proof of globally identical intermediate states. All complete checker counters
+match here, unlike G66, but a forced-GC prefix snapshot cannot qualify RAM/CPU.
+The prospective protocol's MiB prose had a conversion typo; byte counts were
+correct and the diagnostic receipt records the arithmetic correction.
+
+The next larger DOD target is the **private scheduler carrier**, not another
+scalar encoding. Existing unchanged-A allocation sampling attributes
+8469680648B of67390614720B (12.568%) to `checker_advance` and `checker_pop`.
+The emitted sites build `CheckerRunState` on each transition; advance also
+builds `CheckerStackMore`. `evals/checker_core_step_lower.ts:2531-2560` emits
+that allocate-then-immediately-unpack loop. A proposed typed progress/stack
+scalar-carry loop would box RunState only at a quantum boundary, preserving
+zero-fuel input,64 transitions, heterogeneous affine stack/equality transport,
+resume/invoke order, trace suspension and API13. It is **not implemented or
+measured in G67**; sampled allocation share is not a predicted CPU speedup.
+
+All candidate53, selected52 and conditional-full53 inputs were hash-checked
+unchanged at closure. Rejected source, required generated Bend inputs,
+regressions and experimental law changes remain in the source checkpoints.
+Main receives this journal and11 compact JSON receipts only. Images, profiles,
+heap snapshots and bulk outputs remain outside Git. Owned temporary runner,
+statistics and census scripts were removed after proof; exact sources and
+commands remain in the receipts. Main FIR/BIR laws and historical baseline
+artifacts are intentionally unchanged.
+

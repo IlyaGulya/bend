@@ -1,0 +1,117 @@
+{
+  "schemaVersion": 1,
+  "version": "G67R1",
+  "status": "PROSPECTIVE_ZERO_LIVE_CONSTRUCTOR_VALUES",
+  "baselineCheckpoint": "354f2af9",
+  "previousRejectedVersions": {
+    "G65": "checkpoints/local2039g65-index.json",
+    "G66": "5d1f4579"
+  },
+  "sourceBranch": "selfhost/g67-nullary-kbnbprog",
+  "sourceWorktree": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/repository",
+  "runtime": {
+    "bun": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "node": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+    "release": "2.0.39",
+    "releaseCommit": "a3efe8a3801f423827424227172eed9802c5e6cb",
+    "os": "darwin25.6.0 arm64",
+    "helperFiles": {
+      "selfhost_throughput.mjs": {
+        "path": "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+        "sha256": "1a806befee02216a9499f6b4dcde7e2326e01f0a5b96bbd36b75295344c50317"
+      },
+      "checker_core_step_runtime.mjs": {
+        "path": "/Users/ilyagulya/Projects/My/bend/evals/checker_core_step_runtime.mjs",
+        "sha256": "00cd400ac0452a3681bf6491db08be51f9ae3a33ff2baf88654a9763eb5073ed"
+      },
+      "selfhost_cpu_profile.mjs": {
+        "path": "/Users/ilyagulya/Projects/My/bend/evals/selfhost_cpu_profile.mjs",
+        "sha256": "5d5fc8d329a3b600522c58eeac59c49c515109bc7f48845d8177cb520129a1c0"
+      },
+      "native_seed_runtime.mjs": {
+        "path": "/Users/ilyagulya/Projects/My/bend/evals/native_seed_runtime.mjs",
+        "sha256": "7f81a9b9013853355910b93bf59586b2acbcda4de7bcaa08d7942ebf45c0147a"
+      },
+      "heavy_gate.ts": {
+        "path": "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+        "sha256": "e72f2b81970be76734df918e35b1a4289d0fb194039e5ca20e9785e5ac0ee015"
+      },
+      "heavy_gate_native.c": {
+        "path": "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate_native.c",
+        "sha256": "1ff233edacdbf13c6ffd4a8bf38cbf153629e8c76be4860deec8a5b591d3fa8b"
+      }
+    }
+  },
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "nativeProductionTimeoutMs": 300000,
+    "sourcePreflightTimeoutMs": 120000,
+    "throughputTimeoutMs": 600000,
+    "workerStackMiB": 256,
+    "oldGenerationMiB": 6144,
+    "youngGenerationMiB": 128,
+    "parserFuelPerModule": 8000000,
+    "oneHeavyLane": true,
+    "chunkQuantum": 64,
+    "abi": 13
+  },
+  "design": {
+    "scope": "Selfhost JS emitter/runtime only; no FIR/BIR/descriptor/ownership/quantity change. Share zero LIVE payload constructor values, including erased-only constructors; never memoize functions, getters, factory/effect evaluation or native arrays. Do not freeze objects.",
+    "values": "One static lexical value per zero-live ConstructorLayout.id with exact full canonical key; $ inserted first and no other own fields. Metadata cache contains only actual zero-live layouts. No suffix keying. Nonempty Construct fields retain fresh object literal.",
+    "runtimeFactories": "Cover cmp_new, u32_to_word, primitive string-to-list Nil, native Map.find None (authoritative marker/layout role), and generic $ctr zero-live metadata construction. Do not intern a generic object before subsequent live fields are added. Native canonical helper constants stay separate from exact-layout cache to avoid shadowed live Nil/LT shape collisions.",
+    "noPerConstructLookup": "Hot Construct uses direct lexical $z<ID>; eager metadata setup only. Native Map None cached after constructor layout declarations, with existing role validation.",
+    "unchanged": "BIR.Construct fields, layouts, quantity reflection, native Bool/String/Nat/Array representations, live-record freshness, host input forwarding, closure identity and per-read lazy getters; no compiled-image patches, AST replay, new flags or changed corpus."
+  },
+  "diagnosis": {
+    "source": "G65D0/G66D0 actual baseline A selected checkpoint snapshot; induced GC, not peak-memory proof",
+    "liveNilObjects": 239617,
+    "liveNilShallowBytes": 7667744,
+    "liveNoneObjects": 107590,
+    "liveNoneShallowBytes": 3442880,
+    "scope": "10.596870422 MiB shallow live object population, not cumulative allocation or qualified peak-memory saving",
+    "identityContract": "BIR_LAWS section1.3.8 excludes allocation identity; located fresh-result JS assertions all have live payloads. Input identity must remain untouched. No located zero-live freshness assertion. Raw JS ===/cross-value mutation aliasing not promised; objects not frozen."
+  },
+  "generationOrder": [
+    "Canonical source change and focused semantic fixture plus required generated Bend source must be checkpointed before runtime experiment.",
+    "Run existing owned source generator then checker steps and emitter steps; freeze complete source closure.",
+    "A -> C1: changed emitter code built by unchanged actual A image, still OLD internal object representation. Never benchmark C1 as optimized compiler.",
+    "C1 focused actual emitted JS consumers including zero-live/erased/reflection and existing payload/input identity; default Node stack for emitted program.",
+    "C1 -> C2 from identical frozen compiler source: candidate with new representation in compiler itself.",
+    "C2 actual69 consumers + unchanged13 JS fixture roots + identity/boxed adapter + focused zero-live fixture, C controls and checked inspection/readback.",
+    "Only after semantics: nine fresh unprofiled selected ABC,CAB,BCA; one heavy lane; no retries/exclusions/old timing reuse.",
+    "If selected filters pass: six fresh full-source ABC,CBA and C2 -> C3 exact own byte fixedpoint, with complete provenance. Otherwise explicitly reject and mark conditional work NOT_RUN_NOT_EARNED."
+  ],
+  "selectedCorpus": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/main-complete.corpus.json",
+    "sha256": "1a269e15bf70257b019ab572c003b6eb130b4e3f63ad507783525e28d307b0e4"
+  },
+  "fullCorpus": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/full-frozen.corpus.json",
+    "sha256": "60bf820e76a9c336e58c848eec6a40b3f8fbb4b7ac2ae45ffd1abdb1d217ebc6"
+  },
+  "selectedFrozenWork": {
+    "moduleCount": 17,
+    "sourceDeclarations": 2954,
+    "stepCounts": {
+      "expand": 263032,
+      "check": 1975761
+    }
+  },
+  "costFilter": {
+    "cpuGeometricCOverAAtMost": 0.97,
+    "cpuGeometricCOverBAtMost": 1.02,
+    "everyCpuPairCOverALessThan": 1,
+    "wallGeometricCOverAAtMost": 1,
+    "medianPeakFootprintCOverAAtMost": 1,
+    "geometricPeakFootprintCOverBAtMost": 0.95,
+    "inference": "Report paired Student95 intervals and existing2percent practical band; CPU point alone is not qualified proof."
+  },
+  "inference": "Paired Student95 intervals and existing2percent band; no point-only speedup claims. Step counter mismatch retained as real observation, never equalized by patching or workload edits.",
+  "diagnosticMechanism": "After clean selected timing, separate heap observation may count zero-live population; snapshot is not peak or clean timing evidence.",
+  "acceptedG24R12": "UNCHANGED_UNTIL_ALL_QUALIFICATION_EARNED",
+  "priorRejectedAlgorithmCarried": false,
+  "nativeABI": 13,
+  "selfhostGreen": false
+}

@@ -1,0 +1,242 @@
+{
+  "schemaVersion": 1,
+  "version": "G67R1",
+  "status": "REJECTED_CLOSED_NO_CODE_CUTOVER",
+  "acceptedG24R12": "UNCHANGED",
+  "baseCheckpoint": "354f2af9",
+  "sourceBranch": "selfhost/g67-nullary-kbnbprog",
+  "sourceWorktree": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/repository",
+  "checkpoints": {
+    "prospectiveProtocol": "290dbe78",
+    "canonicalAndRequiredFrozenSource": "6138439f",
+    "actualC1": "24e4c4ac",
+    "actualC2SemanticsAndMeasurementPolicy": "b2bbe4b2",
+    "selectedRejectionAndDiagnosticProtocol": "99786615",
+    "closedRejectedSource": "4a7b9411"
+  },
+  "design": "Experimental selfhost JS exact-constructor-id zero-live constant values, erased-only included; no live-payload pooling, nativeArray change, getter/factory/effect memoization, BIR/FIR/ownership/quantity change, imagepatch orASTreplay.",
+  "actualImages": {
+    "C1": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-c1-generation.json.output.mjs",
+      "sha256": "00e1b8d52a82a97bfe2b5bc41c105d179377561bcb8ea9135023288163d8ec92"
+    },
+    "C2": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-c2-generation.json.output.mjs",
+      "sha256": "bfca2271434ad8de2a74c9aceaa0e0f1007ab63b68ba31ffca2383a7f2afc675"
+    }
+  },
+  "bootstrapping": "Unchanged actual ownA ->C1newemitter+oldstorage ->C2sameSource+newstorage. C2 performance candidate; C1not. Native ancestor unchanged, no directnative-production claim.",
+  "sourceCounts": {
+    "modules": 18,
+    "declarations": 13017,
+    "C1": {
+      "expand": 1069535,
+      "check": 10393099,
+      "emit": 1284928
+    },
+    "C2": {
+      "expand": 1069535,
+      "check": 10393099,
+      "emit": 1282373
+    }
+  },
+  "semantics": {
+    "canonicalFocusedJS": "PASS42",
+    "actualC1JS": 3,
+    "actualC2OwnGate": 69,
+    "actualC2JSDefaultStack": 16,
+    "actualC2CBinaries": 3,
+    "actualC2ReadbackRecheckRuntimeRows": 28,
+    "allPassed": true,
+    "ownGateParserFuel": 2000000,
+    "throughputParserFuelPerModule": 8000000
+  },
+  "selection": {
+    "freshCells": 9,
+    "order": [
+      "ABC",
+      "CAB",
+      "BCA"
+    ],
+    "sourceFiles": 52,
+    "modules": 17,
+    "declarations": 2954,
+    "allReportsAndDataChecksPassed": true,
+    "allCounters": {
+      "expand": 263032,
+      "check": 1975761
+    },
+    "filters": {
+      "cpuCAatMostPoint97": false,
+      "cpuCBatMost1Point02": false,
+      "everyCpuCAfaster": false,
+      "wallCAatMost1": false,
+      "medianFootCAatMost1": false,
+      "geometricFootCBatMostPoint95": false
+    },
+    "costGatePassed": false,
+    "inference": "AllCIinconclusive; reject precommitted filters, no qualified regression/speedup/peak-memory claim. Ctriad1 spike retained.",
+    "retries": 0,
+    "excluded": 0,
+    "oldTimingReuse": false
+  },
+  "mechanism": {
+    "sameCounter": 1000000,
+    "baseline": {
+      "Nil": {
+        "count": 239617,
+        "shallowBytes": 7667744
+      },
+      "None": {
+        "count": 107590,
+        "shallowBytes": 3442880
+      }
+    },
+    "candidate": {
+      "Nil": {
+        "count": 2,
+        "shallowBytes": 64
+      },
+      "None": {
+        "count": 1,
+        "shallowBytes": 32
+      }
+    },
+    "shallowDeltaBytes": 11110528,
+    "notPeakEvidence": true,
+    "source": "Same analyzer on immutable oldA and actual newC2 GC snapshot; no baseline workload rerun; no nonflat propertytags omitted."
+  },
+  "conditionalFullSix": "NOT_RUN_NOT_EARNED",
+  "candidateOwnByteFixedpoint": "NOT_RUN_NOT_EARNED",
+  "nativeABI": 13,
+  "selfhostGreen": false,
+  "finalFrozenInputChecks": [
+    {
+      "label": "candidate-source",
+      "manifest": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/r1-source.corpus.json",
+        "sha256": "ea4a52b12e78f19c73960e6817386d5f58a03b03c0e5d8b49d641c7ce3123f7d"
+      },
+      "files": 53,
+      "mismatches": []
+    },
+    {
+      "label": "selected",
+      "manifest": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/main-complete.corpus.json",
+        "sha256": "1a269e15bf70257b019ab572c003b6eb130b4e3f63ad507783525e28d307b0e4"
+      },
+      "files": 52,
+      "mismatches": []
+    },
+    {
+      "label": "full-conditional",
+      "manifest": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/full-frozen.corpus.json",
+        "sha256": "60bf820e76a9c336e58c848eec6a40b3f8fbb4b7ac2ae45ffd1abdb1d217ebc6"
+      },
+      "files": 53,
+      "mismatches": []
+    }
+  ],
+  "removedTemporaryDrivers": [
+    {
+      "artifact": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/run-cells.mjs",
+        "sha256": "72b9a9c2cb9b5eb468637a51bf54eab5e6096af4d43bb6e59763908799125b3b"
+      },
+      "embeddedIn": "checkpoints/local2039g67-c1.json"
+    },
+    {
+      "artifact": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/compare-three-way.ts",
+        "sha256": "99d1369e3abece807296e3b153d97ecc33540c76701ac467bba7ca8175fafe68"
+      },
+      "embeddedIn": "checkpoints/local2039g67-measurement-plan.json"
+    },
+    {
+      "artifact": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/count-zero-values.py",
+        "sha256": "283330f28a8c139f6e53a822af6be5fe4cd9cf62d47f627363a866a45063a3a9"
+      },
+      "embeddedIn": "checkpoints/local2039g67-d1-protocol.json"
+    }
+  ],
+  "receipts": {
+    "checkpoints/local2039g67-protocol.json": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/repository/checkpoints/local2039g67-protocol.json",
+      "sha256": "6bee052d0bd6fb01b3dd744cae31c1d9f07ea5e84db5a2d0f1027108acafb5d6"
+    },
+    "checkpoints/local2039g67-source-corpus.json": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/repository/checkpoints/local2039g67-source-corpus.json",
+      "sha256": "ea4a52b12e78f19c73960e6817386d5f58a03b03c0e5d8b49d641c7ce3123f7d"
+    },
+    "checkpoints/local2039g67-source-generation.json": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/repository/checkpoints/local2039g67-source-generation.json",
+      "sha256": "a06f779113e6d212f1d492950fd2b0afeafcd3e576aab5bf18688e4c511c7917"
+    },
+    "checkpoints/local2039g67-canonical-smoke.json": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/repository/checkpoints/local2039g67-canonical-smoke.json",
+      "sha256": "2bebdbaccde6ba9f69e892763e6f75e3949f912d2456fd1c19fa58f7ae4d76d1"
+    },
+    "checkpoints/local2039g67-c1.json": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/repository/checkpoints/local2039g67-c1.json",
+      "sha256": "44268942341189e63b9b51bba5aad2d860b8d501f2aeb706879a8fb1f8c939fa"
+    },
+    "checkpoints/local2039g67-c2.json": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/repository/checkpoints/local2039g67-c2.json",
+      "sha256": "6ef43f5e5b68f651cf3c2e969a73c8191f97d489abab240e8c8f564142fd9ed2"
+    },
+    "checkpoints/local2039g67-measurement-plan.json": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/repository/checkpoints/local2039g67-measurement-plan.json",
+      "sha256": "ced86a48329a25427e1500f96c61d8f6f40c20e7c4bf44497be0faaeffe90755"
+    },
+    "checkpoints/local2039g67-selected.json": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/repository/checkpoints/local2039g67-selected.json",
+      "sha256": "2ad7e1c8a3f9128b636bc408420fbd0ad732ffc6557311dbc3d0c1255a453a55"
+    },
+    "checkpoints/local2039g67-d1-protocol.json": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/repository/checkpoints/local2039g67-d1-protocol.json",
+      "sha256": "a2997f34477044a72684f85abd484a70e1a31b2705808381df33150b82dbf534"
+    },
+    "checkpoints/local2039g67-d1.json": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/repository/checkpoints/local2039g67-d1.json",
+      "sha256": "7315656c7b019d1c04ba09570d5d7cdc7bc6679cd5cc0d43f01498320e6b8ea5"
+    }
+  },
+  "nextDirection": {
+    "source": "Existing G65D0 unchangedA sampling; not a new clean timing or candidate allocation comparison",
+    "sampledWorkerAllocationSelfBytes": 67390614720,
+    "advanceAndPopAttributedBytes": 8469680648,
+    "share": 0.12568041830736398,
+    "owners": [
+      "checker_core_steps_v1.checker_advance",
+      "checker_core_steps_v1.checker_pop"
+    ],
+    "sourceSites": [
+      {
+        "function": "$k118856",
+        "line1": 30593,
+        "observed": "one CheckerRunState record"
+      },
+      {
+        "function": "$k118869",
+        "line1": 30595,
+        "observed": "one CheckerStackMore and one CheckerRunState record"
+      },
+      {
+        "function": "$k118880",
+        "line1": 30596,
+        "observed": "one CheckerStackMore and one CheckerRunState record"
+      }
+    ],
+    "emitterTemplate": "evals/checker_core_step_lower.ts:2531-2560",
+    "proposedOnly": "Carry typed progress/stack as scalar parameters inside native fuel chunk; box RunState only at external quantum boundary. Preservefuel0 whole input, quantum64, affine heterogeneous stack/equality transport, resume/invoke order, trace suspension, API13. No mutation, newBIR or memoization required for first fusion. Not implemented or measured in G67.",
+    "risk": "Only one structurally decreasing Nat-recursive loop; no unproved mutual recursion. TracedRun suspension and budget accounting must remain exact."
+  },
+  "mainIntegration": "Existing profiling journal and11compactJSONreceipts only; rejected source, regenerated required inputs, fixtures and law changes remain source checkpoint. MainFIR/BIRlaws and historical artifacts intentionally unchanged. Images, caches, snapshots and rawoutputs outsideGit.",
+  "sourceIndex": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g67-nullary-kbnbprog/repository/checkpoints/local2039g67-index.json",
+    "sha256": "58cc5bc585aff9b1cb4a72c07adad6d1a1da6edd4b84a6a117507521c2f13fd8"
+  }
+}
