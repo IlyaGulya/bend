@@ -1,0 +1,192 @@
+{
+  "schemaVersion": 1,
+  "version": "local2039g77d1",
+  "status": "PROSPECTIVE_CONTROLLED_OBSERVER_SMOKE_BEFORE_COMPILER_MEASUREMENTS",
+  "protocolCheckpoint": "85f58010",
+  "build": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g77-natural-chronology-31floyvd/repository/checkpoints/local2039g77d1-sampler-build.json",
+    "sha256": "30bb7ecad40b5c313804b74fe03bd123212064ef6f079c13d7ea9b04c84bf5f9"
+  },
+  "command": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun --smol /private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g77-natural-chronology-31floyvd/natural-controller.mjs /private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g77-natural-chronology-31floyvd/smoke-plan.json",
+  "plan": {
+    "schemaVersion": 1,
+    "output": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g77-natural-chronology-31floyvd/smoke-execution.json",
+    "cells": [
+      {
+        "id": "smoke-off",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--experimental-strip-types",
+          "--max-old-space-size=6144",
+          "--max-semi-space-size=128",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g77-natural-chronology-31floyvd/natural-driver.mjs",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g77-natural-chronology-31floyvd/smoke-off-request.json",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g77-natural-chronology-31floyvd/smoke-off-report.json"
+        ],
+        "cwd": "/Users/ilyagulya/Projects/My/bend",
+        "report": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g77-natural-chronology-31floyvd/smoke-off-report.json",
+        "request": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g77-natural-chronology-31floyvd/smoke-off-request.json",
+          "sha256": "16c9e5f1b3cad551eac7b8bf5cab70232a53f98026f741d94d067f52d708aa8d"
+        }
+      },
+      {
+        "id": "smoke-on",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--experimental-strip-types",
+          "--max-old-space-size=6144",
+          "--max-semi-space-size=128",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g77-natural-chronology-31floyvd/natural-driver.mjs",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g77-natural-chronology-31floyvd/smoke-on-request.json",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g77-natural-chronology-31floyvd/smoke-on-report.json"
+        ],
+        "cwd": "/Users/ilyagulya/Projects/My/bend",
+        "report": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g77-natural-chronology-31floyvd/smoke-on-report.json",
+        "request": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g77-natural-chronology-31floyvd/smoke-on-request.json",
+          "sha256": "955f488c73c9590d9ac409a3ad08d8c99722d378b078656ed4a79a470b86a24e"
+        }
+      }
+    ]
+  },
+  "requests": {
+    "off": {
+      "schemaVersion": 1,
+      "kind": "natural-smoke",
+      "observer": "off",
+      "image": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/real-own-c2.json.output.mjs",
+      "runtimeHelper": "/Users/ilyagulya/Projects/My/bend/evals/checker_core_step_runtime.mjs",
+      "sampler": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g77-natural-chronology-31floyvd/physical-sampler",
+      "sampling": {
+        "opaqueStepInterval": 16384,
+        "heapSampleCapacity": 256,
+        "spaceCapacity": 32,
+        "gcEventCapacity": 4096,
+        "physicalIntervalMs": 200,
+        "physicalCapacity": 4096,
+        "settleTurnsBothModes": 3,
+        "userRetention": "Preallocatedflatnumericbuffers,primitivesonly. Neverread/storeRun/Arena/module/closure/objectownerfromonStep;ignoresecondcallbackargument. NoFunction.toStringorownerchains.",
+        "queueCaveat": "NodePerformanceObserverinternalqueuedentriesduringtightlooparenotboundedbyoursamplebuffers;backlogO(numberGC),reportedandoverhead-screened. Eventsuseentry.startTime/durationnotcallback-arrivaltime."
+      },
+      "limits": {
+        "memoryMiB": 8192,
+        "rssMiB": 8192,
+        "pollMs": 10,
+        "timeoutMs": 600000
+      },
+      "exports": [
+        "parsed_module",
+        "parse_with_fuel",
+        "expand_modules_start",
+        "template_step",
+        "check_expanded_start",
+        "inspect_checked_start",
+        "checker_step",
+        "emit_modules_start",
+        "emit_library_start",
+        "emitter_step",
+        "emit_c_modules_start",
+        "emit_c_library_start",
+        "c_emitter_step"
+      ],
+      "pins": {
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g77-natural-chronology-31floyvd/natural-driver.mjs": "2547b6fa226179d4b1af0e4f2bc3cc16237da6eb5a042c398fc812a41a096947",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g77-natural-chronology-31floyvd/natural-observer.mjs": "9280a5c4099e808d47b7dd2b1564733d106ac592d754d4df4af0ec5aac6e16ba",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g77-natural-chronology-31floyvd/physical-sampler": "8e1c1e633cfb1398833c193c434ae2a93e2225245a4e1bec2bc2007b83747314",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g77-natural-chronology-31floyvd/physical-sampler.c": "dc78051e252ef61736fd3fe762d2d65f7b8854f287dbc73952de9bb859682859",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g77-natural-chronology-31floyvd/repository/checkpoints/local2039g77d1-protocol.json": "ec0e5b0cf3909cc627843494f67ef25c75050bb6f8698ac52d526ec76e0f9ae6",
+        "/Users/ilyagulya/Projects/My/bend/evals/checker_core_step_runtime.mjs": "00cd400ac0452a3681bf6491db08be51f9ae3a33ff2baf88654a9763eb5073ed",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node": "ead5889f15f4e17b37f941c7d9e92b624396786bd74d8155ef470f6381f032c5",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/real-own-c2.json.output.mjs": "505d4c08336e6f6312346806d97e2d189b6e0bd5783f829ead6723e62c24edaa"
+      },
+      "inputs": {},
+      "scope": "Explicitcontrolled64MiBexternalallocation/opaque-callbacksafetysmoke,NOcompilerimport/check/performanceevidence,noforcedGC."
+    },
+    "on": {
+      "schemaVersion": 1,
+      "kind": "natural-smoke",
+      "observer": "on",
+      "image": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/real-own-c2.json.output.mjs",
+      "runtimeHelper": "/Users/ilyagulya/Projects/My/bend/evals/checker_core_step_runtime.mjs",
+      "sampler": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g77-natural-chronology-31floyvd/physical-sampler",
+      "sampling": {
+        "opaqueStepInterval": 16384,
+        "heapSampleCapacity": 256,
+        "spaceCapacity": 32,
+        "gcEventCapacity": 4096,
+        "physicalIntervalMs": 200,
+        "physicalCapacity": 4096,
+        "settleTurnsBothModes": 3,
+        "userRetention": "Preallocatedflatnumericbuffers,primitivesonly. Neverread/storeRun/Arena/module/closure/objectownerfromonStep;ignoresecondcallbackargument. NoFunction.toStringorownerchains.",
+        "queueCaveat": "NodePerformanceObserverinternalqueuedentriesduringtightlooparenotboundedbyoursamplebuffers;backlogO(numberGC),reportedandoverhead-screened. Eventsuseentry.startTime/durationnotcallback-arrivaltime."
+      },
+      "limits": {
+        "memoryMiB": 8192,
+        "rssMiB": 8192,
+        "pollMs": 10,
+        "timeoutMs": 600000
+      },
+      "exports": [
+        "parsed_module",
+        "parse_with_fuel",
+        "expand_modules_start",
+        "template_step",
+        "check_expanded_start",
+        "inspect_checked_start",
+        "checker_step",
+        "emit_modules_start",
+        "emit_library_start",
+        "emitter_step",
+        "emit_c_modules_start",
+        "emit_c_library_start",
+        "c_emitter_step"
+      ],
+      "pins": {
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g77-natural-chronology-31floyvd/natural-driver.mjs": "2547b6fa226179d4b1af0e4f2bc3cc16237da6eb5a042c398fc812a41a096947",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g77-natural-chronology-31floyvd/natural-observer.mjs": "9280a5c4099e808d47b7dd2b1564733d106ac592d754d4df4af0ec5aac6e16ba",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g77-natural-chronology-31floyvd/physical-sampler": "8e1c1e633cfb1398833c193c434ae2a93e2225245a4e1bec2bc2007b83747314",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g77-natural-chronology-31floyvd/physical-sampler.c": "dc78051e252ef61736fd3fe762d2d65f7b8854f287dbc73952de9bb859682859",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g77-natural-chronology-31floyvd/repository/checkpoints/local2039g77d1-protocol.json": "ec0e5b0cf3909cc627843494f67ef25c75050bb6f8698ac52d526ec76e0f9ae6",
+        "/Users/ilyagulya/Projects/My/bend/evals/checker_core_step_runtime.mjs": "00cd400ac0452a3681bf6491db08be51f9ae3a33ff2baf88654a9763eb5073ed",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node": "ead5889f15f4e17b37f941c7d9e92b624396786bd74d8155ef470f6381f032c5",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/real-own-c2.json.output.mjs": "505d4c08336e6f6312346806d97e2d189b6e0bd5783f829ead6723e62c24edaa"
+      },
+      "inputs": {},
+      "scope": "Explicitcontrolled64MiBexternalallocation/opaque-callbacksafetysmoke,NOcompilerimport/check/performanceevidence,noforcedGC."
+    }
+  },
+  "scriptSources": {
+    "observer": {
+      "identity": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g77-natural-chronology-31floyvd/natural-observer.mjs",
+        "sha256": "9280a5c4099e808d47b7dd2b1564733d106ac592d754d4df4af0ec5aac6e16ba"
+      },
+      "source": "import{getHeapStatistics,getHeapSpaceStatistics}from'node:v8';\nimport{PerformanceObserver,performance,constants}from'node:perf_hooks';\nexport function createNaturalObserver(enabled,config){\n const sampleCapacity=config.heapSampleCapacity,spaceCapacity=config.spaceCapacity,gcCapacity=config.gcEventCapacity,every=config.opaqueStepInterval;\n const fields=['atMs','epochMs','dateNowMs','step','labelIndex','rssBytes','heapTotalBytes','heapUsedBytes','externalBytes','arrayBufferBytes','usedHeapBytes','totalHeapBytes','totalPhysicalHeapBytes','availableHeapBytes','mallocedBytes','externalMemoryBytes','nativeContexts','detachedContexts'];\n const stride=fields.length+spaceCapacity*4,samples=new Float64Array(sampleCapacity*stride),gc=new Float64Array(gcCapacity*6),labels=[],spaceNames=[],labelIds=new Map(),spaceIds=new Map();\n let sampleCount=0,gcCount=0,sampleDrops=0,gcDrops=0,spaceDrops=0,stepCallbacks=0,stepGates=0,clockIssue=false,finished=false;\n const startedMs=performance.now(),timeOrigin=performance.timeOrigin;\n const collect=entries=>{const arrival=performance.now();for(const e of entries){if(gcCount===gcCapacity){gcDrops++;continue;}const i=gcCount++*6;gc[i]=e.startTime;gc[i+1]=e.duration;gc[i+2]=Number(e.detail?.kind??-1);gc[i+3]=Number(e.detail?.flags??-1);gc[i+4]=arrival;gc[i+5]=timeOrigin+e.startTime;}};\n const observer=new PerformanceObserver(list=>collect(list.getEntries()));if(enabled)observer.observe({entryTypes:['gc']});\n function sample(label,step=-1){\n  if(!enabled)return;if(sampleCount===sampleCapacity){sampleDrops++;return;}\n  let lid=labelIds.get(label);if(lid===undefined){if(labels.length===32){sampleDrops++;return;}lid=labels.length;labels.push(label);labelIds.set(label,lid);}\n  const at=performance.now(),date=Date.now(),m=process.memoryUsage(),h=getHeapStatistics(),spaces=getHeapSpaceStatistics();if(Math.abs(date-(timeOrigin+at))>50)clockIssue=true;\n  const values=[at,timeOrigin+at,date,step,lid,m.rss,m.heapTotal,m.heapUsed,m.external,m.arrayBuffers,h.used_heap_size,h.total_heap_size,h.total_physical_size,h.total_available_size,h.malloced_memory,h.external_memory,h.number_of_native_contexts,h.number_of_detached_contexts],base=sampleCount++*stride;\n  for(let i=0;i<fields.length;i++)samples[base+i]=values[i];\n  for(let i=0;i<spaceCapacity*4;i++)samples[base+fields.length+i]=NaN;\n  for(const s of spaces){let sid=spaceIds.get(s.space_name);if(sid===undefined){if(spaceNames.length===spaceCapacity){spaceDrops++;continue;}sid=spaceNames.length;spaceNames.push(s.space_name);spaceIds.set(s.space_name,sid);}const i=base+fields.length+sid*4;samples[i]=s.space_used_size;samples[i+1]=s.space_size;samples[i+2]=s.physical_space_size;samples[i+3]=s.space_available_size;}\n }\n return{sample,onStep(step){stepCallbacks++;if(step%every===0){stepGates++;sample('check-step',step);}},async finish(){\n  if(finished)throw Error('Observeralreadyfinished');finished=true;for(let i=0;i<config.settleTurnsBothModes;i++)await new Promise(done=>setImmediate(done));if(enabled){collect(observer.takeRecords());observer.disconnect();sample('after-settle');}\n  const result={schemaVersion:1,enabled,startedMs,finishedMs:performance.now(),timeOrigin,fields,sampleStride:stride,spaceFields:['usedBytes','sizeBytes','physicalBytes','availableBytes'],spaceNames,labels,sampleCount,sampleCapacity,samples:Array.from(samples.subarray(0,sampleCount*stride)),gcFields:['startMs','durationMs','kind','flags','callbackArrivalMs','epochStartMs'],gcCount,gcCapacity,gcEvents:Array.from(gc.subarray(0,gcCount*6)),stepCallbacks,stepGates,sampleDrops,gcDrops,spaceDrops,clockIssue,gcConstants:Object.fromEntries(Object.entries(constants).filter(([k])=>k.startsWith('NODE_PERFORMANCE_GC_'))),health:sampleDrops===0&&gcDrops===0&&spaceDrops===0&&!clockIssue,scope:'Primitivesonly,fixednumericbuffersallocatedinbothmodes. NoRun/arena/module/ownerreadorretention. Heapoccupiedincludesgarbage;reserved/physical/OSdifferent. GCcallbacksdeferred:usetimestamps,notarrival;nativebacklognotboundedbyourbuffer. NoHeapProfiler/inspector/snapshot/forcedGC.'};return result;\n }};\n}\n"
+    },
+    "driver": {
+      "identity": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g77-natural-chronology-31floyvd/natural-driver.mjs",
+        "sha256": "2547b6fa226179d4b1af0e4f2bc3cc16237da6eb5a042c398fc812a41a096947"
+      },
+      "source": "import{readFileSync,writeFileSync,realpathSync,existsSync}from'node:fs';\nimport{resolve,dirname,isAbsolute,posix}from'node:path';import{pathToFileURL}from'node:url';import{createHash}from'node:crypto';\nimport{Worker,isMainThread,workerData,threadId}from'node:worker_threads';import{spawn}from'node:child_process';\nimport{getHeapStatistics}from'node:v8';import{performance}from'node:perf_hooks';\nimport{createNaturalObserver}from'file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g77-natural-chronology-31floyvd/natural-observer.mjs';\nconst hash=p=>createHash('sha256').update(readFileSync(p)).digest('hex'),save=(p,x)=>writeFileSync(p,JSON.stringify(x,null,2)+'\\n');\nasync function startPhysical(request){\n const child=spawn(request.sampler,['--pid',String(process.pid),'--interval-ms',String(request.sampling.physicalIntervalMs),'--max-records',String(request.sampling.physicalCapacity)],{stdio:['pipe','pipe','pipe']});\n let chunks=[],errors=[],bytes=0,first='',ready=false,resolveReady,rejectReady;\n const readyPromise=new Promise((ok,no)=>{resolveReady=ok;rejectReady=no;});const timer=setTimeout(()=>{rejectReady(Error('Samplerreadytimeout'));child.stdin.end('STOP\\n');},5000);\n const exitPromise=new Promise((ok,no)=>{child.once('error',error=>{clearTimeout(timer);rejectReady(error);no(error);});child.once('close',(code,signal)=>{clearTimeout(timer);if(!ready)rejectReady(Error('Samplerexitbeforeready '+code));ok({code,signal});});});\n child.stdout.on('data',chunk=>{bytes+=chunk.length;if(bytes>2*1024*1024){rejectReady(Error('Sampleroutputoverflow'));child.stdin.end('STOP\\n');return;}chunks.push(chunk);if(!ready){first+=chunk.toString('utf8');const n=first.indexOf('\\n');if(n!==-1){const r=JSON.parse(first.slice(0,n));if(r.status!=='READY'||r.targetPid!==process.pid)rejectReady(Error('Samplerinvalidready'));else{ready=true;clearTimeout(timer);resolveReady(r);}first='';}}});child.stderr.on('data',chunk=>errors.push(chunk));child.stdin.on('error',()=>{});\n const readyRecord=await readyPromise;return{ready:readyRecord,async stop(){child.stdin.end('STOP\\n');const exit=await exitPromise;const lines=Buffer.concat(chunks).toString('utf8').trim().split('\\n');const result=JSON.parse(lines.at(-1));if(exit.code!==0||result.status!=='PASS'||result.targetPid!==process.pid)throw Error('Samplerfailure '+JSON.stringify({exit,result,stderr:Buffer.concat(errors).toString('utf8')}));return{...result,ready:readyRecord,exit,stderr:Buffer.concat(errors).toString('utf8'),outputBytes:bytes};}};\n}\nif(isMainThread){\n const[requestPath,reportPath]=process.argv.slice(2);if(process.argv.length!==4||!requestPath||!reportPath||existsSync(reportPath)||existsSync(reportPath+'.physical.json'))throw Error('ExpectedREQUEST_FRESHREPORT');\n const request=JSON.parse(readFileSync(requestPath,'utf8'));let physical;try{if(request.observer==='on')physical=await startPhysical(request);const worker=new Worker(new URL(import.meta.url),{workerData:{requestPath,reportPath},resourceLimits:{stackSizeMb:256,maxOldGenerationSizeMb:6144,maxYoungGenerationSizeMb:128}});await new Promise((ok,no)=>{worker.once('error',no);worker.once('exit',code=>code===0?ok():no(Error('Naturalworkerexit '+code)));});}finally{if(physical){const records=await physical.stop();save(reportPath+'.physical.json',records);}}\n const report=JSON.parse(readFileSync(reportPath,'utf8'));report.physicalTelemetry=request.observer==='on'?{path:reportPath+'.physical.json',sha256:hash(reportPath+'.physical.json')}:{enabled:false};save(reportPath,report);console.log(JSON.stringify({status:report.status,observer:request.observer,report:reportPath,stepCounts:report.stepCounts,heapSamples:report.telemetry.sampleCount,gcEvents:report.telemetry.gcCount,scope:'Diagnosticnotproductionperformanceorlive-rootproof'}));\n}else{\n const requestPath=workerData.requestPath,reportPath=workerData.reportPath,request=JSON.parse(readFileSync(requestPath,'utf8'));\n if(request.schemaVersion!==1||!['natural-chronology','natural-smoke'].includes(request.kind)||!['on','off'].includes(request.observer))throw Error('Invalidnaturalrequest');\n const verify=()=>{for(const[p,h]of Object.entries({...request.pins,...request.inputs}))if(realpathSync(p)!==p||hash(p)!==h)throw Error('Pinnedinputdrift '+p);};verify();\n const{runTemplateSteps,runCheckerSteps}=await import(pathToFileURL(request.runtimeHelper).href),observer=createNaturalObserver(request.observer==='on',request.sampling),tag=x=>typeof x?.$==='string'?x.$.split('.').at(-1):null;\n const items=x=>{const a=[];while(tag(x)==='Con'){a.push(x.head);x=x.tail;}if(tag(x)!=='Nil')throw Error('Malformednativelist');return a;},list=a=>a.reduceRight((tail,head)=>({$:'Con',head,tail}),{$:'Nil'}),end=Object.freeze({$:'FeedbackFuelEnd'}),fuelProto={get tail(){return fuel(this.remaining-1);}},fuel=n=>{if(n===0)return end;const x=Object.create(fuelProto);x.$='FeedbackFuelCell';x.remaining=n;return x;};\n const report={schemaVersion:1,status:'RUNNING',diagnosticOnly:true,acceptanceEvidence:false,kind:request.kind,observer:request.observer,image:request.image,imageSha256:hash(request.image),request:requestPath,requestSha256:hash(requestPath),pid:process.pid,threadId,timeOrigin:performance.timeOrigin,runtime:{execPath:process.execPath,versions:process.versions,execArgv:process.execArgv,heapLimitBytes:getHeapStatistics().heap_size_limit},workerPolicy:{stackMiB:256,oldGenerationMiB:6144,youngGenerationMiB:128},exports:request.exports,limits:request.limits,checksExcluded:0,outputPatches:0,phases:[],stepCounts:{},scope:'Actualownparse/expand/check;noASTtransport/imagepatch/algorithmchange. On/offfixeddriverandfixedsourceURL;timingsdiagnostic,notcleanproductiongain. Bothkeepordinaryvalue-lifetimes/noexplicitresultrelease.'};save(reportPath,report);\n const phase=async(name,action)=>{observer.sample(name+'-start');report.activePhase=name;save(reportPath,report);const startMs=performance.now(),before=process.cpuUsage(),result=await action(),cpu=process.cpuUsage(before),endMs=performance.now();report.phases.push({phase:name,startMs,endMs,epochStartMs:performance.timeOrigin+startMs,epochEndMs:performance.timeOrigin+endMs,elapsedMs:endMs-startMs,userCpuMs:cpu.user/1000,systemCpuMs:cpu.system/1000,memoryEnd:process.memoryUsage()});delete report.activePhase;observer.sample(name+'-end');save(reportPath,report);return result;};\n try{\n  if(request.kind==='natural-smoke'){\n   report.scope='Controlledallocationandopaque-callbacksafetysmoke;NOcompilerimageimport,parser,checker,performanceorlive-rootqualification.';report.compilerImageImported=false;\n   const before=process.memoryUsage(),poison=new Proxy({},{get(){throw Error('ObserverreadopaqueRun');}});observer.sample('smoke-before');\n   const buffer=new Uint8Array(64*1024*1024);buffer.fill(90);const after=process.memoryUsage();observer.sample('smoke-array-buffer-held');\n   const ring=new Array(4096);for(let i=0;i<1000000;i++)ring[i&4095]={index:i,value:i+1};for(let i=0;i<40000;i++)observer.onStep(i,poison);\n   await new Promise(done=>setTimeout(done,600));observer.sample('smoke-held-after-delay');report.telemetry=await observer.finish();\n   const checksum=buffer[0]+buffer[buffer.length>>>1]+buffer[buffer.length-1],delta=after.arrayBuffers-before.arrayBuffers;\n   if(checksum!==270||delta<64*1024*1024||report.telemetry.stepCallbacks!==40000||report.telemetry.stepGates!==3||!report.telemetry.health)throw Error('Controlledobserverbehaviorfailed');\n   report.smoke={checksum,arrayBufferDeltaBytes:delta,opaqueRunReadTrapNotTriggered:true,holdMs:600,globalGCExposed:typeof globalThis.gc==='function'};\n   report.status='PASS_CONTROLLED_NATIVE_OBSERVER_SMOKE';verify();save(reportPath,report);\n  }else{\n  const api=await phase('startup',async()=>{const value=(await import(pathToFileURL(request.image).href)).default;if(!request.exports.every(k=>typeof value?.[k]==='function'))throw Error('IncompleteABI');return value;});\n  let modules=[],declarations=0;const seen=new Map();\n  await phase('load-parse',()=>{const active=new Set(),observed=new Set(),observe=p=>{const path=realpathSync(p);if(!Object.hasOwn(request.inputs,path))throw Error('Unexpectedinput '+path);observed.add(path);return path;},namespace=(scope,path)=>path==='Base'?'':posix.normalize(isAbsolute(path)?path.replace(/\\.bend$/,''):posix.dirname(scope)+'/'+path.replace(/\\.bend$/,''));\n   const visit=(file,scope)=>{const p=observe(file);if(active.has(p))throw Error('Importcycle');if(seen.has(p)){if(seen.get(p)!==scope)throw Error('Namespaceconflict');return;}seen.set(p,scope);active.add(p);const feedback=api.parse_with_fuel(fuel(8000000),p,readFileSync(p,'utf8'));if(tag(feedback)!=='FeedbackComplete'||tag(feedback.value.result)!=='ParseSuccess')throw Error('Ownparsefailure '+p);const module=feedback.value.result.module;declarations+=items(module.declarations).length;for(const top of items(module.declarations))if(tag(top)==='DefTop'&&tag(top.definition.body)==='DefImports')for(const path of items(top.definition.body.paths))if(path.endsWith('.js'))observe(resolve(dirname(p),path));for(const imported of items(module.imports)){const path=imported.path;if(path.endsWith('.js'))observe(resolve(dirname(p),path));else if(!path.endsWith('.c'))visit(path==='Base'?resolve(request.repository,'bend2/base.bend'):resolve(dirname(p),path),namespace(scope,path));}modules.push(api.parsed_module(scope,module));active.delete(p);};\n   visit(request.root,'');if(observed.size!==Object.keys(request.inputs).length)throw Error('Ownparseromittedinput');report.moduleCount=seen.size;report.sourceDeclarations=declarations;modules=list(modules);\n  });\n  let expanded=await phase('expand',()=>runTemplateSteps({...api,expand_modules_start:input=>{modules=undefined;return api.expand_modules_start(input);}},modules,{onFinish(_,steps){report.stepCounts.expand=steps;}}));if(tag(expanded)!=='ExpandSuccess')throw Error('Ownexpandfailure');\n  let checked=await phase('check',()=>runCheckerSteps({...api,check_expanded_start:input=>{expanded=undefined;return api.check_expanded_start(input);}},expanded.modules,{onStep:observer.onStep,onFinish(_,steps){report.stepCounts.check=steps;}}));if(tag(checked)!=='CheckSuccess')throw Error('Owncheckfailure');\n  if(report.moduleCount!==request.expected.modules||report.sourceDeclarations!==request.expected.declarations||report.stepCounts.expand!==request.expected.expand||report.stepCounts.check!==request.expected.check)throw Error('Frozenworkcountdiffers');\n  observer.sample('verification-start');verify();observer.sample('verification-end');report.telemetry=await observer.finish();report.fullCheckSuccess=true;report.phaseCpuScope='NodeprocessCPUincludesworker/helperthreads,excludesexternalphysicalsamplerchild';report.status='PASS_FULL_FROZEN_NATURAL_CHRONOLOGY';save(reportPath,report);\n  }\n }catch(error){report.status='FAIL';report.error=String(error);report.stack=error?.stack;try{report.telemetry=await observer.finish();}catch{}save(reportPath,report);throw error;}\n}\n"
+    }
+  },
+  "scope": "Two actual controlled-runtime probes only after primaryAPIauditconfirmsnoinherentcollectioncalls;expected270checksum,64MiBarrayBufferdelta,opaqueRunProxyunread,40000callbacks/3samplegates,nooverflow;noBendcompilerexecutionorperformanceclaim."
+}

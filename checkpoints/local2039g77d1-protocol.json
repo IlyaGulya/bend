@@ -1,0 +1,198 @@
+{
+  "schemaVersion": 1,
+  "version": "local2039g77d1",
+  "status": "PROSPECTIVE_BOUNDED_NATURAL_OBSERVER_AND_OFF_CONTROL_BEFORE_IMPLEMENTATION_OR_TIMING",
+  "observedBaseCheckpoint": "474f30a7",
+  "previousExperimentCheckpoint": "f289163f",
+  "images": {
+    "A": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs",
+      "sha256": "4636c05aa8c75e72212cb03949937e25561942bc00da250f876f37f001b9fc18"
+    },
+    "C": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/real-own-c2.json.output.mjs",
+      "sha256": "505d4c08336e6f6312346806d97e2d189b6e0bd5783f829ead6723e62c24edaa"
+    }
+  },
+  "design": [
+    {
+      "sequence": 1,
+      "block": 1,
+      "content": "A",
+      "observer": "off",
+      "id": "natural-1-A-off"
+    },
+    {
+      "sequence": 2,
+      "block": 1,
+      "content": "A",
+      "observer": "on",
+      "id": "natural-2-A-on"
+    },
+    {
+      "sequence": 3,
+      "block": 1,
+      "content": "C",
+      "observer": "on",
+      "id": "natural-3-C-on"
+    },
+    {
+      "sequence": 4,
+      "block": 1,
+      "content": "C",
+      "observer": "off",
+      "id": "natural-4-C-off"
+    },
+    {
+      "sequence": 5,
+      "block": 2,
+      "content": "C",
+      "observer": "off",
+      "id": "natural-5-C-off"
+    },
+    {
+      "sequence": 6,
+      "block": 2,
+      "content": "C",
+      "observer": "on",
+      "id": "natural-6-C-on"
+    },
+    {
+      "sequence": 7,
+      "block": 2,
+      "content": "A",
+      "observer": "on",
+      "id": "natural-7-A-on"
+    },
+    {
+      "sequence": 8,
+      "block": 2,
+      "content": "A",
+      "observer": "off",
+      "id": "natural-8-A-off"
+    }
+  ],
+  "scope": "Diagnostic-onlynaturalchronology. NoJScompiler/sourcechanges,HeapProfiler,inspector,snapshots,explicitGC,newheap/optimizationflags,ASTreplayordifferentworkload. OriginalG76/G75decisionsnotrescored.",
+  "workload": {
+    "manifest": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/main-complete.corpus.json",
+      "sha256": "1a269e15bf70257b019ab572c003b6eb130b4e3f63ad507783525e28d307b0e4"
+    },
+    "expected": {
+      "files": 52,
+      "modules": 17,
+      "declarations": 2954,
+      "expand": 263032,
+      "check": 1975761
+    }
+  },
+  "runtime": {
+    "node": "23.11.0",
+    "v8": "12.9.202.28-node.14",
+    "nodeBinary": {
+      "path": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "sha256": "ead5889f15f4e17b37f941c7d9e92b624396786bd74d8155ef470f6381f032c5"
+    },
+    "execArgv": [
+      "--experimental-strip-types",
+      "--max-old-space-size=6144",
+      "--max-semi-space-size=128"
+    ],
+    "workerPolicy": {
+      "stackMiB": 256,
+      "oldGenerationMiB": 6144,
+      "youngGenerationMiB": 128
+    },
+    "ABIExports": [
+      "parsed_module",
+      "parse_with_fuel",
+      "expand_modules_start",
+      "template_step",
+      "check_expanded_start",
+      "inspect_checked_start",
+      "checker_step",
+      "emit_modules_start",
+      "emit_library_start",
+      "emitter_step",
+      "emit_c_modules_start",
+      "emit_c_library_start",
+      "c_emitter_step"
+    ],
+    "schedulerQuantum": 64
+  },
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000
+  },
+  "fixedDiagnosticDriverPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g77-natural-chronology-31floyvd/natural-driver.mjs",
+  "fixedHelper": {
+    "path": "/Users/ilyagulya/Projects/My/bend/evals/checker_core_step_runtime.mjs",
+    "sha256": "00cd400ac0452a3681bf6491db08be51f9ae3a33ff2baf88654a9763eb5073ed"
+  },
+  "sampling": {
+    "opaqueStepInterval": 16384,
+    "heapSampleCapacity": 256,
+    "spaceCapacity": 32,
+    "gcEventCapacity": 4096,
+    "physicalIntervalMs": 200,
+    "physicalCapacity": 4096,
+    "settleTurnsBothModes": 3,
+    "userRetention": "Preallocatedflatnumericbuffers,primitivesonly. Neverread/storeRun/Arena/module/closure/objectownerfromonStep;ignoresecondcallbackargument. NoFunction.toStringorownerchains.",
+    "queueCaveat": "NodePerformanceObserverinternalqueuedentriesduringtightlooparenotboundedbyoursamplebuffers;backlogO(numberGC),reportedandoverhead-screened. Eventsuseentry.startTime/durationnotcallback-arrivaltime."
+  },
+  "physicalSamplerContract": {
+    "sourcePath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g77-natural-chronology-31floyvd/physical-sampler.c",
+    "binaryPath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g77-natural-chronology-31floyvd/physical-sampler",
+    "argv": [
+      "--pid",
+      "PARENT_NODE_PID",
+      "--interval-ms",
+      "200",
+      "--max-records",
+      "4096"
+    ],
+    "platform": "Darwinonly;rejectunsupportedplatform,notRSSfallback",
+    "target": "OnlydirectparentNodeprocess,verifyPIDstartidentityusingproc_pidinfoandkeepaliveparent. NodeWorkeristhreadofthesamePID.",
+    "memory": "Sameproc_pid_rusage(RUSAGE_INFO_V4)fieldsasunchangedheavy_gate_native.c:ri_resident_size,ri_phys_footprint,ri_lifetime_max_phys_footprint",
+    "stream": "FirststdoutlineREADYJSON;afterstdinSTOPorEOFonefinalJSONlinewithboundedrecords;parentdrainseverychunk,thenawaitsexit. Noarrays/logsreadbyworkerduringcheck.",
+    "sampleColumns": [
+      "epochMs",
+      "monotonicMs",
+      "rssBytes",
+      "footprintBytes",
+      "lifetimeHighFootprintBytes"
+    ],
+    "clock": "clock_gettimeREALTIME/MONOTONIC;alignworkerperformance.timeOrigin+performance.now,reportclock-discontinuityand200mssamplingwindows,notexactpointalignment.",
+    "allocation": "FixedstaticCarray<=4096records;nomalloc/reallocorper-tickallocation;noNodecode/memorymutations/targetsignals.",
+    "lifecycle": "Samplerchildspawnedonlyobserver-onwithinoriginalguardedNodetree;stopviaSTDIN,parentwaits/collectsexitbeforeguardreturns;originaltrustedguardunchanged.",
+    "samplingScope": "PerNodeprocessnotwholeownedtree;signedselfrusage/footprintreportallowsdistinguishsampleroverhead. Guardpeakiswholeownedtreeandmayuselifetimehigh.",
+    "records": "Rejectcapoverflow/targetidentitychange/readfailureforexplanatoryuse;noretrystoraisecapsaftercostdata."
+  },
+  "observerControls": {
+    "sameDriverFileAndHelperBothModes": true,
+    "sameImageURLForAllRepeatsOfContent": true,
+    "bothModesSamePhaseScaffoldingAndThreeSettleTurns": true,
+    "off": "NoperformanceGCobserve/noheap-spaceprobes/noCsamplerchild;samestepgateandfixednumericbufferallocation.",
+    "originalValueLifetime": "Keepcheckedresultthroughthephase/finalverificationjustasoriginaldiagnosticworkflow;noinputrootretirementexperimentornewpublicationboundary.",
+    "imageFactorURLConfounded": "AandCuseeachoriginalimmutableURL. Thisexperimentcompareson/offWITHINcontent,notacleanA/Coptimizationtest."
+  },
+  "disturbanceGate": {
+    "cpuObserverOnOffBand": [
+      0.95,
+      1.05
+    ],
+    "medianPhysicalFootprintObserverOnOffBand": [
+      0.95,
+      1.05
+    ],
+    "applyOverallAndEachContent": true,
+    "incompleteOrCapOrClockIssue": "Stopcausalinterpretation.",
+    "ifBandFails": "Observernotshowntoretainnaturalregime;flagconfounded,doNOTclaimobservercausedchangeversusintrinsicrepeatvariance. Descriptivewithin-onchronologymaybereportedwithlimitations,notbaselinelive-rootproof.",
+    "noEquivalenceClaim": "TworepeatsperfactorlevelandbroadCIsarenotformalobserver-equivalenceproof;allrowsretained,noextraresampling."
+  },
+  "analysis": "Naturaloccupiedheapincludesgarbage;heapreserved/physical/code/externaldifferentbudgets. Correlatesparseheap/GCtimestampswithnativefootandlifetime-HWMwindows;reportscope/samplinggapsandobserveroverheadbeforeownershipclaims. NoGCJIT/hashseed/OSrootcauseassumed.",
+  "sourceQualification": "NOT_PLANNED_DIAGNOSTIC_ONLY",
+  "nextPreflight": "CompileCsampleronceandrunactualcontrolledallocation/probeoff/onbehaviorSMOKEbeforefreezingall8runtimecostrequests. Smokeisnotcompiler/performanceevidence."
+}

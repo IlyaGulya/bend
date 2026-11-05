@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "version": "local2039g77d1",
+  "status": "PASS_ACTUAL_DARWIN_TELEMETRY_SAMPLER_BUILD",
+  "protocolCheckpoint": "85f58010",
+  "command": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+    "--memory-mib=8192",
+    "--rss-mib=8192",
+    "--poll-ms=10",
+    "--timeout-ms=120000",
+    "--",
+    "/usr/bin/clang",
+    "-std=c11",
+    "-O2",
+    "-Wall",
+    "-Wextra",
+    "-Werror",
+    "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g77-natural-chronology-31floyvd/physical-sampler.c",
+    "-o",
+    "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g77-natural-chronology-31floyvd/physical-sampler"
+  ],
+  "compiler": "Apple clang version21.0.0(clang-2100.4.1.1),Targetarm64-apple-darwin25.6.0",
+  "compilerCommandObserved": [
+    "/usr/bin/clang",
+    "--version"
+  ],
+  "source": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g77-natural-chronology-31floyvd/physical-sampler.c",
+    "sha256": "dc78051e252ef61736fd3fe762d2d65f7b8854f287dbc73952de9bb859682859"
+  },
+  "binary": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g77-natural-chronology-31floyvd/physical-sampler",
+    "sha256": "8e1c1e633cfb1398833c193c434ae2a93e2225245a4e1bec2bc2007b83747314"
+  },
+  "guardian": {
+    "status": "PASS",
+    "reason": "command_exit",
+    "commandExitCode": 0,
+    "commandSignal": 0,
+    "peakRssBytes": 63455232,
+    "peakFootprintBytes": 26919608,
+    "elapsedMs": 479,
+    "timeoutMs": 120000,
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 0,
+    "command": [
+      "/usr/bin/clang",
+      "-std=c11",
+      "-O2",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g77-natural-chronology-31floyvd/physical-sampler.c",
+      "-o",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g77-natural-chronology-31floyvd/physical-sampler"
+    ],
+    "label": "heavy command",
+    "exitCode": 0,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793899999307-0c7ebe7a99c6cde5.json",
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592
+  },
+  "scope": "Onlyexternaldiagnosticphysicalsamplercompiled;trustedguard/compiler/sourceunchanged. Parent-ownedruntime/smokepending;notaperformancetest."
+}

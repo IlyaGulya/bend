@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "version": "local2039g77d1",
+  "status": "G77_DIAGNOSTIC_COMPLETE_COMPACT_EVIDENCE_ONLY_NO_COMPILER_CUTOVER",
+  "experimentalCheckpoint": "be75a9b4",
+  "experimentalBranch": "selfhost/g77-natural-31floyvd",
+  "preflightCheckpoint": "0fcb2ccb",
+  "index": {
+    "repositoryPath": "checkpoints/local2039g77d1-index.json",
+    "sha256": "f4bd9baaae274934f12d728805c2467a0344f61e841bd1821541bafabf553920"
+  },
+  "allElevenReceiptsByteExactCopies": true,
+  "actualSmokePasses": 2,
+  "actualFullSelectedCheckPasses": 8,
+  "sourceInputByteChecks": 158,
+  "acceptedCompilerOptimization": false,
+  "sourceCompilerUnchanged": true,
+  "originalGuardAndDriverUnchanged": true,
+  "fullOrC3NotRun": true,
+  "noOldResultsRescored": true,
+  "nextExperimentNotStarted": true
+}

@@ -1,0 +1,143 @@
+{
+  "schemaVersion": 1,
+  "version": "local2039g77d1",
+  "status": "COMPLETED_DIAGNOSTIC_DISTURBANCE_POINT_SCREEN_PASS_NO_COMPILER_OPTIMIZATION_ACCEPTED",
+  "prospectiveScreen": {
+    "passed": true,
+    "band": [
+      0.95,
+      1.05
+    ],
+    "overallCpuOnOff": {
+      "n": 4,
+      "logRatios": [
+        0.018404535104493618,
+        -0.01758744607359436,
+        0.015883832063903987,
+        -0.024762192970328358
+      ],
+      "meanLog": -0.002015317968881278,
+      "varianceLog": 0.0004990871558251428,
+      "geometricMeanRatio": 0.9979867114208592,
+      "ci95": [
+        0.9631331077790641,
+        1.034101587961496
+      ],
+      "baselineMedian": 71328.671,
+      "variantMedian": 71031.4335,
+      "direction": "inconclusive"
+    },
+    "overallMedianFootprintOnOff": 0.9984915477787122,
+    "perContent": {
+      "A": {
+        "cpuOnOff": 1.017291988556642,
+        "medianFootprintOnOff": 1.010774082446932
+      },
+      "C": {
+        "cpuOnOff": 0.9790477929406851,
+        "medianFootprintOnOff": 0.9806064878274653
+      }
+    },
+    "meaning": "Observeddifferencesstayinsidepredeclared5percentpointbands,overallandpercontent. Two repeats/content and CIs doNOT prove no perturbation, equivalence, baseline regime identity, or causation. APIscloseLABs/allocateandGCnativequeuedentriesremainpartofonmode."
+  },
+  "findings": [
+    {
+      "authority": "OBSERVED",
+      "claim": "All8originalselectedownparse/expand/checkrunsPASSwith52files/17modules/2954declarations/263032expand/1975761check,original8GiB600sguardsandall158requiredsourceinputsunchanged.",
+      "evidence": "results.jsonandclosing-hashes.json"
+    },
+    {
+      "authority": "OBSERVED",
+      "claim": "All4instrumentedrunsfinalNodephysical-lifetime-highrisewindowsstartAFTERcheckend(61to120mslater),end178to262msaftercheck. No exact peakinstant claimed.",
+      "evidence": [
+        {
+          "id": "natural-2-A-on",
+          "finalHighRiseAfterCheck": true,
+          "finalHighRiseWindowAfterCheckMs": [
+            61.447998046875,
+            262.472900390625
+          ],
+          "lastNativeBeforeEndLagMs": 138.95199900399894,
+          "highIncreaseAfterLastNativeCheckSampleBytes": 131778216
+        },
+        {
+          "id": "natural-3-C-on",
+          "finalHighRiseAfterCheck": true,
+          "finalHighRiseWindowAfterCheckMs": [
+            90.369384765625,
+            213.84228515625
+          ],
+          "lastNativeBeforeEndLagMs": 110.67558292579633,
+          "highIncreaseAfterLastNativeCheckSampleBytes": 153535184
+        },
+        {
+          "id": "natural-6-C-on",
+          "finalHighRiseAfterCheck": true,
+          "finalHighRiseWindowAfterCheckMs": [
+            120.170654296875,
+            235.829833984375
+          ],
+          "lastNativeBeforeEndLagMs": 80.95218708438188,
+          "highIncreaseAfterLastNativeCheckSampleBytes": 150667792
+        },
+        {
+          "id": "natural-7-A-on",
+          "finalHighRiseAfterCheck": true,
+          "finalHighRiseWindowAfterCheckMs": [
+            100.95263671875,
+            178.24169921875
+          ],
+          "lastNativeBeforeEndLagMs": 100.12331182098569,
+          "highIncreaseAfterLastNativeCheckSampleBytes": 147947688
+        }
+      ]
+    },
+    {
+      "authority": "OBSERVED",
+      "claim": "FinalNodehighis125.7to146.4MiBaboveprefixlifetimehighatlastnativechecksample. That sample precedescheckendby80.95to138.95ms; theseareNOTexactcheckerphasepeaksorverificationallocationtotals."
+    },
+    {
+      "authority": "VERIFIED_SOURCE_AND_OBSERVED_TIMELINE_WITH_CAUSAL_LIMIT",
+      "claim": "Diagnosticdriververify()usescryptoSHA256(readFileSync(path))aftercheck;theunchangedproductionselfhost_throughputhash/verifyalso rereads wholefilesatpostcheck. PinnedNodebinary113935712B,image31758525/31801158B. This proves large transient full-file Buffer allocations exist in the post-check verification path; it DOES NOT isolate their exclusive contribution to the observed lifetime high or retroactively explain G76.",
+      "sourceReferences": {
+        "diagnostic": "natural-driver.mjs:6,22,48,exactsourcearchivedruntime-preflight.json",
+        "unchangedOriginal": {
+          "path": "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+          "sha256": "1a806befee02216a9499f6b4dcde7e2326e01f0a5b96bbd36b75295344c50317",
+          "lines": [
+            17,
+            24,
+            119
+          ]
+        }
+      }
+    },
+    {
+      "authority": "OBSERVED",
+      "claim": "599to603GCentries/run,0FORCEDbitentries;3of4runshaveoneALL_EXTERNAL_MEMORY|SYNCHRONOUS_PHANTOM_PROCESSING(40)majorentry112.6to159.3msaftercheckend. RecordedcheckGCcallbackintervalunionis1.444to1.637percentofcheckerwall. Thisisnotpausepercentage,totalGCcost,helperthreadCPU,liveheap,retentionorproofthatGCcannotbeoptimized."
+    },
+    {
+      "authority": "OBSERVED",
+      "claim": "RAWworker/nativebridgeerror0.00098to0.00684ms,maxwhole-runeEpochRAWdrift3.7142msbelow10ms. No cap drops/clock failures;200msnativeinterval,maxobservedgap266.38ms. NativeCsamplerselfCPU13.6to15.9ms/run,roughly1MiBselfphysical;notentireobserveroverhead."
+    }
+  ],
+  "auditCorrections": {
+    "clock": "UseCLOCK_MONOTONIC_RAW;AppleupstreamLibcnotproofexactinstalledversion,actualrawbridgevalidatedinsmokeand4runs. OriginalMONOTONICsmokeplanexplicitlySUPERSEDED_UNEXECUTEDbeforedata.",
+    "codeSpace": "Auditsection4saysneithercodeapi/spaceAPIcollected;protocolACTUALLYDOEScollectgetHeapSpaceStatisticscode_space. getHeapCodeStatisticsisnotcollected. Treat audit paragraph as a bounded-source note, not runtime truth.",
+    "gcFlags": "Auditexpectationnaturalflag0notuniversal;actualflags0/64/40retainedanddecodedfromactualruntimeconstants. FORCEDbit4absentinallrecordedevents;noexplicitGCAPIsused."
+  },
+  "nextExperiment": {
+    "status": "PROPOSED_NOT_EXECUTED_NOT_VERSIONED_HERE",
+    "target": "Boundpost-checkpin-hashingtemporarymemorywithoutdroppinganyverification.",
+    "design": "One source-level harness-only change: fixed reusablechunkbuffer/streamedSHA256insteadofreadFileSyncwholefileforhash. Keepcanonicalpath+everyinput/pin+sameexpectedSHAchecks,originalwhole-treeguards,andall52files/17modules/fullcheckcounters. Firstproveexactdigestsoverfile/chunkboundariesanddriftfailure;thenfreshmirroredbaseline/candidatewithinfixeddriverURIcontrolswithphysicaltimeline. SeparatecheckmemoryandpostverificationchronologybutNEVERrelax/swapexistingwhole-treegateorrescoreG73-G76.",
+    "why": "Actualpostcheckfull-filebuffersandlatepeakprovideamoreconcreteandcheapertargetthananotherleaf-frameC1/C2rebuild. No claim compiler CPU benefit.",
+    "notChosen": "Noheaplimit/GCflagchanges,forcedGC,snapshot,ownerchaininspection,ASTcache,corpusshrink,specialinputhandling,sourceemittercutoverornewC3."
+  },
+  "acceptedCompilerOptimization": false,
+  "productionCompilerSourceChanged": false,
+  "newCompilerBuilds": 0,
+  "fullConfirmation": "NOT_EARNED_NOT_RUN",
+  "ownC3": "NOT_EARNED_NOT_RUN",
+  "oldTimingsAndDecisionsNotRescored": true,
+  "defaultCutover": false
+}
