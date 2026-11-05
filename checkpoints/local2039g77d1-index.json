@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 1,
+  "version": "local2039g77d1",
+  "status": "COMPLETED_DIAGNOSTIC_NATURAL_CHRONOLOGY_ON_OFF_SCREEN_PASS_NO_COMPILER_OPTIMIZATION_ACCEPTED",
+  "experimentalBranch": "selfhost/g77-natural-31floyvd",
+  "preflightCheckpoint": "0fcb2ccb",
+  "sourceReceiptFiles": [
+    {
+      "repositoryPath": "checkpoints/local2039g77d1-protocol.json",
+      "sha256": "ec0e5b0cf3909cc627843494f67ef25c75050bb6f8698ac52d526ec76e0f9ae6"
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g77d1-sampler-build.json",
+      "sha256": "30bb7ecad40b5c313804b74fe03bd123212064ef6f079c13d7ea9b04c84bf5f9"
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g77d1-smoke-plan.json",
+      "sha256": "360350b2cdf3d6ab1ee93a90537978faf21e86dea7ff2d7bd87ffa77cbf15dfa"
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g77d1-audited-protocol.json",
+      "sha256": "2079d29f858a1b7e8db212ac81da718d66e73a31b40bab6429b0ed891088fcc8"
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g77d1-clock-preflight.json",
+      "sha256": "71a5d26691ac9d327f010b5d5ed399c3177cabcf719a8f35c0ecb2f1f05cdd3b"
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g77d1-runtime-preflight.json",
+      "sha256": "890a1e9e601f0aecd36aa58fe5a09b010c3c0a3e655b82c3afdf47faaf49e0cb"
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g77d1-results.json",
+      "sha256": "0383f604e35dbca2cabf4a09a0c7f5e941c69629a885e7e886ef32281ed16d5e"
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g77d1-closing-hashes.json",
+      "sha256": "b99a53d08438ea72e1ac9684ee6d374c721356c5c5b4d987b3b798ddc0a765ef"
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g77d1-decision.json",
+      "sha256": "0cf89d91e3976ce1b33d6ad46d44a2a5793663702f7acacda94cc40cf0675b68"
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g77d1-cleanup.json",
+      "sha256": "b5c10ec1484f959c7a7d4b0230dde59c76dc7b3198e4760ccf0eb0c768241a82"
+    }
+  ],
+  "runtime": "Node23.11.0,V812.9.202.28-node.14,Darwin25.6arm64,ABI13,quantum64",
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000
+  },
+  "samplerBuildsPassed": 2,
+  "supersededMonotonicPlan": "NEVER_EXECUTED_AMENDED_TO_RAW_BEFORE_SMOKE_OR_COST",
+  "actualControlledSmokePasses": 2,
+  "actualFullSelectedCheckPasses": 8,
+  "allEightRowsRetained": true,
+  "sourceInputsVerified": 158,
+  "originalDriverSourceBytesUnchanged": true,
+  "immutableImageHashesUnchanged": true,
+  "disturbancePointScreenPassed": true,
+  "observerEquivalenceOrPassivityProved": false,
+  "allFourRecordedFinalNodePeakRiseWindowsAfterCheck": true,
+  "postcheckHashBuffers": "Verifiedwhole-filereadcodepathandfilebytes,NOTexclusivecausalattributionandNOTretroactiveG76explanation.",
+  "compilerOptimizationAccepted": false,
+  "sourceCompilerUnchanged": true,
+  "defaultCutover": false,
+  "newCompilerBuilds": 0,
+  "fullConfirmation": "NOT_RUN_DIAGNOSTIC_ONLY",
+  "ownC3": "NOT_RUN_DIAGNOSTIC_ONLY",
+  "byteFixedpoint": "NOT_RUN_NO_COMPILER_CHANGE",
+  "oldDecisionsAndTimingsNotRescored": true,
+  "ownedSixSourcesRemoved": true,
+  "exactFiveCurrentSourceArchives": "checkpoints/local2039g77d1-runtime-preflight.json",
+  "supersededNativeSourceArchive": "checkpoints/local2039g77d1-cleanup.json",
+  "outsideGit": "Originalcompilerimages,twonativesamplerbinaries,rawheap/GC/physicalarrays,fullcontrollerexecutionandrawreports.",
+  "next": "Boundedstreamingpin-hashverificationpreservingallchecks/whole-treeguards;proposedonly,notclaimedimplementedorqualified."
+}
