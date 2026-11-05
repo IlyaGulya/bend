@@ -1,0 +1,132 @@
+{
+  "schemaVersion": 1,
+  "version": "G72D1",
+  "status": "PROSPECTIVE_AST_LEAF_FRAME_CENSUS_BEFORE_ANY_COUNTERFACTUAL",
+  "previousCPUOnlyCheckpoint": "70d28f8c",
+  "primaryCPUReceipt": {
+    "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g72d0-cpu.json",
+    "sha256": "d47240f913048a9eb40ee677d78b21152424c76ac0c6a872588ce72598d3a1e1"
+  },
+  "decision": "Investigate suspension-free eager direct-call frame elimination, not another scheduler-state/map-representation variant. L0 conservative terminal-leaf AST census; only after real affected hot paths are found earn a separately frozen diagnostic image run. No compiler promotion.",
+  "command": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+    "--memory-mib=8192",
+    "--rss-mib=8192",
+    "--poll-ms=10",
+    "--timeout-ms=120000",
+    "--",
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+    "--max-old-space-size=6144",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g72-cpu-causality-o2arrjf5/leaf-call-census.mjs",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g72-cpu-causality-o2arrjf5/cpu-only-check-summary.json"
+  ],
+  "cwd": "/Users/ilyagulya/Projects/My/bend",
+  "analyzer": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g72-cpu-causality-o2arrjf5/leaf-call-census.mjs",
+    "sha256": "bb14f3ff749a6ee4294053cd04e73fccebe74b30d0ad76e98652ce617bc4012e",
+    "source": "import {readFileSync,writeFileSync,realpathSync} from 'node:fs';\nimport {createHash} from 'node:crypto';\nconst [imagePath,summaryPath,emitPath]=process.argv.slice(2);\nif(!imagePath||!summaryPath)throw Error('Expected IMAGE CPU_SUMMARY [FRESH_DIAGNOSTIC_IMAGE]');\nconst parserModule={exports:{}};\nconst parserSource=process.binding('natives')['internal/deps/acorn/acorn/dist/acorn'];\nnew Function('exports','module',parserSource)(parserModule.exports,parserModule);\nconst source=readFileSync(imagePath,'utf8'),summary=JSON.parse(readFileSync(summaryPath,'utf8'));\nconst program=parserModule.exports.parse(source,{ecmaVersion:'latest',sourceType:'module',locations:true});\nconst hash=value=>createHash('sha256').update(value).digest('hex');\nfunction children(node){const out=[];for(const [key,value]of Object.entries(node)){if(key==='loc')continue;if(Array.isArray(value)){for(const child of value)if(child&&typeof child.type==='string')out.push(child);}else if(value&&typeof value.type==='string')out.push(value);}return out;}\nfunction scan(root,visit){const stack=[root];while(stack.length){const node=stack.pop();visit(node);stack.push(...children(node));}}\nconst declarations=new Map(),primitiveBodies=new Map();\nfor(const node of program.body){if(node.type==='FunctionDeclaration')declarations.set(node.id.name,node);if(node.type==='VariableDeclaration')for(const d of node.declarations)if(d.id.type==='Identifier'&&d.id.name.startsWith('$p_')&&['ArrowFunctionExpression','FunctionExpression'].includes(d.init?.type))primitiveBodies.set(d.id.name,d.init);}\nconst forbidden=new Set(['$TAIL_PENDING','$CALL_PENDING','$LEAVE_PENDING','$BEND_TAIL','$sp','$ksp','$tailFn','$tailCount','$stArgs','$kFn','$kBase','$kKind','$tailArgs','$tailRest','$tailUnary','$leaveThunk']);\nfunction noSuspensionSyntax(body,allowedCalls){let reason;scan(body,node=>{if(reason)return;if(['FunctionExpression','ArrowFunctionExpression','FunctionDeclaration','ClassExpression','ClassDeclaration','AwaitExpression','YieldExpression','NewExpression','ImportExpression','WithStatement'].includes(node.type))reason=node.type;else if(node.type==='Identifier'&&forbidden.has(node.name))reason='scheduler-global:'+node.name;else if(node.type==='CallExpression'&&(node.callee.type!=='Identifier'||!allowedCalls.has(node.callee.name)))reason='unproved-call:'+source.slice(node.callee.start,node.callee.end);});return reason;}\nconst terminalPrimitives=new Set();\nfor(const [name,node]of primitiveBodies)if(!noSuspensionSyntax(node.body,new Set()))terminalPrimitives.add(name);\nfor(const [name,node]of declarations)if(name.startsWith('$p_')&&!noSuspensionSyntax(node.body,new Set()))terminalPrimitives.add(name);\nconst leaves=new Set(),leafRejections={};\nfor(const [name,node]of declarations){if(!/^\\$b[0-9]+$/.test(name))continue;const reason=noSuspensionSyntax(node.body,terminalPrimitives);if(reason)leafRejections[reason]=(leafRejections[reason]??0)+1;else leaves.add(name);}\nconst sites=[],patches=[],parentBodies=new Set(),continuations=new Set();\nfor(const [owner,fn]of declarations){if(!/^\\$[bk][0-9]+$/.test(owner))continue;scan(fn.body,node=>{\n if(node.type!=='BlockStatement')return;\n for(let i=1;i<node.body.length;i++){\n  const decl=node.body[i-1],attempt=node.body[i];\n  if(decl.type!=='VariableDeclaration'||decl.declarations.length!==2||attempt.type!=='TryStatement'||attempt.finalizer||!attempt.handler||attempt.block.body.length!==1)continue;\n  const [base,index]=decl.declarations,ret=attempt.block.body[0],done=ret.argument;\n  if(base.id.type!=='Identifier'||index.id.type!=='Identifier'||base.init?.type!=='BinaryExpression'||base.init.operator!=='-'||base.init.left.type!=='Identifier'||base.init.left.name!=='$sp'||base.init.right.type!=='Literal'||!Number.isSafeInteger(base.init.right.value)||base.init.right.value<0)continue;\n  if(index.init?.type!=='CallExpression'||index.init.callee.type!=='Identifier'||index.init.callee.name!=='$split_enter'||index.init.arguments.length!==2)continue;\n  const [cont,kb]=index.init.arguments;\n  if(cont.type!=='Identifier'||!/^\\$k[0-9]+$/.test(cont.name)||kb.type!=='Identifier'||kb.name!==base.id.name)continue;\n  if(ret.type!=='ReturnStatement'||done?.type!=='CallExpression'||done.callee.type!=='Identifier'||done.callee.name!=='$split_done'||done.arguments.length!==3)continue;\n  const [call,ki,depth]=done.arguments;\n  if(call.type!=='CallExpression'||call.callee.type!=='Identifier'||!leaves.has(call.callee.name)||ki.type!=='Identifier'||ki.name!==index.id.name)continue;\n  if(depth.type!=='BinaryExpression'||depth.operator!=='+'||depth.left.type!=='Identifier'||depth.left.name!=='$td'||depth.right.type!=='Literal'||depth.right.value!==1)continue;\n  if(call.arguments.some(arg=>!['Identifier','Literal','BinaryExpression'].includes(arg.type)))continue;\n  const code=source.slice(ret.start,ret.end),temporary='$g72Leaf_'+ret.start;\n  if(source.includes(temporary))throw Error('Temporary collision');\n  const replacement='const '+temporary+'='+source.slice(call.start,call.end)+';$sp='+base.id.name+';return '+cont.name+'('+temporary+','+base.id.name+','+source.slice(depth.start,depth.end)+');';\n  const site={owner,callee:call.callee.name,continuation:cont.name,spillCount:base.init.right.value,line1:decl.loc.start.line,frameRange:[index.init.start,index.init.end],returnRange:[ret.start,ret.end],originalFrame:source.slice(index.init.start,index.init.end),originalReturn:code,replacement};\n  sites.push(site);parentBodies.add(owner);continuations.add(cont.name);patches.push({start:index.init.start,end:index.init.end,text:'$ksp'},{start:ret.start,end:ret.end,text:replacement});\n }\n});}\npatches.sort((a,b)=>a.start-b.start);for(let i=1;i<patches.length;i++)if(patches[i-1].end>patches[i].start)throw Error('Overlapping AST edits');\nconst relevant=row=>{try{return realpathSync(new URL(row.url))===realpathSync(imagePath);}catch{return false;}};\nconst parentRows=summary.functions.filter(row=>relevant(row)&&parentBodies.has(row.functionName));\nconst continuationRows=summary.functions.filter(row=>relevant(row)&&continuations.has(row.functionName));\nconst result={kind:'CONSERVATIVE_AST_PROVEN_TERMINAL_LEAF_EAGER_FRAME_CENSUS',image:{path:realpathSync(imagePath),sha256:hash(source)},parser:'Acorn bundled in pinned Node '+process.versions.node,sourceBytes:Buffer.byteLength(source),terminalPrimitiveCount:terminalPrimitives.size,leafBodies:leaves.size,leafRejections,sites:sites.length,affectedParentBodies:parentBodies.size,continuations:continuations.size,parentExclusiveShare:parentRows.reduce((sum,row)=>sum+row.selfShare,0),continuationExclusiveShare:continuationRows.reduce((sum,row)=>sum+row.selfShare,0),parentRows,continuationRows,siteDetails:sites,invariants:['AST-proven terminal leaf: no scheduler globals, no closures, no opaque/member/foreign call, only call-free primitive functions','Only eager td<64 branch changes; original depth-exhausted fallback and all public aliases unchanged','Arguments/capture stores/native bodies/quantum64 unchanged; only split_enter frame and split_done marker checks removed','Original catch uses saved pre-frame ksp and split_abort; continuation and its exceptions remain','This is a counterfactual image, NOT source compiler, qualification, fixedpoint or product'],scope:'Affected-parent/continuation self shares contain semantic work; neither is removable overhead or speedup ceiling.'};\nif(emitPath){let output='',at=0;for(const patch of patches){output+=source.slice(at,patch.start)+patch.text;at=patch.end;}output+=source.slice(at);parserModule.exports.parse(output,{ecmaVersion:'latest',sourceType:'module'});writeFileSync(emitPath,output,{flag:'wx'});result.diagnosticImage={path:realpathSync(emitPath),sha256:hash(output),bytes:Buffer.byteLength(output),ASTEdits:patches.length};}\nconsole.log(JSON.stringify(result));\n"
+  },
+  "image": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs",
+    "sha256": "4636c05aa8c75e72212cb03949937e25561942bc00da250f876f37f001b9fc18"
+  },
+  "CPUOnlyProfile": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g72-cpu-causality-o2arrjf5/profiles/04-check.cpuprofile",
+    "sha256": "3bbb43643ba4828014560563cbe51802e84b4eb863df08e6a60120cbdf9b2bae"
+  },
+  "originalSummary": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g72-cpu-causality-o2arrjf5/cpu-only-check-summary.json",
+    "sha256": "e11034b52136e52c91d375b937d905d6aff95fe99db3553db65740d13849c01e"
+  },
+  "physicalFamilyAnalysis": {
+    "command": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "-e",
+      "import {readFileSync} from 'node:fs';\nimport {realpathSync} from 'node:fs';\nimport {mapImage,summarizeProfile} from './evals/selfhost_corpus_cpu.ts';\nconst image=realpathSync(process.argv[1]),profile=JSON.parse(readFileSync(process.argv[2],'utf8'));\nconst map=mapImage(readFileSync(image,'utf8')),result=summarizeProfile(profile,image,map);\nconsole.log(JSON.stringify({kind:'EXISTING_G56_PHYSICAL_RULES_APPLIED_TO_G72_CPU_ONLY',scope:'Physicalsourcefamiliesonly;noNF/equalitysemanticexclusionorlogicalancestryinference',samples:result.samples,sampledMs:result.sampledMs,excludedSamples:result.excludedSamples,unattributedDurationMs:result.unattributedDurationMs,codeMap:{declarations:map.declarations.size,aliasedBodies:map.aliases.size,omissions:map.omissions.length},families:result.families.map(({functionIdentities,...row})=>({...row,functionCount:functionIdentities.length})),functions:result.functions}));\n",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g72-cpu-causality-o2arrjf5/profiles/04-check.cpuprofile"
+    ],
+    "families": [
+      {
+        "family": "scheduler-cps-dispatch",
+        "selfSamples": 9454,
+        "selfMicroseconds": 12565602,
+        "selfSampledMs": 12565.602,
+        "selfShare": 0.18588065524784442,
+        "functionCount": 48
+      },
+      {
+        "family": "checker-body-helper",
+        "selfSamples": 11955,
+        "selfMicroseconds": 15635989,
+        "selfSampledMs": 15635.989,
+        "selfShare": 0.2313003293250962,
+        "functionCount": 2350
+      },
+      {
+        "family": "normalized-helper",
+        "selfSamples": 8782,
+        "selfMicroseconds": 11601740,
+        "selfSampledMs": 11601.74,
+        "selfShare": 0.1716224207336128,
+        "functionCount": 1835
+      },
+      {
+        "family": "arena",
+        "selfSamples": 3349,
+        "selfMicroseconds": 4328888,
+        "selfSampledMs": 4328.888,
+        "selfShare": 0.06403644950194433,
+        "functionCount": 205
+      },
+      {
+        "family": "base-map-scope",
+        "selfSamples": 5735,
+        "selfMicroseconds": 7380832,
+        "selfSampledMs": 7380.832,
+        "selfShare": 0.1091832996488555,
+        "functionCount": 63
+      },
+      {
+        "family": "gc",
+        "selfSamples": 804,
+        "selfMicroseconds": 1156037,
+        "selfSampledMs": 1156.037,
+        "selfShare": 0.01710104418799452,
+        "functionCount": 1
+      },
+      {
+        "family": "runtime-helper",
+        "selfSamples": 48,
+        "selfMicroseconds": 63920,
+        "selfSampledMs": 63.92,
+        "selfShare": 0.0009455568848545588,
+        "functionCount": 3
+      },
+      {
+        "family": "unclassified",
+        "selfSamples": 11153,
+        "selfMicroseconds": 14867367,
+        "selfSampledMs": 14867.367,
+        "selfShare": 0.2199302444697977,
+        "functionCount": 2287
+      }
+    ],
+    "output": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g72-cpu-causality-o2arrjf5/physical-cpu-families.json",
+      "sha256": "4e4e2a3f955cb176ababdc5a471a6f6b435314e471c360cd4fc12116550cfb60"
+    }
+  },
+  "invariants": [
+    "No image mutation in L0",
+    "Original image immutable; any emitted copy diagnostic only",
+    "AST eligibility and td<64 fallback as implemented in recorded analyzer",
+    "No hard CPU ceiling from affected-parent self",
+    "Semantic NF/equality ownership not ruled out by physical fragments"
+  ],
+  "fixedpoint": "NOT_APPLICABLE_DIAGNOSTIC_ONLY"
+}
