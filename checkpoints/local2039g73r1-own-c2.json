@@ -1,0 +1,260 @@
+{
+  "schemaVersion": 1,
+  "version": "local2039g73r1",
+  "status": "PASS_GENUINE_NATIVE_C1_OWN_JS_C2_AND_ACTUAL_SOURCE_ACTIVATION",
+  "preflightCheckpoint": "561eeabb",
+  "command": [
+    "/usr/bin/env",
+    "PATH=/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools:/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/cmux-cli-shims/1AE884FF-4153-438F-922A-7660D416EB20:/Applications/cmux.app/Contents/Resources/bin:/Users/ilyagulya/.antigravity/antigravity/bin:/opt/homebrew/opt/mysql-client/bin:/opt/homebrew/opt/binutils/bin:/Users/ilyagulya/.depot_tools:/opt/homebrew/opt/whois/bin:/Users/ilyagulya/go/bin:/opt/homebrew/opt/curl/bin:/Users/ilyagulya/Library/pnpm:/Users/ilyagulya/.opam/default/bin:/Users/ilyagulya/.bun/bin:/Users/ilyagulya/.local/bin:/Users/ilyagulya/.local/bin:/Users/ilyagulya/fvm/default/bin:/opt/homebrew/opt/ruby/bin:/Users/ilyagulya/.elan/bin:/Library/Frameworks/Python.framework/Versions/3.12/bin:/opt/homebrew/share/google-cloud-sdk/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/pkg/env/global/bin:/opt/X11/bin:/Library/Apple/usr/bin:/Applications/Wireshark.app/Contents/MacOS:/Applications/VMware Fusion.app/Contents/Public:/opt/homebrew/bin:/Users/ilyagulya/.cargo/bin:/Users/ilyagulya/Library/Application Support/JetBrains/Toolbox/scripts:/Users/ilyagulya/.orbstack/bin:/Users/ilyagulya/Library/Android/sdk/platform-tools:/Users/ilyagulya/Library/Android/sdk/build-tools/34.0.0:/Users/ilyagulya/Library/Android/sdk/tools/proguard/bin:/Users/ilyagulya/Library/Android/sdk/emulator:/Users/ilyagulya/Library/Android/sdk/cmdline-tools/latest/bin:/Users/ilyagulya/.spoof-dpi/bin:/Users/ilyagulya/.pub-cache/bin:/Users/ilyagulya/Library/Android/sdk/ndk/26.3.11579264:/Users/ilyagulya/.lmstudio/bin:/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin",
+    "BEND_NO_TELEMETRY=1",
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/repository/evals/selfhost_throughput.mjs",
+    "js",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/real-own-c2-request.json",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/real-own-c2.json"
+  ],
+  "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/repository",
+  "C1": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/real-native-c1.json.mjs",
+    "sha256": "43e50f4f5cc90f0f674e437ecd7479ce6853d032546267d8a7b46dca85df2896"
+  },
+  "C1Receipt": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/repository/checkpoints/local2039g73r1-native-c1.json",
+    "sha256": "f0a63a867260bc45eb386f90eff5c5c7ff51162cdaaa8efb2c805f901fa6c853"
+  },
+  "request": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/real-own-c2-request.json",
+    "sha256": "53b78e179d692ca3601f5a17f12e5a91080569d29565c3545ca5e74d73c975da"
+  },
+  "actualReport": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/real-own-c2.json",
+    "sha256": "88c0cffacbfe960c48b96d95adf6f541f76b009d73191097e68057d499b41c28"
+  },
+  "sourceManifest": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/repository/checkpoints/local2039g73r1-compiler-source.corpus.json",
+    "sha256": "ce94151573d9b739dc60f0b842c4a5c897486e299cb234296d95382eef6637aa"
+  },
+  "C2": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/real-own-c2.json.output.mjs",
+    "sha256": "505d4c08336e6f6312346806d97e2d189b6e0bd5783f829ead6723e62c24edaa"
+  },
+  "pipelineElapsedMs": 341122.29750000004,
+  "sourceDeclarations": 13024,
+  "stepCounts": {
+    "expand": 1070072,
+    "check": 10391314,
+    "emit": 1296221
+  },
+  "phases": [
+    {
+      "phase": "startup",
+      "elapsedMs": 716.319792,
+      "userCpuMs": 615.551,
+      "systemCpuMs": 97.991,
+      "memoryEnd": {
+        "rss": 513474560,
+        "heapTotal": 96190464,
+        "heapUsed": 83909592,
+        "external": 42301989,
+        "arrayBuffers": 31833937
+      }
+    },
+    {
+      "phase": "load-parse",
+      "elapsedMs": 10568.512292,
+      "userCpuMs": 13015.427,
+      "systemCpuMs": 411.166,
+      "memoryEnd": {
+        "rss": 1278214144,
+        "heapTotal": 1072562176,
+        "heapUsed": 812770920,
+        "external": 10493131,
+        "arrayBuffers": 25039
+      }
+    },
+    {
+      "phase": "expand",
+      "elapsedMs": 7046.593624999998,
+      "userCpuMs": 7774.153,
+      "systemCpuMs": 128.448,
+      "memoryEnd": {
+        "rss": 1490894848,
+        "heapTotal": 1223032832,
+        "heapUsed": 1023961736,
+        "external": 10493131,
+        "arrayBuffers": 25039
+      }
+    },
+    {
+      "phase": "check",
+      "elapsedMs": 302173.148959,
+      "userCpuMs": 307595.245,
+      "systemCpuMs": 4373.114,
+      "memoryEnd": {
+        "rss": 1313079296,
+        "heapTotal": 1978155008,
+        "heapUsed": 1671401848,
+        "external": 10487506,
+        "arrayBuffers": 25039
+      }
+    },
+    {
+      "phase": "emit",
+      "elapsedMs": 20612.813124999986,
+      "userCpuMs": 24231.516,
+      "systemCpuMs": 484.184,
+      "memoryEnd": {
+        "rss": 2041872384,
+        "heapTotal": 2288009216,
+        "heapUsed": 2114376480,
+        "external": 10487506,
+        "arrayBuffers": 25039
+      }
+    }
+  ],
+  "guardian": {
+    "status": "PASS",
+    "reason": "command_exit",
+    "commandExitCode": 0,
+    "commandSignal": 0,
+    "peakRssBytes": 2369110016,
+    "peakFootprintBytes": 2872269304,
+    "elapsedMs": 341929,
+    "timeoutMs": 600000,
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 0,
+    "command": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "--experimental-strip-types",
+      "--max-old-space-size=6144",
+      "--max-semi-space-size=128",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/repository/evals/selfhost_throughput.mjs",
+      "--worker",
+      "js",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/real-own-c2-request.json",
+      "53b78e179d692ca3601f5a17f12e5a91080569d29565c3545ca5e74d73c975da",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/real-own-c2.json"
+    ],
+    "label": "Frozen full-root throughput js",
+    "exitCode": 0,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793887570025-14f743591820c7eb.json",
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592
+  },
+  "workerPolicy": {
+    "stackMiB": 256,
+    "oldGenerationMiB": 6144,
+    "youngGenerationMiB": 128
+  },
+  "runtime": {
+    "execPath": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+    "versions": {
+      "node": "23.11.0",
+      "acorn": "8.14.1",
+      "ada": "3.2.1",
+      "amaro": "0.4.1",
+      "ares": "1.34.4",
+      "brotli": "1.1.0",
+      "cjs_module_lexer": "2.1.0",
+      "cldr": "46.0",
+      "icu": "76.1",
+      "llhttp": "9.2.1",
+      "modules": "131",
+      "napi": "10",
+      "nbytes": "0.1.1",
+      "ncrypto": "0.0.1",
+      "nghttp2": "1.64.0",
+      "openssl": "3.0.16",
+      "simdjson": "3.12.2",
+      "simdutf": "6.0.3",
+      "sqlite": "3.49.1",
+      "tz": "2025a",
+      "undici": "6.21.2",
+      "unicode": "16.0",
+      "uv": "1.50.0",
+      "uvwasi": "0.0.21",
+      "v8": "12.9.202.28-node.14",
+      "zlib": "1.3.0.1-motley-788cb3c",
+      "zstd": "1.5.6"
+    },
+    "execArgv": [
+      "--experimental-strip-types",
+      "--max-old-space-size=6144",
+      "--max-semi-space-size=128"
+    ],
+    "heapLimitBytes": 6845104128
+  },
+  "activation": {
+    "status": "ACTUAL_GENUINE_IMAGE_AST_ACTIVATION_CENSUS",
+    "rows": [
+      {
+        "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/real-native-c1.json.mjs",
+        "sha256": "43e50f4f5cc90f0f674e437ecd7479ce6853d032546267d8a7b46dca85df2896",
+        "bytes": 31807498,
+        "elidedEagerSites": 0,
+        "genericEagerSites": 15082,
+        "examples": []
+      },
+      {
+        "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/real-own-c2.json.output.mjs",
+        "sha256": "505d4c08336e6f6312346806d97e2d189b6e0bd5783f829ead6723e62c24edaa",
+        "bytes": 31801158,
+        "elidedEagerSites": 1268,
+        "genericEagerSites": 13814,
+        "examples": [
+          {
+            "begin": 24510571,
+            "end": 24510721,
+            "source": "if($td<64){const $kb=$sp-1,$ki=$ksp;try{const $x=$b12502($a0,$td+1);$sp=$kb;return $k274361($x,$kb,$td+1);}catch($e){$split_abort($ki,$kb);throw $e;}}"
+          },
+          {
+            "begin": 24510155,
+            "end": 24510313,
+            "source": "if($td<64){const $kb=$sp-0,$ki=$ksp;try{const $x=$b11339($a0,$a1,$a2,$td+1);$sp=$kb;return $k274365($x,$kb,$td+1);}catch($e){$split_abort($ki,$kb);throw $e;}}"
+          },
+          {
+            "begin": 24281873,
+            "end": 24282023,
+            "source": "if($td<64){const $kb=$sp-1,$ki=$ksp;try{const $x=$b12447($a0,$td+1);$sp=$kb;return $k268760($x,$kb,$td+1);}catch($e){$split_abort($ki,$kb);throw $e;}}"
+          },
+          {
+            "begin": 24281266,
+            "end": 24281420,
+            "source": "if($td<64){const $kb=$sp-1,$ki=$ksp;try{const $x=$b11291($a0,$a1,$td+1);$sp=$kb;return $k268754($x,$kb,$td+1);}catch($e){$split_abort($ki,$kb);throw $e;}}"
+          },
+          {
+            "begin": 24280746,
+            "end": 24280900,
+            "source": "if($td<64){const $kb=$sp-0,$ki=$ksp;try{const $x=$b12445($a0,$a1,$td+1);$sp=$kb;return $k268751($x,$kb,$td+1);}catch($e){$split_abort($ki,$kb);throw $e;}}"
+          }
+        ]
+      }
+    ],
+    "scope": "ASTformsinrealC1/C2,notstringliterals,cachedASTorreconstructedimage;staticactivationnotdynamiccountorCPUgain"
+  },
+  "activationCommand": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+    "--memory-mib=8192",
+    "--rss-mib=8192",
+    "--poll-ms=10",
+    "--timeout-ms=120000",
+    "--",
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+    "--max-old-space-size=6144",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/activation-census.mjs",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/real-native-c1.json.mjs",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/real-own-c2.json.output.mjs"
+  ],
+  "activationProbe": {
+    "identity": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/activation-census.mjs",
+      "sha256": "bca60ddb5520f4027119420abcbf3646eaa452d32d705bdc171fdbdd31399122"
+    },
+    "source": "import{readFileSync}from'node:fs';\nimport{createHash}from'node:crypto';\nconst parser={exports:{}};new Function('exports','module',process.binding('natives')['internal/deps/acorn/acorn/dist/acorn'])(parser.exports,parser);\nconst rows=[];\nfor(const path of process.argv.slice(2)){\n const source=readFileSync(path,'utf8'),program=parser.exports.parse(source,{ecmaVersion:'latest',sourceType:'module'});\n let elided=0,generic=0;const examples=[];const stack=[program];\n while(stack.length){const node=stack.pop();\n  if(node.type==='IfStatement'&&node.test.type==='BinaryExpression'&&node.test.operator==='<'&&node.test.left.name==='$td'&&node.test.right.value===64&&node.consequent.type==='BlockStatement'){\n   const declaration=node.consequent.body[0];if(declaration?.type==='VariableDeclaration'&&declaration.declarations.length===2){const index=declaration.declarations[1];if(index.id.name==='$ki'){\n    if(index.init?.type==='Identifier'&&index.init.name==='$ksp'){elided++;if(examples.length<5)examples.push({begin:node.start,end:node.end,source:source.slice(node.start,Math.min(node.end,node.start+300))});}\n    else if(index.init?.type==='CallExpression'&&index.init.callee.name==='$split_enter')generic++;\n   }}\n  }\n  for(const value of Object.values(node)){if(Array.isArray(value)){for(const child of value)if(child&&typeof child.type==='string')stack.push(child);}else if(value&&typeof value.type==='string')stack.push(value);}\n }\n rows.push({path,sha256:createHash('sha256').update(source).digest('hex'),bytes:Buffer.byteLength(source),elidedEagerSites:elided,genericEagerSites:generic,examples});\n}\nconsole.log(JSON.stringify({status:'ACTUAL_GENUINE_IMAGE_AST_ACTIVATION_CENSUS',rows,scope:'ASTformsinrealC1/C2,notstringliterals,cachedASTorreconstructedimage;staticactivationnotdynamiccountorCPUgain'}));\n"
+  },
+  "scope": "Actualfreshownsourceproduction\u2014notmatchedperformance,notbytefixedpoint. ConservativeBIRactivation1268sitesnot10739ASTcounterfactualsites. NoASTtransport/imagepatch/profiler/forcedGC/consumerinference."
+}
