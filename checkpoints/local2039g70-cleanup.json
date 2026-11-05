@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "version": "G70D0-D1",
+  "status": "SEVEN_OWNED_DIAGNOSTIC_SCRIPTS_REMOVED_AFTER_PROOF",
+  "removedScripts": [
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g70-peak-owners-obke30h6/full-root-paths.py",
+      "sha256": "3879444dbcf541a191bfdb06b4eb9977bf2343fe226210d9267a4a72b9fd190c"
+    },
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g70-peak-owners-obke30h6/gc-timeline.mjs",
+      "sha256": "4f8a2e1ad582eaef426e66fefe50484fa11f69e366f814f30d1594bfa5025c6a"
+    },
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g70-peak-owners-obke30h6/diagnostic-controller.mjs",
+      "sha256": "72b9a9c2cb9b5eb468637a51bf54eab5e6096af4d43bb6e59763908799125b3b"
+    },
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g70-peak-owners-obke30h6/root-paths-and-literals.py",
+      "sha256": "ac493aca2731c441fede7c35790614863a16d02302a93dd4dfcd5b6c666247c4"
+    },
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g70-peak-owners-obke30h6/root-cut-query.py",
+      "sha256": "530052045ec8d4cd0efbae9db69257929d281454817845699f104bd65fe456d1"
+    },
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g70-peak-owners-obke30h6/initialized-step-runtime.mjs",
+      "sha256": "1ff719f153758f765f555ffef8d91a07c12c67b967cfd4dfc63e1e2e966b7c5a"
+    },
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g70-peak-owners-obke30h6/initialized-snapshot-probe.mjs",
+      "sha256": "98a3af700803e7628c8ffcae6e523bb12328bf616f069d60006f944a1bf2a910"
+    }
+  ],
+  "scope": "Onlyownedtemporaryscriptsremoved. Original/newheapsnapshotsandbulkGC/rootreportsremainoutsideGit; exactsources+commandsareinpreflightreceipts. No permanenttests/docsorcompilerAPIchangeinthisinvestigation.",
+  "sourcesAndImagesUnchanged": {
+    "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g70-closing-hashes.json",
+    "sha256": "c9586c9179c61aba12cd7d407346059c74d79d858b26af9b1fb9b9bb4d9a312a"
+  },
+  "samplerCorrectionVerified": "V8inspectorretrievalforcesfullGC; olduncollectedprofileisnotnaturalpeak-live.",
+  "retractedRssClaim": "NoDarwinmaxRSSbug:Node23.11.0vendoredlibuvuv__getrusage dividesDarwinbytesby1024. Existingprofiler*1024conversioncorrect;nochange made. https://github.com/nodejs/node/blob/v23.11.0/deps/uv/src/unix/core.c#L973-L1002",
+  "noPerformanceOrSelfhostGreenClaim": true,
+  "unrelatedProcessesOrSettingsChanged": false
+}

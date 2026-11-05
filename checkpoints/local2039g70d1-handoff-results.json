@@ -1,0 +1,782 @@
+{
+  "schemaVersion": 1,
+  "version": "G70D1",
+  "status": "HOST_INPUT_FRAME_HANDOFF_STRUCTURAL_HYPOTHESIS_SUPPORTED_NOT_FULLCHECK_OR_COST_QUALIFIED",
+  "preflightCheckpoint": "69ff0317",
+  "captureCheckpoint": "ed9b0431",
+  "D0FindingsCheckpoint": "362697f4",
+  "image": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs",
+    "sha256": "4636c05aa8c75e72212cb03949937e25561942bc00da250f876f37f001b9fc18"
+  },
+  "capture": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g70-peak-owners-obke30h6/handoff-A-snapshot.json",
+    "sha256": "0032e85cb702a5622f74db57fdf34e1a516f55a56cde7c12b2a1d09c3c3e507b"
+  },
+  "snapshot": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g70-peak-owners-obke30h6/handoff-A-snapshot.json.heapsnapshot",
+    "sha256": "b2d97d5942c5f301348a425148ce18718f8d356960a9f04f5fb2c23f3e9cd602"
+  },
+  "graphQuery": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g70-peak-owners-obke30h6/root-paths-and-literals.py",
+    "sha256": "ac493aca2731c441fede7c35790614863a16d02302a93dd4dfcd5b6c666247c4"
+  },
+  "graphReport": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g70-peak-owners-obke30h6/handoff-A-root-spines-and-literals.json",
+    "sha256": "866fc557471676636dafbcd97a04e59934b2d86f00dbe35211dfffedbbe164ef"
+  },
+  "comparison": {
+    "oldPostGCShallowBytes": 324809598,
+    "newPostGCShallowBytes": 296717206,
+    "observedShallowDifference": 28092392,
+    "oldNodeCount": 4255935,
+    "newNodeCount": 3633040,
+    "tagGroupsBefore": {
+      "ast_nonSpan_tagged": {
+        "taggedNodes": 309269,
+        "shallowBytes": 15962328,
+        "nonWeakRootReachable": 309269
+      },
+      "ast_SpanOf": {
+        "taggedNodes": 232709,
+        "shallowBytes": 13031704,
+        "nonWeakRootReachable": 232709
+      },
+      "checker_arena_tagged": {
+        "taggedNodes": 519212,
+        "shallowBytes": 31309064,
+        "nonWeakRootReachable": 519212
+      },
+      "checker_ir_tagged": {
+        "taggedNodes": 280181,
+        "shallowBytes": 16156760,
+        "nonWeakRootReachable": 280181
+      }
+    },
+    "tagGroupsAfter": {
+      "ast_nonSpan_tagged": {
+        "taggedNodes": 57411,
+        "shallowBytes": 1914184,
+        "nonWeakRootReachable": 57411
+      },
+      "ast_SpanOf": {
+        "taggedNodes": 220895,
+        "shallowBytes": 12370120,
+        "nonWeakRootReachable": 220895
+      },
+      "checker_arena_tagged": {
+        "taggedNodes": 519212,
+        "shallowBytes": 31309064,
+        "nonWeakRootReachable": 519212
+      },
+      "checker_ir_tagged": {
+        "taggedNodes": 280181,
+        "shallowBytes": 16156760,
+        "nonWeakRootReachable": 280181
+      }
+    },
+    "ArenaTaggedCountAndBytesUnchanged": true,
+    "IRTaggedCountAndBytesUnchanged": true,
+    "scope": "Sameimageand1mstepbutseparatediagnosticprocesses/snapshotGC. ActualASTrootpopulationdisappearanceandunchangedArena/IRsupportlifetimehypothesis. NumericshallowdeltaisNOTqualifiedpeakRAMorCPUgain."
+  },
+  "newRepresentativeLoadedModuleSamples": [
+    {
+      "node": {
+        "index": 1870460,
+        "type": "object",
+        "name": "Object",
+        "tag": "../bend2/selfhost/loaded_module.LoadedModule",
+        "selfBytes": 48
+      },
+      "holes": [
+        "namespace",
+        "module"
+      ],
+      "path": {
+        "reachable": true,
+        "truncated": false,
+        "rawEdgeCount": 10,
+        "compressedEdgeCount": 10,
+        "nodes": [
+          {
+            "from": {
+              "index": 0,
+              "type": "synthetic",
+              "name": "",
+              "tag": null,
+              "selfBytes": 0
+            },
+            "edgeType": "element",
+            "edge": "1",
+            "to": {
+              "index": 1,
+              "type": "synthetic",
+              "name": "(GC roots)",
+              "tag": null,
+              "selfBytes": 0
+            }
+          },
+          {
+            "from": {
+              "index": 1,
+              "type": "synthetic",
+              "name": "(GC roots)",
+              "tag": null,
+              "selfBytes": 0
+            },
+            "edgeType": "element",
+            "edge": "19",
+            "to": {
+              "index": 20,
+              "type": "synthetic",
+              "name": "(Stack roots)",
+              "tag": null,
+              "selfBytes": 0
+            }
+          },
+          {
+            "from": {
+              "index": 20,
+              "type": "synthetic",
+              "name": "(Stack roots)",
+              "tag": null,
+              "selfBytes": 0
+            },
+            "edgeType": "internal",
+            "edge": "72",
+            "to": {
+              "index": 3308,
+              "type": "object",
+              "name": "Object",
+              "tag": null,
+              "selfBytes": 56
+            }
+          },
+          {
+            "from": {
+              "index": 3308,
+              "type": "object",
+              "name": "Object",
+              "tag": null,
+              "selfBytes": 56
+            },
+            "edgeType": "property",
+            "edge": "parsed_module",
+            "to": {
+              "index": 708688,
+              "type": "closure",
+              "name": "",
+              "tag": null,
+              "selfBytes": 64
+            }
+          },
+          {
+            "from": {
+              "index": 708688,
+              "type": "closure",
+              "name": "",
+              "tag": null,
+              "selfBytes": 64
+            },
+            "edgeType": "internal",
+            "edge": "context",
+            "to": {
+              "index": 279626,
+              "type": "object",
+              "name": "system / Context",
+              "tag": null,
+              "selfBytes": 319424
+            }
+          },
+          {
+            "from": {
+              "index": 279626,
+              "type": "object",
+              "name": "system / Context",
+              "tag": null,
+              "selfBytes": 319424
+            },
+            "edgeType": "context",
+            "edge": "$k18454",
+            "to": {
+              "index": 393519,
+              "type": "closure",
+              "name": "$k18454",
+              "tag": null,
+              "selfBytes": 64
+            }
+          },
+          {
+            "from": {
+              "index": 393519,
+              "type": "closure",
+              "name": "$k18454",
+              "tag": null,
+              "selfBytes": 64
+            },
+            "edgeType": "internal",
+            "edge": "feedback_cell",
+            "to": {
+              "index": 283775,
+              "type": "code",
+              "name": "system / FeedbackCell",
+              "tag": null,
+              "selfBytes": 24
+            }
+          },
+          {
+            "from": {
+              "index": 283775,
+              "type": "code",
+              "name": "system / FeedbackCell",
+              "tag": null,
+              "selfBytes": 24
+            },
+            "edgeType": "internal",
+            "edge": "value",
+            "to": {
+              "index": 283776,
+              "type": "code",
+              "name": "system / FeedbackVector",
+              "tag": null,
+              "selfBytes": 664
+            }
+          },
+          {
+            "from": {
+              "index": 283776,
+              "type": "code",
+              "name": "system / FeedbackVector",
+              "tag": null,
+              "selfBytes": 664
+            },
+            "edgeType": "hidden",
+            "edge": "16",
+            "to": {
+              "index": 1870410,
+              "type": "code",
+              "name": "system / AllocationSite",
+              "tag": null,
+              "selfBytes": 48
+            }
+          },
+          {
+            "from": {
+              "index": 1870410,
+              "type": "code",
+              "name": "system / AllocationSite",
+              "tag": null,
+              "selfBytes": 48
+            },
+            "edgeType": "internal",
+            "edge": "transition_info",
+            "to": {
+              "index": 1870460,
+              "type": "object",
+              "name": "Object",
+              "tag": "../bend2/selfhost/loaded_module.LoadedModule",
+              "selfBytes": 48
+            }
+          }
+        ],
+        "shortcutEdges": 0
+      }
+    },
+    {
+      "node": {
+        "index": 1870920,
+        "type": "object",
+        "name": "Object",
+        "tag": "../bend2/selfhost/loaded_module.LoadedModule",
+        "selfBytes": 48
+      },
+      "holes": [
+        "namespace",
+        "module"
+      ],
+      "path": {
+        "reachable": true,
+        "truncated": false,
+        "rawEdgeCount": 10,
+        "compressedEdgeCount": 10,
+        "nodes": [
+          {
+            "from": {
+              "index": 0,
+              "type": "synthetic",
+              "name": "",
+              "tag": null,
+              "selfBytes": 0
+            },
+            "edgeType": "element",
+            "edge": "1",
+            "to": {
+              "index": 1,
+              "type": "synthetic",
+              "name": "(GC roots)",
+              "tag": null,
+              "selfBytes": 0
+            }
+          },
+          {
+            "from": {
+              "index": 1,
+              "type": "synthetic",
+              "name": "(GC roots)",
+              "tag": null,
+              "selfBytes": 0
+            },
+            "edgeType": "element",
+            "edge": "19",
+            "to": {
+              "index": 20,
+              "type": "synthetic",
+              "name": "(Stack roots)",
+              "tag": null,
+              "selfBytes": 0
+            }
+          },
+          {
+            "from": {
+              "index": 20,
+              "type": "synthetic",
+              "name": "(Stack roots)",
+              "tag": null,
+              "selfBytes": 0
+            },
+            "edgeType": "internal",
+            "edge": "72",
+            "to": {
+              "index": 3308,
+              "type": "object",
+              "name": "Object",
+              "tag": null,
+              "selfBytes": 56
+            }
+          },
+          {
+            "from": {
+              "index": 3308,
+              "type": "object",
+              "name": "Object",
+              "tag": null,
+              "selfBytes": 56
+            },
+            "edgeType": "property",
+            "edge": "parsed_module",
+            "to": {
+              "index": 708688,
+              "type": "closure",
+              "name": "",
+              "tag": null,
+              "selfBytes": 64
+            }
+          },
+          {
+            "from": {
+              "index": 708688,
+              "type": "closure",
+              "name": "",
+              "tag": null,
+              "selfBytes": 64
+            },
+            "edgeType": "internal",
+            "edge": "context",
+            "to": {
+              "index": 279626,
+              "type": "object",
+              "name": "system / Context",
+              "tag": null,
+              "selfBytes": 319424
+            }
+          },
+          {
+            "from": {
+              "index": 279626,
+              "type": "object",
+              "name": "system / Context",
+              "tag": null,
+              "selfBytes": 319424
+            },
+            "edgeType": "context",
+            "edge": "$k22502",
+            "to": {
+              "index": 394344,
+              "type": "closure",
+              "name": "$k22502",
+              "tag": null,
+              "selfBytes": 64
+            }
+          },
+          {
+            "from": {
+              "index": 394344,
+              "type": "closure",
+              "name": "$k22502",
+              "tag": null,
+              "selfBytes": 64
+            },
+            "edgeType": "internal",
+            "edge": "feedback_cell",
+            "to": {
+              "index": 284730,
+              "type": "code",
+              "name": "system / FeedbackCell",
+              "tag": null,
+              "selfBytes": 24
+            }
+          },
+          {
+            "from": {
+              "index": 284730,
+              "type": "code",
+              "name": "system / FeedbackCell",
+              "tag": null,
+              "selfBytes": 24
+            },
+            "edgeType": "internal",
+            "edge": "value",
+            "to": {
+              "index": 284731,
+              "type": "code",
+              "name": "system / FeedbackVector",
+              "tag": null,
+              "selfBytes": 336
+            }
+          },
+          {
+            "from": {
+              "index": 284731,
+              "type": "code",
+              "name": "system / FeedbackVector",
+              "tag": null,
+              "selfBytes": 336
+            },
+            "edgeType": "hidden",
+            "edge": "11",
+            "to": {
+              "index": 1870912,
+              "type": "code",
+              "name": "system / AllocationSite",
+              "tag": null,
+              "selfBytes": 48
+            }
+          },
+          {
+            "from": {
+              "index": 1870912,
+              "type": "code",
+              "name": "system / AllocationSite",
+              "tag": null,
+              "selfBytes": 48
+            },
+            "edgeType": "internal",
+            "edge": "transition_info",
+            "to": {
+              "index": 1870920,
+              "type": "object",
+              "name": "Object",
+              "tag": "../bend2/selfhost/loaded_module.LoadedModule",
+              "selfBytes": 48
+            }
+          }
+        ],
+        "shortcutEdges": 0
+      }
+    },
+    {
+      "node": {
+        "index": 1983430,
+        "type": "object",
+        "name": "Object",
+        "tag": "../bend2/selfhost/loaded_module.LoadedModule",
+        "selfBytes": 48
+      },
+      "holes": [
+        "namespace",
+        "module"
+      ],
+      "path": {
+        "reachable": true,
+        "truncated": false,
+        "rawEdgeCount": 10,
+        "compressedEdgeCount": 10,
+        "nodes": [
+          {
+            "from": {
+              "index": 0,
+              "type": "synthetic",
+              "name": "",
+              "tag": null,
+              "selfBytes": 0
+            },
+            "edgeType": "element",
+            "edge": "1",
+            "to": {
+              "index": 1,
+              "type": "synthetic",
+              "name": "(GC roots)",
+              "tag": null,
+              "selfBytes": 0
+            }
+          },
+          {
+            "from": {
+              "index": 1,
+              "type": "synthetic",
+              "name": "(GC roots)",
+              "tag": null,
+              "selfBytes": 0
+            },
+            "edgeType": "element",
+            "edge": "19",
+            "to": {
+              "index": 20,
+              "type": "synthetic",
+              "name": "(Stack roots)",
+              "tag": null,
+              "selfBytes": 0
+            }
+          },
+          {
+            "from": {
+              "index": 20,
+              "type": "synthetic",
+              "name": "(Stack roots)",
+              "tag": null,
+              "selfBytes": 0
+            },
+            "edgeType": "internal",
+            "edge": "72",
+            "to": {
+              "index": 3308,
+              "type": "object",
+              "name": "Object",
+              "tag": null,
+              "selfBytes": 56
+            }
+          },
+          {
+            "from": {
+              "index": 3308,
+              "type": "object",
+              "name": "Object",
+              "tag": null,
+              "selfBytes": 56
+            },
+            "edgeType": "property",
+            "edge": "parsed_module",
+            "to": {
+              "index": 708688,
+              "type": "closure",
+              "name": "",
+              "tag": null,
+              "selfBytes": 64
+            }
+          },
+          {
+            "from": {
+              "index": 708688,
+              "type": "closure",
+              "name": "",
+              "tag": null,
+              "selfBytes": 64
+            },
+            "edgeType": "internal",
+            "edge": "context",
+            "to": {
+              "index": 279626,
+              "type": "object",
+              "name": "system / Context",
+              "tag": null,
+              "selfBytes": 319424
+            }
+          },
+          {
+            "from": {
+              "index": 279626,
+              "type": "object",
+              "name": "system / Context",
+              "tag": null,
+              "selfBytes": 319424
+            },
+            "edgeType": "context",
+            "edge": "$b12494",
+            "to": {
+              "index": 353022,
+              "type": "closure",
+              "name": "$b12494",
+              "tag": null,
+              "selfBytes": 64
+            }
+          },
+          {
+            "from": {
+              "index": 353022,
+              "type": "closure",
+              "name": "$b12494",
+              "tag": null,
+              "selfBytes": 64
+            },
+            "edgeType": "internal",
+            "edge": "feedback_cell",
+            "to": {
+              "index": 333000,
+              "type": "code",
+              "name": "system / FeedbackCell",
+              "tag": null,
+              "selfBytes": 24
+            }
+          },
+          {
+            "from": {
+              "index": 333000,
+              "type": "code",
+              "name": "system / FeedbackCell",
+              "tag": null,
+              "selfBytes": 24
+            },
+            "edgeType": "internal",
+            "edge": "value",
+            "to": {
+              "index": 333001,
+              "type": "code",
+              "name": "system / FeedbackVector",
+              "tag": null,
+              "selfBytes": 96
+            }
+          },
+          {
+            "from": {
+              "index": 333001,
+              "type": "code",
+              "name": "system / FeedbackVector",
+              "tag": null,
+              "selfBytes": 96
+            },
+            "edgeType": "hidden",
+            "edge": "3",
+            "to": {
+              "index": 1595521,
+              "type": "code",
+              "name": "system / AllocationSite",
+              "tag": null,
+              "selfBytes": 48
+            }
+          },
+          {
+            "from": {
+              "index": 1595521,
+              "type": "code",
+              "name": "system / AllocationSite",
+              "tag": null,
+              "selfBytes": 48
+            },
+            "edgeType": "internal",
+            "edge": "transition_info",
+            "to": {
+              "index": 1983430,
+              "type": "object",
+              "name": "Object",
+              "tag": "../bend2/selfhost/loaded_module.LoadedModule",
+              "selfBytes": 48
+            }
+          }
+        ],
+        "shortcutEdges": 0
+      }
+    }
+  ],
+  "allNewSelectedLoadedModuleSamplesAreHoleBoilerplates": true,
+  "fieldMatchesConditionalPrediction": {
+    "nonSpanAstShallowDifference": 14048144,
+    "spanShallowDifference": 661584,
+    "oldConditionalInputCut": {
+      "query": "hypothetical_input_list_object_removal",
+      "removedNodeIndexes": [
+        3316
+      ],
+      "removedEdgeIndexes": [],
+      "remainingReachableNodes": 3632572,
+      "lostPreviouslyNonweakReachableNodes": 623355,
+      "lostShallowBytes": 28138680,
+      "inputListStillReachable": false,
+      "lostTaggedGroupShallowBytes": {
+        "1": 14048144,
+        "2": 661584
+      },
+      "topLostTagShallowBytes": [
+        {
+          "tag": "Con",
+          "bytes": 6952992
+        },
+        {
+          "tag": "Nil",
+          "bytes": 3076384
+        },
+        {
+          "tag": "../bend2/selfhost/ast.TermCtr",
+          "bytes": 2414216
+        },
+        {
+          "tag": "../bend2/selfhost/ast.TermRef",
+          "bytes": 2186256
+        },
+        {
+          "tag": "../bend2/selfhost/ast.Binder",
+          "bytes": 1453680
+        },
+        {
+          "tag": "../bend2/selfhost/ast.TermVar",
+          "bytes": 1364832
+        },
+        {
+          "tag": "../bend2/selfhost/ast.PatternCtr",
+          "bytes": 1322160
+        },
+        {
+          "tag": "../bend2/selfhost/ast.TermApp",
+          "bytes": 1246504
+        },
+        {
+          "tag": "../bend2/selfhost/ast.PatternVar",
+          "bytes": 1176832
+        },
+        {
+          "tag": "../bend2/selfhost/ast.SpanOf",
+          "bytes": 661584
+        },
+        {
+          "tag": "../bend2/selfhost/ast.TermFill",
+          "bytes": 537880
+        },
+        {
+          "tag": "../bend2/selfhost/ast.BodyReply",
+          "bytes": 414672
+        },
+        {
+          "tag": "../bend2/selfhost/ast.TermQuantity",
+          "bytes": 409728
+        },
+        {
+          "tag": "../bend2/selfhost/ast.BodyCase",
+          "bytes": 380688
+        },
+        {
+          "tag": "../bend2/selfhost/ast.Definition",
+          "bytes": 196240
+        }
+      ]
+    }
+  },
+  "conclusion": "InputhandoffremovesobservedrawmoduleASTrootretentionwithoutdroppingthepackedArena/IRset; expectedASTtagbytechangesmatchexactly. SnapshotCode/VMshallowvaluesdifferandareNOTphysicalpeak orCPUproof. Cannot inferallruntimeASTabsencefromrepresentativesalone.",
+  "nextPermanentMechanism": "Separate checker initialization from long-running driver: initializer function returnsnativeRun afteritsrawargumentframehasreturned. Migrate every oldrunCheckerSteps caller toexplicitinitializedentry, no old-APIalias/shim. KeepallnativeRunABIvalidation andBendimagebyteidentity.",
+  "beforeAnyAcceptance": [
+    "Fullrealconsumercontracts",
+    "Fullunchangedselectedcheck",
+    "Freshsame-imageold/new-drivercostprotocolwithunchangedguard/runtime/corpusandnoprofiling"
+  ],
+  "permanentCodeChanged": false,
+  "qualifiedRamOrCpuGain": false,
+  "selfhostGreen": false
+}

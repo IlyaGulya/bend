@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "version": "G70D0-D1",
+  "status": "DIAGNOSTICS_COMPLETE_INITIALIZER_HANDOFF_STRUCTURALLY_SUPPORTED_NOT_PERFORMANCE_QUALIFIED",
+  "sourceCheckpoints": {
+    "D0Protocol": "ea9badba",
+    "D0FullRootQuery": "efd69f87",
+    "noSamplerGCCapture": "b2e4fa9f",
+    "completeRootSpines": "ea36fe28",
+    "conditionalRootCuts": "29cac41b",
+    "D0Findings": "362697f4",
+    "D1ProspectiveHandoff": "69ff0317",
+    "actualD1Capture": "ed9b0431"
+  },
+  "receipts": [
+    {
+      "repositoryPath": "checkpoints/local2039g70d0-protocol.json",
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g70d0-protocol.json",
+      "sha256": "49404e9712b45330293b55c1c11607b03e7f0f6d4b285089557c97560e22910d",
+      "bytes": 10828
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g70d0-root-query.json",
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g70d0-root-query.json",
+      "sha256": "f71d53d5661627390c9101b954a4a7bcaf89f3336ad0505830e13758d35be052",
+      "bytes": 9896
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g70d0-gc-preflight.json",
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g70d0-gc-preflight.json",
+      "sha256": "ddb92347f29c039979a46406ea7dd39bbead82c535b3d89b1d79cb7beee9e52f",
+      "bytes": 44027
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g70d0-root-spine-query.json",
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g70d0-root-spine-query.json",
+      "sha256": "f8da263c1728b0b96a7b596a8f7cc924389d5000b49b55152d819eee138fc10a",
+      "bytes": 13072
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g70d0-root-cut-query.json",
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g70d0-root-cut-query.json",
+      "sha256": "87be1ff28eb41eece1357de727f83399d964d09808eeb52bd57b80ecad762179",
+      "bytes": 15386
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g70d0-gc-evidence.json",
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g70d0-gc-evidence.json",
+      "sha256": "dbdcad7f421812ca7a0e3e13a2b6d9a11d142ea611902c27da5aaca24a0d424c",
+      "bytes": 24478
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g70d0-findings.json",
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g70d0-findings.json",
+      "sha256": "77242b3c8cdaa3e218041e2ffaf92169ddace0fea6c442e7bedd2c14a6e3d590",
+      "bytes": 58610
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g70d1-handoff-preflight.json",
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g70d1-handoff-preflight.json",
+      "sha256": "1ede7c1d3acafaa14ceba306fba26ec7ddf68f35981ba201884f900939bf9a14",
+      "bytes": 44594
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g70d1-handoff-capture.json",
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g70d1-handoff-capture.json",
+      "sha256": "24fa1264f1c08ec27249a28cce68b55520113decefe99c78cae6483dd7211c33",
+      "bytes": 32472
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g70d1-handoff-results.json",
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g70d1-handoff-results.json",
+      "sha256": "ddaade97e7c7c0d61e84445fef3e9431d5194d838409bb3cc4c9d66c7c4022cd",
+      "bytes": 22144
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g70-closing-hashes.json",
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g70-closing-hashes.json",
+      "sha256": "c9586c9179c61aba12cd7d407346059c74d79d858b26af9b1fb9b9bb4d9a312a",
+      "bytes": 18996
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g70-cleanup.json",
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g70-cleanup.json",
+      "sha256": "8e28604789ef52652166b6b646b35187af91d459be1fd2a843bddb5e83ef160f",
+      "bytes": 2783
+    }
+  ],
+  "actualEvidence": "Twofullsame52file/17module2954decl/263032expand/1975761checkGCdiagnosticsPASSwithoutinspector/sampler/snapshot/forcedGC. FulloldVMrootgraph4255935nodes/17964503edges. D1sameimage,same1m-prefixsnapshot; expectedASTrootremovedfromrepresentatives,postGCshallowgraphdrops28092392B,ArenaandIRtaggedcounts/bytesEXACTLYunchanged.",
+  "hypothesisStatus": "Supportedstructuralinput-lifetimecause,notpeakRAM/CPUgain. Prefixonly,code/mainAPIunchanged; fullconsumerandcleanperformancequalificationrequiredbeforeproductioncutover.",
+  "newMechanism": "FactoryinitializationreturnsnativeRunbeforelongdriveloop; removesrawmoduleargumentsfrompersistenthostframes. NoBend/imagechange orC1/C2regeneration required.",
+  "negativeFindings": [
+    "per-declarationreleasealreadyimplemented",
+    "zeroexactliteralpointerduplicatesoutof1122validArenaTermStringnodes",
+    "scratchonlycut1105816Bnot28MBinputroot",
+    "taggedRunStatecountsinclude3VMboilerplates"
+  ],
+  "rawArtifactsPolicy": "Heapsnapshots,bulkprofiles/graphs/logsandtemporaryscriptsoutofGit. Investigationaddsstructuredcheckpointreceipts,no permanenttests/docs.",
+  "next": "Permanentexplicitinitialized-checkerentry+allcallermigration andactualconsumer/costverification, in separatecheckpointedworktree."
+}
