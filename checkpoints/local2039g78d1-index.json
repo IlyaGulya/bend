@@ -1,0 +1,87 @@
+{
+  "schemaVersion": 1,
+  "version": "local2039g78d1",
+  "status": "COMPLETED_REJECTED_OR_INCONCLUSIVE_GLOBAL_QUALIFICATION_LOCAL_VERIFICATION_CPU_GAIN_OBSERVED",
+  "experimentalBranch": "selfhost/g78-hash-623_t7sq",
+  "candidateSourceCheckpoint": "62ddcd40",
+  "preflightCheckpoint": "ae8f9306",
+  "sourceReceipts": [
+    {
+      "repositoryPath": "checkpoints/local2039g78d1-protocol.json",
+      "sha256": "71e779fbea75e7bcaaf1716eaf60438502396c623d21c3e004072069cb3347a8"
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g78d1-smoke-preflight.json",
+      "sha256": "301a7ea5c360c40fde7a4d0752ab537feb832ecbaa2b9ab91ac875b58175f643"
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g78d1-runtime-preflight.json",
+      "sha256": "e9343570bac974b512ee2b17e3add22da2c771b0838576e8139ae2362fc8bbf8"
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g78d1-results.json",
+      "sha256": "6e4f208a87ed50896aba9a45fce50a275143f84bf7a147c3a7b5df4845a2b945"
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g78d1-closing-hashes.json",
+      "sha256": "50228c514e9e0768cc94f8bb758275789dca676e1356aa979763d3d0121343f0"
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g78d1-decision.json",
+      "sha256": "42755bb0d2e3e7577365b737e259016315b1114dd9309a5e849cd283272f4b11"
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g78d1-cleanup.json",
+      "sha256": "efb9c8c076596d250a28db50372159b8631998998e80766250413f1a67cbe234"
+    }
+  ],
+  "canonicalCandidate": {
+    "repositoryPath": "evals/selfhost_throughput.mjs",
+    "sha256": "be2334af7c6ebf681ea0394f8634ee92d634c6027819d50aa6ebe50c059dca7c",
+    "disposition": "ISOLATED_WORKTREE_ONLY_NOT_PROMOTED"
+  },
+  "actualBoundaryRealFileSmokePass": true,
+  "actualProductionCLIPinAndInputDriftRejections": 2,
+  "actualInstrumentedWorkerFailureCleanupPass": true,
+  "eightFreshFullSelectedCheckPasses": 8,
+  "fourOriginalPairsAllRetained": true,
+  "sourceInputsVerified": 158,
+  "immutableAcceptedAImageUnchanged": true,
+  "postVerificationCpuRatio": 0.1941831835024545,
+  "postVerificationCpuCI95": [
+    0.1504989250277887,
+    0.25054736270166406
+  ],
+  "wholeTreePhysicalMedianRatio": 0.7331138705576195,
+  "wholeTreePhysicalEveryPairImproves": false,
+  "checkerCpuRatio": 1.035371415189765,
+  "checkerCpuCI95": [
+    0.8746526663526077,
+    1.225622476934053
+  ],
+  "qualification": {
+    "eightOriginalFullChecks": true,
+    "medianWholeTreeFootprintAtMost095": true,
+    "everyPairedPhysicalBelow1": false,
+    "cpuCheckCI95UpperAtMost105": false,
+    "everyPairedCpuAtMost110": false,
+    "allPhysicalHealthy": true
+  },
+  "harnessSourcePromoted": false,
+  "compilerOptimizationAccepted": false,
+  "compilerSourceChanged": false,
+  "defaultCutover": false,
+  "newCompilerBuilds": 0,
+  "fullConfirmation": "NOT_RUN_NOT_EARNED",
+  "ownC3": "NOT_RUN_NOT_EARNED",
+  "byteFixedpoint": "NOT_RUN_NOCOMPILERSOURCECHANGE",
+  "oldVersionsNotRescored": true,
+  "ownedElevenScaffoldsRemoved": true,
+  "exactSourcesArchivedIn": [
+    "checkpoints/local2039g78d1-smoke-preflight.json",
+    "checkpoints/local2039g78d1-runtime-preflight.json",
+    "checkpoints/local2039g78d1-cleanup.json"
+  ],
+  "outsideGit": "Images/binarysampler,fullRAWseries/actualreports/controlleroutput;compactcheckpointsonly.",
+  "nextVersionStarted": false
+}

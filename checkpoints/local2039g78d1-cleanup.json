@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "version": "local2039g78d1",
+  "status": "EXACT_SOURCES_ARCHIVED_OWNED_ELEVEN_SCAFFOLDS_REMOVED_AFTER_RUNTIME_PROOF",
+  "ownedSourcesRemoved": true,
+  "count": 11,
+  "ownedSourceRefs": [
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/repository/evals/.g78-observed.mjs",
+      "sha256": "d7210a13d22240260d9720644869c9284273a8795526f48200cf7a95cd2831bf"
+    },
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/baseline-driver.mjs",
+      "sha256": "1a806befee02216a9499f6b4dcde7e2326e01f0a5b96bbd36b75295344c50317"
+    },
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/candidate-driver.mjs",
+      "sha256": "be2334af7c6ebf681ea0394f8634ee92d634c6027819d50aa6ebe50c059dca7c"
+    },
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/baseline-observed.mjs",
+      "sha256": "d7210a13d22240260d9720644869c9284273a8795526f48200cf7a95cd2831bf"
+    },
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/bounded-observed.mjs",
+      "sha256": "3c27ff688f7b04e14f3620f96f343b086bc8e60f1a64e550526b7f700ab42e91"
+    },
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/physical-control.mjs",
+      "sha256": "75cac7d5e54559a5f16dee71f644d7e010976aa8609e82dd20534662e328d4bb"
+    },
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/hash-controller.mjs",
+      "sha256": "c2a4b3a7e1a3508c163db7b2129710fa4314db7f96bf3b312c344b92ef97f5ed"
+    },
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/hash-analysis.ts",
+      "sha256": "04050a5555f62186cef4292a1507b27f04ccb3b453fa4b2380e60b6ea6409df2"
+    },
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/bounded-hash-smoke.mjs",
+      "sha256": "23c481e22af6fed9f1112e15aab8c9ecdf5438b97937c547c4e2a508525e4f60"
+    },
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/stable-input.bend",
+      "sha256": "a5b4106eeb82031906a229e632938619e2838fce4b5e42e8088b0ea79c84ab57"
+    },
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/drifted-input.bend",
+      "sha256": "64c4827adc18ddc97ca59b18f3ca3c0b2a38ee21edcc0082e7d3bf000e65767a"
+    }
+  ],
+  "archives": {
+    "canonicalBaselineAndCandidate": "checkpoints/local2039g78d1-smoke-preflight.json:canonicalBaselineSource/canonicalCandidateSource",
+    "exactSmoke": "checkpoints/local2039g78d1-smoke-preflight.json:boundarySmoke.source",
+    "exactPhysicalHelperControllerAnalysisAndBothInstrumentedVariants": "checkpoints/local2039g78d1-runtime-preflight.json:scriptSources",
+    "allExactSourceBytesMatchedBeforeRemoval": true,
+    "controlledNegativeFixtures": {
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/stable-input.bend": "def main(): Nat { return 0; }\n",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/drifted-input.bend": "def main(): Nat { return 1; }\n"
+    }
+  },
+  "keptCanonicalCandidate": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/repository/evals/selfhost_throughput.mjs",
+    "sha256": "be2334af7c6ebf681ea0394f8634ee92d634c6027819d50aa6ebe50c059dca7c"
+  },
+  "candidateDisposition": "ImplementedandcommittedbutREJECTED_OR_INCONCLUSIVE;isolatedworktreeonly,noproductioncutover,noacceptedcompileroptimization. Keep canonical source in branch for audit; delete owned .g78-observed slot and throwaway replay sources/fixtures.",
+  "outsideGit": {
+    "directory": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq",
+    "retained": "Allactualrequests/reports,RAWphysicalseries,originalcontrolleroutputs,andrawanalysis. OriginalAimageandG77samplerbinarystayintheirhistoricaloutsideGitlocations. No images/ASTtransports/caches/bulklogs/evidencearchives committed."
+  },
+  "permanentTestsDocsAdded": false,
+  "reason": "Rejected/inconclusivediagnosticcandidate;actualsmokeand8realcheckscomplete. Sourcecommentandcompactcheckpointdocumentthemethod;no unrelated public docs changed."
+}

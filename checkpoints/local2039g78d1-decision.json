@@ -1,0 +1,266 @@
+{
+  "schemaVersion": 1,
+  "version": "local2039g78d1",
+  "status": "REJECTED_OR_INCONCLUSIVE_GLOBAL_SAFETY_GATE_LOCAL_HASH_PHASE_EFFECT_CONFIRMED_NO_MAIN_CUTOVER",
+  "qualified": false,
+  "sourcePromoted": false,
+  "candidateCheckpoint": "62ddcd40",
+  "preflightCheckpoint": "ae8f9306",
+  "sourceChange": "Only2canonicalhunks:fsopen/read/closeimports;whole-filehash+obsoletebytes-shareplacedby64KiBreusablebufferSHA256withfinallyclose. Correctfunctionalbehaviorproven;mainunchanged.",
+  "correctness": {
+    "all8ActualFullChecksPass": true,
+    "originalWorkCounts": {
+      "files": 52,
+      "modules": 17,
+      "declarations": 2954,
+      "expand": 263032,
+      "check": 1975761
+    },
+    "digestBoundaryShortReadUnicodeZeroByteMissingFileReadFailureFdClosePass": true,
+    "actualCLIDriftPinAndInputRejected": true,
+    "workerFailureStillStopsSampler": true,
+    "allInputAndImagePinsRetained": true,
+    "all158SourceBytesUnchanged": true
+  },
+  "qualification": {
+    "eightOriginalFullChecks": true,
+    "medianWholeTreeFootprintAtMost095": true,
+    "everyPairedPhysicalBelow1": false,
+    "cpuCheckCI95UpperAtMost105": false,
+    "everyPairedCpuAtMost110": false,
+    "allPhysicalHealthy": true
+  },
+  "localObservedBenefits": {
+    "postVerificationProcessCpuBoundedOverBaseline": {
+      "n": 4,
+      "logRatios": [
+        -1.4962890898784675,
+        -1.6373160278604548,
+        -1.5591437883745376,
+        -1.863064376204706
+      ],
+      "meanLog": -1.6389533205795415,
+      "varianceLog": 0.025650363377728136,
+      "geometricMeanRatio": 0.1941831835024545,
+      "ci95": [
+        0.1504989250277887,
+        0.25054736270166406
+      ],
+      "baselineMedian": 469.8805,
+      "variantMedian": 95.0175,
+      "direction": "improvement",
+      "pairedRatios": [
+        0.22395971436674408,
+        0.19450137863317468,
+        0.2103160691950471,
+        0.1551963210319992
+      ]
+    },
+    "wholeTreePhysicalMedianBoundedOverBaseline": 0.7331138705576195,
+    "postcheckPhysicalHighChanges": {
+      "baseline": [
+        {
+          "id": "hash-1-baseline",
+          "finalHighMinusLastCheckPrefixHighBytes": 153420472,
+          "lastCheckLagMs": 188.9928329124523,
+          "peakWindow": {
+            "startMs": 65901.60329210472,
+            "endMs": 66063.14154207993,
+            "afterCheckMs": [
+              12.983042104708147,
+              174.52129207992402
+            ],
+            "initialOnly": false,
+            "entirelyAfterCheck": true,
+            "overlapsCheck": false,
+            "overlapsVerification": true,
+            "scope": "UncertaintyexpandedbyhalfRAWbridgebracket;200mssamplingwindow,notexactpeakinstant orphase-limitedmaximum."
+          }
+        },
+        {
+          "id": "hash-4-baseline",
+          "finalHighMinusLastCheckPrefixHighBytes": 118865080,
+          "lastCheckLagMs": 172.05283220653655,
+          "peakWindow": {
+            "startMs": 93061.69804224768,
+            "endMs": 93264.97745933733,
+            "afterCheckMs": [
+              28.54595924768364,
+              231.8253763373359
+            ],
+            "initialOnly": false,
+            "entirelyAfterCheck": true,
+            "overlapsCheck": false,
+            "overlapsVerification": true,
+            "scope": "UncertaintyexpandedbyhalfRAWbridgebracket;200mssamplingwindow,notexactpeakinstant orphase-limitedmaximum."
+          }
+        },
+        {
+          "id": "hash-5-baseline",
+          "finalHighMinusLastCheckPrefixHighBytes": 157057432,
+          "lastCheckLagMs": 70.98541588174703,
+          "peakWindow": {
+            "startMs": 64478.79108361826,
+            "endMs": 64680.467416480926,
+            "afterCheckMs": [
+              -71.58908238174627,
+              130.0872504809231
+            ],
+            "initialOnly": false,
+            "entirelyAfterCheck": false,
+            "overlapsCheck": true,
+            "overlapsVerification": true,
+            "scope": "UncertaintyexpandedbyhalfRAWbridgebracket;200mssamplingwindow,notexactpeakinstant orphase-limitedmaximum."
+          }
+        },
+        {
+          "id": "hash-8-baseline",
+          "finalHighMinusLastCheckPrefixHighBytes": 156320248,
+          "lastCheckLagMs": 107.43737482298457,
+          "peakWindow": {
+            "startMs": 66309.98254250154,
+            "endMs": 66435.88987566366,
+            "afterCheckMs": [
+              93.90795850154245,
+              219.8152916636609
+            ],
+            "initialOnly": false,
+            "entirelyAfterCheck": true,
+            "overlapsCheck": false,
+            "overlapsVerification": true,
+            "scope": "UncertaintyexpandedbyhalfRAWbridgebracket;200mssamplingwindow,notexactpeakinstant orphase-limitedmaximum."
+          }
+        }
+      ],
+      "bounded": [
+        {
+          "id": "hash-2-bounded",
+          "finalHighMinusLastCheckPrefixHighBytes": 4787248,
+          "lastCheckLagMs": 145.00952082670847,
+          "peakWindow": {
+            "startMs": 65115.24545914468,
+            "endMs": 65270.902417117984,
+            "afterCheckMs": [
+              254.53100014467782,
+              410.1879581179819
+            ],
+            "initialOnly": false,
+            "entirelyAfterCheck": true,
+            "overlapsCheck": false,
+            "overlapsVerification": false,
+            "scope": "UncertaintyexpandedbyhalfRAWbridgebracket;200mssamplingwindow,notexactpeakinstant orphase-limitedmaximum."
+          }
+        },
+        {
+          "id": "hash-3-bounded",
+          "finalHighMinusLastCheckPrefixHighBytes": 0,
+          "lastCheckLagMs": 87.15470800590992,
+          "peakWindow": {
+            "startMs": 62685.10616686058,
+            "endMs": 62887.291166999814,
+            "afterCheckMs": [
+              -5125.330208139421,
+              -4923.145208000191
+            ],
+            "initialOnly": false,
+            "entirelyAfterCheck": false,
+            "overlapsCheck": true,
+            "overlapsVerification": false,
+            "scope": "UncertaintyexpandedbyhalfRAWbridgebracket;200mssamplingwindow,notexactpeakinstant orphase-limitedmaximum."
+          }
+        },
+        {
+          "id": "hash-6-bounded",
+          "finalHighMinusLastCheckPrefixHighBytes": 4899032,
+          "lastCheckLagMs": 103.18812424106,
+          "peakWindow": {
+            "startMs": 76500.97483438291,
+            "endMs": 76703.77250128947,
+            "afterCheckMs": [
+              99.15704238291073,
+              301.9547092894645
+            ],
+            "initialOnly": false,
+            "entirelyAfterCheck": true,
+            "overlapsCheck": false,
+            "overlapsVerification": true,
+            "scope": "UncertaintyexpandedbyhalfRAWbridgebracket;200mssamplingwindow,notexactpeakinstant orphase-limitedmaximum."
+          }
+        },
+        {
+          "id": "hash-7-bounded",
+          "finalHighMinusLastCheckPrefixHighBytes": 720896,
+          "lastCheckLagMs": 111.96845695114462,
+          "peakWindow": {
+            "startMs": 101755.32800154886,
+            "endMs": 101959.19808454314,
+            "afterCheckMs": [
+              -113.375498451147,
+              90.49458454313572
+            ],
+            "initialOnly": false,
+            "entirelyAfterCheck": false,
+            "overlapsCheck": true,
+            "overlapsVerification": true,
+            "scope": "UncertaintyexpandedbyhalfRAWbridgebracket;200mssamplingwindow,notexactpeakinstant orphase-limitedmaximum."
+          }
+        }
+      ]
+    },
+    "scope": "VerificationCPUisNodeprocessCPUintervalincludingGC/helperwork,NOTexclusivehashCPU,norwallorwholecompilerspeedup. FourpairedCPUratios0.155to0.224,95CI0.1505to0.2506. Medianphysicalratio0.7331butonepairedphysicalratio1.01836. Prefixlastchecksampleprecedesend71to189ms;differenceNOTexactphasepeakorsolehashallocationtotal."
+  },
+  "stopReasons": {
+    "everyPairPhysicalImprovementFailed": [
+      1.0183636151827515,
+      0.6920782540432737,
+      0.7151716709753333,
+      0.7264952594183627
+    ],
+    "checkerCpuNonRegressionCI95Failed": {
+      "n": 4,
+      "logRatios": [
+        -0.05131676700453643,
+        -0.04927770740388036,
+        0.07095854699124232,
+        0.16867679781716116
+      ],
+      "meanLog": 0.03476021759999667,
+      "varianceLog": 0.011238529875114553,
+      "geometricMeanRatio": 1.035371415189765,
+      "ci95": [
+        0.8746526663526077,
+        1.225622476934053
+      ],
+      "baselineMedian": 70995.52549999999,
+      "variantMedian": 73220.628,
+      "direction": "inconclusive",
+      "pairedRatios": [
+        0.9499777012755691,
+        0.9519167386623257,
+        1.0735367236187818,
+        1.1837374905500515
+      ]
+    },
+    "oneCpuPairExceeds10Percent": true,
+    "whyNoPromotion": "FrozenconditionsrequireALLphysicalpairsbelow1,CPU95upper<=1.05andeachCPU<=1.10. ActualCPU95upper1.2256,onepair1.1837,andonephysicalpair1.01836. Do NOT waive thresholds after data."
+  },
+  "repeatVariance": {
+    "sameRequestHashWithinVariant": true,
+    "sourceBytesAndURIsFixedWithinVariant": true,
+    "observation": "Slowwallrowsremaininbothvariants;data alone doesNOT identify scheduler/thermal/OSload/GC/JIT cause or invalidate unfavorable rows. No Mac fault inferred.",
+    "notDone": "No resampling/outlier removal/new heap flags/explicit GC/corpus change/URL change/old pooling/excludedchecks or outputpatch."
+  },
+  "nextDirection": {
+    "status": "PROPOSED_NOT_EXECUTED",
+    "decision": "Keep boundedhash candidate isolated. Localpost-verificationallocationproblemhasbeenaddressedinacorrectcandidate;doNOTcallthewholecompilerfaster orrobustlymemoryqualified. NextcompileriterationneedsindependentquantificationofCPUvariance/checkeractualhotpathorbettercontrol,notanotherfullC1/C2rebuildorpost-hocgatechange.",
+    "constraint": "Anyfurthermeasurementversionmuststartafterthiscompletedcheckpoint,newprospectiveprotocolandoriginalallwork/guards. Usermayexplicitlychangepromotiontradeoff;noneassumed."
+  },
+  "compilerOptimizationAccepted": false,
+  "harnessOptimizationAccepted": false,
+  "defaultCutover": false,
+  "newCompilerBuilds": 0,
+  "fullConfirmation": "NOT_RUN_NOT_EARNED",
+  "ownC3": "NOT_RUN_NOT_EARNED",
+  "byteFixedpoint": "NOT_RUN_NOCOMPILERSOURCECHANGE",
+  "oldDecisionsAndTimingsNotRescored": true
+}
