@@ -1,0 +1,103 @@
+{
+  "schemaVersion": 1,
+  "version": "local2039g74d1",
+  "status": "PASS_AST_EQUIVALENT_ARGUMENT_RESULT_AND_EXACT_BYTE_BUDGET",
+  "protocolCheckpoint": "ba4ef54a",
+  "command": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+    "--memory-mib=8192",
+    "--rss-mib=8192",
+    "--poll-ms=10",
+    "--timeout-ms=120000",
+    "--",
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+    "--max-old-space-size=6144",
+    "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g74-temporary-lifetime-79d4eqxd/argument-lifetime-counterfactual.mjs",
+    "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g74-temporary-lifetime-79d4eqxd/repository/checkpoints/local2039g74d1-protocol.json"
+  ],
+  "guardian": {
+    "status": "PASS",
+    "reason": "command_exit",
+    "commandExitCode": 0,
+    "commandSignal": 0,
+    "peakRssBytes": 2847899648,
+    "peakFootprintBytes": 3041238720,
+    "elapsedMs": 19185,
+    "timeoutMs": 120000,
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 0,
+    "command": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "--max-old-space-size=6144",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g74-temporary-lifetime-79d4eqxd/argument-lifetime-counterfactual.mjs",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g74-temporary-lifetime-79d4eqxd/repository/checkpoints/local2039g74d1-protocol.json"
+    ],
+    "label": "heavy command",
+    "exitCode": 0,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793890534507-84f4b6dcba13f696.json",
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592
+  },
+  "actual": {
+    "schemaVersion": 1,
+    "status": "PASS_AST_EQUIVALENT_ARGUMENT_RESULT_AND_EXACT_BYTE_BUDGET",
+    "input": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/real-own-c2.json.output.mjs",
+      "sha256": "505d4c08336e6f6312346806d97e2d189b6e0bd5783f829ead6723e62c24edaa"
+    },
+    "control": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g74-temporary-lifetime-79d4eqxd/control.mjs",
+      "sha256": "505d4c08336e6f6312346806d97e2d189b6e0bd5783f829ead6723e62c24edaa",
+      "bytes": 31801158
+    },
+    "variant": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g74-temporary-lifetime-79d4eqxd/variant.mjs",
+      "sha256": "0a810b0ed64aaf958ea78f458141a53f8bbfa7bd746234f5cf7e4f107881bffa",
+      "bytes": 31801158
+    },
+    "sites": 1268,
+    "verifiedVariantSites": 1268,
+    "allOtherSourceSpansUnchanged": true,
+    "examples": [
+      {
+        "start": 3793986,
+        "end": 3794052,
+        "before": "const $x=$b363($a0,$a1,$td+1);$sp=$kb;return $k2104($x,$kb,$td+1);",
+        "after": "return $k2104($b363($a0,$a1,$td+1),($sp=$kb),$td+1);"
+      },
+      {
+        "start": 4030652,
+        "end": 4030714,
+        "before": "const $x=$b492($a0,$td+1);$sp=$kb;return $k5144($x,$kb,$td+1);",
+        "after": "return $k5144($b492($a0,$td+1),($sp=$kb),$td+1);"
+      },
+      {
+        "start": 4319142,
+        "end": 4319204,
+        "before": "const $x=$b818($a0,$td+1);$sp=$kb;return $k9835($x,$kb,$td+1);",
+        "after": "return $k9835($b818($a0,$td+1),($sp=$kb),$td+1);"
+      },
+      {
+        "start": 4319502,
+        "end": 4319564,
+        "before": "const $x=$b818($a0,$td+1);$sp=$kb;return $k9836($x,$kb,$td+1);",
+        "after": "return $k9836($b818($a0,$td+1),($sp=$kb),$td+1);"
+      },
+      {
+        "start": 4325587,
+        "end": 4325649,
+        "before": "const $x=$b825($a0,$td+1);$sp=$kb;return $k9940($x,$kb,$td+1);",
+        "after": "return $k9940($b825($a0,$td+1),($sp=$kb),$td+1);"
+      }
+    ],
+    "scope": "COUNTERFACTUAL_NOT_SOURCE_COMPILER_OR_ACCEPTANCE. PrivateidentifierKlookupmovesbeforeleaf;bindingisimmutableemittedfunction,notgetter. LeafargumentevaluationsremainbeforeSPrestoreandKentry;catch,depth,fallbackandalloutsidebytesunchanged."
+  },
+  "report": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g74-temporary-lifetime-79d4eqxd/ast-generation.json",
+    "sha256": "736a45f15177bb0de2fc9903d46b89e761af1c0cadf41378499739173d2a1a5b"
+  },
+  "scope": "Onlynewexternaldiagnosticimages;actualgenuineC2andcanonicalcompiler/sourceinputsunchanged;all1268safelyadmittedASTchangesandoutsideoffsetsbytebudgetverified."
+}
