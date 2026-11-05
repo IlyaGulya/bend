@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "version": "local2039g78d1",
+  "status": "COMPLETED_G78_EXPERIMENT_EVIDENCE_ONLY_NO_SOURCE_PROMOTION",
+  "experimentalCheckpoint": "fc79ba40",
+  "experimentalBranch": "selfhost/g78-hash-623_t7sq",
+  "candidateSourceCheckpoint": "62ddcd40",
+  "preflightCheckpoint": "ae8f9306",
+  "index": {
+    "repositoryPath": "checkpoints/local2039g78d1-index.json",
+    "sha256": "59aa39c3677147cba8a461ce4dea0aa2a67ef573ff97da9f4a3ed47cac65c4e7"
+  },
+  "allEightReceiptsByteExactCopies": true,
+  "candidateKeptOnlyInExperimentalWorktree": true,
+  "mainProductionDriverUnchanged": true,
+  "mainCompilerSourceUnchanged": true,
+  "localVerificationCpuBenefitObserved": true,
+  "globalSafetyQualificationFailed": true,
+  "harnessOptimizationAccepted": false,
+  "compilerOptimizationAccepted": false,
+  "eightActualFullSelectedChecksPass": true,
+  "allRowsRetained": true,
+  "originalGuardsPreserved": true,
+  "oldVersionsNotRescored": true,
+  "nextVersionNotStarted": true
+}

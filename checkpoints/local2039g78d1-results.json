@@ -1,0 +1,1533 @@
+{
+  "schemaVersion": 1,
+  "version": "local2039g78d1",
+  "status": "EIGHT_REAL_FULL_SELECTED_CHECKS_PASS_LOCAL_VERIFICATION_CPU_IMPROVES_GLOBAL_QUALIFICATION_FAILS_NO_PROMOTION",
+  "preflightCheckpoint": "ae8f9306",
+  "runtime": {
+    "node": "23.11.0",
+    "v8": "12.9.202.28-node.14",
+    "nodeBinary": {
+      "path": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "sha256": "ead5889f15f4e17b37f941c7d9e92b624396786bd74d8155ef470f6381f032c5"
+    },
+    "execArgv": [
+      "--experimental-strip-types",
+      "--max-old-space-size=6144",
+      "--max-semi-space-size=128"
+    ],
+    "workerPolicy": {
+      "stackMiB": 256,
+      "oldGenerationMiB": 6144,
+      "youngGenerationMiB": 128
+    },
+    "ABIExports": [
+      "parsed_module",
+      "parse_with_fuel",
+      "expand_modules_start",
+      "template_step",
+      "check_expanded_start",
+      "inspect_checked_start",
+      "checker_step",
+      "emit_modules_start",
+      "emit_library_start",
+      "emitter_step",
+      "emit_c_modules_start",
+      "emit_c_library_start",
+      "c_emitter_step"
+    ],
+    "schedulerQuantum": 64
+  },
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000
+  },
+  "command": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun --smol /private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/hash-controller.mjs /private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/hash-plan.json",
+  "actualCells": [
+    {
+      "id": "hash-1-baseline",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+        "--memory-mib=8192",
+        "--rss-mib=8192",
+        "--poll-ms=10",
+        "--timeout-ms=600000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=6144",
+        "--max-semi-space-size=128",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/repository/evals/.g78-observed.mjs",
+        "--worker",
+        "js",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/hash-1-baseline-request.json",
+        "d0e75e9f7bf5d7e38c1646ce6d0d5fd7f612d8c5468c8c4dab0d73ce2f12ab10",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/hash-1-baseline-report.json"
+      ],
+      "exitCode": 0,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 1027047424,
+        "peakFootprintBytes": 1105284760,
+        "elapsedMs": 66094,
+        "timeoutMs": 600000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--experimental-strip-types",
+          "--max-old-space-size=6144",
+          "--max-semi-space-size=128",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/repository/evals/.g78-observed.mjs",
+          "--worker",
+          "js",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/hash-1-baseline-request.json",
+          "d0e75e9f7bf5d7e38c1646ce6d0d5fd7f612d8c5468c8c4dab0d73ce2f12ab10",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/hash-1-baseline-report.json"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793903060181-8f636e5a79e9aa93.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      },
+      "passed": true,
+      "elapsedMs": 66203.548792,
+      "activation": {
+        "before": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/repository/evals/.g78-observed.mjs",
+          "sha256": "3c27ff688f7b04e14f3620f96f343b086bc8e60f1a64e550526b7f700ab42e91"
+        },
+        "active": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/repository/evals/.g78-observed.mjs",
+          "sha256": "d7210a13d22240260d9720644869c9284273a8795526f48200cf7a95cd2831bf"
+        },
+        "post": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/repository/evals/.g78-observed.mjs",
+          "sha256": "d7210a13d22240260d9720644869c9284273a8795526f48200cf7a95cd2831bf"
+        },
+        "postPinsVerified": true
+      },
+      "stdout": "{\"status\":\"PASS\",\"mode\":\"js\",\"report\":\"/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/hash-1-baseline-report.json\",\"pipelineElapsedMs\":65602.329459,\"phases\":[{\"phase\":\"startup\",\"elapsedMs\":596.7319580000001},{\"phase\":\"load-parse\",\"elapsedMs\":2876.662917},{\"phase\":\"expand\",\"elapsedMs\":1849.1853749999996},{\"phase\":\"check\",\"elapsedMs\":60277.990000000005}]}\n"
+    },
+    {
+      "id": "hash-2-bounded",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+        "--memory-mib=8192",
+        "--rss-mib=8192",
+        "--poll-ms=10",
+        "--timeout-ms=600000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=6144",
+        "--max-semi-space-size=128",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/repository/evals/.g78-observed.mjs",
+        "--worker",
+        "js",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/hash-2-bounded-request.json",
+        "d2390fd6ac686089e473e51f3df3c465c972526e9d98de41907dd5ff12dedd72",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/hash-2-bounded-report.json"
+      ],
+      "exitCode": 0,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 1211940864,
+        "peakFootprintBytes": 1125581784,
+        "elapsedMs": 65305,
+        "timeoutMs": 600000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--experimental-strip-types",
+          "--max-old-space-size=6144",
+          "--max-semi-space-size=128",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/repository/evals/.g78-observed.mjs",
+          "--worker",
+          "js",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/hash-2-bounded-request.json",
+          "d2390fd6ac686089e473e51f3df3c465c972526e9d98de41907dd5ff12dedd72",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/hash-2-bounded-report.json"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793903126535-73862582c53fc395.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      },
+      "passed": true,
+      "elapsedMs": 65425.03925,
+      "activation": {
+        "before": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/repository/evals/.g78-observed.mjs",
+          "sha256": "d7210a13d22240260d9720644869c9284273a8795526f48200cf7a95cd2831bf"
+        },
+        "active": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/repository/evals/.g78-observed.mjs",
+          "sha256": "3c27ff688f7b04e14f3620f96f343b086bc8e60f1a64e550526b7f700ab42e91"
+        },
+        "post": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/repository/evals/.g78-observed.mjs",
+          "sha256": "3c27ff688f7b04e14f3620f96f343b086bc8e60f1a64e550526b7f700ab42e91"
+        },
+        "postPinsVerified": true
+      },
+      "stdout": "{\"status\":\"PASS\",\"mode\":\"js\",\"report\":\"/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/hash-2-bounded-report.json\",\"pipelineElapsedMs\":64616.66175,\"phases\":[{\"phase\":\"startup\",\"elapsedMs\":568.0593329999999},{\"phase\":\"load-parse\",\"elapsedMs\":2476.4415},{\"phase\":\"expand\",\"elapsedMs\":1842.1290840000001},{\"phase\":\"check\",\"elapsedMs\":59728.014334}]}\n"
+    },
+    {
+      "id": "hash-3-bounded",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+        "--memory-mib=8192",
+        "--rss-mib=8192",
+        "--poll-ms=10",
+        "--timeout-ms=600000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=6144",
+        "--max-semi-space-size=128",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/repository/evals/.g78-observed.mjs",
+        "--worker",
+        "js",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/hash-3-bounded-request.json",
+        "d2390fd6ac686089e473e51f3df3c465c972526e9d98de41907dd5ff12dedd72",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/hash-3-bounded-report.json"
+      ],
+      "exitCode": 0,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 1009418240,
+        "peakFootprintBytes": 929532872,
+        "elapsedMs": 68140,
+        "timeoutMs": 600000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--experimental-strip-types",
+          "--max-old-space-size=6144",
+          "--max-semi-space-size=128",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/repository/evals/.g78-observed.mjs",
+          "--worker",
+          "js",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/hash-3-bounded-request.json",
+          "d2390fd6ac686089e473e51f3df3c465c972526e9d98de41907dd5ff12dedd72",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/hash-3-bounded-report.json"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793903192152-4b71bb2f978e0eea.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      },
+      "passed": true,
+      "elapsedMs": 68248.236875,
+      "activation": {
+        "before": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/repository/evals/.g78-observed.mjs",
+          "sha256": "3c27ff688f7b04e14f3620f96f343b086bc8e60f1a64e550526b7f700ab42e91"
+        },
+        "active": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/repository/evals/.g78-observed.mjs",
+          "sha256": "3c27ff688f7b04e14f3620f96f343b086bc8e60f1a64e550526b7f700ab42e91"
+        },
+        "post": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/repository/evals/.g78-observed.mjs",
+          "sha256": "3c27ff688f7b04e14f3620f96f343b086bc8e60f1a64e550526b7f700ab42e91"
+        },
+        "postPinsVerified": true
+      },
+      "stdout": "{\"status\":\"PASS\",\"mode\":\"js\",\"report\":\"/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/hash-3-bounded-report.json\",\"pipelineElapsedMs\":67512.17775,\"phases\":[{\"phase\":\"startup\",\"elapsedMs\":795.1790839999999},{\"phase\":\"load-parse\",\"elapsedMs\":2497.853792},{\"phase\":\"expand\",\"elapsedMs\":1776.1831670000001},{\"phase\":\"check\",\"elapsedMs\":62441.35391700001}]}\n"
+    },
+    {
+      "id": "hash-4-baseline",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+        "--memory-mib=8192",
+        "--rss-mib=8192",
+        "--poll-ms=10",
+        "--timeout-ms=600000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=6144",
+        "--max-semi-space-size=128",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/repository/evals/.g78-observed.mjs",
+        "--worker",
+        "js",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/hash-4-baseline-request.json",
+        "d0e75e9f7bf5d7e38c1646ce6d0d5fd7f612d8c5468c8c4dab0d73ce2f12ab10",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/hash-4-baseline-report.json"
+      ],
+      "exitCode": 0,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 1179156480,
+        "peakFootprintBytes": 1343103712,
+        "elapsedMs": 93381,
+        "timeoutMs": 600000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--experimental-strip-types",
+          "--max-old-space-size=6144",
+          "--max-semi-space-size=128",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/repository/evals/.g78-observed.mjs",
+          "--worker",
+          "js",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/hash-4-baseline-request.json",
+          "d0e75e9f7bf5d7e38c1646ce6d0d5fd7f612d8c5468c8c4dab0d73ce2f12ab10",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/hash-4-baseline-report.json"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793903260564-bcd4f412687a3a5e.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      },
+      "passed": true,
+      "elapsedMs": 93488.556166,
+      "activation": {
+        "before": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/repository/evals/.g78-observed.mjs",
+          "sha256": "3c27ff688f7b04e14f3620f96f343b086bc8e60f1a64e550526b7f700ab42e91"
+        },
+        "active": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/repository/evals/.g78-observed.mjs",
+          "sha256": "d7210a13d22240260d9720644869c9284273a8795526f48200cf7a95cd2831bf"
+        },
+        "post": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/repository/evals/.g78-observed.mjs",
+          "sha256": "d7210a13d22240260d9720644869c9284273a8795526f48200cf7a95cd2831bf"
+        },
+        "postPinsVerified": true
+      },
+      "stdout": "{\"status\":\"PASS\",\"mode\":\"js\",\"report\":\"/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/hash-4-baseline-report.json\",\"pipelineElapsedMs\":92743.21487499999,\"phases\":[{\"phase\":\"startup\",\"elapsedMs\":644.0335},{\"phase\":\"load-parse\",\"elapsedMs\":3394.633},{\"phase\":\"expand\",\"elapsedMs\":1843.158375},{\"phase\":\"check\",\"elapsedMs\":86859.81199999999}]}\n"
+    },
+    {
+      "id": "hash-5-baseline",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+        "--memory-mib=8192",
+        "--rss-mib=8192",
+        "--poll-ms=10",
+        "--timeout-ms=600000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=6144",
+        "--max-semi-space-size=128",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/repository/evals/.g78-observed.mjs",
+        "--worker",
+        "js",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/hash-5-baseline-request.json",
+        "d0e75e9f7bf5d7e38c1646ce6d0d5fd7f612d8c5468c8c4dab0d73ce2f12ab10",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/hash-5-baseline-report.json"
+      ],
+      "exitCode": 0,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 1125875712,
+        "peakFootprintBytes": 1343558744,
+        "elapsedMs": 64786,
+        "timeoutMs": 600000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--experimental-strip-types",
+          "--max-old-space-size=6144",
+          "--max-semi-space-size=128",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/repository/evals/.g78-observed.mjs",
+          "--worker",
+          "js",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/hash-5-baseline-request.json",
+          "d0e75e9f7bf5d7e38c1646ce6d0d5fd7f612d8c5468c8c4dab0d73ce2f12ab10",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/hash-5-baseline-report.json"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793903354201-90878cd3b913e69a.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      },
+      "passed": true,
+      "elapsedMs": 64888.605958,
+      "activation": {
+        "before": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/repository/evals/.g78-observed.mjs",
+          "sha256": "d7210a13d22240260d9720644869c9284273a8795526f48200cf7a95cd2831bf"
+        },
+        "active": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/repository/evals/.g78-observed.mjs",
+          "sha256": "d7210a13d22240260d9720644869c9284273a8795526f48200cf7a95cd2831bf"
+        },
+        "post": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/repository/evals/.g78-observed.mjs",
+          "sha256": "d7210a13d22240260d9720644869c9284273a8795526f48200cf7a95cd2831bf"
+        },
+        "postPinsVerified": true
+      },
+      "stdout": "{\"status\":\"PASS\",\"mode\":\"js\",\"report\":\"/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/hash-5-baseline-report.json\",\"pipelineElapsedMs\":64284.009833000004,\"phases\":[{\"phase\":\"startup\",\"elapsedMs\":582.586375},{\"phase\":\"load-parse\",\"elapsedMs\":2380.2938750000003},{\"phase\":\"expand\",\"elapsedMs\":1778.2098750000005},{\"phase\":\"check\",\"elapsedMs\":59541.238583000006}]}\n"
+    },
+    {
+      "id": "hash-6-bounded",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+        "--memory-mib=8192",
+        "--rss-mib=8192",
+        "--poll-ms=10",
+        "--timeout-ms=600000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=6144",
+        "--max-semi-space-size=128",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/repository/evals/.g78-observed.mjs",
+        "--worker",
+        "js",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/hash-6-bounded-request.json",
+        "d2390fd6ac686089e473e51f3df3c465c972526e9d98de41907dd5ff12dedd72",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/hash-6-bounded-report.json"
+      ],
+      "exitCode": 0,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 1008631808,
+        "peakFootprintBytes": 960875152,
+        "elapsedMs": 77086,
+        "timeoutMs": 600000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--experimental-strip-types",
+          "--max-old-space-size=6144",
+          "--max-semi-space-size=128",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/repository/evals/.g78-observed.mjs",
+          "--worker",
+          "js",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/hash-6-bounded-request.json",
+          "d2390fd6ac686089e473e51f3df3c465c972526e9d98de41907dd5ff12dedd72",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/hash-6-bounded-report.json"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793903419243-85ea0a5a0541b4bf.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      },
+      "passed": true,
+      "elapsedMs": 77293.89291700005,
+      "activation": {
+        "before": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/repository/evals/.g78-observed.mjs",
+          "sha256": "d7210a13d22240260d9720644869c9284273a8795526f48200cf7a95cd2831bf"
+        },
+        "active": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/repository/evals/.g78-observed.mjs",
+          "sha256": "3c27ff688f7b04e14f3620f96f343b086bc8e60f1a64e550526b7f700ab42e91"
+        },
+        "post": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/repository/evals/.g78-observed.mjs",
+          "sha256": "3c27ff688f7b04e14f3620f96f343b086bc8e60f1a64e550526b7f700ab42e91"
+        },
+        "postPinsVerified": true
+      },
+      "stdout": "{\"status\":\"PASS\",\"mode\":\"js\",\"report\":\"/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/hash-6-bounded-report.json\",\"pipelineElapsedMs\":76168.76575,\"phases\":[{\"phase\":\"startup\",\"elapsedMs\":573.3435},{\"phase\":\"load-parse\",\"elapsedMs\":2640.453583},{\"phase\":\"expand\",\"elapsedMs\":1859.5098330000005},{\"phase\":\"check\",\"elapsedMs\":71093.728584}]}\n"
+    },
+    {
+      "id": "hash-7-bounded",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+        "--memory-mib=8192",
+        "--rss-mib=8192",
+        "--poll-ms=10",
+        "--timeout-ms=600000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=6144",
+        "--max-semi-space-size=128",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/repository/evals/.g78-observed.mjs",
+        "--worker",
+        "js",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/hash-7-bounded-request.json",
+        "d2390fd6ac686089e473e51f3df3c465c972526e9d98de41907dd5ff12dedd72",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/hash-7-bounded-report.json"
+      ],
+      "exitCode": 0,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 999653376,
+        "peakFootprintBytes": 1008754360,
+        "elapsedMs": 102056,
+        "timeoutMs": 600000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--experimental-strip-types",
+          "--max-old-space-size=6144",
+          "--max-semi-space-size=128",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/repository/evals/.g78-observed.mjs",
+          "--worker",
+          "js",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/hash-7-bounded-request.json",
+          "d2390fd6ac686089e473e51f3df3c465c972526e9d98de41907dd5ff12dedd72",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/hash-7-bounded-report.json"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793903496798-6701c464e19b717d.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      },
+      "passed": true,
+      "elapsedMs": 102181.62170800002,
+      "activation": {
+        "before": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/repository/evals/.g78-observed.mjs",
+          "sha256": "3c27ff688f7b04e14f3620f96f343b086bc8e60f1a64e550526b7f700ab42e91"
+        },
+        "active": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/repository/evals/.g78-observed.mjs",
+          "sha256": "3c27ff688f7b04e14f3620f96f343b086bc8e60f1a64e550526b7f700ab42e91"
+        },
+        "post": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/repository/evals/.g78-observed.mjs",
+          "sha256": "3c27ff688f7b04e14f3620f96f343b086bc8e60f1a64e550526b7f700ab42e91"
+        },
+        "postPinsVerified": true
+      },
+      "stdout": "{\"status\":\"PASS\",\"mode\":\"js\",\"report\":\"/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/hash-7-bounded-report.json\",\"pipelineElapsedMs\":101462.282875,\"phases\":[{\"phase\":\"startup\",\"elapsedMs\":842.17375},{\"phase\":\"load-parse\",\"elapsedMs\":4675.331082999999},{\"phase\":\"expand\",\"elapsedMs\":3365.2659999999996},{\"phase\":\"check\",\"elapsedMs\":92576.793916}]}\n"
+    },
+    {
+      "id": "hash-8-baseline",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+        "--memory-mib=8192",
+        "--rss-mib=8192",
+        "--poll-ms=10",
+        "--timeout-ms=600000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=6144",
+        "--max-semi-space-size=128",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/repository/evals/.g78-observed.mjs",
+        "--worker",
+        "js",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/hash-8-baseline-request.json",
+        "d0e75e9f7bf5d7e38c1646ce6d0d5fd7f612d8c5468c8c4dab0d73ce2f12ab10",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/hash-8-baseline-report.json"
+      ],
+      "exitCode": 0,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 1145454592,
+        "peakFootprintBytes": 1388521600,
+        "elapsedMs": 66468,
+        "timeoutMs": 600000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--experimental-strip-types",
+          "--max-old-space-size=6144",
+          "--max-semi-space-size=128",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/repository/evals/.g78-observed.mjs",
+          "--worker",
+          "js",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/hash-8-baseline-request.json",
+          "d0e75e9f7bf5d7e38c1646ce6d0d5fd7f612d8c5468c8c4dab0d73ce2f12ab10",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/hash-8-baseline-report.json"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793903599116-c3bb769f07d586ee.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      },
+      "passed": true,
+      "elapsedMs": 66583.74650000001,
+      "activation": {
+        "before": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/repository/evals/.g78-observed.mjs",
+          "sha256": "3c27ff688f7b04e14f3620f96f343b086bc8e60f1a64e550526b7f700ab42e91"
+        },
+        "active": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/repository/evals/.g78-observed.mjs",
+          "sha256": "d7210a13d22240260d9720644869c9284273a8795526f48200cf7a95cd2831bf"
+        },
+        "post": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/repository/evals/.g78-observed.mjs",
+          "sha256": "d7210a13d22240260d9720644869c9284273a8795526f48200cf7a95cd2831bf"
+        },
+        "postPinsVerified": true
+      },
+      "stdout": "{\"status\":\"PASS\",\"mode\":\"js\",\"report\":\"/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/hash-8-baseline-report.json\",\"pipelineElapsedMs\":65970.55787500001,\"phases\":[{\"phase\":\"startup\",\"elapsedMs\":568.444791},{\"phase\":\"load-parse\",\"elapsedMs\":2546.827083},{\"phase\":\"expand\",\"elapsedMs\":2024.0339590000003},{\"phase\":\"check\",\"elapsedMs\":60829.172875000004}]}\n"
+    }
+  ],
+  "rows": [
+    {
+      "id": "hash-1-baseline",
+      "sequence": 1,
+      "block": 1,
+      "variant": "baseline",
+      "request": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/hash-1-baseline-request.json",
+        "sha256": "d0e75e9f7bf5d7e38c1646ce6d0d5fd7f612d8c5468c8c4dab0d73ce2f12ab10"
+      },
+      "report": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/hash-1-baseline-report.json",
+        "sha256": "bc902f6ea36ebeabd29ee8d9d952ce23357df9ab7108ad5fc1cf44d84ba071c0"
+      },
+      "physical": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/hash-1-baseline-report.json.physical.json",
+        "sha256": "a7be26dc0e064854353a4e2e2415d5b32ff259000d1b7fd0b78fcf81068565ae"
+      },
+      "checkerCpuMs": 72174.53199999999,
+      "checkerWallMs": 60277.990000000005,
+      "footprintBytes": 1105284760,
+      "rssBytes": 1027047424,
+      "guardElapsedMs": 66094,
+      "verificationWallMs": 116.565042000002,
+      "verificationCpuMs": 433.703,
+      "activation": {
+        "before": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/repository/evals/.g78-observed.mjs",
+          "sha256": "3c27ff688f7b04e14f3620f96f343b086bc8e60f1a64e550526b7f700ab42e91"
+        },
+        "active": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/repository/evals/.g78-observed.mjs",
+          "sha256": "d7210a13d22240260d9720644869c9284273a8795526f48200cf7a95cd2831bf"
+        },
+        "post": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/repository/evals/.g78-observed.mjs",
+          "sha256": "d7210a13d22240260d9720644869c9284273a8795526f48200cf7a95cd2831bf"
+        },
+        "postPinsVerified": true
+      }
+    },
+    {
+      "id": "hash-2-bounded",
+      "sequence": 2,
+      "block": 1,
+      "variant": "bounded",
+      "request": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/hash-2-bounded-request.json",
+        "sha256": "d2390fd6ac686089e473e51f3df3c465c972526e9d98de41907dd5ff12dedd72"
+      },
+      "report": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/hash-2-bounded-report.json",
+        "sha256": "7a2e78e8fb683a1b03a0fa162b83e344c6c12704896baef6df67b09323112560"
+      },
+      "physical": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/hash-2-bounded-report.json.physical.json",
+        "sha256": "454dac53d68e8fee780a4d6add515026874862c401263f7ab97b60445bdab471"
+      },
+      "checkerCpuMs": 68564.196,
+      "checkerWallMs": 59728.014334,
+      "footprintBytes": 1125581784,
+      "rssBytes": 1211940864,
+      "guardElapsedMs": 65305,
+      "verificationWallMs": 119.1061250000057,
+      "verificationCpuMs": 97.132,
+      "activation": {
+        "before": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/repository/evals/.g78-observed.mjs",
+          "sha256": "d7210a13d22240260d9720644869c9284273a8795526f48200cf7a95cd2831bf"
+        },
+        "active": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/repository/evals/.g78-observed.mjs",
+          "sha256": "3c27ff688f7b04e14f3620f96f343b086bc8e60f1a64e550526b7f700ab42e91"
+        },
+        "post": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/repository/evals/.g78-observed.mjs",
+          "sha256": "3c27ff688f7b04e14f3620f96f343b086bc8e60f1a64e550526b7f700ab42e91"
+        },
+        "postPinsVerified": true
+      }
+    },
+    {
+      "id": "hash-3-bounded",
+      "sequence": 3,
+      "block": 1,
+      "variant": "bounded",
+      "request": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/hash-3-bounded-request.json",
+        "sha256": "d2390fd6ac686089e473e51f3df3c465c972526e9d98de41907dd5ff12dedd72"
+      },
+      "report": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/hash-3-bounded-report.json",
+        "sha256": "96eab86a94f22f48fb0620320f325a532dbd6b66d91921c44047227a268e9e87"
+      },
+      "physical": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/hash-3-bounded-report.json.physical.json",
+        "sha256": "90408c6dcf127863ae102438c60230f6d946a91ea4ce62579137921cc3d6aba0"
+      },
+      "checkerCpuMs": 72529.631,
+      "checkerWallMs": 62441.35391700001,
+      "footprintBytes": 929532872,
+      "rssBytes": 1009418240,
+      "guardElapsedMs": 68140,
+      "verificationWallMs": 119.99254200000723,
+      "verificationCpuMs": 92.90299999999999,
+      "activation": {
+        "before": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/repository/evals/.g78-observed.mjs",
+          "sha256": "3c27ff688f7b04e14f3620f96f343b086bc8e60f1a64e550526b7f700ab42e91"
+        },
+        "active": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/repository/evals/.g78-observed.mjs",
+          "sha256": "3c27ff688f7b04e14f3620f96f343b086bc8e60f1a64e550526b7f700ab42e91"
+        },
+        "post": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/repository/evals/.g78-observed.mjs",
+          "sha256": "3c27ff688f7b04e14f3620f96f343b086bc8e60f1a64e550526b7f700ab42e91"
+        },
+        "postPinsVerified": true
+      }
+    },
+    {
+      "id": "hash-4-baseline",
+      "sequence": 4,
+      "block": 1,
+      "variant": "baseline",
+      "request": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/hash-4-baseline-request.json",
+        "sha256": "d0e75e9f7bf5d7e38c1646ce6d0d5fd7f612d8c5468c8c4dab0d73ce2f12ab10"
+      },
+      "report": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/hash-4-baseline-report.json",
+        "sha256": "fdfc85add28d4a74abe13a27e5224eda43ddc031e09185b3cc0a412260037929"
+      },
+      "physical": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/hash-4-baseline-report.json.physical.json",
+        "sha256": "e7cf98c73a0fc035285c12585544beae630ba7486e9a8a55fdfcbcd7aec9ca1e"
+      },
+      "checkerCpuMs": 76193.251,
+      "checkerWallMs": 86859.81199999999,
+      "footprintBytes": 1343103712,
+      "rssBytes": 1179156480,
+      "guardElapsedMs": 93381,
+      "verificationWallMs": 193.8534159999981,
+      "verificationCpuMs": 477.647,
+      "activation": {
+        "before": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/repository/evals/.g78-observed.mjs",
+          "sha256": "3c27ff688f7b04e14f3620f96f343b086bc8e60f1a64e550526b7f700ab42e91"
+        },
+        "active": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/repository/evals/.g78-observed.mjs",
+          "sha256": "d7210a13d22240260d9720644869c9284273a8795526f48200cf7a95cd2831bf"
+        },
+        "post": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/repository/evals/.g78-observed.mjs",
+          "sha256": "d7210a13d22240260d9720644869c9284273a8795526f48200cf7a95cd2831bf"
+        },
+        "postPinsVerified": true
+      }
+    },
+    {
+      "id": "hash-5-baseline",
+      "sequence": 5,
+      "block": 2,
+      "variant": "baseline",
+      "request": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/hash-5-baseline-request.json",
+        "sha256": "d0e75e9f7bf5d7e38c1646ce6d0d5fd7f612d8c5468c8c4dab0d73ce2f12ab10"
+      },
+      "report": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/hash-5-baseline-report.json",
+        "sha256": "b439018f78d12015844b3cbc2d8ea3a6b9b0210e114dfad9f8251430625baefe"
+      },
+      "physical": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/hash-5-baseline-report.json.physical.json",
+        "sha256": "4b30f3f5c52366445908e46c004deccc2497c0cc32ec4aa69bbac38bebfd6371"
+      },
+      "checkerCpuMs": 68848.716,
+      "checkerWallMs": 59541.238583000006,
+      "footprintBytes": 1343558744,
+      "rssBytes": 1125875712,
+      "guardElapsedMs": 64786,
+      "verificationWallMs": 127.33325000000332,
+      "verificationCpuMs": 462.114,
+      "activation": {
+        "before": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/repository/evals/.g78-observed.mjs",
+          "sha256": "d7210a13d22240260d9720644869c9284273a8795526f48200cf7a95cd2831bf"
+        },
+        "active": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/repository/evals/.g78-observed.mjs",
+          "sha256": "d7210a13d22240260d9720644869c9284273a8795526f48200cf7a95cd2831bf"
+        },
+        "post": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/repository/evals/.g78-observed.mjs",
+          "sha256": "d7210a13d22240260d9720644869c9284273a8795526f48200cf7a95cd2831bf"
+        },
+        "postPinsVerified": true
+      }
+    },
+    {
+      "id": "hash-6-bounded",
+      "sequence": 6,
+      "block": 2,
+      "variant": "bounded",
+      "request": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/hash-6-bounded-request.json",
+        "sha256": "d2390fd6ac686089e473e51f3df3c465c972526e9d98de41907dd5ff12dedd72"
+      },
+      "report": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/hash-6-bounded-report.json",
+        "sha256": "f364a9e2c7e76abeed4d9dfb7316d0a51e87665efb63f4e9c6b1bf94f69c6cde"
+      },
+      "physical": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/hash-6-bounded-report.json.physical.json",
+        "sha256": "04799fbc213cc28f6df2e4731ba8ad0fe731c90dae5e29ceafb12461aa8b1a69"
+      },
+      "checkerCpuMs": 73911.625,
+      "checkerWallMs": 71093.728584,
+      "footprintBytes": 960875152,
+      "rssBytes": 1008631808,
+      "guardElapsedMs": 77086,
+      "verificationWallMs": 187.36679200000071,
+      "verificationCpuMs": 97.19,
+      "activation": {
+        "before": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/repository/evals/.g78-observed.mjs",
+          "sha256": "d7210a13d22240260d9720644869c9284273a8795526f48200cf7a95cd2831bf"
+        },
+        "active": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/repository/evals/.g78-observed.mjs",
+          "sha256": "3c27ff688f7b04e14f3620f96f343b086bc8e60f1a64e550526b7f700ab42e91"
+        },
+        "post": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/repository/evals/.g78-observed.mjs",
+          "sha256": "3c27ff688f7b04e14f3620f96f343b086bc8e60f1a64e550526b7f700ab42e91"
+        },
+        "postPinsVerified": true
+      }
+    },
+    {
+      "id": "hash-7-bounded",
+      "sequence": 7,
+      "block": 2,
+      "variant": "bounded",
+      "request": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/hash-7-bounded-request.json",
+        "sha256": "d2390fd6ac686089e473e51f3df3c465c972526e9d98de41907dd5ff12dedd72"
+      },
+      "report": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/hash-7-bounded-report.json",
+        "sha256": "3a36294ce332b212d5aa76585c43045c45c14a2c62dc040f89374691f9c7da70"
+      },
+      "physical": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/hash-7-bounded-report.json.physical.json",
+        "sha256": "f062bd67cd0df47747bc54ab3bc689c423fa77cade3733d3187f2eade805d828"
+      },
+      "checkerCpuMs": 82644.431,
+      "checkerWallMs": 92576.793916,
+      "footprintBytes": 1008754360,
+      "rssBytes": 999653376,
+      "guardElapsedMs": 102056,
+      "verificationWallMs": 90.16362500000105,
+      "verificationCpuMs": 84.167,
+      "activation": {
+        "before": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/repository/evals/.g78-observed.mjs",
+          "sha256": "3c27ff688f7b04e14f3620f96f343b086bc8e60f1a64e550526b7f700ab42e91"
+        },
+        "active": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/repository/evals/.g78-observed.mjs",
+          "sha256": "3c27ff688f7b04e14f3620f96f343b086bc8e60f1a64e550526b7f700ab42e91"
+        },
+        "post": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/repository/evals/.g78-observed.mjs",
+          "sha256": "3c27ff688f7b04e14f3620f96f343b086bc8e60f1a64e550526b7f700ab42e91"
+        },
+        "postPinsVerified": true
+      }
+    },
+    {
+      "id": "hash-8-baseline",
+      "sequence": 8,
+      "block": 2,
+      "variant": "baseline",
+      "request": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/hash-8-baseline-request.json",
+        "sha256": "d0e75e9f7bf5d7e38c1646ce6d0d5fd7f612d8c5468c8c4dab0d73ce2f12ab10"
+      },
+      "report": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/hash-8-baseline-report.json",
+        "sha256": "f4b0cf65761e5bdd804cca435858d50586e44a4e1c96a2b536b3a2a8b23b99a2"
+      },
+      "physical": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/hash-8-baseline-report.json.physical.json",
+        "sha256": "944fa394ff769e8234c954a6b92cc4275244190868d44d4ae363a5bfb47fb668"
+      },
+      "checkerCpuMs": 69816.519,
+      "checkerWallMs": 60829.172875000004,
+      "footprintBytes": 1388521600,
+      "rssBytes": 1145454592,
+      "guardElapsedMs": 66468,
+      "verificationWallMs": 142.12566700000025,
+      "verificationCpuMs": 542.326,
+      "activation": {
+        "before": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/repository/evals/.g78-observed.mjs",
+          "sha256": "3c27ff688f7b04e14f3620f96f343b086bc8e60f1a64e550526b7f700ab42e91"
+        },
+        "active": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/repository/evals/.g78-observed.mjs",
+          "sha256": "d7210a13d22240260d9720644869c9284273a8795526f48200cf7a95cd2831bf"
+        },
+        "post": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/repository/evals/.g78-observed.mjs",
+          "sha256": "d7210a13d22240260d9720644869c9284273a8795526f48200cf7a95cd2831bf"
+        },
+        "postPinsVerified": true
+      }
+    }
+  ],
+  "prospectiveAnalysis": {
+    "schemaVersion": 1,
+    "status": "REJECTED_OR_INCONCLUSIVE_NO_PROMOTION",
+    "pairs": [
+      {
+        "baseline": "hash-1-baseline",
+        "bounded": "hash-2-bounded"
+      },
+      {
+        "baseline": "hash-4-baseline",
+        "bounded": "hash-3-bounded"
+      },
+      {
+        "baseline": "hash-5-baseline",
+        "bounded": "hash-6-bounded"
+      },
+      {
+        "baseline": "hash-8-baseline",
+        "bounded": "hash-7-bounded"
+      }
+    ],
+    "statistics": {
+      "checkerCpuMs": {
+        "n": 4,
+        "logRatios": [
+          -0.05131676700453643,
+          -0.04927770740388036,
+          0.07095854699124232,
+          0.16867679781716116
+        ],
+        "meanLog": 0.03476021759999667,
+        "varianceLog": 0.011238529875114553,
+        "geometricMeanRatio": 1.035371415189765,
+        "ci95": [
+          0.8746526663526077,
+          1.225622476934053
+        ],
+        "baselineMedian": 70995.52549999999,
+        "variantMedian": 73220.628,
+        "direction": "inconclusive",
+        "pairedRatios": [
+          0.9499777012755691,
+          0.9519167386623257,
+          1.0735367236187818,
+          1.1837374905500515
+        ]
+      },
+      "checkerWallMs": {
+        "n": 4,
+        "logRatios": [
+          -0.009165866649380119,
+          -0.33006768380155005,
+          0.17732996944186408,
+          0.4199690136667724
+        ],
+        "meanLog": 0.06451635816442658,
+        "varianceLog": 0.10006637920694868,
+        "geometricMeanRatio": 1.066643026423949,
+        "ci95": [
+          0.6447842183586805,
+          1.7645086734829891
+        ],
+        "baselineMedian": 60553.581437500005,
+        "variantMedian": 66767.5412505,
+        "direction": "inconclusive",
+        "pairedRatios": [
+          0.9908760118577278,
+          0.7188750755873154,
+          1.1940250199010543,
+          1.5219143963413622
+        ]
+      },
+      "footprintBytes": {
+        "n": 4,
+        "logRatios": [
+          0.018197040190329156,
+          -0.368056245880404,
+          -0.3352326658411449,
+          -0.31952332122590005
+        ],
+        "meanLog": -0.25115379818927996,
+        "varianceLog": 0.03265323469261634,
+        "geometricMeanRatio": 0.7779027223281456,
+        "ci95": [
+          0.5835115105638229,
+          1.0370534847218789
+        ],
+        "baselineMedian": 1343331228,
+        "variantMedian": 984814756,
+        "direction": "inconclusive",
+        "pairedRatios": [
+          1.0183636151827515,
+          0.6920782540432737,
+          0.7151716709753333,
+          0.7264952594183627
+        ]
+      },
+      "rssBytes": {
+        "n": 4,
+        "logRatios": [
+          0.1655349872820663,
+          -0.1554251704932335,
+          -0.10996637657171998,
+          -0.13614826588196594
+        ],
+        "meanLog": -0.05900120641621328,
+        "varianceLog": 0.022754400160676647,
+        "geometricMeanRatio": 0.942705631861055,
+        "ci95": [
+          0.7415369815901819,
+          1.198448533796386
+        ],
+        "baselineMedian": 1135665152,
+        "variantMedian": 1009025024,
+        "direction": "inconclusive",
+        "pairedRatios": [
+          1.1800242478384328,
+          0.8560511324162846,
+          0.8958642568177188,
+          0.872713229299272
+        ]
+      },
+      "guardElapsedMs": {
+        "n": 4,
+        "logRatios": [
+          -0.012009368149923729,
+          -0.31512348618387886,
+          0.17383215108715727,
+          0.42880105339702174
+        ],
+        "meanLog": 0.06887508753759411,
+        "varianceLog": 0.0981866286269268,
+        "geometricMeanRatio": 1.0713023817716782,
+        "ci95": [
+          0.6506843391926806,
+          1.7638180667044103
+        ],
+        "baselineMedian": 66281,
+        "variantMedian": 72613,
+        "direction": "inconclusive",
+        "pairedRatios": [
+          0.9880624565013466,
+          0.729698760989923,
+          1.1898558330503504,
+          1.5354155383041463
+        ]
+      },
+      "verificationWallMs": {
+        "n": 4,
+        "logRatios": [
+          0.021565484767661357,
+          -0.47967269498353177,
+          0.386260484771805,
+          -0.45508556988838833
+        ],
+        "meanLog": -0.13173307383311345,
+        "varianceLog": 0.17247886383224517,
+        "geometricMeanRatio": 0.8765749446443166,
+        "ci95": [
+          0.4526766548639536,
+          1.6974227085094882
+        ],
+        "baselineMedian": 134.72945850000178,
+        "variantMedian": 119.54933350000647,
+        "direction": "inconclusive",
+        "pairedRatios": [
+          1.0217997004625423,
+          0.6189859558626938,
+          1.4714679158821111,
+          0.6343936806291357
+        ]
+      },
+      "verificationCpuMs": {
+        "n": 4,
+        "logRatios": [
+          -1.4962890898784675,
+          -1.6373160278604548,
+          -1.5591437883745376,
+          -1.863064376204706
+        ],
+        "meanLog": -1.6389533205795415,
+        "varianceLog": 0.025650363377728136,
+        "geometricMeanRatio": 0.1941831835024545,
+        "ci95": [
+          0.1504989250277887,
+          0.25054736270166406
+        ],
+        "baselineMedian": 469.8805,
+        "variantMedian": 95.0175,
+        "direction": "improvement",
+        "pairedRatios": [
+          0.22395971436674408,
+          0.19450137863317468,
+          0.2103160691950471,
+          0.1551963210319992
+        ]
+      }
+    },
+    "medianFootprintRatio": 0.7331138705576195,
+    "qualification": {
+      "eightOriginalFullChecks": true,
+      "medianWholeTreeFootprintAtMost095": true,
+      "everyPairedPhysicalBelow1": false,
+      "cpuCheckCI95UpperAtMost105": false,
+      "everyPairedCpuAtMost110": false,
+      "allPhysicalHealthy": true
+    },
+    "qualified": false,
+    "chronology": [
+      {
+        "id": "hash-1-baseline",
+        "variant": "baseline",
+        "healthy": true,
+        "clock": {
+          "workerBridgeBracketMs": 1.46225,
+          "epochBridgeDifferenceMs": 0.73828125,
+          "maxEpochRawDriftMs": 0.223876953125
+        },
+        "nativeSamples": 329,
+        "maxGapMs": 206.859,
+        "finalNodeLifetimeHighBytes": 1104301432,
+        "sampledCheckFootprintMaxBytes": 950880960,
+        "lastNativeBeforeCheckEnd": {
+          "atMs": 65699.62741708755,
+          "rssBytes": 870072320,
+          "footprintBytes": 950880960,
+          "highBytes": 950880960
+        },
+        "lastNativeCheckEndLagMs": 188.9928329124523,
+        "finalHighMinusLastCheckPrefixHighBytes": 153420472,
+        "finalHighRiseWindow": {
+          "startMs": 65901.60329210472,
+          "endMs": 66063.14154207993,
+          "afterCheckMs": [
+            12.983042104708147,
+            174.52129207992402
+          ],
+          "initialOnly": false,
+          "entirelyAfterCheck": true,
+          "overlapsCheck": false,
+          "overlapsVerification": true,
+          "scope": "UncertaintyexpandedbyhalfRAWbridgebracket;200mssamplingwindow,notexactpeakinstant orphase-limitedmaximum."
+        },
+        "samplerSelf": {
+          "userCpuMs": 2.808,
+          "systemCpuMs": 11.103,
+          "rssBytes": 753664,
+          "footprintBytes": 983328,
+          "lifetimeHighFootprintBytes": 1016096
+        },
+        "scope": "Nodeprocessphysicalseriesnotisolate/liveownership;whole-treeoriginalguardunchanged. Lastchecksamplemissesuptooneinterval;donotsubstituteitfortheacceptancepeak."
+      },
+      {
+        "id": "hash-2-bounded",
+        "variant": "bounded",
+        "healthy": true,
+        "clock": {
+          "workerBridgeBracketMs": 3.478958,
+          "epochBridgeDifferenceMs": 1.736083984375,
+          "maxEpochRawDriftMs": 0.22021484375
+        },
+        "nativeSamples": 325,
+        "maxGapMs": 218.592,
+        "finalNodeLifetimeHighBytes": 1124598456,
+        "sampledCheckFootprintMaxBytes": 1119811208,
+        "lastNativeBeforeCheckEnd": {
+          "atMs": 64715.704938173294,
+          "rssBytes": 812285952,
+          "footprintBytes": 1115291984,
+          "highBytes": 1119811208
+        },
+        "lastNativeCheckEndLagMs": 145.00952082670847,
+        "finalHighMinusLastCheckPrefixHighBytes": 4787248,
+        "finalHighRiseWindow": {
+          "startMs": 65115.24545914468,
+          "endMs": 65270.902417117984,
+          "afterCheckMs": [
+            254.53100014467782,
+            410.1879581179819
+          ],
+          "initialOnly": false,
+          "entirelyAfterCheck": true,
+          "overlapsCheck": false,
+          "overlapsVerification": false,
+          "scope": "UncertaintyexpandedbyhalfRAWbridgebracket;200mssamplingwindow,notexactpeakinstant orphase-limitedmaximum."
+        },
+        "samplerSelf": {
+          "userCpuMs": 2.743,
+          "systemCpuMs": 10.793,
+          "rssBytes": 770048,
+          "footprintBytes": 983328,
+          "lifetimeHighFootprintBytes": 1016096
+        },
+        "scope": "Nodeprocessphysicalseriesnotisolate/liveownership;whole-treeoriginalguardunchanged. Lastchecksamplemissesuptooneinterval;donotsubstituteitfortheacceptancepeak."
+      },
+      {
+        "id": "hash-3-bounded",
+        "variant": "bounded",
+        "healthy": true,
+        "clock": {
+          "workerBridgeBracketMs": 1.131,
+          "epochBridgeDifferenceMs": 0.56396484375,
+          "maxEpochRawDriftMs": 0.229248046875
+        },
+        "nativeSamples": 339,
+        "maxGapMs": 212.989,
+        "finalNodeLifetimeHighBytes": 928549544,
+        "sampledCheckFootprintMaxBytes": 926059248,
+        "lastNativeBeforeCheckEnd": {
+          "atMs": 67723.2816669941,
+          "rssBytes": 856621056,
+          "footprintBytes": 926059248,
+          "highBytes": 928549544
+        },
+        "lastNativeCheckEndLagMs": 87.15470800590992,
+        "finalHighMinusLastCheckPrefixHighBytes": 0,
+        "finalHighRiseWindow": {
+          "startMs": 62685.10616686058,
+          "endMs": 62887.291166999814,
+          "afterCheckMs": [
+            -5125.330208139421,
+            -4923.145208000191
+          ],
+          "initialOnly": false,
+          "entirelyAfterCheck": false,
+          "overlapsCheck": true,
+          "overlapsVerification": false,
+          "scope": "UncertaintyexpandedbyhalfRAWbridgebracket;200mssamplingwindow,notexactpeakinstant orphase-limitedmaximum."
+        },
+        "samplerSelf": {
+          "userCpuMs": 2.761,
+          "systemCpuMs": 11.5,
+          "rssBytes": 753664,
+          "footprintBytes": 983328,
+          "lifetimeHighFootprintBytes": 1016096
+        },
+        "scope": "Nodeprocessphysicalseriesnotisolate/liveownership;whole-treeoriginalguardunchanged. Lastchecksamplemissesuptooneinterval;donotsubstituteitfortheacceptancepeak."
+      },
+      {
+        "id": "hash-4-baseline",
+        "variant": "baseline",
+        "healthy": true,
+        "clock": {
+          "workerBridgeBracketMs": 1.698417,
+          "epochBridgeDifferenceMs": 0.84130859375,
+          "maxEpochRawDriftMs": 0.31396484375
+        },
+        "nativeSamples": 463,
+        "maxGapMs": 220.402,
+        "finalNodeLifetimeHighBytes": 1342579136,
+        "sampledCheckFootprintMaxBytes": 1223664904,
+        "lastNativeBeforeCheckEnd": {
+          "atMs": 92861.09925079346,
+          "rssBytes": 1030291456,
+          "footprintBytes": 1194189152,
+          "highBytes": 1223714056
+        },
+        "lastNativeCheckEndLagMs": 172.05283220653655,
+        "finalHighMinusLastCheckPrefixHighBytes": 118865080,
+        "finalHighRiseWindow": {
+          "startMs": 93061.69804224768,
+          "endMs": 93264.97745933733,
+          "afterCheckMs": [
+            28.54595924768364,
+            231.8253763373359
+          ],
+          "initialOnly": false,
+          "entirelyAfterCheck": true,
+          "overlapsCheck": false,
+          "overlapsVerification": true,
+          "scope": "UncertaintyexpandedbyhalfRAWbridgebracket;200mssamplingwindow,notexactpeakinstant orphase-limitedmaximum."
+        },
+        "samplerSelf": {
+          "userCpuMs": 3.588,
+          "systemCpuMs": 16.305,
+          "rssBytes": 786432,
+          "footprintBytes": 999712,
+          "lifetimeHighFootprintBytes": 1016096
+        },
+        "scope": "Nodeprocessphysicalseriesnotisolate/liveownership;whole-treeoriginalguardunchanged. Lastchecksamplemissesuptooneinterval;donotsubstituteitfortheacceptancepeak."
+      },
+      {
+        "id": "hash-5-baseline",
+        "variant": "baseline",
+        "healthy": true,
+        "clock": {
+          "workerBridgeBracketMs": 1.207333,
+          "epochBridgeDifferenceMs": 0.599609375,
+          "maxEpochRawDriftMs": 0.2177734375
+        },
+        "nativeSamples": 323,
+        "maxGapMs": 213.556,
+        "finalNodeLifetimeHighBytes": 1342575416,
+        "sampledCheckFootprintMaxBytes": 1185517984,
+        "lastNativeBeforeCheckEnd": {
+          "atMs": 64479.394750118256,
+          "rssBytes": 822853632,
+          "footprintBytes": 1185517984,
+          "highBytes": 1185517984
+        },
+        "lastNativeCheckEndLagMs": 70.98541588174703,
+        "finalHighMinusLastCheckPrefixHighBytes": 157057432,
+        "finalHighRiseWindow": {
+          "startMs": 64478.79108361826,
+          "endMs": 64680.467416480926,
+          "afterCheckMs": [
+            -71.58908238174627,
+            130.0872504809231
+          ],
+          "initialOnly": false,
+          "entirelyAfterCheck": false,
+          "overlapsCheck": true,
+          "overlapsVerification": true,
+          "scope": "UncertaintyexpandedbyhalfRAWbridgebracket;200mssamplingwindow,notexactpeakinstant orphase-limitedmaximum."
+        },
+        "samplerSelf": {
+          "userCpuMs": 2.702,
+          "systemCpuMs": 10.716,
+          "rssBytes": 770048,
+          "footprintBytes": 983328,
+          "lifetimeHighFootprintBytes": 1016096
+        },
+        "scope": "Nodeprocessphysicalseriesnotisolate/liveownership;whole-treeoriginalguardunchanged. Lastchecksamplemissesuptooneinterval;donotsubstituteitfortheacceptancepeak."
+      },
+      {
+        "id": "hash-6-bounded",
+        "variant": "bounded",
+        "healthy": true,
+        "clock": {
+          "workerBridgeBracketMs": 1.049667,
+          "epochBridgeDifferenceMs": 0.523681640625,
+          "maxEpochRawDriftMs": 0.260009765625
+        },
+        "nativeSamples": 383,
+        "maxGapMs": 212.666,
+        "finalNodeLifetimeHighBytes": 959891824,
+        "sampledCheckFootprintMaxBytes": 954992792,
+        "lastNativeBeforeCheckEnd": {
+          "atMs": 76298.62966775894,
+          "rssBytes": 866746368,
+          "footprintBytes": 954992792,
+          "highBytes": 954992792
+        },
+        "lastNativeCheckEndLagMs": 103.18812424106,
+        "finalHighMinusLastCheckPrefixHighBytes": 4899032,
+        "finalHighRiseWindow": {
+          "startMs": 76500.97483438291,
+          "endMs": 76703.77250128947,
+          "afterCheckMs": [
+            99.15704238291073,
+            301.9547092894645
+          ],
+          "initialOnly": false,
+          "entirelyAfterCheck": true,
+          "overlapsCheck": false,
+          "overlapsVerification": true,
+          "scope": "UncertaintyexpandedbyhalfRAWbridgebracket;200mssamplingwindow,notexactpeakinstant orphase-limitedmaximum."
+        },
+        "samplerSelf": {
+          "userCpuMs": 3.194,
+          "systemCpuMs": 13.642,
+          "rssBytes": 753664,
+          "footprintBytes": 983328,
+          "lifetimeHighFootprintBytes": 1016096
+        },
+        "scope": "Nodeprocessphysicalseriesnotisolate/liveownership;whole-treeoriginalguardunchanged. Lastchecksamplemissesuptooneinterval;donotsubstituteitfortheacceptancepeak."
+      },
+      {
+        "id": "hash-7-bounded",
+        "variant": "bounded",
+        "healthy": true,
+        "clock": {
+          "workerBridgeBracketMs": 2.814083,
+          "epochBridgeDifferenceMs": 1.403076171875,
+          "maxEpochRawDriftMs": 0.343994140625
+        },
+        "nativeSamples": 505,
+        "maxGapMs": 226.692,
+        "finalNodeLifetimeHighBytes": 1007754648,
+        "sampledCheckFootprintMaxBytes": 1007033752,
+        "lastNativeBeforeCheckEnd": {
+          "atMs": 101756.73504304886,
+          "rssBytes": 918355968,
+          "footprintBytes": 1007033752,
+          "highBytes": 1007033752
+        },
+        "lastNativeCheckEndLagMs": 111.96845695114462,
+        "finalHighMinusLastCheckPrefixHighBytes": 720896,
+        "finalHighRiseWindow": {
+          "startMs": 101755.32800154886,
+          "endMs": 101959.19808454314,
+          "afterCheckMs": [
+            -113.375498451147,
+            90.49458454313572
+          ],
+          "initialOnly": false,
+          "entirelyAfterCheck": false,
+          "overlapsCheck": true,
+          "overlapsVerification": true,
+          "scope": "UncertaintyexpandedbyhalfRAWbridgebracket;200mssamplingwindow,notexactpeakinstant orphase-limitedmaximum."
+        },
+        "samplerSelf": {
+          "userCpuMs": 3.963,
+          "systemCpuMs": 18.48,
+          "rssBytes": 786432,
+          "footprintBytes": 999712,
+          "lifetimeHighFootprintBytes": 1016096
+        },
+        "scope": "Nodeprocessphysicalseriesnotisolate/liveownership;whole-treeoriginalguardunchanged. Lastchecksamplemissesuptooneinterval;donotsubstituteitfortheacceptancepeak."
+      },
+      {
+        "id": "hash-8-baseline",
+        "variant": "baseline",
+        "healthy": true,
+        "clock": {
+          "workerBridgeBracketMs": 1.077333,
+          "epochBridgeDifferenceMs": 0.537353515625,
+          "maxEpochRawDriftMs": 0.22314453125
+        },
+        "nativeSamples": 331,
+        "maxGapMs": 218.119,
+        "finalNodeLifetimeHighBytes": 1387554656,
+        "sampledCheckFootprintMaxBytes": 1231234408,
+        "lastNativeBeforeCheckEnd": {
+          "atMs": 66108.63720917702,
+          "rssBytes": 827719680,
+          "footprintBytes": 1231234408,
+          "highBytes": 1231234408
+        },
+        "lastNativeCheckEndLagMs": 107.43737482298457,
+        "finalHighMinusLastCheckPrefixHighBytes": 156320248,
+        "finalHighRiseWindow": {
+          "startMs": 66309.98254250154,
+          "endMs": 66435.88987566366,
+          "afterCheckMs": [
+            93.90795850154245,
+            219.8152916636609
+          ],
+          "initialOnly": false,
+          "entirelyAfterCheck": true,
+          "overlapsCheck": false,
+          "overlapsVerification": true,
+          "scope": "UncertaintyexpandedbyhalfRAWbridgebracket;200mssamplingwindow,notexactpeakinstant orphase-limitedmaximum."
+        },
+        "samplerSelf": {
+          "userCpuMs": 2.891,
+          "systemCpuMs": 11.39,
+          "rssBytes": 753664,
+          "footprintBytes": 983328,
+          "lifetimeHighFootprintBytes": 1016096
+        },
+        "scope": "Nodeprocessphysicalseriesnotisolate/liveownership;whole-treeoriginalguardunchanged. Lastchecksamplemissesuptooneinterval;donotsubstituteitfortheacceptancepeak."
+      }
+    ],
+    "compilerOptimizationAccepted": false,
+    "scope": "Freshfixed-URI/fixed-image4pair8rowcomparison. NOoldpooling/rescoring/retries,outlierfilters,loosenedwhole-treeguard,compiler-source/algorithm/ABIchange. Same sharedphysical-onlydiagnosticbothvariants. Not compiler CPU speedup or full/C3 qualification."
+  },
+  "completeRawExecution": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/hash-execution.json",
+    "sha256": "8d139759537a1b3709a5c929d849db92d7a221fc938893947ac30ab1a684111a"
+  },
+  "completeAnalysis": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g78-bounded-hash-623_t7sq/hash-analysis.json",
+    "sha256": "ad4129ef40526cc43593165216c026c897e6bd613237b43b0270ed9b0a0fbd38"
+  },
+  "all52SourcesAll17ModulesComplete": true,
+  "workCountersEveryRow": {
+    "files": 52,
+    "modules": 17,
+    "declarations": 2954,
+    "expand": 263032,
+    "check": 1975761
+  },
+  "oneRequestHashPerVariant": {
+    "baseline": [
+      "d0e75e9f7bf5d7e38c1646ce6d0d5fd7f612d8c5468c8c4dab0d73ce2f12ab10"
+    ],
+    "bounded": [
+      "d2390fd6ac686089e473e51f3df3c465c972526e9d98de41907dd5ff12dedd72"
+    ]
+  },
+  "compilerBuilds": 0,
+  "byteFixedpoint": "NOT_RUN_NOCOMPILERSOURCECHANGE",
+  "oldTimingsAndDecisionsNotRescored": true,
+  "sourcePromotion": false,
+  "scope": "Alloriginal8rowsretained. SamefixedURI/fixedAimage/flags/corpus/guards;sharedphysical-onlydiagbothvariants. CheckCPUincludesNodehelperthreads;postverificationCPUintervalNOTexclusivehashfunctionCPU. Actualharnessoutsideinstrumentationnotpromoted."
+}
