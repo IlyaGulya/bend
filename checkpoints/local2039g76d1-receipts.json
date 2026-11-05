@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "version": "local2039g76d1",
+  "status": "NO_ROBUST_CONTENT_CPU_AND_MEMORY_GAIN_FULL_QUALIFICATION_NOT_EARNED",
+  "experimentalBranch": "selfhost/g76-origin-bevhx8ec",
+  "preflightCheckpoint": "30cb1a09",
+  "sourceReceiptFiles": [
+    {
+      "repositoryPath": "checkpoints/local2039g76d1-protocol.json",
+      "sha256": "6ee7cebef041d72e44a20786591d84d01b885a38c161b384af3451d2ef0124af"
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g76d1-execution-plan.json",
+      "sha256": "b9d4d9b8396001f617c3ed5139c3c037d2ead44632eb876ebb852dcf3392e065"
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g76d1-results.json",
+      "sha256": "d55c09613ffa655c0eb67ccf9997b1a6362913dd9d512a7b4f230d0cbd29fc14"
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g76d1-decision.json",
+      "sha256": "c5ac3fb4996d25514de0c52b3bb15d081b2e1cd3ee587a9ebdb425de515a0709"
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g76d1-closing-hashes.json",
+      "sha256": "6bb4fcf1b83674fd45ada08a1dfe79b92c2ebd416009a84a716b1460ded96113"
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g76d1-cleanup.json",
+      "sha256": "2fef87e7feeb61a1c1cdb7d29a543b0f06b1aafeeec71438717ad2a68b8308fd"
+    }
+  ],
+  "allEightFreshRuntimeRowsPassed": true,
+  "allEightRowsRetained": true,
+  "originalImagesImmutable": {
+    "A": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs",
+      "sha256": "4636c05aa8c75e72212cb03949937e25561942bc00da250f876f37f001b9fc18"
+    },
+    "C": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/real-own-c2.json.output.mjs",
+      "sha256": "505d4c08336e6f6312346806d97e2d189b6e0bd5783f829ead6723e62c24edaa"
+    }
+  },
+  "perCellMutableSlotHistoryVerified": true,
+  "finalOwnedSlotStates": {
+    "U": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g76-content-origin-bevhx8ec/U/compiler.mjs",
+      "sha256": "4636c05aa8c75e72212cb03949937e25561942bc00da250f876f37f001b9fc18",
+      "bytes": 31758525,
+      "lastWriterSequence": 8,
+      "lastWriterContent": "A"
+    },
+    "V": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g76-content-origin-bevhx8ec/V/compiler.mjs",
+      "sha256": "505d4c08336e6f6312346806d97e2d189b6e0bd5783f829ead6723e62c24edaa",
+      "bytes": 31801158,
+      "lastWriterSequence": 6,
+      "lastWriterContent": "C"
+    }
+  },
+  "sameRequestSameURLSameBytesRepeatsRecorded": true,
+  "factorialDesign": "Fourcombinationsinfirstblockthenexactreverse;contentandURLcontrastswithinblock,interaction/orderreported,nocontrastindependenceclaim.",
+  "sourceQualificationEarned": false,
+  "fullConfirmation": "NOT_RUN_NOT_EARNED",
+  "actualOwnC3": "NOT_RUN_NOT_EARNED",
+  "sourceCompilerUnchanged": true,
+  "defaultCutover": false,
+  "acceptedOptimization": false,
+  "oldDecisionsAndTimingsNotRescored": true,
+  "ownedScriptsRemoved": 2,
+  "exactOwnedScriptSourcesPreservedIn": "checkpoints/local2039g76d1-cleanup.json",
+  "sourceInputsVerified": 158,
+  "scope": "Completeuser-authorizedcontent\u00d7URLcross-overwithactualguards/stepsandhashledger. Noimagetransformation/compilerbuild/permanenttest/docs. Rawreports/slots/logsoutsideGit;nextnatural-observerexperimentisproposedonly.",
+  "experimentalClosingCheckpoint": "f289163f",
+  "mainCopiedReceiptFiles": [
+    "checkpoints/local2039g76d1-protocol.json",
+    "checkpoints/local2039g76d1-results.json",
+    "checkpoints/local2039g76d1-decision.json",
+    "checkpoints/local2039g76d1-closing-hashes.json",
+    "checkpoints/local2039g76d1-cleanup.json"
+  ],
+  "mainSourceUnchanged": true
+}

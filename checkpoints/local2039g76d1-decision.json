@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "version": "local2039g76d1",
+  "status": "NO_ROBUST_CONTENT_CPU_AND_MEMORY_GAIN_FULL_QUALIFICATION_NOT_EARNED",
+  "sourceCompilerUnchanged": true,
+  "defaultCutover": false,
+  "qualifiedSpeedOrMemoryGain": false,
+  "selfhostGreen": false,
+  "protocolCheckpoint": "30cb1a09",
+  "actualResults": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g76-content-origin-bevhx8ec/repository/checkpoints/local2039g76d1-results.json",
+    "sha256": "d55c09613ffa655c0eb67ccf9997b1a6362913dd9d512a7b4f230d0cbd29fc14"
+  },
+  "contentEffect": {
+    "cpuGeometricCA": 0.9728544421161789,
+    "cpu95": [
+      0.8531664154282396,
+      1.109333124734078
+    ],
+    "medianFootprintCA": 1.0188202353546345,
+    "footprintGeometricCA": 1.0022552642427758,
+    "footprint95": [
+      0.811735043262685,
+      1.2374919908161284
+    ],
+    "perSlot": {
+      "U": {
+        "cpuGeometricCA": 0.9978255236700272,
+        "medianFootprintCA": 0.9719598721962416
+      },
+      "V": {
+        "cpuGeometricCA": 0.9485082743365099,
+        "medianFootprintCA": 1.0394324764782679
+      }
+    }
+  },
+  "failedProspectivePointFilters": [
+    "cpu",
+    "everyCPU",
+    "footprintBothSlots"
+  ],
+  "contentCPUUpper95Pass": false,
+  "diagnosticTriggers": {
+    "urlCPU": true,
+    "urlFootprint": true,
+    "contentURLInteractionCPU": true,
+    "contentURLInteractionFootprint": true,
+    "blockCPU": true,
+    "blockFootprint": true
+  },
+  "interpretation": [
+    "ContentCPUpointdoesnotreachoriginal5percenttarget;onewithin-URLcontentpairreversesandslotVmedianfootprintfails2percentretention. CPUCIcrosses1.",
+    "Bothcontent/origininteractionsandblockcontrastsareuncertain;eightcellsdonotestablishastableuniversalURLmechanism. NewU/VarenotthehistoricalG75URLs,soG75isnotretroactivelyrefuted.",
+    "ThesameC2bytesatthesameURLwiththeexactsamerequesthashchangesphysicalpeaksubstantiallybetweenfreshprocesses;URLalonecannotexplainallobservedvariation.",
+    "Phase-endheapsarenotlive-rootorpeakownerproof;noGC/hash-seed/pretenuring/OS-causeclaimisearned.",
+    "OriginalG73/G74/G75decisionsandallrawrowsremainunchanged;novalidcostrunretried,droppedorreplaced."
+  ],
+  "fullConfirmation": "NOT_RUN_NOT_EARNED_BY_PREREGISTERED_CONTENT_SCREEN",
+  "actualOwnC3": "NOT_RUN_NOT_EARNED_BY_PREREGISTERED_CONTENT_SCREEN",
+  "newSourceVersion": "NOT_STARTED",
+  "nextSafeStep": {
+    "kind": "NATURAL_MEMORY_CHRONOLOGY_WITH_OBSERVER_OFF_CONTROLS",
+    "proposal": "Firstauditexistingunprofiledphase-endtelemetryandguardphaseboundaries;thenaseparatelyfrozenboundednaturalheap-space/GC-eventobserverwithmatchedobserver-offcontrols. Samecontent/URI/requestrepeatsneedregimediscriminationbeforeanotherArena/CPS/temporaryrewrite.",
+    "controls": "NoHeapProfiler/snapshots/explicitGC/heap-sizeoroptimizationflagchange;primitive-onlyboundedtelemetry,exactnativeworkcounts,originalguards. InspectorCPUisolateGCsharedoesnotmeasureallprocess/helper-threadGCcost. Observerdisturbancehasapredeclaredstopgate.",
+    "status": "PROPOSED_NOT_EXECUTED_IN_G76"
+  },
+  "scope": "Completecontent\u00d7URLdiagnostic,notperformancequalification. StaticG75closedlexicalread/Booleancandidatesremainonlysemantic/activationprospects;unstablecostdoesnotearnautomaticsourcebuild."
+}
