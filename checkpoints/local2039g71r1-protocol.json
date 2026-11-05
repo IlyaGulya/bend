@@ -1,0 +1,95 @@
+{
+  "schemaVersion": 1,
+  "version": "G71R1",
+  "status": "PROSPECTIVE_BEFORE_PERMANENT_API_EDITS_AND_COST_ROWS",
+  "baseMainCheckpoint": "2c1ba000",
+  "branch": "selfhost/g71-initialized-lvi9rn4s",
+  "worktree": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g71-initialized-checker-lvi9rn4s/repository",
+  "goal": "Removeprovedhostraw-input-frameASTretentionwithnativecompilerimageunchanged;retainacceptedcheckerCPUandlowerpeakRAM. No selfhostcompilerrebuild.",
+  "evidence": {
+    "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g70d1-handoff-results.json",
+    "sha256": "ddaade97e7c7c0d61e84445fef3e9431d5194d838409bb3cc4c9d66c7c4022cd"
+  },
+  "contract": {
+    "newExport": "runInitializedCheckerSteps(component, initialize, observe?)",
+    "removedExport": "runCheckerSteps in checker_core_step_runtime.mjs",
+    "initialize": "Synchronouszero-argumentfunctionreturningnativeinitialCheckerRun; inputargumentframehasreturnedbeforelongloop. Callersreleaseconsumedexpandedholderinsideinitializer. No rawmodulesargumentpassedthroughthelongwrapper.",
+    "privateEngine": "Factory-only initializationforallprotocols; existingnoncheckpublicAPIsandvalidatorsunchanged. No oldcheckerAPIshim/alias/arrayfallback.",
+    "nativeABI": "All13Bendexports,opaqueRunvalidation/steps/counters/errors preserved; imagebyteidenticalA. DiagnosticcountswrapperisadifferentAPIandmaykeepitsname,notanobsoletecorealias.",
+    "migration": "Allactivecoreimports/callers,TS/MJS workers,bootstrap/throughput/CLI/benchmark/counts. Immutablehistoricalreceipts/sourceimages andunrelateddot-experimentfilesnotrewritten."
+  },
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "throughputMs": 600000,
+    "smokeMs": 120000,
+    "workerStackMiB": 256,
+    "oldMiB": 6144,
+    "youngMiB": 128,
+    "parserFuel": 8000000,
+    "quantum": 64,
+    "oneHeavyLane": true
+  },
+  "runtime": {
+    "release": "2.0.39-a3efe8a3801f423827424227172eed9802c5e6cb",
+    "node": "23.11.0",
+    "v8": "12.9.202.28-node.14",
+    "bun": "1.4.3",
+    "platform": "darwin25.6arm64",
+    "abi": 13,
+    "quantum": 64
+  },
+  "images": {
+    "A": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs",
+      "sha256": "4636c05aa8c75e72212cb03949937e25561942bc00da250f876f37f001b9fc18"
+    },
+    "B": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/g63-baseline-self-stage2.json.output.mjs",
+      "sha256": "65a07432de9482e67a71a70d1a2696474c8aca08a75e4e7dfe13fa6c006df045"
+    },
+    "C": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs",
+      "sha256": "4636c05aa8c75e72212cb03949937e25561942bc00da250f876f37f001b9fc18"
+    }
+  },
+  "roles": "AacceptedAimage+oldROOTdriver/helper,BpriorimmutableBimage+oldROOTdriver/helper,CEXACTAimage+newworktreedriver/helper. Sourcecorpuscontentandnamespacepathsunchanged; helper/driverpinsdeclaredperrole.",
+  "selectedCorpus": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/main-complete.corpus.json",
+    "sha256": "1a269e15bf70257b019ab572c003b6eb130b4e3f63ad507783525e28d307b0e4"
+  },
+  "fullCorpus": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/full-frozen.corpus.json",
+    "sha256": "60bf820e76a9c336e58c848eec6a40b3f8fbb4b7ac2ae45ffd1abdb1d217ebc6"
+  },
+  "sameSelectedWork": {
+    "files": 52,
+    "modules": 17,
+    "declarations": 2954,
+    "expand": 263032,
+    "check": 1975761
+  },
+  "selectedOrders": [
+    "ABC",
+    "CAB",
+    "BCA"
+  ],
+  "selectedFreshProcesses": 9,
+  "costFilter": {
+    "geometricCpuCAatMost": 1.02,
+    "geometricCpuCBatMost": 1.02,
+    "everyCpuCAatMost": 1.05,
+    "geometricWallCAatMost": 1.02,
+    "medianFootprintCAatMost": 0.98,
+    "geometricFootprintCBatMost": 0.98,
+    "medianRSSCAatMost": 1.0
+  },
+  "prospectivePolicyChange": "G69targeted5percentRAMasbroadwrappermechanismandfailed. G71isdistinctboundedhost-retentionfix:practical2percentRAMtargetmatchesexisting2percentpracticalband. DeclaredBEFOREanyG71costdata;G69resultsneverrescored;CPUretention2percentunchanged. D1postGCshallowdeltaisnotcleanpeakmeasurement.",
+  "statistics": "SamepairedlogStudent95%CI,n3selectedpairs,allrowsretained,noretries/exclusions/profiling/forcedGC. CPUretainrequiresupperCI<=1.02vsAandB,RAMbenefitupperCI<=0.98vsB or earned independentfullconfirmation. Inconclusivenotaccepted.",
+  "earned": "All7selectedpointfiltersPASScanearn6fullfrozenprocessesABC/CBA. NoC1/C2/C3needed:compilerimageidenticalandnoBendsource/emitterchange;thisdoesNOTestablishnewbytefixedpoint/selfhostgreen.",
+  "functionalGate": "Actualown69,original13JS+existingidentity/boxed2,original3C,typedreadback28 throughnewworktreehelper; existingstep/runtimeABItests ifbehavioral. No newwiring/mock/source-texttests. G70same-imageprefixregressionproofretained.",
+  "isolation": "Notexclusive;clusterunavailable. No unrelatedprocesskills,priority/systemchanges.",
+  "accepted": false,
+  "selfhostGreen": false
+}

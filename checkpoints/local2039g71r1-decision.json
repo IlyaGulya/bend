@@ -1,0 +1,487 @@
+{
+  "schemaVersion": 1,
+  "version": "G71R1",
+  "status": "CLOSED_REJECTED_FOR_CPU_AND_PEAK_RAM_QUALIFICATION",
+  "baseCheckpoint": "2c1ba000",
+  "prospectiveProtocolCheckpoint": "234c40ce",
+  "completeNineFileImplementationCheckpoint": "90ffb3a1",
+  "actualConsumersAndRootPreflightCheckpoint": "b62b41b7",
+  "rootProofAndNineProcessPreflightCheckpoint": "c9bb68bf",
+  "experimentalBranch": "selfhost/g71-initialized-lvi9rn4s",
+  "implementationFiles": [
+    "evals/checker_core_step_runtime.mjs",
+    "evals/checker_core_step_counts.mjs",
+    "evals/checker_core_target_worker.mjs",
+    "evals/checker_library_smoke_worker.mjs",
+    "evals/fir_foreign_smoke_worker.mjs",
+    "evals/selfhost_bootstrap_worker.mjs",
+    "evals/selfhost_throughput.mjs",
+    "evals/candidate_host.ts",
+    "evals/compiler_benchmark.ts"
+  ],
+  "acceptedDefaultChange": false,
+  "mainAcceptedControlPinsUnchanged": [
+    {
+      "path": "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+      "expectedSha256": "1a806befee02216a9499f6b4dcde7e2326e01f0a5b96bbd36b75295344c50317",
+      "actualSha256": "1a806befee02216a9499f6b4dcde7e2326e01f0a5b96bbd36b75295344c50317",
+      "matched": true
+    },
+    {
+      "path": "/Users/ilyagulya/Projects/My/bend/evals/checker_core_step_runtime.mjs",
+      "expectedSha256": "00cd400ac0452a3681bf6491db08be51f9ae3a33ff2baf88654a9763eb5073ed",
+      "actualSha256": "00cd400ac0452a3681bf6491db08be51f9ae3a33ff2baf88654a9763eb5073ed",
+      "matched": true
+    },
+    {
+      "path": "/Users/ilyagulya/Projects/My/bend/evals/selfhost_cpu_profile.mjs",
+      "expectedSha256": "5d5fc8d329a3b600522c58eeac59c49c515109bc7f48845d8177cb520129a1c0",
+      "actualSha256": "5d5fc8d329a3b600522c58eeac59c49c515109bc7f48845d8177cb520129a1c0",
+      "matched": true
+    },
+    {
+      "path": "/Users/ilyagulya/Projects/My/bend/evals/native_seed_runtime.mjs",
+      "expectedSha256": "7f81a9b9013853355910b93bf59586b2acbcda4de7bcaa08d7942ebf45c0147a",
+      "actualSha256": "7f81a9b9013853355910b93bf59586b2acbcda4de7bcaa08d7942ebf45c0147a",
+      "matched": true
+    },
+    {
+      "path": "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+      "expectedSha256": "e72f2b81970be76734df918e35b1a4289d0fb194039e5ca20e9785e5ac0ee015",
+      "actualSha256": "e72f2b81970be76734df918e35b1a4289d0fb194039e5ca20e9785e5ac0ee015",
+      "matched": true
+    },
+    {
+      "path": "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate_native.c",
+      "expectedSha256": "1ff233edacdbf13c6ffd4a8bf38cbf153629e8c76be4860deec8a5b591d3fa8b",
+      "actualSha256": "1ff233edacdbf13c6ffd4a8bf38cbf153629e8c76be4860deec8a5b591d3fa8b",
+      "matched": true
+    }
+  ],
+  "semantics": {
+    "all41ActualConsumerProcesses": "PASS",
+    "ownContracts": 69,
+    "standaloneJSPrograms": 15,
+    "clangBuiltCPrograms": 3,
+    "typedInspectionRecheckLibraryContracts": 28,
+    "actualCountingHelperReplaysSame28": "PASS",
+    "actualPermanentHelperSnapshotAndFullVMRootProof": "PASS"
+  },
+  "structuralResourceProof": {
+    "oldShallowBytes": 324809598,
+    "newShallowBytes": 296711742,
+    "shallowDifference": 28097856,
+    "tagGroupsBefore": {
+      "ast_nonSpan_tagged": {
+        "taggedNodes": 309269,
+        "shallowBytes": 15962328,
+        "nonWeakRootReachable": 309269
+      },
+      "ast_SpanOf": {
+        "taggedNodes": 232709,
+        "shallowBytes": 13031704,
+        "nonWeakRootReachable": 232709
+      },
+      "checker_arena_tagged": {
+        "taggedNodes": 519212,
+        "shallowBytes": 31309064,
+        "nonWeakRootReachable": 519212
+      },
+      "checker_ir_tagged": {
+        "taggedNodes": 280181,
+        "shallowBytes": 16156760,
+        "nonWeakRootReachable": 280181
+      }
+    },
+    "tagGroupsAfter": {
+      "ast_nonSpan_tagged": {
+        "taggedNodes": 57411,
+        "shallowBytes": 1914184,
+        "nonWeakRootReachable": 57411
+      },
+      "ast_SpanOf": {
+        "taggedNodes": 220895,
+        "shallowBytes": 12370120,
+        "nonWeakRootReachable": 220895
+      },
+      "checker_arena_tagged": {
+        "taggedNodes": 519212,
+        "shallowBytes": 31309064,
+        "nonWeakRootReachable": 519212
+      },
+      "checker_ir_tagged": {
+        "taggedNodes": 280181,
+        "shallowBytes": 16156760,
+        "nonWeakRootReachable": 280181
+      }
+    },
+    "ArenaUnchanged": true,
+    "IRUnchanged": true,
+    "scope": "Oldvsactualpermanenthelper,sameAimage/same1mprefixbutseparateGCperturbedsnapshots; notpeakRAM/CPUqualification"
+  },
+  "costProtocol": {
+    "schemaVersion": 1,
+    "version": "G71R1",
+    "status": "PROSPECTIVE_BEFORE_PERMANENT_API_EDITS_AND_COST_ROWS",
+    "baseMainCheckpoint": "2c1ba000",
+    "branch": "selfhost/g71-initialized-lvi9rn4s",
+    "worktree": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g71-initialized-checker-lvi9rn4s/repository",
+    "goal": "Removeprovedhostraw-input-frameASTretentionwithnativecompilerimageunchanged;retainacceptedcheckerCPUandlowerpeakRAM. No selfhostcompilerrebuild.",
+    "evidence": {
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g70d1-handoff-results.json",
+      "sha256": "ddaade97e7c7c0d61e84445fef3e9431d5194d838409bb3cc4c9d66c7c4022cd"
+    },
+    "contract": {
+      "newExport": "runInitializedCheckerSteps(component, initialize, observe?)",
+      "removedExport": "runCheckerSteps in checker_core_step_runtime.mjs",
+      "initialize": "Synchronouszero-argumentfunctionreturningnativeinitialCheckerRun; inputargumentframehasreturnedbeforelongloop. Callersreleaseconsumedexpandedholderinsideinitializer. No rawmodulesargumentpassedthroughthelongwrapper.",
+      "privateEngine": "Factory-only initializationforallprotocols; existingnoncheckpublicAPIsandvalidatorsunchanged. No oldcheckerAPIshim/alias/arrayfallback.",
+      "nativeABI": "All13Bendexports,opaqueRunvalidation/steps/counters/errors preserved; imagebyteidenticalA. DiagnosticcountswrapperisadifferentAPIandmaykeepitsname,notanobsoletecorealias.",
+      "migration": "Allactivecoreimports/callers,TS/MJS workers,bootstrap/throughput/CLI/benchmark/counts. Immutablehistoricalreceipts/sourceimages andunrelateddot-experimentfilesnotrewritten."
+    },
+    "limits": {
+      "memoryMiB": 8192,
+      "rssMiB": 8192,
+      "pollMs": 10,
+      "throughputMs": 600000,
+      "smokeMs": 120000,
+      "workerStackMiB": 256,
+      "oldMiB": 6144,
+      "youngMiB": 128,
+      "parserFuel": 8000000,
+      "quantum": 64,
+      "oneHeavyLane": true
+    },
+    "runtime": {
+      "release": "2.0.39-a3efe8a3801f423827424227172eed9802c5e6cb",
+      "node": "23.11.0",
+      "v8": "12.9.202.28-node.14",
+      "bun": "1.4.3",
+      "platform": "darwin25.6arm64",
+      "abi": 13,
+      "quantum": 64
+    },
+    "images": {
+      "A": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs",
+        "sha256": "4636c05aa8c75e72212cb03949937e25561942bc00da250f876f37f001b9fc18"
+      },
+      "B": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/g63-baseline-self-stage2.json.output.mjs",
+        "sha256": "65a07432de9482e67a71a70d1a2696474c8aca08a75e4e7dfe13fa6c006df045"
+      },
+      "C": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs",
+        "sha256": "4636c05aa8c75e72212cb03949937e25561942bc00da250f876f37f001b9fc18"
+      }
+    },
+    "roles": "AacceptedAimage+oldROOTdriver/helper,BpriorimmutableBimage+oldROOTdriver/helper,CEXACTAimage+newworktreedriver/helper. Sourcecorpuscontentandnamespacepathsunchanged; helper/driverpinsdeclaredperrole.",
+    "selectedCorpus": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/main-complete.corpus.json",
+      "sha256": "1a269e15bf70257b019ab572c003b6eb130b4e3f63ad507783525e28d307b0e4"
+    },
+    "fullCorpus": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/full-frozen.corpus.json",
+      "sha256": "60bf820e76a9c336e58c848eec6a40b3f8fbb4b7ac2ae45ffd1abdb1d217ebc6"
+    },
+    "sameSelectedWork": {
+      "files": 52,
+      "modules": 17,
+      "declarations": 2954,
+      "expand": 263032,
+      "check": 1975761
+    },
+    "selectedOrders": [
+      "ABC",
+      "CAB",
+      "BCA"
+    ],
+    "selectedFreshProcesses": 9,
+    "costFilter": {
+      "geometricCpuCAatMost": 1.02,
+      "geometricCpuCBatMost": 1.02,
+      "everyCpuCAatMost": 1.05,
+      "geometricWallCAatMost": 1.02,
+      "medianFootprintCAatMost": 0.98,
+      "geometricFootprintCBatMost": 0.98,
+      "medianRSSCAatMost": 1.0
+    },
+    "prospectivePolicyChange": "G69targeted5percentRAMasbroadwrappermechanismandfailed. G71isdistinctboundedhost-retentionfix:practical2percentRAMtargetmatchesexisting2percentpracticalband. DeclaredBEFOREanyG71costdata;G69resultsneverrescored;CPUretention2percentunchanged. D1postGCshallowdeltaisnotcleanpeakmeasurement.",
+    "statistics": "SamepairedlogStudent95%CI,n3selectedpairs,allrowsretained,noretries/exclusions/profiling/forcedGC. CPUretainrequiresupperCI<=1.02vsAandB,RAMbenefitupperCI<=0.98vsB or earned independentfullconfirmation. Inconclusivenotaccepted.",
+    "earned": "All7selectedpointfiltersPASScanearn6fullfrozenprocessesABC/CBA. NoC1/C2/C3needed:compilerimageidenticalandnoBendsource/emitterchange;thisdoesNOTestablishnewbytefixedpoint/selfhostgreen.",
+    "functionalGate": "Actualown69,original13JS+existingidentity/boxed2,original3C,typedreadback28 throughnewworktreehelper; existingstep/runtimeABItests ifbehavioral. No newwiring/mock/source-texttests. G70same-imageprefixregressionproofretained.",
+    "isolation": "Notexclusive;clusterunavailable. No unrelatedprocesskills,priority/systemchanges.",
+    "accepted": false,
+    "selfhostGreen": false
+  },
+  "cleanCostSummary": {
+    "schemaVersion": 1,
+    "C_over_A": {
+      "checkerCpuMs": {
+        "n": 3,
+        "logRatios": [
+          0.08118974953176407,
+          -0.0438766201258279,
+          0.052324601105537334
+        ],
+        "meanLog": 0.0298792435038245,
+        "varianceLog": 0.004288244763233937,
+        "geometricMeanRatio": 1.0303301073873377,
+        "ci95": [
+          0.8756456779446711,
+          1.2123398275436705
+        ],
+        "baselineMedian": 80856.291,
+        "variantMedian": 80041.879,
+        "direction": "inconclusive"
+      },
+      "checkerWallMs": {
+        "n": 3,
+        "logRatios": [
+          0.2535548682832859,
+          -0.03123531090955598,
+          0.1087450808359737
+        ],
+        "meanLog": 0.11035487940323453,
+        "varianceLog": 0.020278305129743115,
+        "geometricMeanRatio": 1.1166742848543654,
+        "ci95": [
+          0.7839648564804244,
+          1.5905833637150355
+        ],
+        "baselineMedian": 72842.245375,
+        "variantMedian": 81210.224875,
+        "direction": "inconclusive"
+      },
+      "footprintBytes": {
+        "n": 3,
+        "logRatios": [
+          -0.12204840828491552,
+          0.057466506425226514,
+          0.026107984410904565
+        ],
+        "meanLog": -0.012824639149594816,
+        "varianceLog": 0.009193213033825054,
+        "geometricMeanRatio": 0.9872572461116367,
+        "ci95": [
+          0.7780170387842285,
+          1.2527705968021159
+        ],
+        "baselineMedian": 1148787880,
+        "variantMedian": 1162667744,
+        "direction": "inconclusive"
+      },
+      "rssBytes": {
+        "n": 3,
+        "logRatios": [
+          -0.0415627619566478,
+          0.16851581064891524,
+          -0.01302326619440579
+        ],
+        "meanLog": 0.037976594165953885,
+        "varianceLog": 0.012983990984579846,
+        "geometricMeanRatio": 1.038706920792166,
+        "ci95": [
+          0.7826386119233605,
+          1.3785571665702518
+        ],
+        "baselineMedian": 1062322176,
+        "variantMedian": 1128464384,
+        "direction": "inconclusive"
+      },
+      "medianFootprintRatio": 1.0120821817862493,
+      "medianRSSRatio": 1.0622619102700535
+    },
+    "C_over_B": {
+      "checkerCpuMs": {
+        "n": 3,
+        "logRatios": [
+          0.036055027550352024,
+          0.007131192574340805,
+          0.05760569365816366
+        ],
+        "meanLog": 0.0335973045942855,
+        "varianceLog": 0.000641449116511791,
+        "geometricMeanRatio": 1.0341680681348835,
+        "ci95": [
+          0.9711075370143861,
+          1.1013235428467207
+        ],
+        "baselineMedian": 78026.12299999999,
+        "variantMedian": 80041.879,
+        "direction": "inconclusive"
+      },
+      "checkerWallMs": {
+        "n": 3,
+        "logRatios": [
+          0.0019992071665619004,
+          0.03603500382053042,
+          0.021212353998237576
+        ],
+        "meanLog": 0.019748854995109963,
+        "varianceLog": 0.0002912152354666903,
+        "geometricMeanRatio": 1.0199451537275273,
+        "ci95": [
+          0.9776114008010832,
+          1.0641120958284926
+        ],
+        "baselineMedian": 79505.707167,
+        "variantMedian": 81210.224875,
+        "direction": "inconclusive"
+      },
+      "footprintBytes": {
+        "n": 3,
+        "logRatios": [
+          0.02874943275271127,
+          0.06885470789238339,
+          -0.2366456142510883
+        ],
+        "meanLog": -0.046347157868664536,
+        "varianceLog": 0.027562235149657128,
+        "geometricMeanRatio": 0.9547104694021296,
+        "ci95": [
+          0.6320664999658431,
+          1.4420509241279051
+        ],
+        "baselineMedian": 1135779464,
+        "variantMedian": 1162667744,
+        "direction": "inconclusive"
+      },
+      "rssBytes": {
+        "n": 3,
+        "logRatios": [
+          0.046615429742563386,
+          0.15123815010425237,
+          -0.07777045637204513
+        ],
+        "meanLog": 0.04002770782492354,
+        "varianceLog": 0.013143784020102037,
+        "geometricMeanRatio": 1.0408396131946291,
+        "ci95": [
+          0.7828848965304515,
+          1.383788479246779
+        ],
+        "baselineMedian": 1080836096,
+        "variantMedian": 1128464384,
+        "direction": "inconclusive"
+      },
+      "medianFootprintRatio": 1.023673856459162,
+      "medianRSSRatio": 1.0440661522836483
+    },
+    "B_over_A": {
+      "checkerCpuMs": {
+        "n": 3,
+        "logRatios": [
+          0.045134721981412065,
+          -0.051007812700168687,
+          -0.005281092552626313
+        ],
+        "meanLog": -0.0037180610904609785,
+        "varianceLog": 0.002312679044263528,
+        "geometricMeanRatio": 0.9962888423402326,
+        "ci95": [
+          0.8841035874161908,
+          1.1227094556561046
+        ],
+        "baselineMedian": 80856.291,
+        "variantMedian": 78026.12299999999,
+        "direction": "inconclusive"
+      },
+      "checkerWallMs": {
+        "n": 3,
+        "logRatios": [
+          0.251555661116724,
+          -0.06727031473008632,
+          0.08753272683773604
+        ],
+        "meanLog": 0.09060602440812458,
+        "varianceLog": 0.02541958458713484,
+        "geometricMeanRatio": 1.094837580994751,
+        "ci95": [
+          0.7367895472227872,
+          1.6268815610599179
+        ],
+        "baselineMedian": 72842.245375,
+        "variantMedian": 79505.707167,
+        "direction": "inconclusive"
+      },
+      "footprintBytes": {
+        "n": 3,
+        "logRatios": [
+          -0.15079784103762667,
+          -0.011388201467157003,
+          0.26275359866199277
+        ],
+        "meanLog": 0.0335225187190697,
+        "varianceLog": 0.044268927910141156,
+        "geometricMeanRatio": 1.0340907298627289,
+        "ci95": [
+          0.613150665699507,
+          1.744014477042247
+        ],
+        "baselineMedian": 1148787880,
+        "variantMedian": 1135779464,
+        "direction": "inconclusive"
+      },
+      "rssBytes": {
+        "n": 3,
+        "logRatios": [
+          -0.08817819169921118,
+          0.01727766054466305,
+          0.06474719017763923
+        ],
+        "meanLog": -0.0020511136589696313,
+        "varianceLog": 0.0061267442397063936,
+        "geometricMeanRatio": 0.997950988437193,
+        "ci95": [
+          0.8216068184714796,
+          1.2121444867942528
+        ],
+        "baselineMedian": 1062322176,
+        "variantMedian": 1080836096,
+        "direction": "inconclusive"
+      },
+      "medianFootprintRatio": 0.9886763986402781,
+      "medianRSSRatio": 1.0174277826616698
+    },
+    "costGate": {
+      "cpuCAretain": false,
+      "cpuCBretain": false,
+      "everyCpuCAretain": false,
+      "wallCAretain": false,
+      "medianFootCAGain": false,
+      "geometricFootCBGain": true,
+      "medianRSSCARetain": false
+    },
+    "costGatePassed": false,
+    "selectedInference": {
+      "cpuCAretain": false,
+      "cpuCBretain": false,
+      "footCBGain": false
+    },
+    "selectedInferencePassed": false
+  },
+  "costDecision": {
+    "validRows": 9,
+    "sameNativeImageAandC": true,
+    "failedPointFilters": 6,
+    "totalPointFilters": 7,
+    "confidenceIntervals": "INCONCLUSIVE",
+    "acceptedSpeedOrPeakRamGain": false,
+    "causalRegressionClaim": false,
+    "fullFrozenSix": "NOT_RUN_NOT_EARNED",
+    "newNativeC1C2C3": "NOT_APPLICABLE_NO_COMPILER_IMAGE_CHANGE",
+    "newByteFixedpoint": "NOT_APPLICABLE_A_AND_C_IMAGES_BYTE_IDENTICAL",
+    "newSelfhostGreen": false
+  },
+  "closingCorpora": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g71-initialized-checker-lvi9rn4s/repository/checkpoints/local2039g71r1-closing-hashes.json",
+    "sha256": "d6d1b7e2493328e1d046cb6507da1b9f0af7ef9b28b8962ba6dc793448adf87f"
+  },
+  "cleanup": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g71-initialized-checker-lvi9rn4s/repository/checkpoints/local2039g71r1-cleanup.json",
+    "sha256": "55f9ca77e4e251754c5c6bcf012bd7ca6418cc414ec0065c8a15a5ecb5f5f917"
+  },
+  "scope": "ArealcompletehostlifetimefixdoesnotautomaticallymeetuserCPU/physicalpeakgoal;retainaccepteddefaultwithoutrescoringgates. Allknownactivecallersmigratedinsideexperimentalversion; historicalfrozen-v41providerintentionallyunchanged. Mainreceivesonlyjournalandevidence.",
+  "nextArchitecturalConstraint": "Furtheroptimizationmustjustifyreducedallocation/hotcostwithcausalevidenceandcheckpriorfailedversionsbeforeselectingamechanism;postGCretainedbytesarenotpeakphysicalRAM."
+}

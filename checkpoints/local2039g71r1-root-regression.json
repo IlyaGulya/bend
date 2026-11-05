@@ -1,0 +1,2082 @@
+{
+  "schemaVersion": 1,
+  "version": "G71R1",
+  "status": "ACTUAL_PERMANENT_INITIALIZED_HELPER_ROOT_LIFETIME_AND_COUNTED_CONSUMERS_PASS_NOT_COST_QUALIFIED",
+  "sourceCheckpoint": "90ffb3a1",
+  "preflightCheckpoint": "b62b41b7",
+  "image": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs",
+    "sha256": "4636c05aa8c75e72212cb03949937e25561942bc00da250f876f37f001b9fc18"
+  },
+  "helper": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g71-initialized-checker-lvi9rn4s/repository/evals/checker_core_step_runtime.mjs",
+    "sha256": "01f059d26e05706812705079d05dad0d01780e59192dbbdde7aa41e219bd72d3"
+  },
+  "execution": {
+    "schemaVersion": 1,
+    "status": "ALL_CELLS_FINISHED",
+    "cells": [
+      {
+        "id": "g71-real-counted-readback28",
+        "command": [
+          "/usr/bin/env",
+          "BEND_CHECKER_COUNTS_FILE=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g71-initialized-checker-lvi9rn4s/actual-checker-counts.json",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--experimental-strip-types",
+          "--max-old-space-size=6144",
+          "--max-semi-space-size=128",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g71-initialized-checker-lvi9rn4s/counted-readback.mjs",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g71-initialized-checker-lvi9rn4s/counted-readback-request.json",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g71-initialized-checker-lvi9rn4s/counted-readback-result.json"
+        ],
+        "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g71-initialized-checker-lvi9rn4s/repository",
+        "report": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g71-initialized-checker-lvi9rn4s/counted-readback-result.json",
+        "exitCode": 0,
+        "elapsedMs": 1627.200875,
+        "stdout": "{\"status\":\"PASS_ACTUAL_INSPECTION_RECHECK_AND_LIBRARY_CONSUMERS\",\"rows\":28,\"artifact\":{\"path\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g71-initialized-checker-lvi9rn4s/counted-readback-library.mjs\",\"sha256\":\"bf40b06c0b532f02449c14323c699d0eecd850043992ad4a2c9ba3f21d29a0a4\",\"bytes\":74464}}\n",
+        "stderr": "HEAVY_GATE {\"status\":\"PASS\",\"reason\":\"command_exit\",\"commandExitCode\":0,\"commandSignal\":0,\"peakRssBytes\":572473344,\"peakFootprintBytes\":457006880,\"elapsedMs\":1553,\"timeoutMs\":120000,\"reportPhase\":\"complete\",\"ownedTreeStopped\":true,\"supervisorExitCode\":0,\"command\":[\"/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node\",\"--experimental-strip-types\",\"--max-old-space-size=6144\",\"--max-semi-space-size=128\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g71-initialized-checker-lvi9rn4s/counted-readback.mjs\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g71-initialized-checker-lvi9rn4s/counted-readback-request.json\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g71-initialized-checker-lvi9rn4s/counted-readback-result.json\"],\"label\":\"heavy command\",\"exitCode\":0,\"reportPath\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793880529055-6d982024254fe53b.json\",\"memoryLimitBytes\":8589934592,\"rssLimitBytes\":8589934592}\n",
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "commandExitCode": 0,
+          "commandSignal": 0,
+          "peakRssBytes": 572473344,
+          "peakFootprintBytes": 457006880,
+          "elapsedMs": 1553,
+          "timeoutMs": 120000,
+          "reportPhase": "complete",
+          "ownedTreeStopped": true,
+          "supervisorExitCode": 0,
+          "command": [
+            "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+            "--experimental-strip-types",
+            "--max-old-space-size=6144",
+            "--max-semi-space-size=128",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g71-initialized-checker-lvi9rn4s/counted-readback.mjs",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g71-initialized-checker-lvi9rn4s/counted-readback-request.json",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g71-initialized-checker-lvi9rn4s/counted-readback-result.json"
+          ],
+          "label": "heavy command",
+          "exitCode": 0,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793880529055-6d982024254fe53b.json",
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592
+        },
+        "passed": true
+      },
+      {
+        "id": "g71-permanent-helper-prefix1m",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=600000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--experimental-strip-types",
+          "--max-old-space-size=6144",
+          "--max-semi-space-size=128",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g71-initialized-checker-lvi9rn4s/permanent-helper-snapshot.mjs",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g71-initialized-checker-lvi9rn4s/permanent-helper-snapshot-request.json",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g71-initialized-checker-lvi9rn4s/permanent-helper-snapshot.json"
+        ],
+        "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g71-initialized-checker-lvi9rn4s/repository",
+        "report": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g71-initialized-checker-lvi9rn4s/permanent-helper-snapshot.json",
+        "exitCode": 0,
+        "elapsedMs": 50781.302208,
+        "stdout": "{\"status\":\"SNAPSHOT_PREFIX_ONLY_NOT_FULL_CHECK\",\"kind\":\"snapshot\",\"moduleCount\":17,\"sourceDeclarations\":2954,\"stepCounts\":{\"expand\":263032},\"samples\":[],\"snapshot\":{\"path\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g71-initialized-checker-lvi9rn4s/permanent-helper-snapshot.json.heapsnapshot\",\"step\":1000000}}\n",
+        "stderr": "HEAVY_GATE {\"status\":\"PASS\",\"reason\":\"command_exit\",\"commandExitCode\":0,\"commandSignal\":0,\"peakRssBytes\":2535636992,\"peakFootprintBytes\":2596662088,\"elapsedMs\":50704,\"timeoutMs\":600000,\"reportPhase\":\"complete\",\"ownedTreeStopped\":true,\"supervisorExitCode\":0,\"command\":[\"/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node\",\"--experimental-strip-types\",\"--max-old-space-size=6144\",\"--max-semi-space-size=128\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g71-initialized-checker-lvi9rn4s/permanent-helper-snapshot.mjs\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g71-initialized-checker-lvi9rn4s/permanent-helper-snapshot-request.json\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g71-initialized-checker-lvi9rn4s/permanent-helper-snapshot.json\"],\"label\":\"heavy command\",\"exitCode\":0,\"reportPath\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793880530681-0f3da21ad09c9d37.json\",\"memoryLimitBytes\":8589934592,\"rssLimitBytes\":8589934592}\n",
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "commandExitCode": 0,
+          "commandSignal": 0,
+          "peakRssBytes": 2535636992,
+          "peakFootprintBytes": 2596662088,
+          "elapsedMs": 50704,
+          "timeoutMs": 600000,
+          "reportPhase": "complete",
+          "ownedTreeStopped": true,
+          "supervisorExitCode": 0,
+          "command": [
+            "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+            "--experimental-strip-types",
+            "--max-old-space-size=6144",
+            "--max-semi-space-size=128",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g71-initialized-checker-lvi9rn4s/permanent-helper-snapshot.mjs",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g71-initialized-checker-lvi9rn4s/permanent-helper-snapshot-request.json",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g71-initialized-checker-lvi9rn4s/permanent-helper-snapshot.json"
+          ],
+          "label": "heavy command",
+          "exitCode": 0,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793880530681-0f3da21ad09c9d37.json",
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592
+        },
+        "passed": true
+      },
+      {
+        "id": "g71-permanent-helper-full-VM-roots",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=600000",
+          "--",
+          "/Library/Frameworks/Python.framework/Versions/3.12/bin/python3",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g71-initialized-checker-lvi9rn4s/root-ownership.py",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g71-initialized-checker-lvi9rn4s/permanent-helper-snapshot.json.heapsnapshot",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g71-initialized-checker-lvi9rn4s/permanent-helper-root-proof.json"
+        ],
+        "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g71-initialized-checker-lvi9rn4s/repository",
+        "report": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g71-initialized-checker-lvi9rn4s/permanent-helper-root-proof.json",
+        "exitCode": 0,
+        "elapsedMs": 34250.441541,
+        "stdout": "{\"output\": \"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g71-initialized-checker-lvi9rn4s/permanent-helper-root-proof.json\", \"nodes\": 3633515, \"edges\": 15315011, \"shallowBytes\": 296711742, \"rootReachableNodes\": 3633507, \"groups\": {\"ast_nonSpan_tagged\": {\"taggedNodes\": 57411, \"shallowBytes\": 1914184, \"nonWeakRootReachable\": 57411}, \"ast_SpanOf\": {\"taggedNodes\": 220895, \"shallowBytes\": 12370120, \"nonWeakRootReachable\": 220895}, \"checker_arena_tagged\": {\"taggedNodes\": 519212, \"shallowBytes\": 31309064, \"nonWeakRootReachable\": 519212}, \"checker_ir_tagged\": {\"taggedNodes\": 280181, \"shallowBytes\": 16156760, \"nonWeakRootReachable\": 280181}}, \"runStateRequestChains\": [[], [], [], []], \"scratch\": [{\"name\": \"$kFn\", \"elementEdgeCount\": 7083}, {\"name\": \"$kBase\", \"elementEdgeCount\": 0}, {\"name\": \"$kKind\", \"elementEdgeCount\": 0}, {\"name\": \"$stArgs\", \"elementEdgeCount\": 7023}, {\"name\": \"$tailArgs\", \"elementEdgeCount\": 18}]}\n",
+        "stderr": "HEAVY_GATE {\"status\":\"PASS\",\"reason\":\"command_exit\",\"commandExitCode\":0,\"commandSignal\":0,\"peakRssBytes\":782958592,\"peakFootprintBytes\":744506736,\"elapsedMs\":34119,\"timeoutMs\":600000,\"reportPhase\":\"complete\",\"ownedTreeStopped\":true,\"supervisorExitCode\":0,\"command\":[\"/Library/Frameworks/Python.framework/Versions/3.12/bin/python3\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g71-initialized-checker-lvi9rn4s/root-ownership.py\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g71-initialized-checker-lvi9rn4s/permanent-helper-snapshot.json.heapsnapshot\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g71-initialized-checker-lvi9rn4s/permanent-helper-root-proof.json\"],\"label\":\"heavy command\",\"exitCode\":0,\"reportPath\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793880581523-fa201d33853777be.json\",\"memoryLimitBytes\":8589934592,\"rssLimitBytes\":8589934592}\n",
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "commandExitCode": 0,
+          "commandSignal": 0,
+          "peakRssBytes": 782958592,
+          "peakFootprintBytes": 744506736,
+          "elapsedMs": 34119,
+          "timeoutMs": 600000,
+          "reportPhase": "complete",
+          "ownedTreeStopped": true,
+          "supervisorExitCode": 0,
+          "command": [
+            "/Library/Frameworks/Python.framework/Versions/3.12/bin/python3",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g71-initialized-checker-lvi9rn4s/root-ownership.py",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g71-initialized-checker-lvi9rn4s/permanent-helper-snapshot.json.heapsnapshot",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g71-initialized-checker-lvi9rn4s/permanent-helper-root-proof.json"
+          ],
+          "label": "heavy command",
+          "exitCode": 0,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793880581523-fa201d33853777be.json",
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592
+        },
+        "passed": true
+      }
+    ]
+  },
+  "countedActualConsumers": {
+    "schemaVersion": 1,
+    "status": "PASS_ACTUAL_INSPECTION_RECHECK_AND_LIBRARY_CONSUMERS",
+    "diagnosticOnly": true,
+    "acceptanceEvidence": false,
+    "performanceEvidence": false,
+    "stages": [
+      {
+        "phase": "own-parse",
+        "status": "ParseSuccess"
+      },
+      {
+        "phase": "own-expand",
+        "status": "ExpandSuccess"
+      },
+      {
+        "phase": "own-check",
+        "status": "CheckSuccess"
+      },
+      {
+        "phase": "own-inspection",
+        "status": "Inspection"
+      },
+      {
+        "phase": "own-readback-recheck",
+        "status": "CheckSuccess"
+      },
+      {
+        "phase": "own-readback-library-emission",
+        "status": "EmitSuccess"
+      }
+    ],
+    "image": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs",
+    "imageSha256": "4636c05aa8c75e72212cb03949937e25561942bc00da250f876f37f001b9fc18",
+    "source": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository/checkpoints/local2039g66-readback.bend",
+    "sourceSha256": "932163e5486d1d620e93cc8840f6b6b978b87227e95b27a4b07fb2dbc4e1d7e1",
+    "outputPatches": 0,
+    "astReplay": false,
+    "compilerBootstrapGreen": false,
+    "selfhostGreen": false,
+    "artifact": {
+      "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g71-initialized-checker-lvi9rn4s/counted-readback-library.mjs",
+      "sha256": "bf40b06c0b532f02449c14323c699d0eecd850043992ad4a2c9ba3f21d29a0a4",
+      "bytes": 74464
+    },
+    "runtimeRows": [
+      {
+        "name": "zero-nullary",
+        "observed": "BitZero",
+        "expected": "BitZero",
+        "passed": true
+      },
+      {
+        "name": "one-nullary",
+        "observed": "BitOne",
+        "expected": "BitOne",
+        "passed": true
+      },
+      {
+        "name": "positional-noncommutative",
+        "observed": [
+          "BitOne",
+          "BitZero"
+        ],
+        "expected": [
+          "BitOne",
+          "BitZero"
+        ],
+        "passed": true
+      },
+      {
+        "name": "positional-reversed-input",
+        "observed": [
+          "BitZero",
+          "BitOne"
+        ],
+        "expected": [
+          "BitZero",
+          "BitOne"
+        ],
+        "passed": true
+      },
+      {
+        "name": "pack-one-argument-is-curried-function",
+        "observed": "function",
+        "expected": "function",
+        "passed": true
+      },
+      {
+        "name": "pack-curried-second-argument",
+        "observed": [
+          "BitOne",
+          "BitZero"
+        ],
+        "expected": [
+          "BitOne",
+          "BitZero"
+        ],
+        "passed": true
+      },
+      {
+        "name": "returned-curried-function",
+        "observed": "function",
+        "expected": "function",
+        "passed": true
+      },
+      {
+        "name": "higher-order-positional-call",
+        "observed": [
+          "BitOne",
+          "BitZero"
+        ],
+        "expected": [
+          "BitOne",
+          "BitZero"
+        ],
+        "passed": true
+      },
+      {
+        "name": "over-applied-returned-function",
+        "observed": [
+          "BitOne",
+          "BitZero"
+        ],
+        "expected": [
+          "BitOne",
+          "BitZero"
+        ],
+        "passed": true
+      },
+      {
+        "name": "live-host-callback",
+        "observed": [
+          "BitZero",
+          "BitOne"
+        ],
+        "expected": [
+          "BitZero",
+          "BitOne"
+        ],
+        "passed": true
+      },
+      {
+        "name": "live-host-callback-evaluated-once",
+        "observed": 1,
+        "expected": 1,
+        "passed": true
+      },
+      {
+        "name": "erased-kind-and-type-effective-one-argument",
+        "observed": "BitOne",
+        "expected": "BitOne",
+        "passed": true
+      },
+      {
+        "name": "ordinary-type-reference-erasure-in-bend-application",
+        "observed": "BitZero",
+        "expected": "BitZero",
+        "passed": true
+      },
+      {
+        "name": "actual-template-specialization",
+        "observed": "BitOne",
+        "expected": "BitOne",
+        "passed": true
+      },
+      {
+        "name": "erased-expression-keeps-second-live-argument",
+        "observed": "BitOne",
+        "expected": "BitOne",
+        "passed": true
+      },
+      {
+        "name": "erased-expression-not-evaluated",
+        "observed": 0,
+        "expected": 0,
+        "passed": true
+      },
+      {
+        "name": "shared-local-value",
+        "observed": [
+          "BitOne",
+          "BitOne"
+        ],
+        "expected": [
+          "BitOne",
+          "BitOne"
+        ],
+        "passed": true
+      },
+      {
+        "name": "shared-local-evaluated-once",
+        "observed": 1,
+        "expected": 1,
+        "passed": true
+      },
+      {
+        "name": "unused-local-result",
+        "observed": "BitZero",
+        "expected": "BitZero",
+        "passed": true
+      },
+      {
+        "name": "unused-live-local-still-evaluated",
+        "observed": 1,
+        "expected": 1,
+        "passed": true
+      },
+      {
+        "name": "ordered-local-values",
+        "observed": [
+          "BitOne",
+          "BitZero"
+        ],
+        "expected": [
+          "BitOne",
+          "BitZero"
+        ],
+        "passed": true
+      },
+      {
+        "name": "local-evaluation-order",
+        "observed": [
+          "first",
+          "second"
+        ],
+        "expected": [
+          "first",
+          "second"
+        ],
+        "passed": true
+      },
+      {
+        "name": "named-over-application-value",
+        "observed": [
+          "BitOne",
+          "BitZero"
+        ],
+        "expected": [
+          "BitOne",
+          "BitZero"
+        ],
+        "passed": true
+      },
+      {
+        "name": "named-over-application-order",
+        "observed": [
+          "callee",
+          "argument"
+        ],
+        "expected": [
+          "callee",
+          "argument"
+        ],
+        "passed": true
+      },
+      {
+        "name": "generic-over-application-value",
+        "observed": [
+          "BitOne",
+          "BitZero"
+        ],
+        "expected": [
+          "BitOne",
+          "BitZero"
+        ],
+        "passed": true
+      },
+      {
+        "name": "generic-over-application-order",
+        "observed": [
+          "callee",
+          "argument",
+          "apply"
+        ],
+        "expected": [
+          "callee",
+          "argument",
+          "apply"
+        ],
+        "passed": true
+      },
+      {
+        "name": "constructor-eliminator-first-arm",
+        "observed": "BitOne",
+        "expected": "BitOne",
+        "passed": true
+      },
+      {
+        "name": "constructor-eliminator-default-chain",
+        "observed": "BitZero",
+        "expected": "BitZero",
+        "passed": true
+      }
+    ],
+    "artifactExecutedUnchanged": true
+  },
+  "actualCountReports": [
+    {
+      "phaseTraceVersion": 3,
+      "progressABI": "typed-native-stack-v57t",
+      "chunkQuantum": 64,
+      "chunkAdvances": 691,
+      "result": "CheckSuccess",
+      "countScope": "Exact host calls to checker_step on opaque CheckerRunState; initial start chunk is not counted; native transitions and source callbacks are not observed",
+      "capture": 1,
+      "base": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g71-initialized-checker-lvi9rn4s/actual-checker-counts.json",
+      "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g71-initialized-checker-lvi9rn4s/actual-checker-counts.json"
+    },
+    {
+      "phaseTraceVersion": 3,
+      "progressABI": "typed-native-stack-v57t",
+      "chunkQuantum": 64,
+      "chunkAdvances": 710,
+      "result": "CheckSuccess",
+      "countScope": "Exact host calls to checker_step on opaque CheckerRunState; initial start chunk is not counted; native transitions and source callbacks are not observed",
+      "capture": 2,
+      "base": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g71-initialized-checker-lvi9rn4s/actual-checker-counts.json",
+      "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g71-initialized-checker-lvi9rn4s/actual-checker-counts.json.pass-2.json"
+    }
+  ],
+  "snapshotCapture": {
+    "schemaVersion": 1,
+    "status": "SNAPSHOT_PREFIX_ONLY_NOT_FULL_CHECK",
+    "diagnosticOnly": true,
+    "acceptanceEvidence": false,
+    "performanceEvidence": false,
+    "kind": "snapshot",
+    "image": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs",
+    "imageSha256": "4636c05aa8c75e72212cb03949937e25561942bc00da250f876f37f001b9fc18",
+    "request": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g71-initialized-checker-lvi9rn4s/permanent-helper-snapshot-request.json",
+    "requestSha256": "8fdd83c40bdf5b9f442e6a02c2e2157f709acbad617f1761a4bba97bb102c763",
+    "runtime": {
+      "versions": {
+        "node": "23.11.0",
+        "acorn": "8.14.1",
+        "ada": "3.2.1",
+        "amaro": "0.4.1",
+        "ares": "1.34.4",
+        "brotli": "1.1.0",
+        "cjs_module_lexer": "2.1.0",
+        "cldr": "46.0",
+        "icu": "76.1",
+        "llhttp": "9.2.1",
+        "modules": "131",
+        "napi": "10",
+        "nbytes": "0.1.1",
+        "ncrypto": "0.0.1",
+        "nghttp2": "1.64.0",
+        "openssl": "3.0.16",
+        "simdjson": "3.12.2",
+        "simdutf": "6.0.3",
+        "sqlite": "3.49.1",
+        "tz": "2025a",
+        "undici": "6.21.2",
+        "unicode": "16.0",
+        "uv": "1.50.0",
+        "uvwasi": "0.0.21",
+        "v8": "12.9.202.28-node.14",
+        "zlib": "1.3.0.1-motley-788cb3c",
+        "zstd": "1.5.6"
+      },
+      "execArgv": [
+        "--experimental-strip-types",
+        "--max-old-space-size=6144",
+        "--max-semi-space-size=128"
+      ],
+      "heapLimitBytes": 6845104128
+    },
+    "workerPolicy": {
+      "stackMiB": 256,
+      "oldGenerationMiB": 6144,
+      "youngGenerationMiB": 128
+    },
+    "samplingIntervalBytes": 1048576,
+    "phases": [
+      {
+        "phase": "startup",
+        "elapsedMs": 678.666875,
+        "memory": {
+          "rss": 485523456,
+          "heapTotal": 90685440,
+          "heapUsed": 78021200,
+          "external": 34864024,
+          "arrayBuffers": 31783544
+        },
+        "heapStatistics": {
+          "total_heap_size": 90685440,
+          "total_heap_size_executable": 524288,
+          "total_physical_size": 88457216,
+          "total_available_size": 6766893712,
+          "used_heap_size": 78024592,
+          "heap_size_limit": 6845104128,
+          "malloced_memory": 8143048,
+          "peak_malloced_memory": 282861568,
+          "does_zap_garbage": 0,
+          "number_of_native_contexts": 1,
+          "number_of_detached_contexts": 0,
+          "total_global_handles_size": 8192,
+          "used_global_handles_size": 3584,
+          "external_memory": 34864064
+        },
+        "spaces": [
+          {
+            "space_name": "read_only_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "new_space",
+            "space_size": 16777216,
+            "space_used_size": 5642192,
+            "space_available_size": 2745904,
+            "physical_space_size": 14319616
+          },
+          {
+            "space_name": "old_space",
+            "space_size": 31948800,
+            "space_used_size": 31269032,
+            "space_available_size": 654072,
+            "physical_space_size": 31981568
+          },
+          {
+            "space_name": "code_space",
+            "space_size": 524288,
+            "space_used_size": 163296,
+            "space_available_size": 360928,
+            "physical_space_size": 524288
+          },
+          {
+            "space_name": "shared_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "trusted_space",
+            "space_size": 2686976,
+            "space_used_size": 2382552,
+            "space_available_size": 303824,
+            "physical_space_size": 2883584
+          },
+          {
+            "space_name": "shared_trusted_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "new_large_object_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 8388608,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "large_object_space",
+            "space_size": 36552704,
+            "space_used_size": 36424176,
+            "space_available_size": 0,
+            "physical_space_size": 36552704
+          },
+          {
+            "space_name": "code_large_object_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "shared_large_object_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "shared_trusted_large_object_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "trusted_large_object_space",
+            "space_size": 2195456,
+            "space_used_size": 2165032,
+            "space_available_size": 0,
+            "physical_space_size": 2195456
+          }
+        ]
+      },
+      {
+        "phase": "load-parse",
+        "elapsedMs": 3066.862791,
+        "userCpuMs": 4696.542,
+        "systemCpuMs": 210.982,
+        "memory": {
+          "rss": 797261824,
+          "heapTotal": 483033088,
+          "heapUsed": 177785080,
+          "external": 3105555,
+          "arrayBuffers": 25035
+        },
+        "heapStatistics": {
+          "total_heap_size": 483033088,
+          "total_heap_size_executable": 9584640,
+          "total_physical_size": 420347904,
+          "total_available_size": 6666885296,
+          "used_heap_size": 177785304,
+          "heap_size_limit": 6845104128,
+          "malloced_memory": 1065064,
+          "peak_malloced_memory": 282861568,
+          "does_zap_garbage": 0,
+          "number_of_native_contexts": 1,
+          "number_of_detached_contexts": 0,
+          "total_global_handles_size": 8192,
+          "used_global_handles_size": 3584,
+          "external_memory": 3105555
+        },
+        "spaces": [
+          {
+            "space_name": "read_only_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "new_space",
+            "space_size": 268435456,
+            "space_used_size": 7105520,
+            "space_available_size": 127104016,
+            "physical_space_size": 205520896
+          },
+          {
+            "space_name": "old_space",
+            "space_size": 155942912,
+            "space_used_size": 116060344,
+            "space_available_size": 39639144,
+            "physical_space_size": 155975680
+          },
+          {
+            "space_name": "code_space",
+            "space_size": 9437184,
+            "space_used_size": 7422496,
+            "space_available_size": 2013536,
+            "physical_space_size": 9437184
+          },
+          {
+            "space_name": "shared_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "trusted_space",
+            "space_size": 9764864,
+            "space_used_size": 7925088,
+            "space_available_size": 1838544,
+            "physical_space_size": 9961472
+          },
+          {
+            "space_name": "shared_trusted_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "new_large_object_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 134217728,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "large_object_space",
+            "space_size": 37109760,
+            "space_used_size": 36975216,
+            "space_available_size": 0,
+            "physical_space_size": 37109760
+          },
+          {
+            "space_name": "code_large_object_space",
+            "space_size": 147456,
+            "space_used_size": 132896,
+            "space_available_size": 0,
+            "physical_space_size": 147456
+          },
+          {
+            "space_name": "shared_large_object_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "shared_trusted_large_object_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "trusted_large_object_space",
+            "space_size": 2195456,
+            "space_used_size": 2165032,
+            "space_available_size": 0,
+            "physical_space_size": 2195456
+          }
+        ]
+      },
+      {
+        "phase": "expand",
+        "elapsedMs": 1917.6534579999998,
+        "userCpuMs": 2680.781,
+        "systemCpuMs": 71.648,
+        "memory": {
+          "rss": 894353408,
+          "heapTotal": 507117568,
+          "heapUsed": 177218952,
+          "external": 3105555,
+          "arrayBuffers": 25035
+        },
+        "heapStatistics": {
+          "total_heap_size": 507117568,
+          "total_heap_size_executable": 12468224,
+          "total_physical_size": 507346944,
+          "total_available_size": 6667459784,
+          "used_heap_size": 177219176,
+          "heap_size_limit": 6845104128,
+          "malloced_memory": 1065064,
+          "peak_malloced_memory": 282861568,
+          "does_zap_garbage": 0,
+          "number_of_native_contexts": 1,
+          "number_of_detached_contexts": 0,
+          "total_global_handles_size": 8192,
+          "used_global_handles_size": 3584,
+          "external_memory": 3105555
+        },
+        "spaces": [
+          {
+            "space_name": "read_only_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "new_space",
+            "space_size": 268435456,
+            "space_used_size": 3278304,
+            "space_available_size": 130931232,
+            "physical_space_size": 268435456
+          },
+          {
+            "space_name": "old_space",
+            "space_size": 175603712,
+            "space_used_size": 116098376,
+            "space_available_size": 59265232,
+            "physical_space_size": 175636480
+          },
+          {
+            "space_name": "code_space",
+            "space_size": 12320768,
+            "space_used_size": 10162880,
+            "space_available_size": 2156384,
+            "physical_space_size": 12320768
+          },
+          {
+            "space_name": "shared_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "trusted_space",
+            "space_size": 11862016,
+            "space_used_size": 8958456,
+            "space_available_size": 2901704,
+            "physical_space_size": 12058624
+          },
+          {
+            "space_name": "shared_trusted_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "new_large_object_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 134217728,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "large_object_space",
+            "space_size": 36552704,
+            "space_used_size": 36424176,
+            "space_available_size": 0,
+            "physical_space_size": 36552704
+          },
+          {
+            "space_name": "code_large_object_space",
+            "space_size": 147456,
+            "space_used_size": 132896,
+            "space_available_size": 0,
+            "physical_space_size": 147456
+          },
+          {
+            "space_name": "shared_large_object_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "shared_trusted_large_object_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "trusted_large_object_space",
+            "space_size": 2195456,
+            "space_used_size": 2165032,
+            "space_available_size": 0,
+            "physical_space_size": 2195456
+          }
+        ]
+      }
+    ],
+    "boundaries": [
+      {
+        "step": 1000000,
+        "memory": {
+          "rss": 704757760,
+          "heapTotal": 653934592,
+          "heapUsed": 446294776,
+          "external": 3098865,
+          "arrayBuffers": 25035
+        },
+        "heapStatistics": {
+          "total_heap_size": 653934592,
+          "total_heap_size_executable": 60702720,
+          "total_physical_size": 654163968,
+          "total_available_size": 6396535784,
+          "used_heap_size": 446295000,
+          "heap_size_limit": 6845104128,
+          "malloced_memory": 2113640,
+          "peak_malloced_memory": 282861568,
+          "does_zap_garbage": 0,
+          "number_of_native_contexts": 1,
+          "number_of_detached_contexts": 0,
+          "total_global_handles_size": 8192,
+          "used_global_handles_size": 3648,
+          "external_memory": 3098865
+        },
+        "spaces": [
+          {
+            "space_name": "read_only_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "new_space",
+            "space_size": 268435456,
+            "space_used_size": 116527848,
+            "space_available_size": 17681688,
+            "physical_space_size": 268435456
+          },
+          {
+            "space_name": "old_space",
+            "space_size": 214663168,
+            "space_used_size": 177569808,
+            "space_available_size": 35277960,
+            "physical_space_size": 214695936
+          },
+          {
+            "space_name": "code_space",
+            "space_size": 60555264,
+            "space_used_size": 49752256,
+            "space_available_size": 10795616,
+            "physical_space_size": 60555264
+          },
+          {
+            "space_name": "shared_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "trusted_space",
+            "space_size": 48562176,
+            "space_used_size": 41160496,
+            "space_available_size": 7392312,
+            "physical_space_size": 48758784
+          },
+          {
+            "space_name": "shared_trusted_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "new_large_object_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 134217728,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "large_object_space",
+            "space_size": 59375616,
+            "space_used_size": 58987608,
+            "space_available_size": 0,
+            "physical_space_size": 59375616
+          },
+          {
+            "space_name": "code_large_object_space",
+            "space_size": 147456,
+            "space_used_size": 132896,
+            "space_available_size": 0,
+            "physical_space_size": 147456
+          },
+          {
+            "space_name": "shared_large_object_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "shared_trusted_large_object_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "trusted_large_object_space",
+            "space_size": 2195456,
+            "space_used_size": 2165032,
+            "space_available_size": 0,
+            "physical_space_size": 2195456
+          }
+        ]
+      }
+    ],
+    "samples": [],
+    "stepCounts": {
+      "expand": 263032
+    },
+    "note": "Actual own parser/expander/checker and unchanged opaque drivers; no image patch, AST replay or replacement checker. Diagnostics are not clean CPU/peak-RAM evidence. Uncollected samples may include garbage not yet collected; they are not strong-retention proof. A heap snapshot can induce GC and pause execution, and is a separate diagnostic prefix.",
+    "moduleCount": 17,
+    "sourceDeclarations": 2954,
+    "activePhase": "check",
+    "snapshot": {
+      "step": 1000000,
+      "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g71-initialized-checker-lvi9rn4s/permanent-helper-snapshot.json.heapsnapshot",
+      "memoryBefore": {
+        "memory": {
+          "rss": 704823296,
+          "heapTotal": 653934592,
+          "heapUsed": 446300792,
+          "external": 3098865,
+          "arrayBuffers": 25035
+        },
+        "heapStatistics": {
+          "total_heap_size": 653934592,
+          "total_heap_size_executable": 60702720,
+          "total_physical_size": 654163968,
+          "total_available_size": 6396529768,
+          "used_heap_size": 446301016,
+          "heap_size_limit": 6845104128,
+          "malloced_memory": 2113640,
+          "peak_malloced_memory": 282861568,
+          "does_zap_garbage": 0,
+          "number_of_native_contexts": 1,
+          "number_of_detached_contexts": 0,
+          "total_global_handles_size": 8192,
+          "used_global_handles_size": 3648,
+          "external_memory": 3098865
+        },
+        "spaces": [
+          {
+            "space_name": "read_only_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "new_space",
+            "space_size": 268435456,
+            "space_used_size": 116532912,
+            "space_available_size": 17676624,
+            "physical_space_size": 268435456
+          },
+          {
+            "space_name": "old_space",
+            "space_size": 214663168,
+            "space_used_size": 177570544,
+            "space_available_size": 35277224,
+            "physical_space_size": 214695936
+          },
+          {
+            "space_name": "code_space",
+            "space_size": 60555264,
+            "space_used_size": 49752256,
+            "space_available_size": 10795616,
+            "physical_space_size": 60555264
+          },
+          {
+            "space_name": "shared_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "trusted_space",
+            "space_size": 48562176,
+            "space_used_size": 41160712,
+            "space_available_size": 7392096,
+            "physical_space_size": 48758784
+          },
+          {
+            "space_name": "shared_trusted_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "new_large_object_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 134217728,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "large_object_space",
+            "space_size": 59375616,
+            "space_used_size": 58987608,
+            "space_available_size": 0,
+            "physical_space_size": 59375616
+          },
+          {
+            "space_name": "code_large_object_space",
+            "space_size": 147456,
+            "space_used_size": 132896,
+            "space_available_size": 0,
+            "physical_space_size": 147456
+          },
+          {
+            "space_name": "shared_large_object_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "shared_trusted_large_object_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "trusted_large_object_space",
+            "space_size": 2195456,
+            "space_used_size": 2165032,
+            "space_available_size": 0,
+            "physical_space_size": 2195456
+          }
+        ]
+      },
+      "implicitGC": true,
+      "notPeakMemoryEvidence": true,
+      "memoryAfter": {
+        "memory": {
+          "rss": 1818214400,
+          "heapTotal": 306413568,
+          "heapUsed": 296309440,
+          "external": 3096987,
+          "arrayBuffers": 25037
+        },
+        "heapStatistics": {
+          "total_heap_size": 306413568,
+          "total_heap_size_executable": 48906240,
+          "total_physical_size": 305676288,
+          "total_available_size": 6547068512,
+          "used_heap_size": 296309664,
+          "heap_size_limit": 6845104128,
+          "malloced_memory": 2113640,
+          "peak_malloced_memory": 282861568,
+          "does_zap_garbage": 0,
+          "number_of_native_contexts": 1,
+          "number_of_detached_contexts": 0,
+          "total_global_handles_size": 8192,
+          "used_global_handles_size": 3648,
+          "external_memory": 3096987
+        },
+        "spaces": [
+          {
+            "space_name": "read_only_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "new_space",
+            "space_size": 1048576,
+            "space_used_size": 1216,
+            "space_available_size": 1047296,
+            "physical_space_size": 311296
+          },
+          {
+            "space_name": "old_space",
+            "space_size": 157515776,
+            "space_used_size": 151022632,
+            "space_available_size": 4133640,
+            "physical_space_size": 157515776
+          },
+          {
+            "space_name": "code_space",
+            "space_size": 48758784,
+            "space_used_size": 47122880,
+            "space_available_size": 1629952,
+            "physical_space_size": 48758784
+          },
+          {
+            "space_name": "shared_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "trusted_space",
+            "space_size": 38600704,
+            "space_used_size": 38058040,
+            "space_available_size": 517544,
+            "physical_space_size": 38600704
+          },
+          {
+            "space_name": "shared_trusted_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "new_large_object_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 1048576,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "large_object_space",
+            "space_size": 58146816,
+            "space_used_size": 57807912,
+            "space_available_size": 0,
+            "physical_space_size": 58146816
+          },
+          {
+            "space_name": "code_large_object_space",
+            "space_size": 147456,
+            "space_used_size": 132896,
+            "space_available_size": 0,
+            "physical_space_size": 147456
+          },
+          {
+            "space_name": "shared_large_object_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "shared_trusted_large_object_space",
+            "space_size": 0,
+            "space_used_size": 0,
+            "space_available_size": 0,
+            "physical_space_size": 0
+          },
+          {
+            "space_name": "trusted_large_object_space",
+            "space_size": 2195456,
+            "space_used_size": 2165032,
+            "space_available_size": 0,
+            "physical_space_size": 2195456
+          }
+        ]
+      },
+      "sha256": "a78c3ebe134768b1f2bed5876c5f6e188931984225bd5bc38ae215846166d74f"
+    },
+    "finalMemory": {
+      "memory": {
+        "rss": 2189393920,
+        "heapTotal": 286883840,
+        "heapUsed": 227181336,
+        "external": 150674323,
+        "arrayBuffers": 147602373
+      },
+      "heapStatistics": {
+        "total_heap_size": 286883840,
+        "total_heap_size_executable": 48906240,
+        "total_physical_size": 286392320,
+        "total_available_size": 6562528672,
+        "used_heap_size": 227181560,
+        "heap_size_limit": 6845104128,
+        "malloced_memory": 2113640,
+        "peak_malloced_memory": 282861568,
+        "does_zap_garbage": 0,
+        "number_of_native_contexts": 1,
+        "number_of_detached_contexts": 0,
+        "total_global_handles_size": 8192,
+        "used_global_handles_size": 5760,
+        "external_memory": 150674323
+      },
+      "spaces": [
+        {
+          "space_name": "read_only_space",
+          "space_size": 0,
+          "space_used_size": 0,
+          "space_available_size": 0,
+          "physical_space_size": 0
+        },
+        {
+          "space_name": "new_space",
+          "space_size": 1048576,
+          "space_used_size": 325856,
+          "space_available_size": 722656,
+          "physical_space_size": 557056
+        },
+        {
+          "space_name": "old_space",
+          "space_size": 157515776,
+          "space_used_size": 101133256,
+          "space_available_size": 224112,
+          "physical_space_size": 157515776
+        },
+        {
+          "space_name": "code_space",
+          "space_size": 48758784,
+          "space_used_size": 47122720,
+          "space_available_size": 1630112,
+          "physical_space_size": 48758784
+        },
+        {
+          "space_name": "shared_space",
+          "space_size": 0,
+          "space_used_size": 0,
+          "space_available_size": 0,
+          "physical_space_size": 0
+        },
+        {
+          "space_name": "trusted_space",
+          "space_size": 38600704,
+          "space_used_size": 37893616,
+          "space_available_size": 681984,
+          "physical_space_size": 38600704
+        },
+        {
+          "space_name": "shared_trusted_space",
+          "space_size": 0,
+          "space_used_size": 0,
+          "space_available_size": 0,
+          "physical_space_size": 0
+        },
+        {
+          "space_name": "new_large_object_space",
+          "space_size": 0,
+          "space_used_size": 0,
+          "space_available_size": 1048576,
+          "physical_space_size": 0
+        },
+        {
+          "space_name": "large_object_space",
+          "space_size": 38617088,
+          "space_used_size": 38409128,
+          "space_available_size": 0,
+          "physical_space_size": 38617088
+        },
+        {
+          "space_name": "code_large_object_space",
+          "space_size": 147456,
+          "space_used_size": 132896,
+          "space_available_size": 0,
+          "physical_space_size": 147456
+        },
+        {
+          "space_name": "shared_large_object_space",
+          "space_size": 0,
+          "space_used_size": 0,
+          "space_available_size": 0,
+          "physical_space_size": 0
+        },
+        {
+          "space_name": "shared_trusted_large_object_space",
+          "space_size": 0,
+          "space_used_size": 0,
+          "space_available_size": 0,
+          "physical_space_size": 0
+        },
+        {
+          "space_name": "trusted_large_object_space",
+          "space_size": 2195456,
+          "space_used_size": 2165032,
+          "space_available_size": 0,
+          "physical_space_size": 2195456
+        }
+      ]
+    }
+  },
+  "snapshot": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g71-initialized-checker-lvi9rn4s/permanent-helper-snapshot.json.heapsnapshot",
+    "sha256": "a78c3ebe134768b1f2bed5876c5f6e188931984225bd5bc38ae215846166d74f"
+  },
+  "graph": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g71-initialized-checker-lvi9rn4s/permanent-helper-root-proof.json",
+    "sha256": "383a7e31d1dca58e86e7485aed21618f4520ebde8883ac11a4db3d97ec09533a"
+  },
+  "comparison": {
+    "oldShallowBytes": 324809598,
+    "newShallowBytes": 296711742,
+    "shallowDifference": 28097856,
+    "tagGroupsBefore": {
+      "ast_nonSpan_tagged": {
+        "taggedNodes": 309269,
+        "shallowBytes": 15962328,
+        "nonWeakRootReachable": 309269
+      },
+      "ast_SpanOf": {
+        "taggedNodes": 232709,
+        "shallowBytes": 13031704,
+        "nonWeakRootReachable": 232709
+      },
+      "checker_arena_tagged": {
+        "taggedNodes": 519212,
+        "shallowBytes": 31309064,
+        "nonWeakRootReachable": 519212
+      },
+      "checker_ir_tagged": {
+        "taggedNodes": 280181,
+        "shallowBytes": 16156760,
+        "nonWeakRootReachable": 280181
+      }
+    },
+    "tagGroupsAfter": {
+      "ast_nonSpan_tagged": {
+        "taggedNodes": 57411,
+        "shallowBytes": 1914184,
+        "nonWeakRootReachable": 57411
+      },
+      "ast_SpanOf": {
+        "taggedNodes": 220895,
+        "shallowBytes": 12370120,
+        "nonWeakRootReachable": 220895
+      },
+      "checker_arena_tagged": {
+        "taggedNodes": 519212,
+        "shallowBytes": 31309064,
+        "nonWeakRootReachable": 519212
+      },
+      "checker_ir_tagged": {
+        "taggedNodes": 280181,
+        "shallowBytes": 16156760,
+        "nonWeakRootReachable": 280181
+      }
+    },
+    "ArenaUnchanged": true,
+    "IRUnchanged": true,
+    "scope": "Oldvsactualpermanenthelper,sameAimage/same1mprefixbutseparateGCperturbedsnapshots; notpeakRAM/CPUqualification"
+  },
+  "representativeLoadedModules": {
+    "../bend2/selfhost/loaded_module.LoadedModule": [
+      {
+        "node": {
+          "index": 2367396,
+          "type": "object",
+          "name": "Object",
+          "tag": "../bend2/selfhost/loaded_module.LoadedModule",
+          "selfBytes": 48
+        },
+        "holeFields": [
+          "namespace",
+          "module"
+        ],
+        "path": {
+          "reachable": true,
+          "truncated": false,
+          "rawEdgeCount": 10,
+          "compressedEdgeCount": 10,
+          "nodes": [
+            {
+              "from": {
+                "index": 0,
+                "type": "synthetic",
+                "name": "",
+                "tag": null,
+                "selfBytes": 0
+              },
+              "edgeType": "element",
+              "edge": "1",
+              "to": {
+                "index": 1,
+                "type": "synthetic",
+                "name": "(GC roots)",
+                "tag": null,
+                "selfBytes": 0
+              }
+            },
+            {
+              "from": {
+                "index": 1,
+                "type": "synthetic",
+                "name": "(GC roots)",
+                "tag": null,
+                "selfBytes": 0
+              },
+              "edgeType": "element",
+              "edge": "19",
+              "to": {
+                "index": 20,
+                "type": "synthetic",
+                "name": "(Stack roots)",
+                "tag": null,
+                "selfBytes": 0
+              }
+            },
+            {
+              "from": {
+                "index": 20,
+                "type": "synthetic",
+                "name": "(Stack roots)",
+                "tag": null,
+                "selfBytes": 0
+              },
+              "edgeType": "internal",
+              "edge": "72",
+              "to": {
+                "index": 3308,
+                "type": "object",
+                "name": "Object",
+                "tag": null,
+                "selfBytes": 56
+              }
+            },
+            {
+              "from": {
+                "index": 3308,
+                "type": "object",
+                "name": "Object",
+                "tag": null,
+                "selfBytes": 56
+              },
+              "edgeType": "property",
+              "edge": "parsed_module",
+              "to": {
+                "index": 2055650,
+                "type": "closure",
+                "name": "",
+                "tag": null,
+                "selfBytes": 64
+              }
+            },
+            {
+              "from": {
+                "index": 2055650,
+                "type": "closure",
+                "name": "",
+                "tag": null,
+                "selfBytes": 64
+              },
+              "edgeType": "internal",
+              "edge": "context",
+              "to": {
+                "index": 279576,
+                "type": "object",
+                "name": "system / Context",
+                "tag": null,
+                "selfBytes": 319424
+              }
+            },
+            {
+              "from": {
+                "index": 279576,
+                "type": "object",
+                "name": "system / Context",
+                "tag": null,
+                "selfBytes": 319424
+              },
+              "edgeType": "context",
+              "edge": "$k18454",
+              "to": {
+                "index": 399755,
+                "type": "closure",
+                "name": "$k18454",
+                "tag": null,
+                "selfBytes": 64
+              }
+            },
+            {
+              "from": {
+                "index": 399755,
+                "type": "closure",
+                "name": "$k18454",
+                "tag": null,
+                "selfBytes": 64
+              },
+              "edgeType": "internal",
+              "edge": "feedback_cell",
+              "to": {
+                "index": 283713,
+                "type": "code",
+                "name": "system / FeedbackCell",
+                "tag": null,
+                "selfBytes": 24
+              }
+            },
+            {
+              "from": {
+                "index": 283713,
+                "type": "code",
+                "name": "system / FeedbackCell",
+                "tag": null,
+                "selfBytes": 24
+              },
+              "edgeType": "internal",
+              "edge": "value",
+              "to": {
+                "index": 283714,
+                "type": "code",
+                "name": "system / FeedbackVector",
+                "tag": null,
+                "selfBytes": 664
+              }
+            },
+            {
+              "from": {
+                "index": 283714,
+                "type": "code",
+                "name": "system / FeedbackVector",
+                "tag": null,
+                "selfBytes": 664
+              },
+              "edgeType": "hidden",
+              "edge": "16",
+              "to": {
+                "index": 2367346,
+                "type": "code",
+                "name": "system / AllocationSite",
+                "tag": null,
+                "selfBytes": 48
+              }
+            },
+            {
+              "from": {
+                "index": 2367346,
+                "type": "code",
+                "name": "system / AllocationSite",
+                "tag": null,
+                "selfBytes": 48
+              },
+              "edgeType": "internal",
+              "edge": "transition_info",
+              "to": {
+                "index": 2367396,
+                "type": "object",
+                "name": "Object",
+                "tag": "../bend2/selfhost/loaded_module.LoadedModule",
+                "selfBytes": 48
+              }
+            }
+          ],
+          "shortcutEdges": 0
+        }
+      },
+      {
+        "node": {
+          "index": 2367827,
+          "type": "object",
+          "name": "Object",
+          "tag": "../bend2/selfhost/loaded_module.LoadedModule",
+          "selfBytes": 48
+        },
+        "holeFields": [
+          "namespace",
+          "module"
+        ],
+        "path": {
+          "reachable": true,
+          "truncated": false,
+          "rawEdgeCount": 10,
+          "compressedEdgeCount": 10,
+          "nodes": [
+            {
+              "from": {
+                "index": 0,
+                "type": "synthetic",
+                "name": "",
+                "tag": null,
+                "selfBytes": 0
+              },
+              "edgeType": "element",
+              "edge": "1",
+              "to": {
+                "index": 1,
+                "type": "synthetic",
+                "name": "(GC roots)",
+                "tag": null,
+                "selfBytes": 0
+              }
+            },
+            {
+              "from": {
+                "index": 1,
+                "type": "synthetic",
+                "name": "(GC roots)",
+                "tag": null,
+                "selfBytes": 0
+              },
+              "edgeType": "element",
+              "edge": "19",
+              "to": {
+                "index": 20,
+                "type": "synthetic",
+                "name": "(Stack roots)",
+                "tag": null,
+                "selfBytes": 0
+              }
+            },
+            {
+              "from": {
+                "index": 20,
+                "type": "synthetic",
+                "name": "(Stack roots)",
+                "tag": null,
+                "selfBytes": 0
+              },
+              "edgeType": "internal",
+              "edge": "72",
+              "to": {
+                "index": 3308,
+                "type": "object",
+                "name": "Object",
+                "tag": null,
+                "selfBytes": 56
+              }
+            },
+            {
+              "from": {
+                "index": 3308,
+                "type": "object",
+                "name": "Object",
+                "tag": null,
+                "selfBytes": 56
+              },
+              "edgeType": "property",
+              "edge": "parsed_module",
+              "to": {
+                "index": 2055650,
+                "type": "closure",
+                "name": "",
+                "tag": null,
+                "selfBytes": 64
+              }
+            },
+            {
+              "from": {
+                "index": 2055650,
+                "type": "closure",
+                "name": "",
+                "tag": null,
+                "selfBytes": 64
+              },
+              "edgeType": "internal",
+              "edge": "context",
+              "to": {
+                "index": 279576,
+                "type": "object",
+                "name": "system / Context",
+                "tag": null,
+                "selfBytes": 319424
+              }
+            },
+            {
+              "from": {
+                "index": 279576,
+                "type": "object",
+                "name": "system / Context",
+                "tag": null,
+                "selfBytes": 319424
+              },
+              "edgeType": "context",
+              "edge": "$k22502",
+              "to": {
+                "index": 400580,
+                "type": "closure",
+                "name": "$k22502",
+                "tag": null,
+                "selfBytes": 64
+              }
+            },
+            {
+              "from": {
+                "index": 400580,
+                "type": "closure",
+                "name": "$k22502",
+                "tag": null,
+                "selfBytes": 64
+              },
+              "edgeType": "internal",
+              "edge": "feedback_cell",
+              "to": {
+                "index": 284668,
+                "type": "code",
+                "name": "system / FeedbackCell",
+                "tag": null,
+                "selfBytes": 24
+              }
+            },
+            {
+              "from": {
+                "index": 284668,
+                "type": "code",
+                "name": "system / FeedbackCell",
+                "tag": null,
+                "selfBytes": 24
+              },
+              "edgeType": "internal",
+              "edge": "value",
+              "to": {
+                "index": 284669,
+                "type": "code",
+                "name": "system / FeedbackVector",
+                "tag": null,
+                "selfBytes": 336
+              }
+            },
+            {
+              "from": {
+                "index": 284669,
+                "type": "code",
+                "name": "system / FeedbackVector",
+                "tag": null,
+                "selfBytes": 336
+              },
+              "edgeType": "hidden",
+              "edge": "11",
+              "to": {
+                "index": 2367818,
+                "type": "code",
+                "name": "system / AllocationSite",
+                "tag": null,
+                "selfBytes": 48
+              }
+            },
+            {
+              "from": {
+                "index": 2367818,
+                "type": "code",
+                "name": "system / AllocationSite",
+                "tag": null,
+                "selfBytes": 48
+              },
+              "edgeType": "internal",
+              "edge": "transition_info",
+              "to": {
+                "index": 2367827,
+                "type": "object",
+                "name": "Object",
+                "tag": "../bend2/selfhost/loaded_module.LoadedModule",
+                "selfBytes": 48
+              }
+            }
+          ],
+          "shortcutEdges": 0
+        }
+      },
+      {
+        "node": {
+          "index": 2905602,
+          "type": "object",
+          "name": "Object",
+          "tag": "../bend2/selfhost/loaded_module.LoadedModule",
+          "selfBytes": 48
+        },
+        "holeFields": [
+          "namespace",
+          "module"
+        ],
+        "path": {
+          "reachable": true,
+          "truncated": false,
+          "rawEdgeCount": 10,
+          "compressedEdgeCount": 10,
+          "nodes": [
+            {
+              "from": {
+                "index": 0,
+                "type": "synthetic",
+                "name": "",
+                "tag": null,
+                "selfBytes": 0
+              },
+              "edgeType": "element",
+              "edge": "1",
+              "to": {
+                "index": 1,
+                "type": "synthetic",
+                "name": "(GC roots)",
+                "tag": null,
+                "selfBytes": 0
+              }
+            },
+            {
+              "from": {
+                "index": 1,
+                "type": "synthetic",
+                "name": "(GC roots)",
+                "tag": null,
+                "selfBytes": 0
+              },
+              "edgeType": "element",
+              "edge": "19",
+              "to": {
+                "index": 20,
+                "type": "synthetic",
+                "name": "(Stack roots)",
+                "tag": null,
+                "selfBytes": 0
+              }
+            },
+            {
+              "from": {
+                "index": 20,
+                "type": "synthetic",
+                "name": "(Stack roots)",
+                "tag": null,
+                "selfBytes": 0
+              },
+              "edgeType": "internal",
+              "edge": "72",
+              "to": {
+                "index": 3308,
+                "type": "object",
+                "name": "Object",
+                "tag": null,
+                "selfBytes": 56
+              }
+            },
+            {
+              "from": {
+                "index": 3308,
+                "type": "object",
+                "name": "Object",
+                "tag": null,
+                "selfBytes": 56
+              },
+              "edgeType": "property",
+              "edge": "parsed_module",
+              "to": {
+                "index": 2055650,
+                "type": "closure",
+                "name": "",
+                "tag": null,
+                "selfBytes": 64
+              }
+            },
+            {
+              "from": {
+                "index": 2055650,
+                "type": "closure",
+                "name": "",
+                "tag": null,
+                "selfBytes": 64
+              },
+              "edgeType": "internal",
+              "edge": "context",
+              "to": {
+                "index": 279576,
+                "type": "object",
+                "name": "system / Context",
+                "tag": null,
+                "selfBytes": 319424
+              }
+            },
+            {
+              "from": {
+                "index": 279576,
+                "type": "object",
+                "name": "system / Context",
+                "tag": null,
+                "selfBytes": 319424
+              },
+              "edgeType": "context",
+              "edge": "$b1117",
+              "to": {
+                "index": 399825,
+                "type": "closure",
+                "name": "$b1117",
+                "tag": null,
+                "selfBytes": 64
+              }
+            },
+            {
+              "from": {
+                "index": 399825,
+                "type": "closure",
+                "name": "$b1117",
+                "tag": null,
+                "selfBytes": 64
+              },
+              "edgeType": "internal",
+              "edge": "feedback_cell",
+              "to": {
+                "index": 283812,
+                "type": "code",
+                "name": "system / FeedbackCell",
+                "tag": null,
+                "selfBytes": 24
+              }
+            },
+            {
+              "from": {
+                "index": 283812,
+                "type": "code",
+                "name": "system / FeedbackCell",
+                "tag": null,
+                "selfBytes": 24
+              },
+              "edgeType": "internal",
+              "edge": "value",
+              "to": {
+                "index": 283813,
+                "type": "code",
+                "name": "system / FeedbackVector",
+                "tag": null,
+                "selfBytes": 304
+              }
+            },
+            {
+              "from": {
+                "index": 283813,
+                "type": "code",
+                "name": "system / FeedbackVector",
+                "tag": null,
+                "selfBytes": 304
+              },
+              "edgeType": "hidden",
+              "edge": "7",
+              "to": {
+                "index": 2047565,
+                "type": "code",
+                "name": "system / AllocationSite",
+                "tag": null,
+                "selfBytes": 48
+              }
+            },
+            {
+              "from": {
+                "index": 2047565,
+                "type": "code",
+                "name": "system / AllocationSite",
+                "tag": null,
+                "selfBytes": 48
+              },
+              "edgeType": "internal",
+              "edge": "transition_info",
+              "to": {
+                "index": 2905602,
+                "type": "object",
+                "name": "Object",
+                "tag": "../bend2/selfhost/loaded_module.LoadedModule",
+                "selfBytes": 48
+              }
+            }
+          ],
+          "shortcutEdges": 0
+        }
+      }
+    ]
+  },
+  "scope": "Instrumentedresourceproofisolatedfromlatercleanrows. Snapshotprefixnotfullcheck; all41actualfunctionalconsumerprocessesalreadyPASSseparately. No compilerimageorBendchange."
+}

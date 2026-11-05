@@ -3448,3 +3448,105 @@ The next memory investigation must identify actual peak-live heap/GC owners;
 fewer wrapper roots do not identify that owner, and restricted tag graphs omit
 closure/context roots.
 
+### G71R1: initialized checker entry retires the host input frame
+
+Status: **REJECTED_FOR_CPU_AND_PEAK_RAM_QUALIFICATION**. The complete host API
+cutover and actual consumers pass, and the permanent helper releases the measured
+input-root population; six of seven prospective cost filters fail. No qualified
+speed/peak-RAM gain or causal regression is claimed. Main retains its accepted
+driver; the nine-file implementation stays in `selfhost/g71-initialized-lvi9rn4s`.
+`234c40ce` freezes the protocol before source edits or cost rows; `90ffb3a1`
+freezes the complete migration before consumers; `b62b41b7` freezes the actual
+consumer receipt and permanent-helper root preflight; `c9bb68bf` freezes the
+actual root proof and all nine requests before clean measurement.
+
+G70's full VM-root analysis found the consumed expanded-module list held by
+`(Stack roots)` and an argument array during the long synchronous checker loop.
+Clearing the inner `startArguments` did not retire the public wrapper's raw
+`modules` parameter. In a separate same-image/same-million-step snapshot,
+factory initialization removed the observed module-AST population while Arena
+and IR tagged counts/bytes remained exactly unchanged. That post-GC structural
+result is not a production peak-memory or CPU measurement.
+
+The experimental core exports only `runInitializedCheckerSteps(component,
+initialize, observe?)`. `initialize` is a synchronous zero-argument function
+that starts the native checker and returns its opaque Run. Its raw-input frame
+returns before driving; callers release consumed holders inside that function:
+
+```js
+runInitializedCheckerSteps(api, () => {
+  const input = expanded.modules;
+  expanded = undefined;
+  return api.check_expanded_start(input);
+});
+```
+
+The private driver has one factory-only initialization contract, no raw-argument
+array fallback. Native start/step export checks and Run/result/trace validators
+remain. Other public protocol signatures and their preconditions are unchanged.
+The counting driver, workers, CLI, bootstrap and throughput/benchmark callers
+are migrated; the old active checker export is removed, not aliased. The one
+old-name call in `compiler_benchmark.ts` belongs to its explicit immutable
+`frozen-v41` provider, not to the active core. Callers intentionally keeping
+their own input for later use still own that input; no universal-dead-AST claim.
+
+Actual new-worktree consumers on the unchanged accepted A image pass69 own
+contracts,15 standalone JS programs, three clang-built C programs and28 typed
+inspection/recheck/library runtime contracts. All41 real consumer processes pass.
+A separate actual counting-driver replay passes the same28 runtime contracts
+and records both native checks. The actual permanent helper's million-step
+prefix snapshot and complete non-weak VM-root analysis also pass before clean
+measurement. Snapshot shallow bytes change from324809598 to296711742
+(-28097856B); tagged non-Span AST drops14048144B and Span661584B, while Arena
+and IR counts/bytes are exactly unchanged. Snapshot collection forces GC:
+this is structural ownership evidence, not a production physical-peak measure.
+The prefix is not a completed full check, and Hole-valued V8 boilerplates are
+not live module instances.
+
+No Bend source, compiler image, ABI13 export, scheduler quantum or workload is
+changed. C uses the exact accepted A image with the new host helper/driver; A/B
+use their immutable images with the old helper/driver. This avoids source
+generation/native C1/C2 rebuilds, without substituting a patched image.
+All nine prospective ABC/CAB/BCA processes use the same52-file/17-module/
+2954-declaration corpus,600000ms/8GiB guards and worker256/6144/128MiB.
+
+Before any G71 cost rows, its bounded lifetime-fix protocol declares CPU
+retention2% and practical RAM benefit2%, matching the existing2% practical band;
+G69's separate5% wrapper target and failed decisions are not rescored.
+Paired95% intervals remain mandatory, no retries/exclusions/profiler/forcedGC
+enter cost rows, and inconclusive is not accepted. Passing all point filters
+earns six independent full-frozen processes. New compiler byte fixedpoint is
+not applicable to an unchanged image; no new selfhost-green claim is made.
+
+All nine fresh processes finish the exact native expand263032/check1975761
+steps without patched images. Same A image on A/C isolates the host-entry
+experiment. Each role has three paired rows; all rows remain in the result.
+The following ratios are C/control, with paired log-Student95% intervals where
+applicable; medians are separate point-screen statistics, not paired estimates.
+
+| Metric | C/A | C/B |
+| --- | ---: | ---: |
+| Checker CPU, geometric | 1.03033 [0.87565,1.21234] | 1.03417 [0.97111,1.10132] |
+| Checker wall, geometric | 1.11667 [0.78396,1.59058] | 1.01995 [0.97761,1.06411] |
+| Physical footprint, geometric | 0.98726 [0.77802,1.25277] | 0.95471 [0.63207,1.44205] |
+| Physical footprint, median | 1.01208 | 1.02367 |
+| RSS, median | 1.06226 | 1.04407 |
+
+Only the geometric footprint C/B point filter passes. Both CPU-retention point
+filters, every-CPU C/A, wall C/A, median-footprint C/A and median-RSS C/A fail;
+all selected inference conditions fail. Broad intervals are inconclusive, not
+proof of a slowdown or a memory gain. There are no retries, excluded rows,
+post-hoc target changes, profiles or explicit GC in these cost processes.
+The six full-frozen processes are **NOT_RUN_NOT_EARNED**; an unchanged compiler
+image needs no new C1/C2/C3 or byte-fixedpoint claim.
+
+Closing hashes preserve all52 selected and53 full-frozen files, all nine
+exercised implementation sources and all A/B/C image bytes. Required source
+changes remain in the experimental checkpoint; main receives only this journal
+and structured evidence indexed by `checkpoints/local2039g71r1-receipts.json`.
+Generated images, snapshots, transports and bulk logs remain outside Git.
+Throwaway probes/controller/statistics are removed after their exact sources
+and executions are recorded. Reusing this handoff as an accepted memory/speed
+optimization would require new prospective qualification, not rescoring G71.
+
+
