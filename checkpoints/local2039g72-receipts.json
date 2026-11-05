@@ -1,0 +1,114 @@
+{
+  "schemaVersion": 1,
+  "version": "G72",
+  "status": "COMPLETE_CPU_FIRST_RESEARCH_POSITIVE_CAUSAL_POINT_SCREEN_SOURCE_IMPLEMENTATION_EARNED_NOT_PROMOTED",
+  "baseCheckpoint": "149590fe",
+  "prospectiveCheckpoints": [
+    "70d28f8c",
+    "ee4801db",
+    "c7a94d20",
+    "0f649ec6",
+    "7210d176"
+  ],
+  "evidence": [
+    {
+      "relativePath": "checkpoints/local2039g72d0-protocol.json",
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g72d0-protocol.json",
+      "sha256": "06519981e6ce8b575b39b00d426f5d1ccd6a11af9974ecbce8dac32b0864adcb",
+      "bytes": 35281
+    },
+    {
+      "relativePath": "checkpoints/local2039g72d0-cpu.json",
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g72d0-cpu.json",
+      "sha256": "d47240f913048a9eb40ee677d78b21152424c76ac0c6a872588ce72598d3a1e1",
+      "bytes": 27157
+    },
+    {
+      "relativePath": "checkpoints/local2039g72d0-semantic-owners.json",
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g72d0-semantic-owners.json",
+      "sha256": "85ba52821a203d02247a3dc98ba5a7eeaf7dda0b54d671035a7f1f2e8148475b",
+      "bytes": 51966
+    },
+    {
+      "relativePath": "checkpoints/local2039g72d1-leaf-protocol.json",
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g72d1-leaf-protocol.json",
+      "sha256": "d801772bbaaacc9404779d0ecad980c801b702792f1e26f0412d64d5f6b2078e",
+      "bytes": 14361
+    },
+    {
+      "relativePath": "checkpoints/local2039g72d1-leaf-census.json",
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g72d1-leaf-census.json",
+      "sha256": "86ae7b7a45b3c9359a23c24584a5516b55d9515d8a8a9c020a1ec80c5c13c863",
+      "bytes": 12046
+    },
+    {
+      "relativePath": "checkpoints/local2039g72d1-diagnostic-protocol.json",
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g72d1-diagnostic-protocol.json",
+      "sha256": "1d8bc89fdb50d954bba7c8688e414ca6dc57517885bc716ceda1ddfd4473f2af",
+      "bytes": 11423
+    },
+    {
+      "relativePath": "checkpoints/local2039g72d1-reviewed-protocol.json",
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g72d1-reviewed-protocol.json",
+      "sha256": "451bb58d97327879d9d82f2e8f7a9e565d8beb37e6501e454a597e187c5f168a",
+      "bytes": 14338
+    },
+    {
+      "relativePath": "checkpoints/local2039g72d1-cost-protocol.json",
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g72d1-cost-protocol.json",
+      "sha256": "bee1e8db881f7605bfad362bd5d0417df8b2c4905093a2f0b38a5c1bc40b1335",
+      "bytes": 106712
+    },
+    {
+      "relativePath": "checkpoints/local2039g72d1-results.json",
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g72d1-results.json",
+      "sha256": "99dc2142e7eaa52faa261df2c35f7e9dcd524982ef4de7bd32fa3425abb08aab",
+      "bytes": 71292
+    },
+    {
+      "relativePath": "checkpoints/local2039g72-decision.json",
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g72-decision.json",
+      "sha256": "5723aa5579bbcc87b70f4ad833c8cae615abd569fc9a2cd616966ed527fc6831",
+      "bytes": 5975
+    },
+    {
+      "relativePath": "checkpoints/local2039g72-cleanup.json",
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g72-cleanup.json",
+      "sha256": "2880dbf08a598add4279d19aa055aab5a09efab3c42adfce2490e7a521599e05",
+      "bytes": 30972
+    },
+    {
+      "relativePath": "checkpoints/local2039g72-closing-hashes.json",
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g72-closing-hashes.json",
+      "sha256": "7cb5e7e28d93b38849d0328317fc643bed4751d7d8c3bcc6e2e6f66df1a0e9aa",
+      "bytes": 30981
+    }
+  ],
+  "researchNote": {
+    "path": "local://g72-cpu-architecture-research.md",
+    "sha256": "29a74a62fb82c9abd1dfcae31cae4b5e7b18506f1047a03283312a5ed0873cad",
+    "scope": "Singleprimary-source-citedresearchnoteoutsideGit;noinvestigationprosedocsorpermanenttestsinrepo"
+  },
+  "actualExecutedVerification": {
+    "CPUOnlyFullSelectedCheck": "PASS17modules2954decl263032expand1975761check,noallocationprofilerorforcedGC",
+    "ASTCensusAndDiagnosticGeneration": "PASS10739leafsites1423leafbodies21478nonoverlappingASTedits,Acornreparse",
+    "SixFreshCompleteSelectedChecks": "ALL_PASSsameworkoriginalABI13quantum64/Nodeworker/guards",
+    "sourceDefinitionOwnerMetadata": "Hash-boundtorealAself-stage2inputandoutput",
+    "CPUPointScreen": "PASSagainstbothAandmatchedbytecountnullN;twoC/Nratios0.865780,0.962691,geometric0.912951;notconfidencequalification",
+    "all105FrozenSelectedFullInputsAndDefaultPins": "UNCHANGED",
+    "ownedScaffolds": "Allfourremoved,exactsourcepreserved"
+  },
+  "sourcePromotion": false,
+  "acceptedCPUOrRAMGain": false,
+  "nextSourceMechanism": "TypedBIR-provenstrictterminalleafeagercallframeelisioninJSbackend;generalrealemitterimplementationandnewprospectivequalificationearned,notyetclaimedasdone",
+  "compilerFixedpoint": "NOT_APPLICABLE_DIAGNOSTIC_ONLY",
+  "requiredSourceInputs": "Existingcommitted52selected/53fullfrozencorpusandcanonicalgeneratorhelpermetadataunchanged. Allnewdiagnosticexecutablesourcesinprotocol/cleanupreceipts. NoadditionalBendcorpusinputneeded.",
+  "excludedFromGit": [
+    "compilerorcounterfactualimages",
+    "bulkprofiles",
+    "heap/ASTtransports",
+    "bulkASTcensus",
+    "caches",
+    "bulklogs"
+  ]
+}

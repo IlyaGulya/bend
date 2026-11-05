@@ -1,0 +1,120 @@
+{
+  "schemaVersion": 1,
+  "version": "G72",
+  "status": "COMPLETED_CPU_FIRST_RESEARCH_AND_CAUSAL_DISCRIMINATOR_SOURCE_WORK_EARNED_NO_COMPILER_PROMOTION",
+  "initialCheckpoint": "149590fe",
+  "CPUOnlyProtocolCheckpoint": "70d28f8c",
+  "CPUAndLeafCensusCheckpoint": "ee4801db",
+  "diagnosticDesignCheckpoint": "c7a94d20",
+  "reviewedDesignCheckpoint": "0f649ec6",
+  "cleanComparisonProtocolCheckpoint": "7210d176",
+  "primaryCPU": {
+    "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g72d0-cpu.json",
+    "sha256": "d47240f913048a9eb40ee677d78b21152424c76ac0c6a872588ce72598d3a1e1"
+  },
+  "sourceOwnership": {
+    "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g72d0-semantic-owners.json",
+    "sha256": "85ba52821a203d02247a3dc98ba5a7eeaf7dda0b54d671035a7f1f2e8148475b"
+  },
+  "sourceOwnerJoinFull": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g72-cpu-causality-o2arrjf5/semantic-owner-cpu-join.json",
+    "sha256": "2285eb0db701e0607e225424813cae988585c7dc5d812b88e699f892a2ce07de"
+  },
+  "CPUPhysicalFamilySummary": [
+    {
+      "family": "scheduler-cps-dispatch",
+      "exclusiveSampledMs": 12565.602,
+      "exclusiveShare": 0.18588065524784442
+    },
+    {
+      "family": "checker-body-helper",
+      "exclusiveSampledMs": 15635.989,
+      "exclusiveShare": 0.2313003293250962
+    },
+    {
+      "family": "normalized-helper",
+      "exclusiveSampledMs": 11601.74,
+      "exclusiveShare": 0.1716224207336128
+    },
+    {
+      "family": "arena",
+      "exclusiveSampledMs": 4328.888,
+      "exclusiveShare": 0.06403644950194433
+    },
+    {
+      "family": "base-map-scope",
+      "exclusiveSampledMs": 7380.832,
+      "exclusiveShare": 0.1091832996488555
+    },
+    {
+      "family": "gc",
+      "exclusiveSampledMs": 1156.037,
+      "exclusiveShare": 0.01710104418799452
+    },
+    {
+      "family": "runtime-helper",
+      "exclusiveSampledMs": 63.92,
+      "exclusiveShare": 0.0009455568848545588
+    },
+    {
+      "family": "unclassified",
+      "exclusiveSampledMs": 14867.367,
+      "exclusiveShare": 0.2199302444697977
+    }
+  ],
+  "causalScreen": {
+    "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g72d1-results.json",
+    "sha256": "99dc2142e7eaa52faa261df2c35f7e9dcd524982ef4de7bd32fa3425abb08aab"
+  },
+  "nextConcreteExperiment": {
+    "status": "SOURCE_IMPLEMENTATION_EARNED_BY_FROZEN_POINT_SCREEN_NOT_YET_IMPLEMENTED_OR_ACCEPTED",
+    "mechanism": "BIR-proven strict terminal leaf: omit eager continuation-frame registration/pop machinery; preserve continuation call, capture stores and depth-exhausted generic fallback exactly as exercised in diagnostic",
+    "primarySourceTargets": [
+      {
+        "path": "bend2/selfhost/backend_ir.bend",
+        "lines": "188-212",
+        "contract": "Typed strict BIR.Op and block terminators are authority for non-suspension/operand provenance"
+      },
+      {
+        "path": "bend2/selfhost/js_backend.bend",
+        "lines": "1325-1349",
+        "contract": "split_direct_args eager path is code-generation owner; Apply/opaque/loadSymbol/region/recursive paths unchanged"
+      },
+      {
+        "path": "checkpoints/emitter_steps_v1.bend",
+        "contract": "Active derived selfhost emitter must be regenerated from matching canonical input, not a second hand-edited convention"
+      }
+    ],
+    "classification": "Startwithstrictterminalleafbodiesonly,exactlythetestedconservativescope;noopaqueorindirectcalls,regions,traceeffects,suspendingcallsorrecursion. OrdinaryBIRvalueoperandsnevercontainschedulingmarkersmustbeprovenfromtypedIR/renderercontracts,notassumedfromJSText.",
+    "dataOrientedConstraints": [
+      "ComputeleafeligibilityonceperProgramwithcode-ID-keyedmetadata",
+      "No per-runtime-call allocation, dynamic dictionary lookup or code-ID rescan for eligibility",
+      "Do not change generic public ABI, quantum64, nativevalue layout or default stack/heap limits",
+      "No new BIR variant or compatibility alias needed solely for this backend-local code-generation choice"
+    ],
+    "firstFalsifiers": [
+      "Existing affine/default-stack/FFIextraargs/reentry/throws and native checker consumer behaviors",
+      "Generatedsourceactivationmustmatchrealchangedemitter;stage0oldruntimeisnotchangedcheckerthroughput",
+      "Source/compilerself-checkcostandcodegrowthmustnoterasecheckerbenefit"
+    ],
+    "productionChain": "Real unchanged native seed compiles changed source emitter; its own genuine self-emission activates leaf-elided JS in measured C2. No patched image may substitute for this chain. New protocol and source checkpoint before execution.",
+    "nonGoals": [
+      "No general transitive purity/recursion optimization or continuation-body inlining beyond tested mechanism",
+      "No claimthat23%baselinepointchangeiscausal",
+      "No claimingretainedheap/statisticalallocationsaspeakRAM",
+      "No resurrectedRunstatescalarcarry/Map.get/wrapperomission"
+    ],
+    "fallbackIfSourceProofFails": "Rejectunsoundtransformation;donotweakengenericruntimechecksorhidefailures. One-passMap.setremainsnewsecondarycandidatebutmeasuredsampledshareislow;notautomaticnextimplementation."
+  },
+  "compilerSourcesChanged": false,
+  "defaultRuntimeHelperChanged": false,
+  "newPermanentTestsOrRepoDocs": false,
+  "limits": "SameNode23.11/V812.9.202.28-node.14andBun1.4.3;8192MiBRSS/physical600s10mspoll;worker256/6144/128;fullfrozenselected52files17modules2954decl263032expand1975761check",
+  "sourceProvenanceRetractions": [
+    "CPUscoutinitialclaimnormalized-helperownermetadataunavailablewasfalse;hyphenatedgeneratorreceiptwasfoundandhash-boundtorealAself-stage2sourceinput",
+    "NoNF/equalityfamilyexclusionfromabsenceoftopprivatefunctionnames",
+    "Inclusivefunctionnamesarenotdisjointmerelybecausenamesdiffer;onlyexclusivefrozenrulesusedfortotals"
+  ],
+  "newFixedpoint": "NOT_APPLICABLE_DIAGNOSTIC_ONLY",
+  "acceptedSpeedOrPeakRAMGain": false
+}

@@ -1,0 +1,630 @@
+{
+  "schemaVersion": 1,
+  "version": "G72",
+  "status": "ALL_FROZEN_INPUTS_DEFAULT_DRIVER_PINS_AND_MEASURED_IMAGES_UNCHANGED_AFTER_ALL_RUNS",
+  "workloads": [
+    {
+      "label": "selected",
+      "manifest": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/main-complete.corpus.json",
+        "sha256": "1a269e15bf70257b019ab572c003b6eb130b4e3f63ad507783525e28d307b0e4"
+      },
+      "files": [
+        {
+          "path": "bend2/base.bend",
+          "expected": "21baec76caf1a6cfd4a544340b291f7bb55bf30cc841f9f5f29e3b12a1a4d614",
+          "actual": "21baec76caf1a6cfd4a544340b291f7bb55bf30cc841f9f5f29e3b12a1a4d614"
+        },
+        {
+          "path": "bend2/selfhost/ast.bend",
+          "expected": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
+          "actual": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83"
+        },
+        {
+          "path": "bend2/selfhost/backend_ir.bend",
+          "expected": "c0286db6b192bf5cc917774b7ea5e393d4416263432eb130fb8393b1dffc1cb3",
+          "actual": "c0286db6b192bf5cc917774b7ea5e393d4416263432eb130fb8393b1dffc1cb3"
+        },
+        {
+          "path": "bend2/selfhost/c_backend_sharing.bend",
+          "expected": "05adf4ac68b0658425f7fce430709f67bd29c3f1f8a43727412661084c4dbe2c",
+          "actual": "05adf4ac68b0658425f7fce430709f67bd29c3f1f8a43727412661084c4dbe2c"
+        },
+        {
+          "path": "bend2/selfhost/checked_frontend.bend",
+          "expected": "8287a44c524b001933cdba9d036b44ade13c34e549f5c926fd2cab45894e288e",
+          "actual": "8287a44c524b001933cdba9d036b44ade13c34e549f5c926fd2cab45894e288e"
+        },
+        {
+          "path": "bend2/selfhost/checker_arena.bend",
+          "expected": "d74873488827c5a8568b1238f05356ef43ec7c8a285ca0e25ab7b052f070ebdf",
+          "actual": "d74873488827c5a8568b1238f05356ef43ec7c8a285ca0e25ab7b052f070ebdf"
+        },
+        {
+          "path": "bend2/selfhost/checker_ir.bend",
+          "expected": "41db13db11d63102d3ea5c8ca14916e5f688685bba96c332abcb7a3533f1f17b",
+          "actual": "41db13db11d63102d3ea5c8ca14916e5f688685bba96c332abcb7a3533f1f17b"
+        },
+        {
+          "path": "bend2/selfhost/core.bend",
+          "expected": "33823e56b9c70306970ccb0e3b5fb3b995806d3a1907dd97d45c5c9634d13511",
+          "actual": "33823e56b9c70306970ccb0e3b5fb3b995806d3a1907dd97d45c5c9634d13511"
+        },
+        {
+          "path": "bend2/selfhost/index_lookup.bend",
+          "expected": "7b7b45946be711d0ba384e15f6823fded5ff97d6a526a6fb74a0448c13d61f84",
+          "actual": "7b7b45946be711d0ba384e15f6823fded5ff97d6a526a6fb74a0448c13d61f84"
+        },
+        {
+          "path": "bend2/selfhost/lexer.bend",
+          "expected": "342901897b30afc8ec7587718b1eb0b30150d46b01c1ea498ce369af26d1394d",
+          "actual": "342901897b30afc8ec7587718b1eb0b30150d46b01c1ea498ce369af26d1394d"
+        },
+        {
+          "path": "bend2/selfhost/loaded_module.bend",
+          "expected": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e",
+          "actual": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e"
+        },
+        {
+          "path": "bend2/selfhost/path.bend",
+          "expected": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
+          "actual": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8"
+        },
+        {
+          "path": "bend2/selfhost/scope_lookup.bend",
+          "expected": "e75dc874de6026e2104a7545a19f42fd6995aefecbb1d315c6ae3e097697e590",
+          "actual": "e75dc874de6026e2104a7545a19f42fd6995aefecbb1d315c6ae3e097697e590"
+        },
+        {
+          "path": "bend2/selfhost/sha256.bend",
+          "expected": "2fe6b6fc50c90db1b4730a384724bc989398b0ce41752cc510aa2478a3e845d6",
+          "actual": "2fe6b6fc50c90db1b4730a384724bc989398b0ce41752cc510aa2478a3e845d6"
+        },
+        {
+          "path": "checkpoints/emitter_steps_v1.bend",
+          "expected": "314c8b4cb2b97263dc148cb0a0b1cf0bda7d32dc67614ce5207da709570566f3",
+          "actual": "314c8b4cb2b97263dc148cb0a0b1cf0bda7d32dc67614ce5207da709570566f3"
+        },
+        {
+          "path": "checkpoints/local2039g49-compiler-root.bend",
+          "expected": "b8610312159cad7621ad5b9713bcb171fba9b32d4feaa4061e9664a7f8dae2e4",
+          "actual": "b8610312159cad7621ad5b9713bcb171fba9b32d4feaa4061e9664a7f8dae2e4"
+        },
+        {
+          "path": "checkpoints/template_steps_v1.bend",
+          "expected": "b9f4d860de0c58a274e1f23e90558191e23d7ac0de18d1fd452914160b9a5ae5",
+          "actual": "b9f4d860de0c58a274e1f23e90558191e23d7ac0de18d1fd452914160b9a5ae5"
+        },
+        {
+          "path": "bend2/effs/args.js",
+          "expected": "4fa9772d438257793425d4f9516e1411ce58455fdaec402ab836e6a6cf8a7a82",
+          "actual": "4fa9772d438257793425d4f9516e1411ce58455fdaec402ab836e6a6cf8a7a82"
+        },
+        {
+          "path": "bend2/effs/audio_close.js",
+          "expected": "c700e2fc0eda1f9a67afd317184999d9283912817aaec00637af41b135b84c62",
+          "actual": "c700e2fc0eda1f9a67afd317184999d9283912817aaec00637af41b135b84c62"
+        },
+        {
+          "path": "bend2/effs/audio_open.js",
+          "expected": "ed792cb29df28497c60fb6bfcebaa72d9f4bb0a9d8b22063567aa40ac4803fc9",
+          "actual": "ed792cb29df28497c60fb6bfcebaa72d9f4bb0a9d8b22063567aa40ac4803fc9"
+        },
+        {
+          "path": "bend2/effs/audio_write.js",
+          "expected": "ca3731d6da39355c0b924007dfe4f3ea25ed1a9d7b06b7bf19cacf49fdcc0de6",
+          "actual": "ca3731d6da39355c0b924007dfe4f3ea25ed1a9d7b06b7bf19cacf49fdcc0de6"
+        },
+        {
+          "path": "bend2/effs/chan.js",
+          "expected": "c8e4f3cdaea81cfd35dc22e07c29a86b8f08272d284bf3506dd5148dff8d168f",
+          "actual": "c8e4f3cdaea81cfd35dc22e07c29a86b8f08272d284bf3506dd5148dff8d168f"
+        },
+        {
+          "path": "bend2/effs/file_close.js",
+          "expected": "2b83f900113776ab875fa3afd29f31000a191fe48645abe78b1d7b34cb12a7fe",
+          "actual": "2b83f900113776ab875fa3afd29f31000a191fe48645abe78b1d7b34cb12a7fe"
+        },
+        {
+          "path": "bend2/effs/file_open.js",
+          "expected": "e6cbf6455aeae0768f1e8e7cabbafb8d0999eb27660cbaa23885757322b8c694",
+          "actual": "e6cbf6455aeae0768f1e8e7cabbafb8d0999eb27660cbaa23885757322b8c694"
+        },
+        {
+          "path": "bend2/effs/file_read.js",
+          "expected": "7aa8a95a0b02f3c8db1167da5a936958a90c64e7df3e327ba5c66766d5e57da7",
+          "actual": "7aa8a95a0b02f3c8db1167da5a936958a90c64e7df3e327ba5c66766d5e57da7"
+        },
+        {
+          "path": "bend2/effs/file_size.js",
+          "expected": "508a931334016f725f0446d9c63f91d7e9de79b9fb347d0e148777dba834ef0b",
+          "actual": "508a931334016f725f0446d9c63f91d7e9de79b9fb347d0e148777dba834ef0b"
+        },
+        {
+          "path": "bend2/effs/file_write.js",
+          "expected": "fbb706714fe6724e12658ad638d8b7aa2228f6297791bf74bd4894af361776f0",
+          "actual": "fbb706714fe6724e12658ad638d8b7aa2228f6297791bf74bd4894af361776f0"
+        },
+        {
+          "path": "bend2/effs/get_env.js",
+          "expected": "4bbb377d73898055bd06b498bef605e81bc2a0885e7ac664bc77591fd7e3dfa4",
+          "actual": "4bbb377d73898055bd06b498bef605e81bc2a0885e7ac664bc77591fd7e3dfa4"
+        },
+        {
+          "path": "bend2/effs/listener_close.js",
+          "expected": "1b87fb43c373b1a8a54b5afaf0cf8e3ec2f8d39bdfde131e49527caa19ac0cb8",
+          "actual": "1b87fb43c373b1a8a54b5afaf0cf8e3ec2f8d39bdfde131e49527caa19ac0cb8"
+        },
+        {
+          "path": "bend2/effs/now.js",
+          "expected": "f41624aba3f07d56b671f41691b5cb833b4d018266668f5f48329290fc41b2d9",
+          "actual": "f41624aba3f07d56b671f41691b5cb833b4d018266668f5f48329290fc41b2d9"
+        },
+        {
+          "path": "bend2/effs/print_err.js",
+          "expected": "a7a00612edfe98af1a351e8f7b912af4ee33f4bb888c36f119f7712d72a9394e",
+          "actual": "a7a00612edfe98af1a351e8f7b912af4ee33f4bb888c36f119f7712d72a9394e"
+        },
+        {
+          "path": "bend2/effs/print.js",
+          "expected": "814ceba4efbaa291b7b6a9ff29aa20e3a23c06eb4fa165c69ee0bd22878adaa9",
+          "actual": "814ceba4efbaa291b7b6a9ff29aa20e3a23c06eb4fa165c69ee0bd22878adaa9"
+        },
+        {
+          "path": "bend2/effs/process_run.js",
+          "expected": "26868538280a1df9570ed2fba234d2a329f1e1d9e86c6fe9353de417adaee729",
+          "actual": "26868538280a1df9570ed2fba234d2a329f1e1d9e86c6fe9353de417adaee729"
+        },
+        {
+          "path": "bend2/effs/random_u32.js",
+          "expected": "ab0b37cb6055ad08573d1263aa380c339c3fe7417530cfa63264629dce7744c2",
+          "actual": "ab0b37cb6055ad08573d1263aa380c339c3fe7417530cfa63264629dce7744c2"
+        },
+        {
+          "path": "bend2/effs/sleep.js",
+          "expected": "6711ccd804dcaede381da9ff0283b4640feb440e1d413381101f22bfed65a934",
+          "actual": "6711ccd804dcaede381da9ff0283b4640feb440e1d413381101f22bfed65a934"
+        },
+        {
+          "path": "bend2/effs/socket_close.js",
+          "expected": "dc4bf1fa95692c91528d4eb855506dde8dfc9164a90de2c43cd1bd6916e0c380",
+          "actual": "dc4bf1fa95692c91528d4eb855506dde8dfc9164a90de2c43cd1bd6916e0c380"
+        },
+        {
+          "path": "bend2/effs/spawn.js",
+          "expected": "8a14c7a7a5ff80b049f0659f9e58d43bf0f3b1a6724d35a199c3f864b3242e4b",
+          "actual": "8a14c7a7a5ff80b049f0659f9e58d43bf0f3b1a6724d35a199c3f864b3242e4b"
+        },
+        {
+          "path": "bend2/effs/tcp_accept.js",
+          "expected": "26406cce42c497994e597a7a032629fab65f43ec14f06ee69aace2b353afe28d",
+          "actual": "26406cce42c497994e597a7a032629fab65f43ec14f06ee69aace2b353afe28d"
+        },
+        {
+          "path": "bend2/effs/tcp_connect.js",
+          "expected": "c51c4b55ffbc4a520f01082a1307498801a17e5123bdffbd01077fb42730f1cb",
+          "actual": "c51c4b55ffbc4a520f01082a1307498801a17e5123bdffbd01077fb42730f1cb"
+        },
+        {
+          "path": "bend2/effs/tcp_listen.js",
+          "expected": "0da4cfafaa24ba5e17d9fda5e6a5b207b2b36031b2c888944f67b85842d76399",
+          "actual": "0da4cfafaa24ba5e17d9fda5e6a5b207b2b36031b2c888944f67b85842d76399"
+        },
+        {
+          "path": "bend2/effs/tcp_recv.js",
+          "expected": "e8c54490445cb71a4328c07be8c40a49cee3e643cbf74f42dc73d31ab95890d7",
+          "actual": "e8c54490445cb71a4328c07be8c40a49cee3e643cbf74f42dc73d31ab95890d7"
+        },
+        {
+          "path": "bend2/effs/tcp_send.js",
+          "expected": "350bc6ac8f957d6a154cc9437b4ad871bd11ec65babbbd7c3b0d2c77590ec5c6",
+          "actual": "350bc6ac8f957d6a154cc9437b4ad871bd11ec65babbbd7c3b0d2c77590ec5c6"
+        },
+        {
+          "path": "bend2/effs/thread_count.js",
+          "expected": "f4ef6d8ded95fe3114e50b7d2b6eb873e693419b85150f681b4a54a5043c2de9",
+          "actual": "f4ef6d8ded95fe3114e50b7d2b6eb873e693419b85150f681b4a54a5043c2de9"
+        },
+        {
+          "path": "bend2/effs/udp_bind.js",
+          "expected": "e3afae5bf246184e76703efbcf41cb35bf5289e746cc40dc0300eef98753dfb5",
+          "actual": "e3afae5bf246184e76703efbcf41cb35bf5289e746cc40dc0300eef98753dfb5"
+        },
+        {
+          "path": "bend2/effs/udp_recv_from.js",
+          "expected": "66435d23dd12f30aa47bf618c925a42250920768d5ae28c7c52c35d4e04fa5ad",
+          "actual": "66435d23dd12f30aa47bf618c925a42250920768d5ae28c7c52c35d4e04fa5ad"
+        },
+        {
+          "path": "bend2/effs/udp_send_to.js",
+          "expected": "40c835c4d73eb15d089a41b425968d04931d02820cb901aadb8eb3dd4905f247",
+          "actual": "40c835c4d73eb15d089a41b425968d04931d02820cb901aadb8eb3dd4905f247"
+        },
+        {
+          "path": "bend2/effs/window_close.js",
+          "expected": "be4ef11e9ac57c59aa4aee847f15ece18034ca9fe1c4a68c6e0b0d7bbd7c3590",
+          "actual": "be4ef11e9ac57c59aa4aee847f15ece18034ca9fe1c4a68c6e0b0d7bbd7c3590"
+        },
+        {
+          "path": "bend2/effs/window_frame.js",
+          "expected": "78baa53aa46e02165c0c94da68d1f6362386ebcfb97dbb36fffb82792a03d34f",
+          "actual": "78baa53aa46e02165c0c94da68d1f6362386ebcfb97dbb36fffb82792a03d34f"
+        },
+        {
+          "path": "bend2/effs/window_grab.js",
+          "expected": "55cfc1925114f2d1f177137fad24d6252fe28707d26a1aae18a98ad97060a668",
+          "actual": "55cfc1925114f2d1f177137fad24d6252fe28707d26a1aae18a98ad97060a668"
+        },
+        {
+          "path": "bend2/effs/window_open.js",
+          "expected": "cd716864b8dfb27ca955c8aa58643c7d693ce76eb56472bd8255ff7ac0656e8d",
+          "actual": "cd716864b8dfb27ca955c8aa58643c7d693ce76eb56472bd8255ff7ac0656e8d"
+        },
+        {
+          "path": "bend2/effs/window_set_title.js",
+          "expected": "eee0bf26b7f381f8800364e22e8c735e47dd6db3f58e23ff3dda8478a8411513",
+          "actual": "eee0bf26b7f381f8800364e22e8c735e47dd6db3f58e23ff3dda8478a8411513"
+        },
+        {
+          "path": "bend2/effs/write.js",
+          "expected": "e3495066a5d8c53fe1c46cfd2bb32577e3bd7dcae9797808801599073504dacb",
+          "actual": "e3495066a5d8c53fe1c46cfd2bb32577e3bd7dcae9797808801599073504dacb"
+        }
+      ],
+      "count": 52,
+      "allHashesMatch": true
+    },
+    {
+      "label": "fullFrozenNotExecuted",
+      "manifest": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/full-frozen.corpus.json",
+        "sha256": "60bf820e76a9c336e58c848eec6a40b3f8fbb4b7ac2ae45ffd1abdb1d217ebc6"
+      },
+      "files": [
+        {
+          "path": "bend2/base.bend",
+          "expected": "21baec76caf1a6cfd4a544340b291f7bb55bf30cc841f9f5f29e3b12a1a4d614",
+          "actual": "21baec76caf1a6cfd4a544340b291f7bb55bf30cc841f9f5f29e3b12a1a4d614"
+        },
+        {
+          "path": "bend2/selfhost/ast.bend",
+          "expected": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
+          "actual": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83"
+        },
+        {
+          "path": "bend2/selfhost/backend_ir.bend",
+          "expected": "c0286db6b192bf5cc917774b7ea5e393d4416263432eb130fb8393b1dffc1cb3",
+          "actual": "c0286db6b192bf5cc917774b7ea5e393d4416263432eb130fb8393b1dffc1cb3"
+        },
+        {
+          "path": "bend2/selfhost/c_backend_sharing.bend",
+          "expected": "05adf4ac68b0658425f7fce430709f67bd29c3f1f8a43727412661084c4dbe2c",
+          "actual": "05adf4ac68b0658425f7fce430709f67bd29c3f1f8a43727412661084c4dbe2c"
+        },
+        {
+          "path": "bend2/selfhost/checked_frontend.bend",
+          "expected": "8287a44c524b001933cdba9d036b44ade13c34e549f5c926fd2cab45894e288e",
+          "actual": "8287a44c524b001933cdba9d036b44ade13c34e549f5c926fd2cab45894e288e"
+        },
+        {
+          "path": "bend2/selfhost/checker_arena.bend",
+          "expected": "d74873488827c5a8568b1238f05356ef43ec7c8a285ca0e25ab7b052f070ebdf",
+          "actual": "d74873488827c5a8568b1238f05356ef43ec7c8a285ca0e25ab7b052f070ebdf"
+        },
+        {
+          "path": "bend2/selfhost/checker_ir.bend",
+          "expected": "41db13db11d63102d3ea5c8ca14916e5f688685bba96c332abcb7a3533f1f17b",
+          "actual": "41db13db11d63102d3ea5c8ca14916e5f688685bba96c332abcb7a3533f1f17b"
+        },
+        {
+          "path": "bend2/selfhost/core.bend",
+          "expected": "33823e56b9c70306970ccb0e3b5fb3b995806d3a1907dd97d45c5c9634d13511",
+          "actual": "33823e56b9c70306970ccb0e3b5fb3b995806d3a1907dd97d45c5c9634d13511"
+        },
+        {
+          "path": "bend2/selfhost/index_lookup.bend",
+          "expected": "7b7b45946be711d0ba384e15f6823fded5ff97d6a526a6fb74a0448c13d61f84",
+          "actual": "7b7b45946be711d0ba384e15f6823fded5ff97d6a526a6fb74a0448c13d61f84"
+        },
+        {
+          "path": "bend2/selfhost/lexer.bend",
+          "expected": "342901897b30afc8ec7587718b1eb0b30150d46b01c1ea498ce369af26d1394d",
+          "actual": "342901897b30afc8ec7587718b1eb0b30150d46b01c1ea498ce369af26d1394d"
+        },
+        {
+          "path": "bend2/selfhost/loaded_module.bend",
+          "expected": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e",
+          "actual": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e"
+        },
+        {
+          "path": "bend2/selfhost/path.bend",
+          "expected": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
+          "actual": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8"
+        },
+        {
+          "path": "bend2/selfhost/scope_lookup.bend",
+          "expected": "e75dc874de6026e2104a7545a19f42fd6995aefecbb1d315c6ae3e097697e590",
+          "actual": "e75dc874de6026e2104a7545a19f42fd6995aefecbb1d315c6ae3e097697e590"
+        },
+        {
+          "path": "bend2/selfhost/sha256.bend",
+          "expected": "2fe6b6fc50c90db1b4730a384724bc989398b0ce41752cc510aa2478a3e845d6",
+          "actual": "2fe6b6fc50c90db1b4730a384724bc989398b0ce41752cc510aa2478a3e845d6"
+        },
+        {
+          "path": "checkpoints/checker_core_steps_v1.bend",
+          "expected": "e4c1197d63129394551d5643ef2934be84af82eaeacfa3da1e4e660c6ff603a4",
+          "actual": "e4c1197d63129394551d5643ef2934be84af82eaeacfa3da1e4e660c6ff603a4"
+        },
+        {
+          "path": "checkpoints/emitter_steps_v1.bend",
+          "expected": "b292b8a767c27d46497915e12f2bd91012bc5fd280d6b537ca90d1dd214d2bb0",
+          "actual": "b292b8a767c27d46497915e12f2bd91012bc5fd280d6b537ca90d1dd214d2bb0"
+        },
+        {
+          "path": "checkpoints/local2039g49-compiler-root.bend",
+          "expected": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed",
+          "actual": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed"
+        },
+        {
+          "path": "checkpoints/template_steps_v1.bend",
+          "expected": "b9f4d860de0c58a274e1f23e90558191e23d7ac0de18d1fd452914160b9a5ae5",
+          "actual": "b9f4d860de0c58a274e1f23e90558191e23d7ac0de18d1fd452914160b9a5ae5"
+        },
+        {
+          "path": "bend2/effs/args.js",
+          "expected": "4fa9772d438257793425d4f9516e1411ce58455fdaec402ab836e6a6cf8a7a82",
+          "actual": "4fa9772d438257793425d4f9516e1411ce58455fdaec402ab836e6a6cf8a7a82"
+        },
+        {
+          "path": "bend2/effs/audio_close.js",
+          "expected": "c700e2fc0eda1f9a67afd317184999d9283912817aaec00637af41b135b84c62",
+          "actual": "c700e2fc0eda1f9a67afd317184999d9283912817aaec00637af41b135b84c62"
+        },
+        {
+          "path": "bend2/effs/audio_open.js",
+          "expected": "ed792cb29df28497c60fb6bfcebaa72d9f4bb0a9d8b22063567aa40ac4803fc9",
+          "actual": "ed792cb29df28497c60fb6bfcebaa72d9f4bb0a9d8b22063567aa40ac4803fc9"
+        },
+        {
+          "path": "bend2/effs/audio_write.js",
+          "expected": "ca3731d6da39355c0b924007dfe4f3ea25ed1a9d7b06b7bf19cacf49fdcc0de6",
+          "actual": "ca3731d6da39355c0b924007dfe4f3ea25ed1a9d7b06b7bf19cacf49fdcc0de6"
+        },
+        {
+          "path": "bend2/effs/chan.js",
+          "expected": "c8e4f3cdaea81cfd35dc22e07c29a86b8f08272d284bf3506dd5148dff8d168f",
+          "actual": "c8e4f3cdaea81cfd35dc22e07c29a86b8f08272d284bf3506dd5148dff8d168f"
+        },
+        {
+          "path": "bend2/effs/file_close.js",
+          "expected": "2b83f900113776ab875fa3afd29f31000a191fe48645abe78b1d7b34cb12a7fe",
+          "actual": "2b83f900113776ab875fa3afd29f31000a191fe48645abe78b1d7b34cb12a7fe"
+        },
+        {
+          "path": "bend2/effs/file_open.js",
+          "expected": "e6cbf6455aeae0768f1e8e7cabbafb8d0999eb27660cbaa23885757322b8c694",
+          "actual": "e6cbf6455aeae0768f1e8e7cabbafb8d0999eb27660cbaa23885757322b8c694"
+        },
+        {
+          "path": "bend2/effs/file_read.js",
+          "expected": "7aa8a95a0b02f3c8db1167da5a936958a90c64e7df3e327ba5c66766d5e57da7",
+          "actual": "7aa8a95a0b02f3c8db1167da5a936958a90c64e7df3e327ba5c66766d5e57da7"
+        },
+        {
+          "path": "bend2/effs/file_size.js",
+          "expected": "508a931334016f725f0446d9c63f91d7e9de79b9fb347d0e148777dba834ef0b",
+          "actual": "508a931334016f725f0446d9c63f91d7e9de79b9fb347d0e148777dba834ef0b"
+        },
+        {
+          "path": "bend2/effs/file_write.js",
+          "expected": "fbb706714fe6724e12658ad638d8b7aa2228f6297791bf74bd4894af361776f0",
+          "actual": "fbb706714fe6724e12658ad638d8b7aa2228f6297791bf74bd4894af361776f0"
+        },
+        {
+          "path": "bend2/effs/get_env.js",
+          "expected": "4bbb377d73898055bd06b498bef605e81bc2a0885e7ac664bc77591fd7e3dfa4",
+          "actual": "4bbb377d73898055bd06b498bef605e81bc2a0885e7ac664bc77591fd7e3dfa4"
+        },
+        {
+          "path": "bend2/effs/listener_close.js",
+          "expected": "1b87fb43c373b1a8a54b5afaf0cf8e3ec2f8d39bdfde131e49527caa19ac0cb8",
+          "actual": "1b87fb43c373b1a8a54b5afaf0cf8e3ec2f8d39bdfde131e49527caa19ac0cb8"
+        },
+        {
+          "path": "bend2/effs/now.js",
+          "expected": "f41624aba3f07d56b671f41691b5cb833b4d018266668f5f48329290fc41b2d9",
+          "actual": "f41624aba3f07d56b671f41691b5cb833b4d018266668f5f48329290fc41b2d9"
+        },
+        {
+          "path": "bend2/effs/print_err.js",
+          "expected": "a7a00612edfe98af1a351e8f7b912af4ee33f4bb888c36f119f7712d72a9394e",
+          "actual": "a7a00612edfe98af1a351e8f7b912af4ee33f4bb888c36f119f7712d72a9394e"
+        },
+        {
+          "path": "bend2/effs/print.js",
+          "expected": "814ceba4efbaa291b7b6a9ff29aa20e3a23c06eb4fa165c69ee0bd22878adaa9",
+          "actual": "814ceba4efbaa291b7b6a9ff29aa20e3a23c06eb4fa165c69ee0bd22878adaa9"
+        },
+        {
+          "path": "bend2/effs/process_run.js",
+          "expected": "26868538280a1df9570ed2fba234d2a329f1e1d9e86c6fe9353de417adaee729",
+          "actual": "26868538280a1df9570ed2fba234d2a329f1e1d9e86c6fe9353de417adaee729"
+        },
+        {
+          "path": "bend2/effs/random_u32.js",
+          "expected": "ab0b37cb6055ad08573d1263aa380c339c3fe7417530cfa63264629dce7744c2",
+          "actual": "ab0b37cb6055ad08573d1263aa380c339c3fe7417530cfa63264629dce7744c2"
+        },
+        {
+          "path": "bend2/effs/sleep.js",
+          "expected": "6711ccd804dcaede381da9ff0283b4640feb440e1d413381101f22bfed65a934",
+          "actual": "6711ccd804dcaede381da9ff0283b4640feb440e1d413381101f22bfed65a934"
+        },
+        {
+          "path": "bend2/effs/socket_close.js",
+          "expected": "dc4bf1fa95692c91528d4eb855506dde8dfc9164a90de2c43cd1bd6916e0c380",
+          "actual": "dc4bf1fa95692c91528d4eb855506dde8dfc9164a90de2c43cd1bd6916e0c380"
+        },
+        {
+          "path": "bend2/effs/spawn.js",
+          "expected": "8a14c7a7a5ff80b049f0659f9e58d43bf0f3b1a6724d35a199c3f864b3242e4b",
+          "actual": "8a14c7a7a5ff80b049f0659f9e58d43bf0f3b1a6724d35a199c3f864b3242e4b"
+        },
+        {
+          "path": "bend2/effs/tcp_accept.js",
+          "expected": "26406cce42c497994e597a7a032629fab65f43ec14f06ee69aace2b353afe28d",
+          "actual": "26406cce42c497994e597a7a032629fab65f43ec14f06ee69aace2b353afe28d"
+        },
+        {
+          "path": "bend2/effs/tcp_connect.js",
+          "expected": "c51c4b55ffbc4a520f01082a1307498801a17e5123bdffbd01077fb42730f1cb",
+          "actual": "c51c4b55ffbc4a520f01082a1307498801a17e5123bdffbd01077fb42730f1cb"
+        },
+        {
+          "path": "bend2/effs/tcp_listen.js",
+          "expected": "0da4cfafaa24ba5e17d9fda5e6a5b207b2b36031b2c888944f67b85842d76399",
+          "actual": "0da4cfafaa24ba5e17d9fda5e6a5b207b2b36031b2c888944f67b85842d76399"
+        },
+        {
+          "path": "bend2/effs/tcp_recv.js",
+          "expected": "e8c54490445cb71a4328c07be8c40a49cee3e643cbf74f42dc73d31ab95890d7",
+          "actual": "e8c54490445cb71a4328c07be8c40a49cee3e643cbf74f42dc73d31ab95890d7"
+        },
+        {
+          "path": "bend2/effs/tcp_send.js",
+          "expected": "350bc6ac8f957d6a154cc9437b4ad871bd11ec65babbbd7c3b0d2c77590ec5c6",
+          "actual": "350bc6ac8f957d6a154cc9437b4ad871bd11ec65babbbd7c3b0d2c77590ec5c6"
+        },
+        {
+          "path": "bend2/effs/thread_count.js",
+          "expected": "f4ef6d8ded95fe3114e50b7d2b6eb873e693419b85150f681b4a54a5043c2de9",
+          "actual": "f4ef6d8ded95fe3114e50b7d2b6eb873e693419b85150f681b4a54a5043c2de9"
+        },
+        {
+          "path": "bend2/effs/udp_bind.js",
+          "expected": "e3afae5bf246184e76703efbcf41cb35bf5289e746cc40dc0300eef98753dfb5",
+          "actual": "e3afae5bf246184e76703efbcf41cb35bf5289e746cc40dc0300eef98753dfb5"
+        },
+        {
+          "path": "bend2/effs/udp_recv_from.js",
+          "expected": "66435d23dd12f30aa47bf618c925a42250920768d5ae28c7c52c35d4e04fa5ad",
+          "actual": "66435d23dd12f30aa47bf618c925a42250920768d5ae28c7c52c35d4e04fa5ad"
+        },
+        {
+          "path": "bend2/effs/udp_send_to.js",
+          "expected": "40c835c4d73eb15d089a41b425968d04931d02820cb901aadb8eb3dd4905f247",
+          "actual": "40c835c4d73eb15d089a41b425968d04931d02820cb901aadb8eb3dd4905f247"
+        },
+        {
+          "path": "bend2/effs/window_close.js",
+          "expected": "be4ef11e9ac57c59aa4aee847f15ece18034ca9fe1c4a68c6e0b0d7bbd7c3590",
+          "actual": "be4ef11e9ac57c59aa4aee847f15ece18034ca9fe1c4a68c6e0b0d7bbd7c3590"
+        },
+        {
+          "path": "bend2/effs/window_frame.js",
+          "expected": "78baa53aa46e02165c0c94da68d1f6362386ebcfb97dbb36fffb82792a03d34f",
+          "actual": "78baa53aa46e02165c0c94da68d1f6362386ebcfb97dbb36fffb82792a03d34f"
+        },
+        {
+          "path": "bend2/effs/window_grab.js",
+          "expected": "55cfc1925114f2d1f177137fad24d6252fe28707d26a1aae18a98ad97060a668",
+          "actual": "55cfc1925114f2d1f177137fad24d6252fe28707d26a1aae18a98ad97060a668"
+        },
+        {
+          "path": "bend2/effs/window_open.js",
+          "expected": "cd716864b8dfb27ca955c8aa58643c7d693ce76eb56472bd8255ff7ac0656e8d",
+          "actual": "cd716864b8dfb27ca955c8aa58643c7d693ce76eb56472bd8255ff7ac0656e8d"
+        },
+        {
+          "path": "bend2/effs/window_set_title.js",
+          "expected": "eee0bf26b7f381f8800364e22e8c735e47dd6db3f58e23ff3dda8478a8411513",
+          "actual": "eee0bf26b7f381f8800364e22e8c735e47dd6db3f58e23ff3dda8478a8411513"
+        },
+        {
+          "path": "bend2/effs/write.js",
+          "expected": "e3495066a5d8c53fe1c46cfd2bb32577e3bd7dcae9797808801599073504dacb",
+          "actual": "e3495066a5d8c53fe1c46cfd2bb32577e3bd7dcae9797808801599073504dacb"
+        }
+      ],
+      "count": 53,
+      "allHashesMatch": true
+    }
+  ],
+  "images": {
+    "A": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs",
+      "sha256": "4636c05aa8c75e72212cb03949937e25561942bc00da250f876f37f001b9fc18"
+    },
+    "C": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g72-cpu-causality-o2arrjf5/diagnostic-leaf-reviewed.mjs",
+      "sha256": "3c1b4d8f0784b00339c65bc29de08b85b5d2512981fa9a067b11ddcdd9800e9c"
+    },
+    "N": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g72-cpu-causality-o2arrjf5/diagnostic-null-layout.mjs",
+      "sha256": "e8f7d17ba3b67762298107ed31c334a7e10ecc43695a25c4304b191f7b49e3ba"
+    }
+  },
+  "mainAcceptedHelperAndDriverPins": [
+    {
+      "path": "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+      "expected": "1a806befee02216a9499f6b4dcde7e2326e01f0a5b96bbd36b75295344c50317",
+      "actual": "1a806befee02216a9499f6b4dcde7e2326e01f0a5b96bbd36b75295344c50317",
+      "matched": true
+    },
+    {
+      "path": "/Users/ilyagulya/Projects/My/bend/evals/checker_core_step_runtime.mjs",
+      "expected": "00cd400ac0452a3681bf6491db08be51f9ae3a33ff2baf88654a9763eb5073ed",
+      "actual": "00cd400ac0452a3681bf6491db08be51f9ae3a33ff2baf88654a9763eb5073ed",
+      "matched": true
+    },
+    {
+      "path": "/Users/ilyagulya/Projects/My/bend/evals/selfhost_cpu_profile.mjs",
+      "expected": "5d5fc8d329a3b600522c58eeac59c49c515109bc7f48845d8177cb520129a1c0",
+      "actual": "5d5fc8d329a3b600522c58eeac59c49c515109bc7f48845d8177cb520129a1c0",
+      "matched": true
+    },
+    {
+      "path": "/Users/ilyagulya/Projects/My/bend/evals/native_seed_runtime.mjs",
+      "expected": "7f81a9b9013853355910b93bf59586b2acbcda4de7bcaa08d7942ebf45c0147a",
+      "actual": "7f81a9b9013853355910b93bf59586b2acbcda4de7bcaa08d7942ebf45c0147a",
+      "matched": true
+    },
+    {
+      "path": "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+      "expected": "e72f2b81970be76734df918e35b1a4289d0fb194039e5ca20e9785e5ac0ee015",
+      "actual": "e72f2b81970be76734df918e35b1a4289d0fb194039e5ca20e9785e5ac0ee015",
+      "matched": true
+    },
+    {
+      "path": "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate_native.c",
+      "expected": "1ff233edacdbf13c6ffd4a8bf38cbf153629e8c76be4860deec8a5b591d3fa8b",
+      "actual": "1ff233edacdbf13c6ffd4a8bf38cbf153629e8c76be4860deec8a5b591d3fa8b",
+      "matched": true
+    }
+  ],
+  "sourceOwnerMetadata": {
+    "metadata": {
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/checker-core-steps-v1.json",
+      "sha256": "cd973ad57134f08587515330c65e44a9fb864f41470a4edf32e5c8f48fb767d6"
+    },
+    "metadataGeneratedOutputSha256": "e4c1197d63129394551d5643ef2934be84af82eaeacfa3da1e4e660c6ff603a4",
+    "actualSelfStage2Report": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json",
+      "sha256": "32b9d93cf4de5a8918b61dc9ae21ef2232beb27879b6629ec26f981626da248f"
+    },
+    "actualSelfStage2Request": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2-request.json",
+      "sha256": "adcfb651972fa148392fc438f9c63ec6c1bec1dde9cba4d48c115d9c7de96c28"
+    },
+    "inputCheckerPath": "/Users/ilyagulya/Projects/My/bend/checkpoints/checker_core_steps_v1.bend",
+    "actualCompilerInputSha256": "e4c1197d63129394551d5643ef2934be84af82eaeacfa3da1e4e660c6ff603a4",
+    "image": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs",
+      "sha256": "4636c05aa8c75e72212cb03949937e25561942bc00da250f876f37f001b9fc18"
+    },
+    "allOutputAndInputHashesEqual": true,
+    "scope": "Generatedhelperownertableboundbyexactemittedchecker-sourcehashtotheactualAself-stage2requestandoutput; not claiming metadata produced inside A build or source-line ownership."
+  },
+  "compilerSourceOrDefaultHelperCutover": false
+}

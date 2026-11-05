@@ -1,0 +1,1853 @@
+{
+  "kind": "HASH_BOUND_GENERATOR_SOURCE_DEFINITION_CPU_OWNER_JOIN",
+  "binding": {
+    "metadata": {
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/checker-core-steps-v1.json",
+      "sha256": "cd973ad57134f08587515330c65e44a9fb864f41470a4edf32e5c8f48fb767d6"
+    },
+    "metadataGeneratedOutputSha256": "e4c1197d63129394551d5643ef2934be84af82eaeacfa3da1e4e660c6ff603a4",
+    "actualSelfStage2Report": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json",
+      "sha256": "32b9d93cf4de5a8918b61dc9ae21ef2232beb27879b6629ec26f981626da248f"
+    },
+    "actualSelfStage2Request": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2-request.json",
+      "sha256": "adcfb651972fa148392fc438f9c63ec6c1bec1dde9cba4d48c115d9c7de96c28"
+    },
+    "inputCheckerPath": "/Users/ilyagulya/Projects/My/bend/checkpoints/checker_core_steps_v1.bend",
+    "actualCompilerInputSha256": "e4c1197d63129394551d5643ef2934be84af82eaeacfa3da1e4e660c6ff603a4",
+    "image": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs",
+      "sha256": "4636c05aa8c75e72212cb03949937e25561942bc00da250f876f37f001b9fc18"
+    },
+    "allOutputAndInputHashesEqual": true,
+    "scope": "Generatedhelperownertableboundbyexactemittedchecker-sourcehashtotheactualAself-stage2requestandoutput; not claiming metadata produced inside A build or source-line ownership."
+  },
+  "nativeMatchNormalizationOwnerMapUsed": true,
+  "sourceDefinitionMappedShare": 0.39782539667864264,
+  "arenaPrefixedCheckerSourceDefinitionSelfShare": 0.16526501517188324,
+  "arenaPhysicalModuleSelfShare": 0.06403644950194433,
+  "scope": "Disjointrowownersidentifywhosebodyexecutes,notwhycalled. Arena wrappers and physical module are separate code but not automatically all removable cost. NamingprefixgroupsarenotcompleteNF/equalitysemanticattribution. Unmappedsourceownersremainexplicit.",
+  "topSourceDefinitions": [
+    {
+      "owner": "arena_get_node",
+      "exclusiveSampledMs": 1798.793999999998,
+      "exclusiveShare": 0.02660923108784528,
+      "functionCount": 233,
+      "normalizedDefinitionAliases": [
+        "arena_get_node"
+      ]
+    },
+    {
+      "owner": "arena_words_view",
+      "exclusiveSampledMs": 1118.8779999999995,
+      "exclusiveShare": 0.016551357888177368,
+      "functionCount": 274,
+      "normalizedDefinitionAliases": [
+        "arena_words_view"
+      ]
+    },
+    {
+      "owner": "arena_get_word_region",
+      "exclusiveSampledMs": 553.048,
+      "exclusiveShare": 0.00818113804842059,
+      "functionCount": 3,
+      "normalizedDefinitionAliases": [
+        "arena_get_word_region"
+      ]
+    },
+    {
+      "owner": "whnf",
+      "exclusiveSampledMs": 534.1680000000001,
+      "exclusiveShare": 0.007901849656899093,
+      "functionCount": 19,
+      "normalizedDefinitionAliases": [
+        "whnf"
+      ]
+    },
+    {
+      "owner": "arena_name_text",
+      "exclusiveSampledMs": 463.3000000000002,
+      "exclusiveShare": 0.006853512277113849,
+      "functionCount": 84,
+      "normalizedDefinitionAliases": [
+        "arena_name_text"
+      ]
+    },
+    {
+      "owner": "arena_names_view",
+      "exclusiveSampledMs": 358.882,
+      "exclusiveShare": 0.005308875875318739,
+      "functionCount": 47,
+      "normalizedDefinitionAliases": [
+        "arena_names_view"
+      ]
+    },
+    {
+      "owner": "arena_get_node_region",
+      "exclusiveSampledMs": 295.703,
+      "exclusiveShare": 0.004374280468118705,
+      "functionCount": 3,
+      "normalizedDefinitionAliases": [
+        "arena_get_node_region"
+      ]
+    },
+    {
+      "owner": "resolved_name",
+      "exclusiveSampledMs": 291.8349999999999,
+      "exclusiveShare": 0.004317061850618433,
+      "functionCount": 9,
+      "normalizedDefinitionAliases": [
+        "resolved_name"
+      ]
+    },
+    {
+      "owner": "arena_publish_term_view",
+      "exclusiveSampledMs": 289.82499999999993,
+      "exclusiveShare": 0.004287328287749885,
+      "functionCount": 69,
+      "normalizedDefinitionAliases": [
+        "arena_publish_term_view"
+      ]
+    },
+    {
+      "owner": "arena_get_word",
+      "exclusiveSampledMs": 274.048,
+      "exclusiveShare": 0.004053942008457795,
+      "functionCount": 22,
+      "normalizedDefinitionAliases": [
+        "arena_get_word"
+      ]
+    },
+    {
+      "owner": "core_subst_at",
+      "exclusiveSampledMs": 269.75699999999995,
+      "exclusiveShare": 0.003990466029219512,
+      "functionCount": 4,
+      "normalizedDefinitionAliases": [
+        "core_subst_at"
+      ]
+    },
+    {
+      "owner": "arena_node_bound",
+      "exclusiveSampledMs": 255.20500000000004,
+      "exclusiveShare": 0.0037752009511781556,
+      "functionCount": 6,
+      "normalizedDefinitionAliases": [
+        "arena_node_bound"
+      ]
+    },
+    {
+      "owner": "core_subst_open",
+      "exclusiveSampledMs": 253.25900000000001,
+      "exclusiveShare": 0.003746414128619848,
+      "functionCount": 43,
+      "normalizedDefinitionAliases": [
+        "core_subst_open"
+      ]
+    },
+    {
+      "owner": "infer_raw",
+      "exclusiveSampledMs": 253.249,
+      "exclusiveShare": 0.003746266200446372,
+      "functionCount": 37,
+      "normalizedDefinitionAliases": [
+        "infer_raw"
+      ]
+    },
+    {
+      "owner": "arena_get_pattern",
+      "exclusiveSampledMs": 253.209,
+      "exclusiveShare": 0.003745674487752471,
+      "functionCount": 56,
+      "normalizedDefinitionAliases": [
+        "arena_get_pattern"
+      ]
+    },
+    {
+      "owner": "materialize_node",
+      "exclusiveSampledMs": 231.957,
+      "exclusiveShare": 0.0034312975334826177,
+      "functionCount": 37,
+      "normalizedDefinitionAliases": [
+        "materialize_node"
+      ]
+    },
+    {
+      "owner": "canonicalize_term",
+      "exclusiveSampledMs": 224.916,
+      "exclusiveShare": 0.0033271413065386083,
+      "functionCount": 69,
+      "normalizedDefinitionAliases": [
+        "canonicalize_term"
+      ]
+    },
+    {
+      "owner": "term_usage_map",
+      "exclusiveSampledMs": 224.16099999999997,
+      "exclusiveShare": 0.0033159727294412187,
+      "functionCount": 36,
+      "normalizedDefinitionAliases": [
+        "term_usage_map"
+      ]
+    },
+    {
+      "owner": "arena_copy_word_range",
+      "exclusiveSampledMs": 213.333,
+      "exclusiveShare": 0.0031557961032020903,
+      "functionCount": 4,
+      "normalizedDefinitionAliases": [
+        "arena_copy_word_range"
+      ]
+    },
+    {
+      "owner": "check_term_raw",
+      "exclusiveSampledMs": 204.49699999999999,
+      "exclusiveShare": 0.0030250867691192533,
+      "functionCount": 29,
+      "normalizedDefinitionAliases": [
+        "check_term_raw"
+      ]
+    },
+    {
+      "owner": "arena_bound_node",
+      "exclusiveSampledMs": 204.294,
+      "exclusiveShare": 0.0030220838271977045,
+      "functionCount": 18,
+      "normalizedDefinitionAliases": [
+        "arena_bound_node"
+      ]
+    },
+    {
+      "owner": "global_index_insert",
+      "exclusiveSampledMs": 198.882,
+      "exclusiveShare": 0.002942025099712834,
+      "functionCount": 11,
+      "normalizedDefinitionAliases": [
+        "global_index_insert"
+      ]
+    },
+    {
+      "owner": "arena_bound_range_loop",
+      "exclusiveSampledMs": 180.957,
+      "exclusiveShare": 0.0026768638487582354,
+      "functionCount": 4,
+      "normalizedDefinitionAliases": [
+        "arena_bound_range_loop"
+      ]
+    },
+    {
+      "owner": "global_index_prepend",
+      "exclusiveSampledMs": 173.00300000000001,
+      "exclusiveShare": 0.002559201779575927,
+      "functionCount": 11,
+      "normalizedDefinitionAliases": [
+        "global_index_prepend"
+      ]
+    },
+    {
+      "owner": "arena_publish_occurrence",
+      "exclusiveSampledMs": 172.61999999999998,
+      "exclusiveShare": 0.0025535361305318188,
+      "functionCount": 42,
+      "normalizedDefinitionAliases": [
+        "arena_publish_occurrence"
+      ]
+    },
+    {
+      "owner": "arena_put_node_bound",
+      "exclusiveSampledMs": 169.166,
+      "exclusiveShare": 0.002502441739413428,
+      "functionCount": 3,
+      "normalizedDefinitionAliases": [
+        "arena_put_node_bound"
+      ]
+    },
+    {
+      "owner": "equal_raw_ordinary",
+      "exclusiveSampledMs": 166.749,
+      "exclusiveShare": 0.002466687499884431,
+      "functionCount": 31,
+      "normalizedDefinitionAliases": [
+        "equal_raw_ordinary"
+      ]
+    },
+    {
+      "owner": "arena_bound_range_start",
+      "exclusiveSampledMs": 160.99499999999998,
+      "exclusiveShare": 0.002381569628866704,
+      "functionCount": 7,
+      "normalizedDefinitionAliases": [
+        "arena_bound_range_start"
+      ]
+    },
+    {
+      "owner": "scope_index_name_aliases",
+      "exclusiveSampledMs": 159.993,
+      "exclusiveShare": 0.002366747225884472,
+      "functionCount": 2,
+      "normalizedDefinitionAliases": [
+        "scope_index_name_aliases"
+      ]
+    },
+    {
+      "owner": "arena_words_prepend_count",
+      "exclusiveSampledMs": 148.501,
+      "exclusiveShare": 0.0021967481689265777,
+      "functionCount": 3,
+      "normalizedDefinitionAliases": [
+        "arena_words_prepend_count"
+      ]
+    },
+    {
+      "owner": "arena_names_prepend_count",
+      "exclusiveSampledMs": 143.828,
+      "exclusiveShare": 0.0021276213334615376,
+      "functionCount": 2,
+      "normalizedDefinitionAliases": [
+        "arena_names_prepend_count"
+      ]
+    },
+    {
+      "owner": "check_body_pattern_vector",
+      "exclusiveSampledMs": 142.91099999999997,
+      "exclusiveShare": 0.0021140563199538464,
+      "functionCount": 33,
+      "normalizedDefinitionAliases": [
+        "check_body_pattern_vector"
+      ]
+    },
+    {
+      "owner": "check_pattern_typed",
+      "exclusiveSampledMs": 142.159,
+      "exclusiveShare": 0.002102932121308499,
+      "functionCount": 14,
+      "normalizedDefinitionAliases": [
+        "check_pattern_typed"
+      ]
+    },
+    {
+      "owner": "check_pattern_fields_view",
+      "exclusiveSampledMs": 138.916,
+      "exclusiveShare": 0.0020549590146504365,
+      "functionCount": 12,
+      "normalizedDefinitionAliases": [
+        "check_pattern_fields_view"
+      ]
+    },
+    {
+      "owner": "arena_put_word",
+      "exclusiveSampledMs": 137.667,
+      "exclusiveShare": 0.002036482785783363,
+      "functionCount": 5,
+      "normalizedDefinitionAliases": [
+        "arena_put_word"
+      ]
+    }
+  ],
+  "arenaSourceDefinitions": [
+    {
+      "owner": "arena_get_node",
+      "exclusiveSampledMs": 1798.793999999998,
+      "exclusiveShare": 0.02660923108784528,
+      "functionCount": 233,
+      "normalizedDefinitionAliases": [
+        "arena_get_node"
+      ]
+    },
+    {
+      "owner": "arena_words_view",
+      "exclusiveSampledMs": 1118.8779999999995,
+      "exclusiveShare": 0.016551357888177368,
+      "functionCount": 274,
+      "normalizedDefinitionAliases": [
+        "arena_words_view"
+      ]
+    },
+    {
+      "owner": "arena_get_word_region",
+      "exclusiveSampledMs": 553.048,
+      "exclusiveShare": 0.00818113804842059,
+      "functionCount": 3,
+      "normalizedDefinitionAliases": [
+        "arena_get_word_region"
+      ]
+    },
+    {
+      "owner": "arena_name_text",
+      "exclusiveSampledMs": 463.3000000000002,
+      "exclusiveShare": 0.006853512277113849,
+      "functionCount": 84,
+      "normalizedDefinitionAliases": [
+        "arena_name_text"
+      ]
+    },
+    {
+      "owner": "arena_names_view",
+      "exclusiveSampledMs": 358.882,
+      "exclusiveShare": 0.005308875875318739,
+      "functionCount": 47,
+      "normalizedDefinitionAliases": [
+        "arena_names_view"
+      ]
+    },
+    {
+      "owner": "arena_get_node_region",
+      "exclusiveSampledMs": 295.703,
+      "exclusiveShare": 0.004374280468118705,
+      "functionCount": 3,
+      "normalizedDefinitionAliases": [
+        "arena_get_node_region"
+      ]
+    },
+    {
+      "owner": "arena_publish_term_view",
+      "exclusiveSampledMs": 289.82499999999993,
+      "exclusiveShare": 0.004287328287749885,
+      "functionCount": 69,
+      "normalizedDefinitionAliases": [
+        "arena_publish_term_view"
+      ]
+    },
+    {
+      "owner": "arena_get_word",
+      "exclusiveSampledMs": 274.048,
+      "exclusiveShare": 0.004053942008457795,
+      "functionCount": 22,
+      "normalizedDefinitionAliases": [
+        "arena_get_word"
+      ]
+    },
+    {
+      "owner": "arena_node_bound",
+      "exclusiveSampledMs": 255.20500000000004,
+      "exclusiveShare": 0.0037752009511781556,
+      "functionCount": 6,
+      "normalizedDefinitionAliases": [
+        "arena_node_bound"
+      ]
+    },
+    {
+      "owner": "arena_get_pattern",
+      "exclusiveSampledMs": 253.209,
+      "exclusiveShare": 0.003745674487752471,
+      "functionCount": 56,
+      "normalizedDefinitionAliases": [
+        "arena_get_pattern"
+      ]
+    },
+    {
+      "owner": "arena_copy_word_range",
+      "exclusiveSampledMs": 213.333,
+      "exclusiveShare": 0.0031557961032020903,
+      "functionCount": 4,
+      "normalizedDefinitionAliases": [
+        "arena_copy_word_range"
+      ]
+    },
+    {
+      "owner": "arena_bound_node",
+      "exclusiveSampledMs": 204.294,
+      "exclusiveShare": 0.0030220838271977045,
+      "functionCount": 18,
+      "normalizedDefinitionAliases": [
+        "arena_bound_node"
+      ]
+    },
+    {
+      "owner": "arena_bound_range_loop",
+      "exclusiveSampledMs": 180.957,
+      "exclusiveShare": 0.0026768638487582354,
+      "functionCount": 4,
+      "normalizedDefinitionAliases": [
+        "arena_bound_range_loop"
+      ]
+    },
+    {
+      "owner": "arena_publish_occurrence",
+      "exclusiveSampledMs": 172.61999999999998,
+      "exclusiveShare": 0.0025535361305318188,
+      "functionCount": 42,
+      "normalizedDefinitionAliases": [
+        "arena_publish_occurrence"
+      ]
+    },
+    {
+      "owner": "arena_put_node_bound",
+      "exclusiveSampledMs": 169.166,
+      "exclusiveShare": 0.002502441739413428,
+      "functionCount": 3,
+      "normalizedDefinitionAliases": [
+        "arena_put_node_bound"
+      ]
+    },
+    {
+      "owner": "arena_bound_range_start",
+      "exclusiveSampledMs": 160.99499999999998,
+      "exclusiveShare": 0.002381569628866704,
+      "functionCount": 7,
+      "normalizedDefinitionAliases": [
+        "arena_bound_range_start"
+      ]
+    },
+    {
+      "owner": "arena_words_prepend_count",
+      "exclusiveSampledMs": 148.501,
+      "exclusiveShare": 0.0021967481689265777,
+      "functionCount": 3,
+      "normalizedDefinitionAliases": [
+        "arena_words_prepend_count"
+      ]
+    },
+    {
+      "owner": "arena_names_prepend_count",
+      "exclusiveSampledMs": 143.828,
+      "exclusiveShare": 0.0021276213334615376,
+      "functionCount": 2,
+      "normalizedDefinitionAliases": [
+        "arena_names_prepend_count"
+      ]
+    },
+    {
+      "owner": "arena_put_word",
+      "exclusiveSampledMs": 137.667,
+      "exclusiveShare": 0.002036482785783363,
+      "functionCount": 5,
+      "normalizedDefinitionAliases": [
+        "arena_put_word"
+      ]
+    },
+    {
+      "owner": "arena_names_append",
+      "exclusiveSampledMs": 136.707,
+      "exclusiveShare": 0.0020222816811297276,
+      "functionCount": 4,
+      "normalizedDefinitionAliases": [
+        "arena_names_append"
+      ]
+    },
+    {
+      "owner": "arena_name",
+      "exclusiveSampledMs": 131.038,
+      "exclusiveShare": 0.001938421199586541,
+      "functionCount": 24,
+      "normalizedDefinitionAliases": [
+        "arena_name"
+      ]
+    },
+    {
+      "owner": "arena_bound_read_region",
+      "exclusiveSampledMs": 127.87899999999999,
+      "exclusiveShare": 0.0018916906895856717,
+      "functionCount": 3,
+      "normalizedDefinitionAliases": [
+        "arena_bound_read_region"
+      ]
+    },
+    {
+      "owner": "arena_put_node",
+      "exclusiveSampledMs": 119.496,
+      "exclusiveShare": 0.00176768250176127,
+      "functionCount": 2,
+      "normalizedDefinitionAliases": [
+        "arena_put_node"
+      ]
+    },
+    {
+      "owner": "arena_publish_names_copy",
+      "exclusiveSampledMs": 118.33099999999999,
+      "exclusiveShare": 0.0017504488695513892,
+      "functionCount": 5,
+      "normalizedDefinitionAliases": [
+        "arena_publish_names_copy"
+      ]
+    },
+    {
+      "owner": "arena_bound_terms",
+      "exclusiveSampledMs": 116.79299999999999,
+      "exclusiveShare": 0.0017276975164708774,
+      "functionCount": 4,
+      "normalizedDefinitionAliases": [
+        "arena_bound_terms"
+      ]
+    },
+    {
+      "owner": "arena_words_append",
+      "exclusiveSampledMs": 109.673,
+      "exclusiveShare": 0.0016223726569564148,
+      "functionCount": 3,
+      "normalizedDefinitionAliases": [
+        "arena_words_append"
+      ]
+    },
+    {
+      "owner": "arena_constructor_owner",
+      "exclusiveSampledMs": 105.58500000000001,
+      "exclusiveShare": 0.001561899619639684,
+      "functionCount": 3,
+      "normalizedDefinitionAliases": [
+        "arena_constructor_owner"
+      ]
+    },
+    {
+      "owner": "arena_set_word",
+      "exclusiveSampledMs": 104.336,
+      "exclusiveShare": 0.0015434233907726104,
+      "functionCount": 2,
+      "normalizedDefinitionAliases": [
+        "arena_set_word"
+      ]
+    },
+    {
+      "owner": "arena_set_word_region",
+      "exclusiveSampledMs": 99.459,
+      "exclusiveShare": 0.0014712788205686728,
+      "functionCount": 3,
+      "normalizedDefinitionAliases": [
+        "arena_set_word_region"
+      ]
+    },
+    {
+      "owner": "arena_bound_range_region",
+      "exclusiveSampledMs": 95.63100000000001,
+      "exclusiveShare": 0.001414651915762302,
+      "functionCount": 8,
+      "normalizedDefinitionAliases": [
+        "arena_bound_range_region"
+      ]
+    },
+    {
+      "owner": "arena_publish_term",
+      "exclusiveSampledMs": 88.41199999999999,
+      "exclusiveShare": 0.0013078625673304325,
+      "functionCount": 4,
+      "normalizedDefinitionAliases": [
+        "arena_publish_term"
+      ]
+    },
+    {
+      "owner": "arena_bound_range_transient",
+      "exclusiveSampledMs": 88.333,
+      "exclusiveShare": 0.0013066939347599774,
+      "functionCount": 4,
+      "normalizedDefinitionAliases": [
+        "arena_bound_range_transient"
+      ]
+    },
+    {
+      "owner": "arena_words_view_nonempty",
+      "exclusiveSampledMs": 85.622,
+      "exclusiveShare": 0.0012665906069308046,
+      "functionCount": 4,
+      "normalizedDefinitionAliases": [
+        "arena_words_view_nonempty"
+      ]
+    },
+    {
+      "owner": "arena_bound_range",
+      "exclusiveSampledMs": 81.001,
+      "exclusiveShare": 0.0011982329979678367,
+      "functionCount": 4,
+      "normalizedDefinitionAliases": [
+        "arena_bound_range"
+      ]
+    },
+    {
+      "owner": "arena_bound_range_length",
+      "exclusiveSampledMs": 77.99799999999999,
+      "exclusiveShare": 0.0011538101674731832,
+      "functionCount": 3,
+      "normalizedDefinitionAliases": [
+        "arena_bound_range_length"
+      ]
+    },
+    {
+      "owner": "arena_names_cons",
+      "exclusiveSampledMs": 76.999,
+      "exclusiveShare": 0.0011390321429429941,
+      "functionCount": 3,
+      "normalizedDefinitionAliases": [
+        "arena_names_cons"
+      ]
+    },
+    {
+      "owner": "arena_get_binder",
+      "exclusiveSampledMs": 74.003,
+      "exclusiveShare": 0.0010947128621697738,
+      "functionCount": 29,
+      "normalizedDefinitionAliases": [
+        "arena_get_binder"
+      ]
+    },
+    {
+      "owner": "arena_bound_range_empty",
+      "exclusiveSampledMs": 72.042,
+      "exclusiveShare": 0.0010657041473512536,
+      "functionCount": 2,
+      "normalizedDefinitionAliases": [
+        "arena_bound_range_empty"
+      ]
+    },
+    {
+      "owner": "arena_constructor_owner_view",
+      "exclusiveSampledMs": 71.704,
+      "exclusiveShare": 0.001060704175087786,
+      "functionCount": 1,
+      "normalizedDefinitionAliases": [
+        "arena_constructor_owner_view"
+      ]
+    },
+    {
+      "owner": "arena_names_append_copy",
+      "exclusiveSampledMs": 70.50399999999999,
+      "exclusiveShare": 0.001042952794270742,
+      "functionCount": 8,
+      "normalizedDefinitionAliases": [
+        "arena_names_append_copy"
+      ]
+    },
+    {
+      "owner": "arena_subst_memo_lookup_result",
+      "exclusiveSampledMs": 70.334,
+      "exclusiveShare": 0.0010404380153216605,
+      "functionCount": 2,
+      "normalizedDefinitionAliases": [
+        "arena_subst_memo_lookup_result"
+      ]
+    },
+    {
+      "owner": "arena_subst_memo_lookup",
+      "exclusiveSampledMs": 64.836,
+      "exclusiveShare": 0.0009591071055449027,
+      "functionCount": 2,
+      "normalizedDefinitionAliases": [
+        "arena_subst_memo_lookup"
+      ]
+    },
+    {
+      "owner": "arena_pack_term",
+      "exclusiveSampledMs": 61.41499999999999,
+      "exclusiveShare": 0.0009085008773989789,
+      "functionCount": 26,
+      "normalizedDefinitionAliases": [
+        "arena_pack_term"
+      ]
+    },
+    {
+      "owner": "arena_bound_range_word",
+      "exclusiveSampledMs": 61.209999999999994,
+      "exclusiveShare": 0.0009054683498427339,
+      "functionCount": 6,
+      "normalizedDefinitionAliases": [
+        "arena_bound_range_word"
+      ]
+    },
+    {
+      "owner": "arena_publish_names",
+      "exclusiveSampledMs": 60.089,
+      "exclusiveShare": 0.0008888856015961449,
+      "functionCount": 4,
+      "normalizedDefinitionAliases": [
+        "arena_publish_names"
+      ]
+    },
+    {
+      "owner": "arena_bound_range_combine",
+      "exclusiveSampledMs": 57.839,
+      "exclusiveShare": 0.000855601762564187,
+      "functionCount": 3,
+      "normalizedDefinitionAliases": [
+        "arena_bound_range_combine"
+      ]
+    },
+    {
+      "owner": "arena_subst_memo_entry",
+      "exclusiveSampledMs": 56.833,
+      "exclusiveShare": 0.0008407201883125649,
+      "functionCount": 2,
+      "normalizedDefinitionAliases": [
+        "arena_subst_memo_entry"
+      ]
+    },
+    {
+      "owner": "arena_words_cons",
+      "exclusiveSampledMs": 56.622,
+      "exclusiveShare": 0.0008375989038522345,
+      "functionCount": 1,
+      "normalizedDefinitionAliases": [
+        "arena_words_cons"
+      ]
+    },
+    {
+      "owner": "arena_publish_checked_pattern",
+      "exclusiveSampledMs": 54.748000000000005,
+      "exclusiveShare": 0.0008098771641429503,
+      "functionCount": 15,
+      "normalizedDefinitionAliases": [
+        "arena_publish_checked_pattern"
+      ]
+    },
+    {
+      "owner": "arena_names_prepend_copy",
+      "exclusiveSampledMs": 54.584,
+      "exclusiveShare": 0.0008074511420979543,
+      "functionCount": 6,
+      "normalizedDefinitionAliases": [
+        "arena_names_prepend_copy"
+      ]
+    },
+    {
+      "owner": "arena_word_cursor",
+      "exclusiveSampledMs": 50.748999999999995,
+      "exclusiveShare": 0.0007507206875701503,
+      "functionCount": 4,
+      "normalizedDefinitionAliases": [
+        "arena_word_cursor"
+      ]
+    },
+    {
+      "owner": "arena_publish_terms_copy",
+      "exclusiveSampledMs": 50.251000000000005,
+      "exclusiveShare": 0.0007433538645310768,
+      "functionCount": 6,
+      "normalizedDefinitionAliases": [
+        "arena_publish_terms_copy"
+      ]
+    },
+    {
+      "owner": "arena_bound_two",
+      "exclusiveSampledMs": 39.998999999999995,
+      "exclusiveShare": 0.0005916979010841286,
+      "functionCount": 2,
+      "normalizedDefinitionAliases": [
+        "arena_bound_two"
+      ]
+    },
+    {
+      "owner": "arena_publish_checked_bindings",
+      "exclusiveSampledMs": 39.668000000000006,
+      "exclusiveShare": 0.0005868014785420938,
+      "functionCount": 6,
+      "normalizedDefinitionAliases": [
+        "arena_publish_checked_bindings"
+      ]
+    },
+    {
+      "owner": "arena_publication_uncached",
+      "exclusiveSampledMs": 39.167,
+      "exclusiveShare": 0.0005793902770509778,
+      "functionCount": 4,
+      "normalizedDefinitionAliases": [
+        "arena_publication_uncached"
+      ]
+    },
+    {
+      "owner": "arena_publish_names_select",
+      "exclusiveSampledMs": 39.043000000000006,
+      "exclusiveShare": 0.0005775559676998833,
+      "functionCount": 6,
+      "normalizedDefinitionAliases": [
+        "arena_publish_names_select"
+      ]
+    },
+    {
+      "owner": "arena_bound_range_source",
+      "exclusiveSampledMs": 38.751,
+      "exclusiveShare": 0.0005732364650344026,
+      "functionCount": 5,
+      "normalizedDefinitionAliases": [
+        "arena_bound_range_source"
+      ]
+    },
+    {
+      "owner": "arena_publish_occurrences",
+      "exclusiveSampledMs": 36.586999999999996,
+      "exclusiveShare": 0.0005412248082943327,
+      "functionCount": 5,
+      "normalizedDefinitionAliases": [
+        "arena_publish_occurrences"
+      ]
+    },
+    {
+      "owner": "arena_publish_terms",
+      "exclusiveSampledMs": 32.333999999999996,
+      "exclusiveShare": 0.0004783109561152582,
+      "functionCount": 3,
+      "normalizedDefinitionAliases": [
+        "arena_publish_terms"
+      ]
+    },
+    {
+      "owner": "arena_case_prefix_index",
+      "exclusiveSampledMs": 31.708,
+      "exclusiveShare": 0.0004690506524557002,
+      "functionCount": 4,
+      "normalizedDefinitionAliases": [
+        "arena_case_prefix_index"
+      ]
+    },
+    {
+      "owner": "arena_get_pattern_region",
+      "exclusiveSampledMs": 30.875,
+      "exclusiveShare": 0.0004567282356052019,
+      "functionCount": 3,
+      "normalizedDefinitionAliases": [
+        "arena_get_pattern_region"
+      ]
+    },
+    {
+      "owner": "arena_publish_terms_select",
+      "exclusiveSampledMs": 29.959,
+      "exclusiveShare": 0.0004431780149148581,
+      "functionCount": 5,
+      "normalizedDefinitionAliases": [
+        "arena_publish_terms_select"
+      ]
+    },
+    {
+      "owner": "arena_publish_global",
+      "exclusiveSampledMs": 29.372000000000003,
+      "exclusiveShare": 0.0004344946311318539,
+      "functionCount": 7,
+      "normalizedDefinitionAliases": [
+        "arena_publish_global"
+      ]
+    },
+    {
+      "owner": "arena_bound_range_then",
+      "exclusiveSampledMs": 26.668,
+      "exclusiveShare": 0.00039449485302411413,
+      "functionCount": 3,
+      "normalizedDefinitionAliases": [
+        "arena_bound_range_then"
+      ]
+    },
+    {
+      "owner": "arena_words_reverse",
+      "exclusiveSampledMs": 26.584,
+      "exclusiveShare": 0.00039325225636692104,
+      "functionCount": 4,
+      "normalizedDefinitionAliases": [
+        "arena_words_reverse"
+      ]
+    },
+    {
+      "owner": "arena_words_append_copy",
+      "exclusiveSampledMs": 24.415000000000003,
+      "exclusiveShare": 0.0003611666355401135,
+      "functionCount": 4,
+      "normalizedDefinitionAliases": [
+        "arena_words_append_copy"
+      ]
+    },
+    {
+      "owner": "arena_words_length",
+      "exclusiveSampledMs": 24.332,
+      "exclusiveShare": 0.0003599388317002679,
+      "functionCount": 2,
+      "normalizedDefinitionAliases": [
+        "arena_words_length"
+      ]
+    },
+    {
+      "owner": "arena_publish_optional_term",
+      "exclusiveSampledMs": 24.087,
+      "exclusiveShare": 0.00035631459145012135,
+      "functionCount": 5,
+      "normalizedDefinitionAliases": [
+        "arena_publish_optional_term"
+      ]
+    },
+    {
+      "owner": "arena_publish_checked_patterns",
+      "exclusiveSampledMs": 23.708,
+      "exclusiveShare": 0.00035070811367540495,
+      "functionCount": 6,
+      "normalizedDefinitionAliases": [
+        "arena_publish_checked_patterns"
+      ]
+    },
+    {
+      "owner": "arena_publish_checked_binding",
+      "exclusiveSampledMs": 23.412999999999997,
+      "exclusiveShare": 0.0003463442325578815,
+      "functionCount": 4,
+      "normalizedDefinitionAliases": [
+        "arena_publish_checked_binding"
+      ]
+    },
+    {
+      "owner": "arena_bound_pattern",
+      "exclusiveSampledMs": 23.375,
+      "exclusiveShare": 0.0003457821054986751,
+      "functionCount": 3,
+      "normalizedDefinitionAliases": [
+        "arena_bound_pattern"
+      ]
+    },
+    {
+      "owner": "arena_publish_term_region",
+      "exclusiveSampledMs": 23.124,
+      "exclusiveShare": 0.00034206910834444336,
+      "functionCount": 3,
+      "normalizedDefinitionAliases": [
+        "arena_publish_term_region"
+      ]
+    },
+    {
+      "owner": "arena_put_source_node",
+      "exclusiveSampledMs": 23.042,
+      "exclusiveShare": 0.0003408560973219453,
+      "functionCount": 2,
+      "normalizedDefinitionAliases": [
+        "arena_put_source_node"
+      ]
+    },
+    {
+      "owner": "arena_publish_pattern",
+      "exclusiveSampledMs": 22.415999999999997,
+      "exclusiveShare": 0.00033159579366238723,
+      "functionCount": 3,
+      "normalizedDefinitionAliases": [
+        "arena_publish_pattern"
+      ]
+    },
+    {
+      "owner": "arena_put_pattern",
+      "exclusiveSampledMs": 21.624000000000002,
+      "exclusiveShare": 0.000319879882323138,
+      "functionCount": 7,
+      "normalizedDefinitionAliases": [
+        "arena_put_pattern"
+      ]
+    },
+    {
+      "owner": "arena_publish_pattern_view",
+      "exclusiveSampledMs": 21.125,
+      "exclusiveShare": 0.00031249826646671705,
+      "functionCount": 8,
+      "normalizedDefinitionAliases": [
+        "arena_publish_pattern_view"
+      ]
+    },
+    {
+      "owner": "arena_publish_definition",
+      "exclusiveSampledMs": 20.165999999999997,
+      "exclusiveShare": 0.0002983119546304292,
+      "functionCount": 10,
+      "normalizedDefinitionAliases": [
+        "arena_publish_definition"
+      ]
+    },
+    {
+      "owner": "arena_publication_save",
+      "exclusiveSampledMs": 19.002,
+      "exclusiveShare": 0.0002810931152378962,
+      "functionCount": 2,
+      "normalizedDefinitionAliases": [
+        "arena_publication_save"
+      ]
+    },
+    {
+      "owner": "arena_publish_def_body",
+      "exclusiveSampledMs": 18.252,
+      "exclusiveShare": 0.00026999850222724354,
+      "functionCount": 5,
+      "normalizedDefinitionAliases": [
+        "arena_publish_def_body"
+      ]
+    },
+    {
+      "owner": "arena_publish_patterns",
+      "exclusiveSampledMs": 17.957,
+      "exclusiveShare": 0.00026563462110972013,
+      "functionCount": 2,
+      "normalizedDefinitionAliases": [
+        "arena_publish_patterns"
+      ]
+    },
+    {
+      "owner": "arena_reserve_words",
+      "exclusiveSampledMs": 16.539,
+      "exclusiveShare": 0.00024465840611091283,
+      "functionCount": 2,
+      "normalizedDefinitionAliases": [
+        "arena_reserve_words"
+      ]
+    },
+    {
+      "owner": "arena_publish_symbol",
+      "exclusiveSampledMs": 16.502000000000002,
+      "exclusiveShare": 0.00024411107186905398,
+      "functionCount": 4,
+      "normalizedDefinitionAliases": [
+        "arena_publish_symbol"
+      ]
+    },
+    {
+      "owner": "arena_bound_merge",
+      "exclusiveSampledMs": 15.914,
+      "exclusiveShare": 0.00023541289526870227,
+      "functionCount": 3,
+      "normalizedDefinitionAliases": [
+        "arena_bound_merge"
+      ]
+    },
+    {
+      "owner": "arena_bound_binder",
+      "exclusiveSampledMs": 15.0,
+      "exclusiveShare": 0.00022189226021305353,
+      "functionCount": 3,
+      "normalizedDefinitionAliases": [
+        "arena_bound_binder"
+      ]
+    },
+    {
+      "owner": "arena_publish_optional_symbol",
+      "exclusiveSampledMs": 14.915000000000001,
+      "exclusiveShare": 0.0002206348707385129,
+      "functionCount": 4,
+      "normalizedDefinitionAliases": [
+        "arena_publish_optional_symbol"
+      ]
+    },
+    {
+      "owner": "arena_reserve_source_words",
+      "exclusiveSampledMs": 13.916,
+      "exclusiveShare": 0.00020585684620832355,
+      "functionCount": 2,
+      "normalizedDefinitionAliases": [
+        "arena_reserve_source_words"
+      ]
+    },
+    {
+      "owner": "arena_publish_binders",
+      "exclusiveSampledMs": 13.75,
+      "exclusiveShare": 0.00020340123852863242,
+      "functionCount": 3,
+      "normalizedDefinitionAliases": [
+        "arena_publish_binders"
+      ]
+    },
+    {
+      "owner": "arena_names_view_nonempty",
+      "exclusiveSampledMs": 13.292,
+      "exclusiveShare": 0.00019662612818346052,
+      "functionCount": 5,
+      "normalizedDefinitionAliases": [
+        "arena_names_view_nonempty"
+      ]
+    },
+    {
+      "owner": "arena_quantities_cons",
+      "exclusiveSampledMs": 12.001,
+      "exclusiveShare": 0.0001775286009877904,
+      "functionCount": 2,
+      "normalizedDefinitionAliases": [
+        "arena_quantities_cons"
+      ]
+    },
+    {
+      "owner": "arena_bound_pattern_region",
+      "exclusiveSampledMs": 11.875,
+      "exclusiveShare": 0.00017566470600200075,
+      "functionCount": 3,
+      "normalizedDefinitionAliases": [
+        "arena_bound_pattern_region"
+      ]
+    },
+    {
+      "owner": "arena_publish_patterns_select",
+      "exclusiveSampledMs": 11.834,
+      "exclusiveShare": 0.00017505820049075173,
+      "functionCount": 5,
+      "normalizedDefinitionAliases": [
+        "arena_publish_patterns_select"
+      ]
+    },
+    {
+      "owner": "arena_bound_pattern_value",
+      "exclusiveSampledMs": 11.625,
+      "exclusiveShare": 0.0001719665016651165,
+      "functionCount": 2,
+      "normalizedDefinitionAliases": [
+        "arena_bound_pattern_value"
+      ]
+    },
+    {
+      "owner": "arena_pack_terms_at",
+      "exclusiveSampledMs": 11.501000000000001,
+      "exclusiveShare": 0.0001701321923140219,
+      "functionCount": 3,
+      "normalizedDefinitionAliases": [
+        "arena_pack_terms_at"
+      ]
+    },
+    {
+      "owner": "arena_publish_patterns_copy",
+      "exclusiveSampledMs": 11.417,
+      "exclusiveShare": 0.00016888959565682885,
+      "functionCount": 5,
+      "normalizedDefinitionAliases": [
+        "arena_publish_patterns_copy"
+      ]
+    },
+    {
+      "owner": "arena_publication_lookup",
+      "exclusiveSampledMs": 11.334,
+      "exclusiveShare": 0.00016766179181698326,
+      "functionCount": 2,
+      "normalizedDefinitionAliases": [
+        "arena_publication_lookup"
+      ]
+    },
+    {
+      "owner": "arena_pack_terms",
+      "exclusiveSampledMs": 10.918,
+      "exclusiveShare": 0.00016150797980040793,
+      "functionCount": 4,
+      "normalizedDefinitionAliases": [
+        "arena_pack_terms"
+      ]
+    },
+    {
+      "owner": "arena_bound_then",
+      "exclusiveSampledMs": 9.957,
+      "exclusiveShare": 0.00014729208232942495,
+      "functionCount": 1,
+      "normalizedDefinitionAliases": [
+        "arena_bound_then"
+      ]
+    },
+    {
+      "owner": "arena_constructor_trees_loop",
+      "exclusiveSampledMs": 9.457,
+      "exclusiveShare": 0.0001398956736556565,
+      "functionCount": 2,
+      "normalizedDefinitionAliases": [
+        "arena_constructor_trees_loop"
+      ]
+    },
+    {
+      "owner": "arena_bound_pattern_count",
+      "exclusiveSampledMs": 9.042,
+      "exclusiveShare": 0.00013375665445642868,
+      "functionCount": 3,
+      "normalizedDefinitionAliases": [
+        "arena_bound_pattern_count"
+      ]
+    },
+    {
+      "owner": "arena_get_binder_region",
+      "exclusiveSampledMs": 8.791,
+      "exclusiveShare": 0.00013004365730219693,
+      "functionCount": 3,
+      "normalizedDefinitionAliases": [
+        "arena_get_binder_region"
+      ]
+    },
+    {
+      "owner": "arena_publish_top_level",
+      "exclusiveSampledMs": 8.626,
+      "exclusiveShare": 0.00012760284243985333,
+      "functionCount": 3,
+      "normalizedDefinitionAliases": [
+        "arena_publish_top_level"
+      ]
+    },
+    {
+      "owner": "arena_case_prefix_cached",
+      "exclusiveSampledMs": 8.626,
+      "exclusiveShare": 0.00012760284243985333,
+      "functionCount": 4,
+      "normalizedDefinitionAliases": [
+        "arena_case_prefix_cached"
+      ]
+    },
+    {
+      "owner": "arena_bound_pattern_order",
+      "exclusiveSampledMs": 7.666,
+      "exclusiveShare": 0.0001134017377862179,
+      "functionCount": 2,
+      "normalizedDefinitionAliases": [
+        "arena_bound_pattern_order"
+      ]
+    },
+    {
+      "owner": "arena_names_reverse",
+      "exclusiveSampledMs": 7.459,
+      "exclusiveShare": 0.00011033962459527778,
+      "functionCount": 2,
+      "normalizedDefinitionAliases": [
+        "arena_names_reverse"
+      ]
+    },
+    {
+      "owner": "arena_constructor_trees_word",
+      "exclusiveSampledMs": 6.459,
+      "exclusiveShare": 9.554680724774086e-05,
+      "functionCount": 3,
+      "normalizedDefinitionAliases": [
+        "arena_constructor_trees_word"
+      ]
+    },
+    {
+      "owner": "arena_pack_term_name_result_40",
+      "exclusiveSampledMs": 6.25,
+      "exclusiveShare": 9.245510842210564e-05,
+      "functionCount": 3,
+      "normalizedDefinitionAliases": [
+        "arena_pack_term_name_result_40"
+      ]
+    },
+    {
+      "owner": "arena_quantities_view_nonempty",
+      "exclusiveSampledMs": 6.25,
+      "exclusiveShare": 9.245510842210564e-05,
+      "functionCount": 4,
+      "normalizedDefinitionAliases": [
+        "arena_quantities_view_nonempty"
+      ]
+    },
+    {
+      "owner": "arena_words_start",
+      "exclusiveSampledMs": 5.417,
+      "exclusiveShare": 8.01326915716074e-05,
+      "functionCount": 1,
+      "normalizedDefinitionAliases": [
+        "arena_words_start"
+      ]
+    },
+    {
+      "owner": "arena_constructor_trees",
+      "exclusiveSampledMs": 5.292,
+      "exclusiveShare": 7.82835894031653e-05,
+      "functionCount": 2,
+      "normalizedDefinitionAliases": [
+        "arena_constructor_trees"
+      ]
+    },
+    {
+      "owner": "arena_names_prepend_fast",
+      "exclusiveSampledMs": 5.165,
+      "exclusiveShare": 7.640490160002811e-05,
+      "functionCount": 1,
+      "normalizedDefinitionAliases": [
+        "arena_names_prepend_fast"
+      ]
+    },
+    {
+      "owner": "arena_words_is_empty",
+      "exclusiveSampledMs": 5.083,
+      "exclusiveShare": 7.519189057753008e-05,
+      "functionCount": 1,
+      "normalizedDefinitionAliases": [
+        "arena_words_is_empty"
+      ]
+    },
+    {
+      "owner": "arena_bound_case",
+      "exclusiveSampledMs": 5.083,
+      "exclusiveShare": 7.519189057753008e-05,
+      "functionCount": 2,
+      "normalizedDefinitionAliases": [
+        "arena_bound_case"
+      ]
+    },
+    {
+      "owner": "arena_publish_pattern_region",
+      "exclusiveSampledMs": 5.0,
+      "exclusiveShare": 7.396408673768451e-05,
+      "functionCount": 2,
+      "normalizedDefinitionAliases": [
+        "arena_publish_pattern_region"
+      ]
+    },
+    {
+      "owner": "arena_constructor_node_is_tree",
+      "exclusiveSampledMs": 5.0,
+      "exclusiveShare": 7.396408673768451e-05,
+      "functionCount": 3,
+      "normalizedDefinitionAliases": [
+        "arena_constructor_node_is_tree"
+      ]
+    },
+    {
+      "owner": "arena_release",
+      "exclusiveSampledMs": 4.8759999999999994,
+      "exclusiveShare": 7.212977738658994e-05,
+      "functionCount": 2,
+      "normalizedDefinitionAliases": [
+        "arena_release"
+      ]
+    },
+    {
+      "owner": "arena_pack_patterns",
+      "exclusiveSampledMs": 4.583,
+      "exclusiveShare": 6.779548190376163e-05,
+      "functionCount": 3,
+      "normalizedDefinitionAliases": [
+        "arena_pack_patterns"
+      ]
+    },
+    {
+      "owner": "arena_put_source_pattern",
+      "exclusiveSampledMs": 4.334,
+      "exclusiveShare": 6.411207038422494e-05,
+      "functionCount": 2,
+      "normalizedDefinitionAliases": [
+        "arena_put_source_pattern"
+      ]
+    },
+    {
+      "owner": "arena_bound_min",
+      "exclusiveSampledMs": 3.917,
+      "exclusiveShare": 5.794346555030205e-05,
+      "functionCount": 1,
+      "normalizedDefinitionAliases": [
+        "arena_bound_min"
+      ]
+    },
+    {
+      "owner": "arena_pack_patterns_reserve_words_result_29",
+      "exclusiveSampledMs": 3.751,
+      "exclusiveShare": 5.548785787061092e-05,
+      "functionCount": 3,
+      "normalizedDefinitionAliases": [
+        "arena_pack_patterns_reserve_words_result_29"
+      ]
+    },
+    {
+      "owner": "arena_publish_binders_select",
+      "exclusiveSampledMs": 3.75,
+      "exclusiveShare": 5.547306505326339e-05,
+      "functionCount": 1,
+      "normalizedDefinitionAliases": [
+        "arena_publish_binders_select"
+      ]
+    },
+    {
+      "owner": "arena_bound_local",
+      "exclusiveSampledMs": 3.709,
+      "exclusiveShare": 5.486655954201437e-05,
+      "functionCount": 3,
+      "normalizedDefinitionAliases": [
+        "arena_bound_local"
+      ]
+    },
+    {
+      "owner": "arena_constructor_trees_valid",
+      "exclusiveSampledMs": 3.708,
+      "exclusiveShare": 5.4851766724666837e-05,
+      "functionCount": 2,
+      "normalizedDefinitionAliases": [
+        "arena_constructor_trees_valid"
+      ]
+    },
+    {
+      "owner": "arena_pack_terms_reserve_words_result_28",
+      "exclusiveSampledMs": 3.541,
+      "exclusiveShare": 5.238136622762817e-05,
+      "functionCount": 2,
+      "normalizedDefinitionAliases": [
+        "arena_pack_terms_reserve_words_result_28"
+      ]
+    },
+    {
+      "owner": "arena_bound_remove",
+      "exclusiveSampledMs": 3.5,
+      "exclusiveShare": 5.177486071637916e-05,
+      "functionCount": 1,
+      "normalizedDefinitionAliases": [
+        "arena_bound_remove"
+      ]
+    },
+    {
+      "owner": "arena_words_count",
+      "exclusiveSampledMs": 3.291,
+      "exclusiveShare": 4.868316189074395e-05,
+      "functionCount": 1,
+      "normalizedDefinitionAliases": [
+        "arena_words_count"
+      ]
+    },
+    {
+      "owner": "arena_pack_pattern",
+      "exclusiveSampledMs": 3.166,
+      "exclusiveShare": 4.683405972230184e-05,
+      "functionCount": 1,
+      "normalizedDefinitionAliases": [
+        "arena_pack_pattern"
+      ]
+    },
+    {
+      "owner": "arena_publish_optional_occurrence",
+      "exclusiveSampledMs": 3.1239999999999997,
+      "exclusiveShare": 4.6212761393705284e-05,
+      "functionCount": 2,
+      "normalizedDefinitionAliases": [
+        "arena_publish_optional_occurrence"
+      ]
+    },
+    {
+      "owner": "arena_pack_law_decl",
+      "exclusiveSampledMs": 3.042,
+      "exclusiveShare": 4.499975037120726e-05,
+      "functionCount": 1,
+      "normalizedDefinitionAliases": [
+        "arena_pack_law_decl"
+      ]
+    },
+    {
+      "owner": "arena_pack_binders",
+      "exclusiveSampledMs": 2.75,
+      "exclusiveShare": 4.068024770572648e-05,
+      "functionCount": 2,
+      "normalizedDefinitionAliases": [
+        "arena_pack_binders"
+      ]
+    },
+    {
+      "owner": "arena_pack_pattern_name_result_44",
+      "exclusiveSampledMs": 2.7089999999999996,
+      "exclusiveShare": 4.0073742194477474e-05,
+      "functionCount": 3,
+      "normalizedDefinitionAliases": [
+        "arena_pack_pattern_name_result_44"
+      ]
+    },
+    {
+      "owner": "arena_pack_definition",
+      "exclusiveSampledMs": 2.625,
+      "exclusiveShare": 3.883114553728437e-05,
+      "functionCount": 2,
+      "normalizedDefinitionAliases": [
+        "arena_pack_definition"
+      ]
+    },
+    {
+      "owner": "arena_pack_terms_length",
+      "exclusiveSampledMs": 2.584,
+      "exclusiveShare": 3.8224640026035356e-05,
+      "functionCount": 1,
+      "normalizedDefinitionAliases": [
+        "arena_pack_terms_length"
+      ]
+    },
+    {
+      "owner": "arena_pack_patterns_length",
+      "exclusiveSampledMs": 2.584,
+      "exclusiveShare": 3.8224640026035356e-05,
+      "functionCount": 2,
+      "normalizedDefinitionAliases": [
+        "arena_pack_patterns_length"
+      ]
+    },
+    {
+      "owner": "arena_pack_patterns_at",
+      "exclusiveSampledMs": 2.583,
+      "exclusiveShare": 3.820984720868782e-05,
+      "functionCount": 1,
+      "normalizedDefinitionAliases": [
+        "arena_pack_patterns_at"
+      ]
+    },
+    {
+      "owner": "arena_constructor_node_has_witness",
+      "exclusiveSampledMs": 2.583,
+      "exclusiveShare": 3.820984720868782e-05,
+      "functionCount": 1,
+      "normalizedDefinitionAliases": [
+        "arena_constructor_node_has_witness"
+      ]
+    },
+    {
+      "owner": "arena_subst_memo_store",
+      "exclusiveSampledMs": 2.583,
+      "exclusiveShare": 3.820984720868782e-05,
+      "functionCount": 1,
+      "normalizedDefinitionAliases": [
+        "arena_subst_memo_store"
+      ]
+    },
+    {
+      "owner": "arena_constructor_trees_child",
+      "exclusiveSampledMs": 2.583,
+      "exclusiveShare": 3.820984720868782e-05,
+      "functionCount": 2,
+      "normalizedDefinitionAliases": [
+        "arena_constructor_trees_child"
+      ]
+    },
+    {
+      "owner": "arena_quantities_prepend_count",
+      "exclusiveSampledMs": 2.5,
+      "exclusiveShare": 3.6982043368842256e-05,
+      "functionCount": 1,
+      "normalizedDefinitionAliases": [
+        "arena_quantities_prepend_count"
+      ]
+    },
+    {
+      "owner": "arena_case_prefix_large",
+      "exclusiveSampledMs": 2.5,
+      "exclusiveShare": 3.6982043368842256e-05,
+      "functionCount": 2,
+      "normalizedDefinitionAliases": [
+        "arena_case_prefix_large"
+      ]
+    },
+    {
+      "owner": "arena_pack_binder",
+      "exclusiveSampledMs": 2.458,
+      "exclusiveShare": 3.636074504024571e-05,
+      "functionCount": 1,
+      "normalizedDefinitionAliases": [
+        "arena_pack_binder"
+      ]
+    },
+    {
+      "owner": "arena_publish_constructor_decl_list",
+      "exclusiveSampledMs": 2.416,
+      "exclusiveShare": 3.573944671164916e-05,
+      "functionCount": 2,
+      "normalizedDefinitionAliases": [
+        "arena_publish_constructor_decl_list"
+      ]
+    },
+    {
+      "owner": "arena_pack_binders_reserve_words_result_30",
+      "exclusiveSampledMs": 2.375,
+      "exclusiveShare": 3.5132941200400144e-05,
+      "functionCount": 1,
+      "normalizedDefinitionAliases": [
+        "arena_pack_binders_reserve_words_result_30"
+      ]
+    },
+    {
+      "owner": "arena_pack_type_decl",
+      "exclusiveSampledMs": 2.375,
+      "exclusiveShare": 3.5132941200400144e-05,
+      "functionCount": 2,
+      "normalizedDefinitionAliases": [
+        "arena_pack_type_decl"
+      ]
+    },
+    {
+      "owner": "arena_words_prepend_copy",
+      "exclusiveSampledMs": 2.208,
+      "exclusiveShare": 3.2662540703361486e-05,
+      "functionCount": 1,
+      "normalizedDefinitionAliases": [
+        "arena_words_prepend_copy"
+      ]
+    },
+    {
+      "owner": "arena_pack_binders_at",
+      "exclusiveSampledMs": 2.167,
+      "exclusiveShare": 3.205603519211247e-05,
+      "functionCount": 1,
+      "normalizedDefinitionAliases": [
+        "arena_pack_binders_at"
+      ]
+    },
+    {
+      "owner": "arena_words_append_select",
+      "exclusiveSampledMs": 1.958,
+      "exclusiveShare": 2.8964336366477256e-05,
+      "functionCount": 1,
+      "normalizedDefinitionAliases": [
+        "arena_words_append_select"
+      ]
+    },
+    {
+      "owner": "arena_pack_top_level",
+      "exclusiveSampledMs": 1.875,
+      "exclusiveShare": 2.7736532526631692e-05,
+      "functionCount": 3,
+      "normalizedDefinitionAliases": [
+        "arena_pack_top_level"
+      ]
+    },
+    {
+      "owner": "arena_put_binder",
+      "exclusiveSampledMs": 1.625,
+      "exclusiveShare": 2.403832818974747e-05,
+      "functionCount": 1,
+      "normalizedDefinitionAliases": [
+        "arena_put_binder"
+      ]
+    },
+    {
+      "owner": "arena_pack_top_level_list",
+      "exclusiveSampledMs": 1.417,
+      "exclusiveShare": 2.0961422181459793e-05,
+      "functionCount": 1,
+      "normalizedDefinitionAliases": [
+        "arena_pack_top_level_list"
+      ]
+    },
+    {
+      "owner": "arena_publish_constructor_decl",
+      "exclusiveSampledMs": 1.375,
+      "exclusiveShare": 2.0340123852863243e-05,
+      "functionCount": 1,
+      "normalizedDefinitionAliases": [
+        "arena_publish_constructor_decl"
+      ]
+    },
+    {
+      "owner": "arena_pack_binders_length",
+      "exclusiveSampledMs": 1.292,
+      "exclusiveShare": 1.9112320013017678e-05,
+      "functionCount": 1,
+      "normalizedDefinitionAliases": [
+        "arena_pack_binders_length"
+      ]
+    },
+    {
+      "owner": "arena_case_prefix_name",
+      "exclusiveSampledMs": 1.292,
+      "exclusiveShare": 1.9112320013017678e-05,
+      "functionCount": 1,
+      "normalizedDefinitionAliases": [
+        "arena_case_prefix_name"
+      ]
+    },
+    {
+      "owner": "arena_bound_pattern_get",
+      "exclusiveSampledMs": 1.292,
+      "exclusiveShare": 1.9112320013017678e-05,
+      "functionCount": 1,
+      "normalizedDefinitionAliases": [
+        "arena_bound_pattern_get"
+      ]
+    },
+    {
+      "owner": "arena_pack_term_name_result_38",
+      "exclusiveSampledMs": 1.292,
+      "exclusiveShare": 1.9112320013017678e-05,
+      "functionCount": 1,
+      "normalizedDefinitionAliases": [
+        "arena_pack_term_name_result_38"
+      ]
+    },
+    {
+      "owner": "arena_constructor_trees_are_closed",
+      "exclusiveSampledMs": 1.291,
+      "exclusiveShare": 1.9097527195670142e-05,
+      "functionCount": 1,
+      "normalizedDefinitionAliases": [
+        "arena_constructor_trees_are_closed"
+      ]
+    },
+    {
+      "owner": "arena_pack_binder_name_result_45",
+      "exclusiveSampledMs": 1.25,
+      "exclusiveShare": 1.8491021684421128e-05,
+      "functionCount": 1,
+      "normalizedDefinitionAliases": [
+        "arena_pack_binder_name_result_45"
+      ]
+    },
+    {
+      "owner": "arena_constructor_node_valid",
+      "exclusiveSampledMs": 1.25,
+      "exclusiveShare": 1.8491021684421128e-05,
+      "functionCount": 1,
+      "normalizedDefinitionAliases": [
+        "arena_constructor_node_valid"
+      ]
+    },
+    {
+      "owner": "arena_case_prefix_eligible",
+      "exclusiveSampledMs": 1.25,
+      "exclusiveShare": 1.8491021684421128e-05,
+      "functionCount": 1,
+      "normalizedDefinitionAliases": [
+        "arena_case_prefix_eligible"
+      ]
+    },
+    {
+      "owner": "arena_names_append_select",
+      "exclusiveSampledMs": 1.25,
+      "exclusiveShare": 1.8491021684421128e-05,
+      "functionCount": 1,
+      "normalizedDefinitionAliases": [
+        "arena_names_append_select"
+      ]
+    },
+    {
+      "owner": "arena_constructor_range_valid",
+      "exclusiveSampledMs": 1.25,
+      "exclusiveShare": 1.8491021684421128e-05,
+      "functionCount": 1,
+      "normalizedDefinitionAliases": [
+        "arena_constructor_range_valid"
+      ]
+    },
+    {
+      "owner": "arena_names_start",
+      "exclusiveSampledMs": 1.208,
+      "exclusiveShare": 1.786972335582458e-05,
+      "functionCount": 1,
+      "normalizedDefinitionAliases": [
+        "arena_names_start"
+      ]
+    },
+    {
+      "owner": "arena_pack_pattern_name_result_43",
+      "exclusiveSampledMs": 1.208,
+      "exclusiveShare": 1.786972335582458e-05,
+      "functionCount": 1,
+      "normalizedDefinitionAliases": [
+        "arena_pack_pattern_name_result_43"
+      ]
+    },
+    {
+      "owner": "arena_pack_constructor_decl_list",
+      "exclusiveSampledMs": 1.208,
+      "exclusiveShare": 1.786972335582458e-05,
+      "functionCount": 1,
+      "normalizedDefinitionAliases": [
+        "arena_pack_constructor_decl_list"
+      ]
+    },
+    {
+      "owner": "arena_case_prefix_cached_exact",
+      "exclusiveSampledMs": 0.542,
+      "exclusiveShare": 8.017707002365001e-06,
+      "functionCount": 1,
+      "normalizedDefinitionAliases": [
+        "arena_case_prefix_cached_exact"
+      ]
+    },
+    {
+      "owner": "arena_words_prepend_fast",
+      "exclusiveSampledMs": 0.334,
+      "exclusiveShare": 4.940800994077326e-06,
+      "functionCount": 1,
+      "normalizedDefinitionAliases": [
+        "arena_words_prepend_fast"
+      ]
+    },
+    {
+      "owner": "arena_case_prefix_build",
+      "exclusiveSampledMs": 0.333,
+      "exclusiveShare": 4.926008176729789e-06,
+      "functionCount": 1,
+      "normalizedDefinitionAliases": [
+        "arena_case_prefix_build"
+      ]
+    },
+    {
+      "owner": "arena_case_prefix_region",
+      "exclusiveSampledMs": 0.292,
+      "exclusiveShare": 4.319502665480776e-06,
+      "functionCount": 1,
+      "normalizedDefinitionAliases": [
+        "arena_case_prefix_region"
+      ]
+    }
+  ]
+}
