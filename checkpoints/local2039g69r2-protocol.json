@@ -1,0 +1,122 @@
+{
+  "schemaVersion": 1,
+  "version": "G69R2",
+  "status": "PROSPECTIVE_UNMEASURED_G69R1_FAILED_PRESERVED",
+  "baseMainCheckpoint": "6f195347",
+  "branch": "selfhost/g69r2-production-fl4casug",
+  "worktree": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69r2-production-fl4casug/repository",
+  "goal": "PreserveacceptedcompilerCPUwhileloweringrealpeakRAM viaavoidingunreadglobalcallablewrapperroots. NotextraCPUgainmandate.",
+  "novelMechanism": "JSbackend-private libraryFunctionDeclaration wrapper readset. TraverseallCodesandlazyBlocks (notCodeDCE), collectSymbol/LoadSymbol andexportkeys. KeepallCodeIDs/orderandallnative/lazy/foreign/type/family/layoutmetadata. Executables keepall. Publicprogram_source(program,effects) signatureunchanged.",
+  "foreignSafety": "Failclosedonraw$D/$resolve/identifierescape\\u/Functionidentifier or evalidentifierexceptunambiguousproperty-keyposition ({or,preceding andcolonfollowing whitespace). Scanconservativelyincludingquoted/commenttext (falsepositivesallowed); NEVER onlyeval( pattern: whitespace,parenthesizedeval,comments andescapesmustwiden. No eval/Functionexecution, noadversarialdebuggerintrospectionpromise. CurrentWorker{eval:true} isgeneralpropertycase,notinputspecialcase. Unknownlexicalcase keepall.",
+  "reflectiveAuthority": "$resolveexistsbutno renderer/runtimecalls exceptrawforeignpossible;preserveallmetadataandnativeintrinsicDreads. AnynewDreadmustjoinreadset. Allnonfunctiondeclarationsunchanged; declarationindexincrements evenonwrapperdrop.",
+  "scope": [
+    "bend2/selfhost/js_backend.bend",
+    "focusedrequiredBIRsourcebehaviorinput",
+    "requiredregeneratedBendcompilerinputs",
+    "existingprofilingjournal+compactreceipts"
+  ],
+  "excluded": "NoG58/G63/G64/G65/G66/G67/G68rejectedcode, noBIR/FIRschema/Ccutover, nofunctionbodyDCE/typepruning/cache/pool/forcedGC/imagepatch/ASTtransport.",
+  "evidence": {
+    "immutableASTDiagnostic": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/accepted-image-static-census.json",
+      "sha256": "7587902ade9a45f599c7475da0250145ac3d8d5be6a5e28abd35992266ecd526"
+    },
+    "wrapperRegistrations": 12440,
+    "wrapperUTF8Bytes": 7268144,
+    "imageUTF8Bytes": 31758525,
+    "share": 0.22885647239599446,
+    "notClaim": "Sourcebytesarenotretainedbytesorpredictedpeaksaving"
+  },
+  "runtime": {
+    "release": "2.0.39-a3efe8a3801f423827424227172eed9802c5e6cb",
+    "node": "23.11.0",
+    "v8": "12.9.202.28-node.14",
+    "bun": "1.4.3",
+    "platform": "darwin25.6arm64",
+    "abi": 13,
+    "quantum": 64
+  },
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "nativeProductionMs": 300000,
+    "throughputMs": 600000,
+    "smokeMs": 120000,
+    "workerStackMiB": 256,
+    "oldMiB": 6144,
+    "youngMiB": 128,
+    "parserFuel": 8000000,
+    "oneHeavyLane": true,
+    "ownImageProductionMs": 1800000
+  },
+  "cheapFirst": "Typedactualsourceemitter CPScomponent+unchangeddefaultNode consumers forDirect-onlynonexportcallee,Symbol/LoadSymbolhigherorder,lazynativeentries,exports; foreigndirectevalwithspace/comments,escapedprivateidentifier andWorkerobjectevalproperty. Sourceinspectionsaremechanismdiagnosticonly,notsubstituteforrealruntime.",
+  "production": "ReuseauthenticatedG69R1nativeC1, no regeneration/native rebuild; real C1 emits identical53file18modulecompiler toC2, once, under prospectivelydeclared1800000msproductionwallcap andsame8GiB. C1notperformanceproxy. ThisdistinctbudgetisNOTabenchmarklimit orspeedclaim. R1failed600soutcome retained.",
+  "selectedCorpus": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/main-complete.corpus.json",
+    "sha256": "1a269e15bf70257b019ab572c003b6eb130b4e3f63ad507783525e28d307b0e4"
+  },
+  "fullCorpus": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/full-frozen.corpus.json",
+    "sha256": "60bf820e76a9c336e58c848eec6a40b3f8fbb4b7ac2ae45ffd1abdb1d217ebc6"
+  },
+  "sameSelectedWork": {
+    "files": 52,
+    "modules": 17,
+    "declarations": 2954,
+    "expand": 263032,
+    "check": 1975761
+  },
+  "semanticGate": "Actualown69+original13JS+existingidentity/boxed2+newLibraryrootsmoke+original3C+readback28. DefaultNodeforemittedprograms;types/CLI/executableforeignfallbackalsoexercised.",
+  "selectedOrders": [
+    "ABC",
+    "CAB",
+    "BCA"
+  ],
+  "selectedFreshProcesses": 9,
+  "costFilter": {
+    "geometricCpuCAatMost": 1.02,
+    "geometricCpuCBatMost": 1.02,
+    "everyCpuCAatMost": 1.05,
+    "geometricWallCAatMost": 1.02,
+    "medianFootprintCAatMost": 0.95,
+    "geometricFootprintCBatMost": 0.95,
+    "medianRSSCAatMost": 1.0
+  },
+  "policyChangeBeforeData": "G68requiredadditional3percentCPUgain. G69matchesuserretain-speed/reduce-memorygoal:CPUretention2percent,notextra3percentgain;RAM5percentgainandRSSnonregressionpredeclared. NoG69candidateperformancedataexists.",
+  "statistics": "ExistingpairedlogratioStudent95CIand2percentpracticalband,allrowsretained,noretry/exclusion/oldtiming. Pointscreenisnotqualifiedgain. FinalCPUretentionrequiresupperCI<=1.02vsAandB;RAMbenefitrequiresupperCI<=0.98vsB (or earnedindependentfullconfirmation). Inconclusiveisnotaccepted.",
+  "earned": "OnlyselectedpointfiltersPASSEARN6fullfrozenprocessesABC/CBAandactualC2->C3exactbytefixedpoint;failedscreenNOT_RUN_NOT_EARNED.",
+  "accepted": false,
+  "selfhostGreen": false,
+  "sourceCheckpoint": "6941127a",
+  "compilerSourceManifest": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69r2-production-fl4casug/compiler-source.corpus.json",
+    "sha256": "b82ba7875329092864f5fd1a079d74005aff4a3d4a35325db046d77cedd3002b"
+  },
+  "sourceAlgorithmChanged": false,
+  "corpusContentsChanged": false,
+  "resourceIsolation": false,
+  "environmentDecision": {
+    "clusterAccess": "ssh cluster true failed hostname resolution; BEND_HOC unset; ssh capability hosts none",
+    "localIsolation": "NOT_AVAILABLE_NO_UNRELATED_PROCESS_OR_PRIORITY_CHANGES",
+    "observedLoadBeforeProtocol": "23.25 28.89 47.99 on10CPUs",
+    "policy": "One owned heavy lane. All9freshcounterbalancedselectedrowsretainedregardlessload;no retries/exclusions orprofiling. Absolute wallguard600000msformeasurementsunchanged. PairedCIandall7costthresholdsidenticalR1; inconclusivenotaccepted.",
+    "notClaim": "No exclusive/quiet CPU slot or causal explanation of R1 check timeout"
+  },
+  "bootstrapReuse": {
+    "image": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/native-stage1.json.mjs",
+      "sha256": "911dea40c1b15168e35adef3b6cbd45ba406d79f282462c3273e0f4a9ebe74f7"
+    },
+    "nativeReport": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/native-stage1.json",
+      "sha256": "48bf41fe047e07c2618bd1172fee9c335ea3063a47f8dac801e7aef21b936e3c"
+    },
+    "C1ConsumerReceipt": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/repository/checkpoints/local2039g69-c1-consumers.json",
+      "sha256": "bf040bdc34794466162a033f37dd9edfed1d4a7469e84090ab6b4d4b7ce612ea"
+    },
+    "canonicalSourceHashesIdentical": true,
+    "avoidedWork": "No repeated source generators, full nativeCseed build or28already-passing C1contracts. FreshC2 actualconsumers stillrequired."
+  }
+}

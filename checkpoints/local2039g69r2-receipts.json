@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 1,
+  "version": "G69R2",
+  "status": "REJECTED_CPU_RAM_COST_QUALIFICATION_NO_ALGORITHM_CUTOVER",
+  "experimentalBranch": "selfhost/g69r2-production-fl4casug",
+  "mainBaseCheckpoint": "6f195347",
+  "sourceCheckpoints": {
+    "G69R1SourceClosure": "6941127a",
+    "prospectiveR2Protocol": "ae5498b7",
+    "exactProductionDriverAndRequest": "a852f4fc",
+    "genuineCompleteC2": "526b0f96",
+    "allActualConsumersAndPhysicalActivationBeforeTimings": "69b5e9e3"
+  },
+  "receipts": [
+    {
+      "repositoryPath": "checkpoints/local2039g69r2-protocol.json",
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69r2-production-fl4casug/repository/checkpoints/local2039g69r2-protocol.json",
+      "sha256": "fc2babe04ba424bb8e2abb7e5e000c52a49a83527ba137964e67c13061064a0c",
+      "bytes": 7615
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g69r2-production-driver.json",
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69r2-production-fl4casug/repository/checkpoints/local2039g69r2-production-driver.json",
+      "sha256": "3d2f308d7beabe46fbcab0e0c3de6d60fa3eee1d9d3630b6895c86f70a68fd77",
+      "bytes": 14956
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g69r2-c2-request.json",
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69r2-production-fl4casug/repository/checkpoints/local2039g69r2-c2-request.json",
+      "sha256": "86bcd8cb522783ade7beeddc19e77101694ba8f7aa5f05b71872006739d34143",
+      "bytes": 19654
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g69r2-c2-production.json",
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69r2-production-fl4casug/repository/checkpoints/local2039g69r2-c2-production.json",
+      "sha256": "9f10b6ea5c1ae80ba535dc265b896dacee0e07946d038d690fa230d6477b2556",
+      "bytes": 8291
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g69r2-consumers.json",
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69r2-production-fl4casug/repository/checkpoints/local2039g69r2-consumers.json",
+      "sha256": "78d8745ff7c6580bae5f8e71c896c91754152ad8b10ec06cbfedc1b13c8437bc",
+      "bytes": 281940
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g69r2-wrapper-activation.json",
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69r2-production-fl4casug/repository/checkpoints/local2039g69r2-wrapper-activation.json",
+      "sha256": "78b779179d3d9bcfa69c3f2bfaa47d883d66a2fe703e541ac2894c1ae4d122b3",
+      "bytes": 22755
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g69r2-selected-preflight.json",
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69r2-production-fl4casug/repository/checkpoints/local2039g69r2-selected-preflight.json",
+      "sha256": "6d84f7be105f17a539672402c6c04bf89b37fe6783be93a9460e16dec10c55ec",
+      "bytes": 64650
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g69r2-selected-results.json",
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69r2-production-fl4casug/repository/checkpoints/local2039g69r2-selected-results.json",
+      "sha256": "f796eeb003dc273b4d3782dd35e04546029a56833750c10b1ec3cbc2c2633d5d",
+      "bytes": 133767
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g69r2-closing-hashes.json",
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69r2-production-fl4casug/repository/checkpoints/local2039g69r2-closing-hashes.json",
+      "sha256": "4ce8e60c0d08509b940e00f4801382caaf5f2a1af63d98aa9a1d038fefcb1a26",
+      "bytes": 45444
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g69r2-decision.json",
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69r2-production-fl4casug/repository/checkpoints/local2039g69r2-decision.json",
+      "sha256": "e6556b7b507aeac0694ff7509ccfc74a8024d593b55c2192ec15fc05008feec1",
+      "bytes": 12279
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g69r2-cleanup.json",
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69r2-production-fl4casug/repository/checkpoints/local2039g69r2-cleanup.json",
+      "sha256": "ea42ec9b5b5b2ce9a1859311f3a9e246fe685326c7485a29f8cc14f7f9df9a3a",
+      "bytes": 2848
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g69r2-compiler-source.corpus.json",
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69r2-production-fl4casug/repository/checkpoints/local2039g69r2-compiler-source.corpus.json",
+      "sha256": "b82ba7875329092864f5fd1a079d74005aff4a3d4a35325db046d77cedd3002b",
+      "bytes": 9656
+    }
+  ],
+  "actualEvidence": "RealC2,69own+15JS+3nativeC+28readbackPASS. Exactly12255globalwrappersomitted,all39862privatebodiesandallotherTopLevelcodeSHAunchanged. All9freshselected52file17module2954decl263032expand1975761checkrunsPASSsamework;all7pointcostfiltersFAIL,allcandidateCIinconclusive. All158closinghashesmatch.",
+  "failedDiagnostic": "InitialuniqueDregistrationassumptionfailsString.cmp; originalfailurepreserved. CorrectedorderedoccurrencecensuspreservesbothlegitimateString.cmpregistrationsandpasses. Actualconsumersnotrerun/repinned.",
+  "R1StillFailed": true,
+  "R2ResourceIsolation": false,
+  "fullSixAndC3": "NOT_RUN_NOT_EARNED",
+  "fixedpointStatus": "NOT_RUN_NOT_EARNED",
+  "selfhostGreen": false,
+  "qualifiedCpuOrRamGain": false,
+  "mainIntegration": "Existingjournal+compactstructuredreceiptsandrequiredhashmanifest only. No compiler source/image/ASTtransport/profile/bulklogcutover.",
+  "experimentalClosureCheckpoint": "21b720f7"
+}

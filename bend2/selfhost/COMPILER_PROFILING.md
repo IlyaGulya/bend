@@ -3367,3 +3367,84 @@ stay in their committed experimental checkpoints, generated images/bulk logs
 stay outside Git. `checkpoints/local2039g69-receipts.json` indexes the compact
 protocol, source/consumer proof, exact production failure, hashes and decision.
 
+### G69R2: real wrapper omission qualifies semantically, but fails every cost filter
+
+**G69R2 is rejected for CPU/RAM qualification; accepted compiler unchanged.**
+This is not a statistically established intrinsic regression. No full-corpus
+confirmation or byte-fixedpoint claim is earned by the adverse point estimates.
+
+The cluster alias cannot resolve and BEND_HOC is unset; no SSH capability hosts
+are configured. No exclusive local CPU slot is claimed and no unrelated process,
+priority or system setting is changed. `ae5498b7` prospectively freezes a separate
+protocol: unchanged G69R1 algorithm/all53 source hashes, reuse its already verified
+native C1, and1800000ms for image production only. The failed G69R1 outcome stays
+failed. `a852f4fc` records the exact temporary production shim: canonical pipeline
+unchanged except its guard requirement and four absolute helper-import URLs.
+The canonical measurement driver and all9 measurement guards stay600000ms/8GiB;
+CPU-retention/RAM thresholds, paired95% intervals and2% practical band are unchanged.
+No generators, native build or already passing C1 consumers are repeated.
+
+Actual same-source C1-to-C2 production passes:18 modules/13042 declarations,
+1071878 expansion and10484206 checker steps, matching genuine native C1.
+Guardian wall808214ms; output SHA256
+`1f19469354bc6fd57bf7e1a2e42a23b8b12a2c2fdda42597533c22e6229f932b`.
+These are production facts, not comparable CPU/RAM measurements.
+`526b0f96` checkpoints real C2 before the consumers and cost screen.
+
+| Physical emitted artifact | Native-produced C1 | Actual C1-produced C2 |
+|---|---:|---:|
+| Image bytes | 31876947 | 24685687 |
+| Ordered global registration occurrences | 12470 | 215 |
+| Global registration UTF8 bytes | 7278971 | 99966 |
+| Private bodies/continuations | 39862 | 39862 |
+
+All retained registration statements form an unchanged ordered subsequence;
+private-body and every other top-level statement hash are identical. The exact
+image delta is the omitted registrations plus their newlines. Every literal
+`$D` read remains backed. This is physical mechanism evidence, not peak RAM.
+The first optional census wrongly assumed unique registration keys and failed
+on the existing double String.cmp binding; the failed run is preserved. Corrected
+general ordered-occurrence accounting preserves duplicates in both images.
+No compiler artifact or consumer expectation is patched to rescue the census.
+
+Real C2 passes69 own contracts,15 standalone default-stack JS programs, three
+clang-built C programs and28 inspection/recheck/library runtime contracts.
+The original four actual changed-source emitter/foreign-safety consumers remain
+valid unchanged-source evidence. `69b5e9e3` freezes semantic/physical proof and
+the complete9-process plan before any cost observation. Code, reflection and
+public fallback behavior are exercised, not inferred from syntax counts.
+
+All9 fresh processes finish in ABC/CAB/BCA order; none is retried or excluded.
+Every row observes the unchanged52-file/17-module/2954-declaration corpus,
+263032 expansion and1975761 checker steps, Node23.11.0/V8 12.9.202.28-node.14,
+worker256/6144/128MiB and the same process-wide checker-CPU scope. No profiler,
+debugger, forced GC, image patch or AST transport participates in measurement.
+
+| Selected metric | C2 / accepted A | C2 / control B |
+|---|---:|---:|
+| Checker CPU, geometric mean and95% CI | 1.221738 [0.948075, 1.574394] | 1.156903 [0.618109, 2.165354] |
+| Checker wall, geometric mean and95% CI | 1.203501 [0.519682, 2.787119] | 1.350442 [0.655088, 2.783889] |
+| Peak footprint, geometric mean and95% CI | 1.205893 [0.555456, 2.617990] | 1.187885 [0.444068, 3.177601] |
+| Peak footprint, ratio of medians (no CI claimed) | 1.009916 | 0.962906 |
+| Peak RSS, ratio of medians (no CI claimed) | 1.033284 | 0.982221 |
+
+**All seven prospective point-cost filters fail.** All candidate confidence
+intervals are inconclusive. Neither retained CPU nor lower peak RAM is qualified;
+source-byte elimination is not substituted for either goal. The high-memory C
+row in triad1 is retained unchanged; no environmental attribution or statistically
+qualified slowdown/RAM-regression claim is inferred from these noisy points.
+Full frozen six and actual C2-to-C3 byte fixedpoint are NOT_RUN_NOT_EARNED;
+selfhost-green remains false. No sample dropping, wider band, retuned threshold,
+extra run or production-only1800s driver is used to turn this result into a win.
+
+At closure all53 compiler-source,52 selected and53 conditional-full input hashes
+still match. All four owned production/controller/statistics/census scripts are
+removed after proof; exact scripts and commands remain in compact receipts.
+Required canonical/generated Bend inputs and executable regressions stay in
+committed experimental history; images, transports and bulk logs stay outside Git.
+Main receives only this journal and structured evidence indexed by
+`checkpoints/local2039g69r2-receipts.json`, not the rejected compiler algorithm.
+The next memory investigation must identify actual peak-live heap/GC owners;
+fewer wrapper roots do not identify that owner, and restricted tag graphs omit
+closure/context roots.
+

@@ -1,0 +1,230 @@
+{
+  "schemaVersion": 1,
+  "version": "G69R2",
+  "status": "ACTUAL_IDENTICAL_COMPLETE_SOURCE_C1_TO_C2_PRODUCTION_PASS_NOT_YET_QUALIFIED",
+  "sourceAlgorithmCheckpoint": "a5d6b207",
+  "protocolCheckpoint": "ae5498b7",
+  "requestCheckpoint": "a852f4fc",
+  "source53HashesUnchangedFromG69R1": true,
+  "command": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69r2-production-fl4casug/image-producer.mjs",
+    "js",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69r2-production-fl4casug/c2-request.json",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69r2-production-fl4casug/c2-production.json"
+  ],
+  "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69r2-production-fl4casug/repository",
+  "producer": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/native-stage1.json.mjs",
+    "sha256": "911dea40c1b15168e35adef3b6cbd45ba406d79f282462c3273e0f4a9ebe74f7"
+  },
+  "request": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69r2-production-fl4casug/c2-request.json",
+    "sha256": "86bcd8cb522783ade7beeddc19e77101694ba8f7aa5f05b71872006739d34143"
+  },
+  "report": {
+    "schemaVersion": 1,
+    "status": "PASS",
+    "diagnosticOnly": true,
+    "acceptanceEvidence": false,
+    "mode": "js",
+    "request": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69r2-production-fl4casug/c2-request.json",
+    "requestSha256": "86bcd8cb522783ade7beeddc19e77101694ba8f7aa5f05b71872006739d34143",
+    "source": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69r2-production-fl4casug/repository/checkpoints/local2039g49-compiler-root.bend",
+    "sourceSha256": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed",
+    "runtime": {
+      "execPath": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "versions": {
+        "node": "23.11.0",
+        "acorn": "8.14.1",
+        "ada": "3.2.1",
+        "amaro": "0.4.1",
+        "ares": "1.34.4",
+        "brotli": "1.1.0",
+        "cjs_module_lexer": "2.1.0",
+        "cldr": "46.0",
+        "icu": "76.1",
+        "llhttp": "9.2.1",
+        "modules": "131",
+        "napi": "10",
+        "nbytes": "0.1.1",
+        "ncrypto": "0.0.1",
+        "nghttp2": "1.64.0",
+        "openssl": "3.0.16",
+        "simdjson": "3.12.2",
+        "simdutf": "6.0.3",
+        "sqlite": "3.49.1",
+        "tz": "2025a",
+        "undici": "6.21.2",
+        "unicode": "16.0",
+        "uv": "1.50.0",
+        "uvwasi": "0.0.21",
+        "v8": "12.9.202.28-node.14",
+        "zlib": "1.3.0.1-motley-788cb3c",
+        "zstd": "1.5.6"
+      },
+      "execArgv": [
+        "--experimental-strip-types",
+        "--max-old-space-size=6144",
+        "--max-semi-space-size=128"
+      ],
+      "heapLimitBytes": 6845104128
+    },
+    "limits": {
+      "memoryMiB": 8192,
+      "rssMiB": 8192,
+      "pollMs": 10,
+      "timeoutMs": 1800000
+    },
+    "workerPolicy": {
+      "stackMiB": 256,
+      "oldGenerationMiB": 6144,
+      "youngGenerationMiB": 128
+    },
+    "exports": [
+      "parsed_module",
+      "parse_with_fuel",
+      "expand_modules_start",
+      "template_step",
+      "check_expanded_start",
+      "inspect_checked_start",
+      "checker_step",
+      "emit_modules_start",
+      "emit_library_start",
+      "emitter_step",
+      "emit_c_modules_start",
+      "emit_c_library_start",
+      "c_emitter_step"
+    ],
+    "phases": [
+      {
+        "phase": "startup",
+        "elapsedMs": 794.380208,
+        "userCpuMs": 617.476,
+        "systemCpuMs": 89.139,
+        "memoryEnd": {
+          "rss": 523108352,
+          "heapTotal": 94961664,
+          "heapUsed": 82403000,
+          "external": 42370038,
+          "arrayBuffers": 31901986
+        }
+      },
+      {
+        "phase": "load-parse",
+        "elapsedMs": 15671.276209000001,
+        "userCpuMs": 15729.577,
+        "systemCpuMs": 510.618,
+        "memoryEnd": {
+          "rss": 1137541120,
+          "heapTotal": 841023488,
+          "heapUsed": 673837280,
+          "external": 10493131,
+          "arrayBuffers": 25039
+        }
+      },
+      {
+        "phase": "expand",
+        "elapsedMs": 9596.470125,
+        "userCpuMs": 9705.269,
+        "systemCpuMs": 146.265,
+        "memoryEnd": {
+          "rss": 1140277248,
+          "heapTotal": 753811456,
+          "heapUsed": 554632904,
+          "external": 10487506,
+          "arrayBuffers": 25039
+        }
+      },
+      {
+        "phase": "check",
+        "elapsedMs": 738430.693375,
+        "userCpuMs": 442288.612,
+        "systemCpuMs": 12933.718,
+        "memoryEnd": {
+          "rss": 1214267392,
+          "heapTotal": 2188902400,
+          "heapUsed": 1985374648,
+          "external": 10486368,
+          "arrayBuffers": 25039
+        }
+      },
+      {
+        "phase": "emit",
+        "elapsedMs": 41721.330833000015,
+        "userCpuMs": 33632.71,
+        "systemCpuMs": 979.827,
+        "memoryEnd": {
+          "rss": 794902528,
+          "heapTotal": 2597224448,
+          "heapUsed": 2372876152,
+          "external": 10486368,
+          "arrayBuffers": 25039
+        }
+      }
+    ],
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "stopAfter": "compile",
+    "moduleCount": 18,
+    "sourceDeclarations": 13042,
+    "stepCounts": {
+      "expand": 1071878,
+      "check": 10484206,
+      "emit": 1255019
+    },
+    "phaseCpuScope": "Node process-wide CPU; includes worker/helper threads, excludes child processes",
+    "pipelineElapsedMs": 806230.821625,
+    "output": {
+      "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69r2-production-fl4casug/c2-production.json.output.mjs",
+      "bytes": 24685687,
+      "sha256": "1f19469354bc6fd57bf7e1a2e42a23b8b12a2c2fdda42597533c22e6229f932b"
+    },
+    "totalElapsedMs": 807519.0560839999,
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 1768407040,
+      "peakFootprintBytes": 3220562736,
+      "elapsedMs": 808214,
+      "timeoutMs": 1800000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 0,
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=6144",
+        "--max-semi-space-size=128",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69r2-production-fl4casug/image-producer.mjs",
+        "--worker",
+        "js",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69r2-production-fl4casug/c2-request.json",
+        "86bcd8cb522783ade7beeddc19e77101694ba8f7aa5f05b71872006739d34143",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69r2-production-fl4casug/c2-production.json"
+      ],
+      "label": "Frozen full-root throughput js",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793871820442-1925357e72b604e7.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    }
+  },
+  "actualImage": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69r2-production-fl4casug/c2-production.json.output.mjs",
+    "sha256": "1f19469354bc6fd57bf7e1a2e42a23b8b12a2c2fdda42597533c22e6229f932b"
+  },
+  "imageBytesComparedWithNativeC1": {
+    "C1": 31876947,
+    "C2": 24685687,
+    "scope": "Rawimagebytesonly,notRAMorCPUcomparison; bootstrapstagechangesnotassumedtobewrapper-only"
+  },
+  "fixedpoint": "NOT_YET_RUN_NOT_EARNED",
+  "selfhostGreen": false,
+  "performanceClaim": false,
+  "localIsolation": false,
+  "R1OutcomeRetained": "FAILED600scheckbeforeemit; notoverwrittenbythisseparate1800sproduction-onlyprotocol"
+}

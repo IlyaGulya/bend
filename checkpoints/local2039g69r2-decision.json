@@ -1,0 +1,355 @@
+{
+  "schemaVersion": 1,
+  "version": "G69R2",
+  "status": "REJECTED_COST_QUALIFICATION_ALL_SEVEN_POINT_FILTERS_FAIL_NO_CPU_RAM_GAIN_NO_CUTOVER",
+  "mainBaseCheckpoint": "6f195347",
+  "sourceAlgorithmCheckpoint": "a5d6b207",
+  "sourceInheritedClosure": "6941127a",
+  "prospectiveProtocolCheckpoint": "ae5498b7",
+  "exactProductionDriverRequestCheckpoint": "a852f4fc",
+  "actualC2Checkpoint": "526b0f96",
+  "actualConsumerAndPhysicalProofCheckpoint": "69b5e9e3",
+  "acceptedCompilerAlgorithmsUnchanged": true,
+  "experimentalBranch": "selfhost/g69r2-production-fl4casug",
+  "R1Outcome": "FAILED600sfullcheckbeforeemit;preservednotretuned",
+  "R2Production": "PASSgenuineC1same53sourcehashes->C2;distinctpredeclared1800sproduction-onlybudget,canonicalbench600sunchanged",
+  "runtime": {
+    "release": "2.0.39-a3efe8a3801f423827424227172eed9802c5e6cb",
+    "node": "23.11.0",
+    "v8": "12.9.202.28-node.14",
+    "bun": "1.4.3",
+    "platform": "darwin25.6arm64",
+    "abi": 13,
+    "quantum": 64
+  },
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "nativeProductionMs": 300000,
+    "throughputMs": 600000,
+    "smokeMs": 120000,
+    "workerStackMiB": 256,
+    "oldMiB": 6144,
+    "youngMiB": 128,
+    "parserFuel": 8000000,
+    "oneHeavyLane": true,
+    "ownImageProductionMs": 1800000
+  },
+  "actualC2Image": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69r2-production-fl4casug/c2-production.json.output.mjs",
+    "sha256": "1f19469354bc6fd57bf7e1a2e42a23b8b12a2c2fdda42597533c22e6229f932b"
+  },
+  "realSemanticGate": {
+    "own69": true,
+    "standaloneJS15": true,
+    "clangBuiltC3": true,
+    "typedReadbackLibrary28": true,
+    "sourceEmitter4FromR1": true,
+    "receipt": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69r2-production-fl4casug/repository/checkpoints/local2039g69r2-consumers.json",
+      "sha256": "78d8745ff7c6580bae5f8e71c896c91754152ad8b10ec06cbfedc1b13c8437bc"
+    }
+  },
+  "physicalMechanism": {
+    "removedRegistrationOccurrences": 12255,
+    "removedRegistrationBytes": 7179005,
+    "imageByteDifference": 7191260,
+    "keptRegistrationSequenceUnchangedSubsequence": true,
+    "privateBodiesShaUnchanged": true,
+    "allOtherTopLevelShaUnchanged": true,
+    "literalReadsBacked": true,
+    "scope": "Staticphysicalmechanismonly; notRAMorCPUgain"
+  },
+  "physicalReceipt": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69r2-production-fl4casug/repository/checkpoints/local2039g69r2-wrapper-activation.json",
+    "sha256": "78b779179d3d9bcfa69c3f2bfaa47d883d66a2fe703e541ac2894c1ae4d122b3"
+  },
+  "cleanSelected": {
+    "status": "ALL9FRESH_ROWS_VALID_SAME_INPUTS_COUNTERS_LIMITS_RUNTIME_RETAINED",
+    "receipt": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69r2-production-fl4casug/repository/checkpoints/local2039g69r2-selected-results.json",
+      "sha256": "f796eeb003dc273b4d3782dd35e04546029a56833750c10b1ec3cbc2c2633d5d"
+    },
+    "sameWork": {
+      "files": 52,
+      "modules": 17,
+      "declarations": 2954,
+      "expand": 263032,
+      "check": 1975761
+    },
+    "orders": [
+      "ABC",
+      "CAB",
+      "BCA"
+    ],
+    "nPairedTriads": 3,
+    "processes": 9,
+    "statistics": {
+      "schemaVersion": 1,
+      "C_over_A": {
+        "checkerCpuMs": {
+          "n": 3,
+          "logRatios": [
+            0.1350711084308988,
+            0.3179228571704034,
+            0.14782876998053998
+          ],
+          "meanLog": 0.2002742451939474,
+          "varianceLog": 0.01042158640704383,
+          "geometricMeanRatio": 1.2217377679317796,
+          "ci95": [
+            0.9480748129538684,
+            1.5743938697626347
+          ],
+          "baselineMedian": 87407.583,
+          "variantMedian": 100048.308,
+          "direction": "inconclusive"
+        },
+        "checkerWallMs": {
+          "n": 3,
+          "logRatios": [
+            0.5085625861094141,
+            -0.1658365585953105,
+            0.21297811506929756
+          ],
+          "meanLog": 0.18523471419446705,
+          "varianceLog": 0.11428082381369219,
+          "geometricMeanRatio": 1.203500885720336,
+          "ci95": [
+            0.5196815077493474,
+            2.787119342003279
+          ],
+          "baselineMedian": 88754.042542,
+          "variantMedian": 144939.313333,
+          "direction": "inconclusive"
+        },
+        "footprintBytes": {
+          "n": 3,
+          "logRatios": [
+            0.03237105228127395,
+            0.5464148196235749,
+            -0.01712537580162036
+          ],
+          "meanLog": 0.1872201653677428,
+          "varianceLog": 0.09737807383271632,
+          "geometricMeanRatio": 1.2058927516467017,
+          "ci95": [
+            0.5554556914696116,
+            2.617989788936405
+          ],
+          "baselineMedian": 1167426968,
+          "variantMedian": 1179003192,
+          "direction": "inconclusive"
+        },
+        "rssBytes": {
+          "n": 3,
+          "logRatios": [
+            -0.02392447152679668,
+            0.646372664076191,
+            -0.14860902182184985
+          ],
+          "meanLog": 0.1579463902425148,
+          "varianceLog": 0.18280672799885683,
+          "geometricMeanRatio": 1.1711034104549356,
+          "ci95": [
+            0.40487814592532206,
+            3.3873974473103456
+          ],
+          "baselineMedian": 1073086464,
+          "variantMedian": 1108803584,
+          "direction": "inconclusive"
+        },
+        "medianFootprintRatio": 1.0099160155772589,
+        "medianRSSRatio": 1.0332844753878099
+      },
+      "C_over_B": {
+        "checkerCpuMs": {
+          "n": 3,
+          "logRatios": [
+            0.053205499674434886,
+            0.43128832560317126,
+            -0.047252952533190465
+          ],
+          "meanLog": 0.1457469575814719,
+          "varianceLog": 0.06367337979376561,
+          "geometricMeanRatio": 1.156903405373441,
+          "ci95": [
+            0.6181092627832225,
+            2.165354201841276
+          ],
+          "baselineMedian": 88649.02100000001,
+          "variantMedian": 100048.308,
+          "direction": "inconclusive"
+        },
+        "checkerWallMs": {
+          "n": 3,
+          "logRatios": [
+            0.455556240698056,
+            0.48124552910775487,
+            -0.035506678090370336
+          ],
+          "meanLog": 0.3004316972384802,
+          "varianceLog": 0.0848059288986899,
+          "geometricMeanRatio": 1.3504416636952086,
+          "ci95": [
+            0.6550881897240369,
+            2.7838888193239035
+          ],
+          "baselineMedian": 89574.402875,
+          "variantMedian": 144939.313333,
+          "direction": "inconclusive"
+        },
+        "footprintBytes": {
+          "n": 3,
+          "logRatios": [
+            -0.11867995252413081,
+            0.6232866120744885,
+            0.011917735609762378
+          ],
+          "meanLog": 0.1721747983867067,
+          "varianceLog": 0.1568903403729894,
+          "geometricMeanRatio": 1.1878854555285732,
+          "ci95": [
+            0.44406830903420375,
+            3.1776008932617614
+          ],
+          "baselineMedian": 1224422088,
+          "variantMedian": 1179003192,
+          "direction": "inconclusive"
+        },
+        "rssBytes": {
+          "n": 3,
+          "logRatios": [
+            -0.12511278314264515,
+            0.6515619939920445,
+            -0.017939079805837702
+          ],
+          "meanLog": 0.16950337701452053,
+          "varianceLog": 0.17715693332344384,
+          "geometricMeanRatio": 1.184716347830675,
+          "ci95": [
+            0.4164159869250549,
+            3.3705546109829334
+          ],
+          "baselineMedian": 1128873984,
+          "variantMedian": 1108803584,
+          "direction": "inconclusive"
+        },
+        "medianFootprintRatio": 0.9629058504864215,
+        "medianRSSRatio": 0.98222086762166
+      },
+      "B_over_A": {
+        "checkerCpuMs": {
+          "n": 3,
+          "logRatios": [
+            0.08186560875646388,
+            -0.1133654684327679,
+            0.1950817225137305
+          ],
+          "meanLog": 0.054527287612475495,
+          "varianceLog": 0.024345455252925294,
+          "geometricMeanRatio": 1.056041292866115,
+          "ci95": [
+            0.7167175345232512,
+            1.5560149689656522
+          ],
+          "baselineMedian": 87407.583,
+          "variantMedian": 88649.02100000001,
+          "direction": "inconclusive"
+        },
+        "checkerWallMs": {
+          "n": 3,
+          "logRatios": [
+            0.05300634541135787,
+            -0.6470820877030653,
+            0.24848479315966795
+          ],
+          "meanLog": -0.11519698304401316,
+          "varianceLog": 0.22172927930215036,
+          "geometricMeanRatio": 0.8911905771828759,
+          "ci95": [
+            0.2766696204011595,
+            2.870646382164982
+          ],
+          "baselineMedian": 88754.042542,
+          "variantMedian": 89574.402875,
+          "direction": "inconclusive"
+        },
+        "footprintBytes": {
+          "n": 3,
+          "logRatios": [
+            0.15105100480540476,
+            -0.07687179245091369,
+            -0.02904311141138263
+          ],
+          "meanLog": 0.015045366981036146,
+          "varianceLog": 0.014445045822505295,
+          "geometricMeanRatio": 1.0151591182755209,
+          "ci95": [
+            0.7531302853169085,
+            1.3683529337613747
+          ],
+          "baselineMedian": 1167426968,
+          "variantMedian": 1224422088,
+          "direction": "inconclusive"
+        },
+        "rssBytes": {
+          "n": 3,
+          "logRatios": [
+            0.10118831161584842,
+            -0.005189329915853483,
+            -0.13066994201601206
+          ],
+          "meanLog": -0.01155698677200571,
+          "varianceLog": 0.013469972734682312,
+          "geometricMeanRatio": 0.9885095386750881,
+          "ci95": [
+            0.7409171002620349,
+            1.318839999381919
+          ],
+          "baselineMedian": 1073086464,
+          "variantMedian": 1128873984,
+          "direction": "inconclusive"
+        },
+        "medianFootprintRatio": 1.0488211439021682,
+        "medianRSSRatio": 1.051987907658483
+      },
+      "costGate": {
+        "cpuCAretain": false,
+        "cpuCBretain": false,
+        "everyCpuCAretain": false,
+        "wallCAretain": false,
+        "medianFootCAGain": false,
+        "geometricFootCBGain": false,
+        "medianRSSCARetain": false
+      },
+      "costGatePassed": false,
+      "selectedInference": {
+        "cpuCAretain": false,
+        "cpuCBretain": false,
+        "footCBGain": false
+      },
+      "selectedInferencePassed": false
+    },
+    "allSevenPointFiltersFail": true,
+    "allCandidateIntervalsInconclusive": true,
+    "retries": 0,
+    "exclusions": 0,
+    "explicitHighMemoryRowRetained": true
+  },
+  "environment": "Localnonisolated;clusteraliasunresolved,BEND_HOCunset,noSSHcapabilityhosts. No unrelatedprocesskill/priority/systemsettingschange. No causalattributionorqualifiedregressionclaimfromadversepoints.",
+  "fullFrozenSix": "NOT_RUN_NOT_EARNED",
+  "actualC2ToC3ByteFixedpoint": "NOT_RUN_NOT_EARNED",
+  "selfhostGreen": false,
+  "cpuRetentionQualified": false,
+  "lowerRamQualified": false,
+  "speedupClaim": false,
+  "ramGainClaim": false,
+  "sourceAndFrozenInputClosure": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69r2-production-fl4casug/repository/checkpoints/local2039g69r2-closing-hashes.json",
+    "sha256": "4ce8e60c0d08509b940e00f4801382caaf5f2a1af63d98aa9a1d038fefcb1a26"
+  },
+  "decision": "Rejectthisqualification,noalgorithmmerge. A smallerimageandfewerrootsarenotlowerpeakcheckerRAM. PreserveworkingBendimplementation,allregressionsandrequiredsourcesonexperimentalbranch;mainreceivesonlyjournalandcompactreceipts. Noadditionalfull/C3costs,noCIretuningorsampledropping.",
+  "nextInvestigation": "Measure actual peak-live heap owners/GC transitions before another memory mechanism; current source-byte savings do not identify the peak owner and restricted tag graphs omit closure/context roots."
+}

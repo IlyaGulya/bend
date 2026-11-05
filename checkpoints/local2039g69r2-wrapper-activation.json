@@ -1,0 +1,230 @@
+{
+  "schemaVersion": 1,
+  "version": "G69R2",
+  "status": "ACTUAL_C2_WRAPPER_OMISSION_AND_LITERAL_READ_COVERAGE_OBSERVED_NOT_RAM_PROOF",
+  "images": {
+    "C1": {
+      "schemaVersion": 2,
+      "status": "STATIC_ORDERED_REGISTRATION_CENSUS_NOT_RUNTIME_OR_RAM_PROOF",
+      "image": {
+        "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/native-stage1.json.mjs",
+        "sha256": "911dea40c1b15168e35adef3b6cbd45ba406d79f282462c3273e0f4a9ebe74f7",
+        "bytes": 31876947
+      },
+      "privateCount": 39862,
+      "privateBodiesSha256": "8db412bb46593653ab5e424196851316863bdc078bf699c2da3e7b912f5e4a44",
+      "nonDCount": 50743,
+      "nonDSha256": "7ee4a5fcc699c60853173b33b12c41261006f8335d5b37b91280db810728c58d",
+      "registrationCount": 12470,
+      "uniqueRegistrationKeys": 12469,
+      "duplicateKeys": [
+        [
+          "String.cmp",
+          2
+        ]
+      ],
+      "registrationBytes": 7278971,
+      "missingLiteralReads": [],
+      "dynamicReads": [
+        "$D[Object.hasOwn($D,q)?q:k]"
+      ]
+    },
+    "C2": {
+      "schemaVersion": 2,
+      "status": "STATIC_ORDERED_REGISTRATION_CENSUS_NOT_RUNTIME_OR_RAM_PROOF",
+      "image": {
+        "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69r2-production-fl4casug/c2-production.json.output.mjs",
+        "sha256": "1f19469354bc6fd57bf7e1a2e42a23b8b12a2c2fdda42597533c22e6229f932b",
+        "bytes": 24685687
+      },
+      "privateCount": 39862,
+      "privateBodiesSha256": "8db412bb46593653ab5e424196851316863bdc078bf699c2da3e7b912f5e4a44",
+      "nonDCount": 50743,
+      "nonDSha256": "7ee4a5fcc699c60853173b33b12c41261006f8335d5b37b91280db810728c58d",
+      "registrationCount": 215,
+      "uniqueRegistrationKeys": 214,
+      "duplicateKeys": [
+        [
+          "String.cmp",
+          2
+        ]
+      ],
+      "registrationBytes": 99966,
+      "missingLiteralReads": [],
+      "dynamicReads": [
+        "$D[Object.hasOwn($D,q)?q:k]"
+      ]
+    }
+  },
+  "unchangedPrivateBodyCount": true,
+  "privateBodyHashesEqual": true,
+  "nonRegistrationTopLevelHashesEqual": true,
+  "scope": "Orderedregistrationoccurrences,notunique-keyassumption; duplicatesarepreservedandreported. C1nativebootstrapandC2newemitterarenotassumedbyteidenticaloutsidewrappers. Actualbehaviorissuppliedbyseparaterealconsumerreceipt; bytesarenotmemorysavings.",
+  "failedUniqueKeyDiagnostic": {
+    "error": "DuplicateDregistration:String.cmp",
+    "scriptSource": "import{readFileSync,writeFileSync}from'node:fs';import{createHash}from'node:crypto';import{parse}from'/Users/ilyagulya/.bun/install/cache/acorn@8.19.0@@@1/dist/acorn.mjs';\nconst[path,out]=process.argv.slice(2),source=readFileSync(path,'utf8'),ast=parse(source,{ecmaVersion:'latest',sourceType:'module'}),sha=x=>createHash('sha256').update(x).digest('hex');\nconst nonD=createHash('sha256'),privateBodies=createHash('sha256'),registrations={},literalReads=new Set(),dynamicReads=[];let privateCount=0,nonDCount=0;\nconst reg=node=>{const e=node.expression;if(e?.type==='AssignmentExpression'&&e.left.type==='MemberExpression'&&e.left.object.type==='Identifier'&&e.left.object.name==='$D'&&e.left.computed&&e.left.property.type==='Literal')return e.left.property.value;if(e?.type==='CallExpression'&&e.callee.type==='MemberExpression'&&e.callee.object.name==='Object'&&e.callee.property.name==='defineProperty'&&e.arguments[0]?.name==='$D')return e.arguments[1]?.value;};\nfor(const node of ast.body){const key=reg(node),text=source.slice(node.start,node.end);if(typeof key==='string'){if(registrations[key])throw Error('DuplicateDregistration:'+key);registrations[key]={sha256:sha(text),bytes:Buffer.byteLength(text)};}else{nonD.update(text+'\\n');nonDCount++;}if(node.type==='FunctionDeclaration'&&/^\\$[bk][0-9]+$/.test(node.id?.name)){privateBodies.update(text+'\\n');privateCount++;}}\nconst stack=[[ast,null]];while(stack.length){const[node,parent]=stack.pop();if(!node||typeof node!=='object')continue;if(node.type==='MemberExpression'&&node.object.type==='Identifier'&&node.object.name==='$D'&&!(parent?.type==='AssignmentExpression'&&parent.left===node)){if(node.computed&&node.property.type==='Literal'&&typeof node.property.value==='string')literalReads.add(node.property.value);else dynamicReads.push(source.slice(node.start,node.end));}for(const[key,value]of Object.entries(node)){if(['start','end'].includes(key))continue;if(Array.isArray(value)){for(const child of value)if(child?.type)stack.push([child,node]);}else if(value?.type)stack.push([value,node]);}}\nconst missingLiteralReads=[...literalReads].filter(key=>!Object.hasOwn(registrations,key));const result={schemaVersion:1,status:'STATIC_AST_IDENTITY_CENSUS_NOT_RUNTIME_OR_RAM_PROOF',image:{path,sha256:sha(source),bytes:Buffer.byteLength(source)},privateCount,privateBodiesSha256:privateBodies.digest('hex'),nonDCount,nonDSha256:nonD.digest('hex'),registrationCount:Object.keys(registrations).length,registrationBytes:Object.values(registrations).reduce((s,x)=>s+x.bytes,0),registrations,literalReads:[...literalReads].sort(),missingLiteralReads,dynamicReads};writeFileSync(out,JSON.stringify(result)+'\\n',{flag:'wx'});console.log(JSON.stringify({...result,registrations:undefined,literalReads:undefined}));\n",
+    "fullFailure": {
+      "id": "C1-wrapper-census",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+        "--memory-mib=8192",
+        "--rss-mib=8192",
+        "--poll-ms=10",
+        "--timeout-ms=120000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69r2-production-fl4casug/image-wrapper-identity.mjs",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/native-stage1.json.mjs",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69r2-production-fl4casug/c1-wrapper-identity.json"
+      ],
+      "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69r2-production-fl4casug/repository",
+      "report": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69r2-production-fl4casug/c1-wrapper-identity.json",
+      "exitCode": 1,
+      "elapsedMs": 5845.550166999979,
+      "stdout": "",
+      "stderr": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69r2-production-fl4casug/image-wrapper-identity.mjs:5\nfor(const node of ast.body){const key=reg(node),text=source.slice(node.start,node.end);if(typeof key==='string'){if(registrations[key])throw Error('DuplicateDregistration:'+key);registrations[key]={sha256:sha(text),bytes:Buffer.byteLength(text)};}else{nonD.update(text+'\\n');nonDCount++;}if(node.type==='FunctionDeclaration'&&/^\\$[bk][0-9]+$/.test(node.id?.name)){privateBodies.update(text+'\\n');privateCount++;}}\n                                                                                                                                             ^\n\nError: DuplicateDregistration:String.cmp\n    at file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69r2-production-fl4casug/image-wrapper-identity.mjs:5:142\n    at ModuleJob.run (node:internal/modules/esm/module_job:274:25)\n    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:644:26)\n    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:98:5)\n\nNode.js v23.11.0\nHEAVY_GATE {\"status\":\"FAIL\",\"reason\":\"command_exit\",\"commandExitCode\":1,\"commandSignal\":0,\"peakRssBytes\":987856896,\"peakFootprintBytes\":1015731432,\"elapsedMs\":5794,\"timeoutMs\":120000,\"reportPhase\":\"complete\",\"ownedTreeStopped\":true,\"supervisorExitCode\":1,\"command\":[\"/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69r2-production-fl4casug/image-wrapper-identity.mjs\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/native-stage1.json.mjs\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69r2-production-fl4casug/c1-wrapper-identity.json\"],\"label\":\"heavy command\",\"exitCode\":1,\"reportPath\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793873200523-888ce7437470bdff.json\",\"memoryLimitBytes\":8589934592,\"rssLimitBytes\":8589934592}\n",
+      "guardian": {
+        "status": "FAIL",
+        "reason": "command_exit",
+        "commandExitCode": 1,
+        "commandSignal": 0,
+        "peakRssBytes": 987856896,
+        "peakFootprintBytes": 1015731432,
+        "elapsedMs": 5794,
+        "timeoutMs": 120000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 1,
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69r2-production-fl4casug/image-wrapper-identity.mjs",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/native-stage1.json.mjs",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69r2-production-fl4casug/c1-wrapper-identity.json"
+        ],
+        "label": "heavy command",
+        "exitCode": 1,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793873200523-888ce7437470bdff.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      },
+      "passed": false
+    }
+  },
+  "correctedOrderedAccounting": {
+    "exactScriptSource": "import{readFileSync,writeFileSync}from'node:fs';import{createHash}from'node:crypto';import{parse}from'/Users/ilyagulya/.bun/install/cache/acorn@8.19.0@@@1/dist/acorn.mjs';\nconst[path,out]=process.argv.slice(2),source=readFileSync(path,'utf8'),ast=parse(source,{ecmaVersion:'latest',sourceType:'module'}),sha=x=>createHash('sha256').update(x).digest('hex');\nconst nonD=createHash('sha256'),privateBodies=createHash('sha256'),registrations=[],registrationKeys=new Map(),literalReads=new Set(),dynamicReads=[];let privateCount=0,nonDCount=0;\nconst reg=node=>{const e=node.expression;if(e?.type==='AssignmentExpression'&&e.left.type==='MemberExpression'&&e.left.object.type==='Identifier'&&e.left.object.name==='$D'&&e.left.computed&&e.left.property.type==='Literal')return e.left.property.value;if(e?.type==='CallExpression'&&e.callee.type==='MemberExpression'&&e.callee.object.name==='Object'&&e.callee.property.name==='defineProperty'&&e.arguments[0]?.name==='$D')return e.arguments[1]?.value;};\nfor(const node of ast.body){const key=reg(node),text=source.slice(node.start,node.end);if(typeof key==='string'){registrations.push({key,sha256:sha(text),bytes:Buffer.byteLength(text)});registrationKeys.set(key,(registrationKeys.get(key)??0)+1);}else{nonD.update(text+'\\n');nonDCount++;}if(node.type==='FunctionDeclaration'&&/^\\$[bk][0-9]+$/.test(node.id?.name)){privateBodies.update(text+'\\n');privateCount++;}}\nconst stack=[[ast,null]];while(stack.length){const[node,parent]=stack.pop();if(!node||typeof node!=='object')continue;if(node.type==='MemberExpression'&&node.object.type==='Identifier'&&node.object.name==='$D'&&!(parent?.type==='AssignmentExpression'&&parent.left===node)){if(node.computed&&node.property.type==='Literal'&&typeof node.property.value==='string')literalReads.add(node.property.value);else dynamicReads.push(source.slice(node.start,node.end));}for(const[key,value]of Object.entries(node)){if(['start','end'].includes(key))continue;if(Array.isArray(value)){for(const child of value)if(child?.type)stack.push([child,node]);}else if(value?.type)stack.push([value,node]);}}\nconst missingLiteralReads=[...literalReads].filter(key=>!registrationKeys.has(key));const result={schemaVersion:2,status:'STATIC_ORDERED_REGISTRATION_CENSUS_NOT_RUNTIME_OR_RAM_PROOF',image:{path,sha256:sha(source),bytes:Buffer.byteLength(source)},privateCount,privateBodiesSha256:privateBodies.digest('hex'),nonDCount,nonDSha256:nonD.digest('hex'),registrationCount:registrations.length,uniqueRegistrationKeys:registrationKeys.size,duplicateKeys:[...registrationKeys].filter(([,count])=>count>1),registrationBytes:registrations.reduce((s,x)=>s+x.bytes,0),registrations,literalReads:[...literalReads].sort(),missingLiteralReads,dynamicReads};writeFileSync(out,JSON.stringify(result)+'\\n',{flag:'wx'});console.log(JSON.stringify({...result,registrations:undefined,literalReads:undefined}));\n",
+    "execution": {
+      "schemaVersion": 1,
+      "status": "ALL_CELLS_FINISHED",
+      "cells": [
+        {
+          "id": "C1-ordered-registration-occurrences",
+          "command": [
+            "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+            "--smol",
+            "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+            "--memory-mib=8192",
+            "--rss-mib=8192",
+            "--poll-ms=10",
+            "--timeout-ms=120000",
+            "--",
+            "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69r2-production-fl4casug/image-wrapper-identity.mjs",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/native-stage1.json.mjs",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69r2-production-fl4casug/c1-ordered-census.json"
+          ],
+          "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69r2-production-fl4casug/repository",
+          "report": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69r2-production-fl4casug/c1-ordered-census.json",
+          "exitCode": 0,
+          "elapsedMs": 7837.121167,
+          "stdout": "{\"schemaVersion\":2,\"status\":\"STATIC_ORDERED_REGISTRATION_CENSUS_NOT_RUNTIME_OR_RAM_PROOF\",\"image\":{\"path\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/native-stage1.json.mjs\",\"sha256\":\"911dea40c1b15168e35adef3b6cbd45ba406d79f282462c3273e0f4a9ebe74f7\",\"bytes\":31876947},\"privateCount\":39862,\"privateBodiesSha256\":\"8db412bb46593653ab5e424196851316863bdc078bf699c2da3e7b912f5e4a44\",\"nonDCount\":50743,\"nonDSha256\":\"7ee4a5fcc699c60853173b33b12c41261006f8335d5b37b91280db810728c58d\",\"registrationCount\":12470,\"uniqueRegistrationKeys\":12469,\"duplicateKeys\":[[\"String.cmp\",2]],\"registrationBytes\":7278971,\"missingLiteralReads\":[],\"dynamicReads\":[\"$D[Object.hasOwn($D,q)?q:k]\"]}\n",
+          "stderr": "HEAVY_GATE {\"status\":\"PASS\",\"reason\":\"command_exit\",\"commandExitCode\":0,\"commandSignal\":0,\"peakRssBytes\":1294385152,\"peakFootprintBytes\":1338334176,\"elapsedMs\":7752,\"timeoutMs\":120000,\"reportPhase\":\"complete\",\"ownedTreeStopped\":true,\"supervisorExitCode\":0,\"command\":[\"/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69r2-production-fl4casug/image-wrapper-identity.mjs\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/native-stage1.json.mjs\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69r2-production-fl4casug/c1-ordered-census.json\"],\"label\":\"heavy command\",\"exitCode\":0,\"reportPath\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793873351244-17666be02fce634c.json\",\"memoryLimitBytes\":8589934592,\"rssLimitBytes\":8589934592}\n",
+          "guardian": {
+            "status": "PASS",
+            "reason": "command_exit",
+            "commandExitCode": 0,
+            "commandSignal": 0,
+            "peakRssBytes": 1294385152,
+            "peakFootprintBytes": 1338334176,
+            "elapsedMs": 7752,
+            "timeoutMs": 120000,
+            "reportPhase": "complete",
+            "ownedTreeStopped": true,
+            "supervisorExitCode": 0,
+            "command": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69r2-production-fl4casug/image-wrapper-identity.mjs",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/native-stage1.json.mjs",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69r2-production-fl4casug/c1-ordered-census.json"
+            ],
+            "label": "heavy command",
+            "exitCode": 0,
+            "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793873351244-17666be02fce634c.json",
+            "memoryLimitBytes": 8589934592,
+            "rssLimitBytes": 8589934592
+          },
+          "passed": true
+        },
+        {
+          "id": "C2-ordered-registration-occurrences",
+          "command": [
+            "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+            "--smol",
+            "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+            "--memory-mib=8192",
+            "--rss-mib=8192",
+            "--poll-ms=10",
+            "--timeout-ms=120000",
+            "--",
+            "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69r2-production-fl4casug/image-wrapper-identity.mjs",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69r2-production-fl4casug/c2-production.json.output.mjs",
+            "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69r2-production-fl4casug/c2-ordered-census.json"
+          ],
+          "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69r2-production-fl4casug/repository",
+          "report": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69r2-production-fl4casug/c2-ordered-census.json",
+          "exitCode": 0,
+          "elapsedMs": 6443.702332999999,
+          "stdout": "{\"schemaVersion\":2,\"status\":\"STATIC_ORDERED_REGISTRATION_CENSUS_NOT_RUNTIME_OR_RAM_PROOF\",\"image\":{\"path\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69r2-production-fl4casug/c2-production.json.output.mjs\",\"sha256\":\"1f19469354bc6fd57bf7e1a2e42a23b8b12a2c2fdda42597533c22e6229f932b\",\"bytes\":24685687},\"privateCount\":39862,\"privateBodiesSha256\":\"8db412bb46593653ab5e424196851316863bdc078bf699c2da3e7b912f5e4a44\",\"nonDCount\":50743,\"nonDSha256\":\"7ee4a5fcc699c60853173b33b12c41261006f8335d5b37b91280db810728c58d\",\"registrationCount\":215,\"uniqueRegistrationKeys\":214,\"duplicateKeys\":[[\"String.cmp\",2]],\"registrationBytes\":99966,\"missingLiteralReads\":[],\"dynamicReads\":[\"$D[Object.hasOwn($D,q)?q:k]\"]}\n",
+          "stderr": "HEAVY_GATE {\"status\":\"PASS\",\"reason\":\"command_exit\",\"commandExitCode\":0,\"commandSignal\":0,\"peakRssBytes\":991084544,\"peakFootprintBytes\":1018559120,\"elapsedMs\":6371,\"timeoutMs\":120000,\"reportPhase\":\"complete\",\"ownedTreeStopped\":true,\"supervisorExitCode\":0,\"command\":[\"/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69r2-production-fl4casug/image-wrapper-identity.mjs\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69r2-production-fl4casug/c2-production.json.output.mjs\",\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69r2-production-fl4casug/c2-ordered-census.json\"],\"label\":\"heavy command\",\"exitCode\":0,\"reportPath\":\"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793873359085-d3efad7fa5990181.json\",\"memoryLimitBytes\":8589934592,\"rssLimitBytes\":8589934592}\n",
+          "guardian": {
+            "status": "PASS",
+            "reason": "command_exit",
+            "commandExitCode": 0,
+            "commandSignal": 0,
+            "peakRssBytes": 991084544,
+            "peakFootprintBytes": 1018559120,
+            "elapsedMs": 6371,
+            "timeoutMs": 120000,
+            "reportPhase": "complete",
+            "ownedTreeStopped": true,
+            "supervisorExitCode": 0,
+            "command": [
+              "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69r2-production-fl4casug/image-wrapper-identity.mjs",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69r2-production-fl4casug/c2-production.json.output.mjs",
+              "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69r2-production-fl4casug/c2-ordered-census.json"
+            ],
+            "label": "heavy command",
+            "exitCode": 0,
+            "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793873359085-d3efad7fa5990181.json",
+            "memoryLimitBytes": 8589934592,
+            "rssLimitBytes": 8589934592
+          },
+          "passed": true
+        }
+      ]
+    }
+  },
+  "rawRegistrationManifests": [
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69r2-production-fl4casug/c1-ordered-census.json",
+      "sha256": "342ab1502799d99a27b3ba606b97a7824f4420bbdd6a91b4d7107174cb0aec42"
+    },
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69r2-production-fl4casug/c2-ordered-census.json",
+      "sha256": "86314d9bf23ec087b473a56e5d82b43baea58591f852e5371b295b69b8f06197"
+    }
+  ]
+}

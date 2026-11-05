@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "version": "G69R2",
+  "status": "FOUR_OWNED_TEMPORARY_SCRIPTS_REMOVED_AFTER_REAL_C2_AND_ALL_NINE_MEASUREMENTS",
+  "removedScripts": [
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69r2-production-fl4casug/image-producer.mjs",
+      "sha256": "4a0f6f789c39a2851920c6cb50e598bfdd42995f736a251589a172ef77d0ae73"
+    },
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69r2-production-fl4casug/experiment-controller.mjs",
+      "sha256": "72b9a9c2cb9b5eb468637a51bf54eab5e6096af4d43bb6e59763908799125b3b"
+    },
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69r2-production-fl4casug/retention-statistics.ts",
+      "sha256": "0093f9103b426baa964ffeee3bcf4f77aef7e596b457d440daa9e2941a581e0c"
+    },
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69r2-production-fl4casug/image-wrapper-identity.mjs",
+      "sha256": "2eb87059683b93146c4daf8468c37b0e2a6ab533e255676cbf3ce320385bb4c4"
+    }
+  ],
+  "exactProductionScriptReceipt": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69r2-production-fl4casug/repository/checkpoints/local2039g69r2-production-driver.json",
+    "sha256": "3d2f308d7beabe46fbcab0e0c3de6d60fa3eee1d9d3630b6895c86f70a68fd77"
+  },
+  "exactControllerAndStatisticsSourceReceipt": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69r2-production-fl4casug/repository/checkpoints/local2039g69r2-selected-preflight.json",
+    "sha256": "6d84f7be105f17a539672402c6c04bf89b37fe6783be93a9460e16dec10c55ec"
+  },
+  "failedAndCorrectedCensusScriptsReceipt": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69r2-production-fl4casug/repository/checkpoints/local2039g69r2-wrapper-activation.json",
+    "sha256": "78b779179d3d9bcfa69c3f2bfaa47d883d66a2fe703e541ac2894c1ae4d122b3"
+  },
+  "requiredFrozenCompilerSourceManifest": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69r2-production-fl4casug/repository/checkpoints/local2039g69r2-compiler-source.corpus.json",
+    "sha256": "b82ba7875329092864f5fd1a079d74005aff4a3d4a35325db046d77cedd3002b"
+  },
+  "requiredSourceAndRegressionsRetainedOnBranch": "selfhost/g69r2-production-fl4casug",
+  "all158ClosingHashesMatch": true,
+  "all9MeasurementRowsRetained": true,
+  "productionAndAllMeasurementGuardiansStopOwnedTrees": true,
+  "unrelatedProcessesOrSettingsChanged": false,
+  "imagesAstTransportsCachesProfilesBulkLogsAddedToGit": false,
+  "fullSixAndC3": "NOT_RUN_NOT_EARNED"
+}
