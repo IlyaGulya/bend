@@ -1,0 +1,150 @@
+{
+  "schemaVersion": 1,
+  "version": "G73R1",
+  "status": "UNCHANGED_CANONICAL_GENERATOR_REPRODUCES_ALL_THREE_ACTIVE_BEND_OUTPUTS_BYTE_IDENTICALLY",
+  "preflightCheckpoint": "eed4fa72",
+  "cells": [
+    {
+      "id": "baseline-generator-owned",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+        "--memory-mib=8192",
+        "--rss-mib=8192",
+        "--poll-ms=10",
+        "--timeout-ms=120000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/baseline-repository/evals/checker_core_owned_source.ts"
+      ],
+      "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/baseline-repository",
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 1395474432,
+        "peakFootprintBytes": 798950984,
+        "elapsedMs": 4702,
+        "timeoutMs": 120000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/baseline-repository/evals/checker_core_owned_source.ts"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793886346041-f8e9189a474d309d.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      }
+    },
+    {
+      "id": "baseline-generator-steps",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+        "--memory-mib=8192",
+        "--rss-mib=8192",
+        "--poll-ms=10",
+        "--timeout-ms=120000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/baseline-repository/evals/emitter_step_lower.ts"
+      ],
+      "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/baseline-repository",
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 1519665152,
+        "peakFootprintBytes": 966805160,
+        "elapsedMs": 4991,
+        "timeoutMs": 120000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/baseline-repository/evals/emitter_step_lower.ts"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793886350871-5ee557043e77bd0f.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      }
+    }
+  ],
+  "outputIdentities": [
+    {
+      "path": "checkpoints/emitter_owned_v1.bend",
+      "expected": "8d82537fa6e02f07e88eb1cbd378223e7d3f75599df34265dc9fb24358e05fac",
+      "actual": "8d82537fa6e02f07e88eb1cbd378223e7d3f75599df34265dc9fb24358e05fac",
+      "matches": true
+    },
+    {
+      "path": "checkpoints/emitter_steps_v1.bend",
+      "expected": "7f7c8d2e57a3fcd3925b4286a8300668ae91b7e11a26317cea6da2df5c9ea425",
+      "actual": "7f7c8d2e57a3fcd3925b4286a8300668ae91b7e11a26317cea6da2df5c9ea425",
+      "matches": true
+    },
+    {
+      "path": "checkpoints/emitter_steps_component_v1.bend",
+      "expected": "e6bd090dc9b2a0b381e4a896922c91869571445b194a60898d893e1f2ce3b3c8",
+      "actual": "e6bd090dc9b2a0b381e4a896922c91869571445b194a60898d893e1f2ce3b3c8",
+      "matches": true
+    }
+  ],
+  "allOutputBytesMatch": true,
+  "metadata": {
+    "oldDefinitionCount": 2145,
+    "newDefinitionCount": 2145,
+    "oldSourceCalls": 5547,
+    "newSourceCalls": 5547,
+    "oldComposedLoweringSourceHash": "16f5e321dbc89da45e446cb56534d2b1cdc148cbf82f0eb2a4cdbd9dc4328199",
+    "newComposedLoweringSourceHash": "16f5e321dbc89da45e446cb56534d2b1cdc148cbf82f0eb2a4cdbd9dc4328199",
+    "currentGeneratorFileHash": "d40a4cb7102b160c86efe69b1bf0fd5413e30e4875c2252204f96635c9004201",
+    "generationRuntime": {
+      "ares": "c7a3138dcfe3bb0eaaf10c0c24c36dc66dc790ab",
+      "boringssl": "41bf9b59c2ebf277a7aa427e1ecad5cc80dd4d4f",
+      "bun": "1.4.3",
+      "icu": "78.1",
+      "libarchive": "27cbc7827172698143e440801fc0ba39ccb4f1f5",
+      "libdeflate": "92e6a0db9fa848d742f9eb286c92afc60f2c3dda",
+      "llhttp": "9.4.2",
+      "lolhtml": "725ce499aa9b71e38b7a2d0a9fbb6d7294a4079e",
+      "lshpack": "cf0f70dd10b352194c97448eb5d00b4aa484f531",
+      "mimalloc": "92ef6587c57b262f6e6abf513f7776a2f8d12aeb",
+      "modules": "147",
+      "napi": "10",
+      "node": "26.3.0",
+      "openssl": "1.1.0",
+      "picohttpparser": "f4d94b48b31e0abae029ebeafcfd9ca0680ede58",
+      "sqlite": "3.51.0",
+      "tinycc": "05f0fafaa3be31e31d7b4b5c17dc60f62c991171",
+      "typescript": "7.0.2",
+      "unicode": "17.0",
+      "usockets": "c6da4a4d3010e5553438c60f6bd76d981976867c",
+      "uv": "1.48.0",
+      "uwebsockets": "c6da4a4d3010e5553438c60f6bd76d981976867c",
+      "v8": "14.6.202.34-node.20",
+      "webkit": "0c06faadf65bf8e8c8ad3a5a8aca83e1e9ed653f",
+      "zig": "04e7f6ac1e009525bc00934f20199c68f04e0a24",
+      "zlib": "12731092979c6d07f42da27da673a9f6c7b13586",
+      "zstd": "f8745da6ff1ad1e7bab384bd1f9d742439278e99"
+    },
+    "scope": "ComposedloweringsourcehashisNOTgeneratorfilehash. Exactowned/steps/componentBendsourcebytesidentical;generatorfilepinrefreshandcheckoutcoordinatesmetadataonly. process.versionsinBunreportsNode/V8compatibilityfields;generationBunis1.4.3,measuredNodeisexplicit23.11binary."
+  },
+  "compilerImageChange": false,
+  "fixedpoint": "NOT_APPLICABLE_SOURCE_GENERATOR_CONTROL_ONLY"
+}

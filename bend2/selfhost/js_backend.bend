@@ -38,7 +38,7 @@ type Step is Data:
 type Reads is Data:
   Reads{locals: List<&2, U32>, slots: List<&2, U32>}
 type JsCtx is Data:
-  JsCtx{owner: String, plan: Plan, frames: List<&2, U32>}
+  JsCtx{owner: String, plan: Plan, frames: List<&2, U32>, leaves: Map<&2, Bool>}
 def js_source(sources: List<&2, String>) -> Maybe<&2, String>:
   match sources:
     case Nil{}: None{}
@@ -844,16 +844,141 @@ def block(body: BIR.Block, ctx: JsCtx) -> String:
     case BIR.TailDirect{code, args}: cat(["return ", tail_call(code, arguments(args)), ";"])
     case BIR.TailApply{fn, BIR.Arg{_, value}}: cat(["return run_tail(", atom(fn), ",", atom(value), ");"])
     case BIR.Failure{message}: cat(["throw ", js_quote(message), ";"])
-def code(item: BIR.Code) -> String:
+# Terminal leaves are a backend fact, not a new BIR operation. Classify the
+# scalarized Code bodies once per Program; keep only eligible Code.id keys in
+# the same persistent string-keyed Map used by capture plans. Calls perform one
+# compile-time lookup, never a code-list scan or an emitted runtime lookup.
+#
+# Value invariant (well-formed typed BIR and its public value ABI): literals
+# cannot name the three private pending objects; parameters/captures contain
+# evaluated source values. Strict Direct/Apply results bind only in cont_of,
+# after $split_done/run_base has consumed pending results, not in the caller's
+# Let. Tail results are control transfers, never stored as operands. Public
+# closures force through run_force/run_base, and lazy getters through run_base,
+# before a value escapes; host callbacks use that public ABI, not raw entries.
+# Copy, record construction/projection and the call-free primitives below
+# preserve this invariant, including for values nested in records/arrays.
+# Thus a leaf can return an input or projection without returning a scheduling
+# marker. This relies on the existing typed value/foreign ABI, not arbitrary
+# host access to private scheduler bindings or forged BIR.
+#
+# No Symbol is admitted, even in a return, field or call-site argument: its
+# getter can reenter the machine. FloatBits also stays out because atom emits
+# a helper call. No closure, region, direct/indirect/tail call or opaque helper
+# is admitted. In particular this is NOT transitive call-graph purity analysis.
+def js_leaf_atom(value: BIR.Atom) -> Bool:
+  match value:
+    case BIR.Local{_}: True{}
+    case BIR.Capture{_}: True{}
+    case BIR.Word{_}: True{}
+    case BIR.Natural{_}: True{}
+    case BIR.TextValue{_}: True{}
+    case BIR.Boolean{_}: True{}
+    case BIR.Null{}: True{}
+    case BIR.Undefined{}: True{}
+    case _: False{}
+def js_leaf_args(args: List<&2, BIR.Arg>) -> Bool:
+  match args:
+    case Nil{}: True{}
+    case BIR.Arg{_, value} <> rest: Bool.and(js_leaf_atom(value), js_leaf_args(rest))
+def js_leaf_fields(fields: List<&2, BIR.Field>) -> Bool:
+  match fields:
+    case Nil{}: True{}
+    case BIR.Field{_, _, _, value} <> rest: Bool.and(js_leaf_atom(value), js_leaf_fields(rest))
+# Each admitted primitive's primitive_runtime body is call-free. Even Math
+# calls and otherwise synchronous helpers (nat_chk, tuple, char_len, etc.)
+# remain excluded, matching the terminal-helper boundary of the diagnostic.
+# Adding a Primitive tag is fail-closed until its actual JS emission is reviewed.
+def js_leaf_primitive(primitive: BIR.Primitive) -> Bool:
+  match primitive:
+    case BIR.PrimU32Add{}: True{}
+    case BIR.PrimU32Sub{}: True{}
+    case BIR.PrimU32Div{}: True{}
+    case BIR.PrimNatSub{}: True{}
+    case BIR.PrimNatMin{}: True{}
+    case BIR.PrimNatMax{}: True{}
+    case BIR.PrimStringAppend{}: True{}
+    case BIR.PrimBoolOr{}: True{}
+    case BIR.PrimBoolXor{}: True{}
+    case BIR.PrimU32IsZero{}: True{}
+    case BIR.PrimU32Mod{}: True{}
+    case BIR.PrimU32And{}: True{}
+    case BIR.PrimU32Or{}: True{}
+    case BIR.PrimU32Xor{}: True{}
+    case BIR.PrimU32IsEq{}: True{}
+    case BIR.PrimU32IsNe{}: True{}
+    case BIR.PrimU32IsLt{}: True{}
+    case BIR.PrimU32IsLe{}: True{}
+    case BIR.PrimU32IsGt{}: True{}
+    case BIR.PrimU32IsGe{}: True{}
+    case BIR.PrimU32Inc{}: True{}
+    case BIR.PrimU32Not{}: True{}
+    case BIR.PrimU32Shl{}: True{}
+    case BIR.PrimU32Shr{}: True{}
+    case BIR.PrimU32Shln{}: True{}
+    case BIR.PrimU32Shrn{}: True{}
+    case BIR.PrimU32ToNat{}: True{}
+    case BIR.PrimU32FromNat{}: True{}
+    case BIR.PrimF32Neg{}: True{}
+    case BIR.PrimF32IsEq{}: True{}
+    case BIR.PrimF32IsNe{}: True{}
+    case BIR.PrimF32IsLt{}: True{}
+    case BIR.PrimF32IsLe{}: True{}
+    case BIR.PrimF32IsGt{}: True{}
+    case BIR.PrimF32IsGe{}: True{}
+    case BIR.PrimNatIsLt{}: True{}
+    case BIR.PrimStringEq{}: True{}
+    case BIR.PrimArraySet{}: True{}
+    case BIR.PrimNatPredecessor{}: True{}
+    case BIR.PrimArrayLeaf{}: True{}
+    case BIR.PrimArrayLeafValue{}: True{}
+    case BIR.PrimIsArrayLeaf{}: True{}
+    case BIR.PrimIsArrayNode{}: True{}
+    case BIR.PrimIsNatZero{}: True{}
+    case BIR.PrimIsNatSuccessor{}: True{}
+    case BIR.PrimIsStringEmpty{}: True{}
+    case BIR.PrimIsStringNonempty{}: True{}
+    case BIR.PrimIsTrue{}: True{}
+    case BIR.PrimIsFalse{}: True{}
+    case BIR.PrimSameValue{}: True{}
+    case _: False{}
+def js_leaf_op(op: BIR.Op) -> Bool:
+  match op:
+    case BIR.Copy{value}: js_leaf_atom(value)
+    case BIR.PrimitiveCall{primitive, args, _}: Bool.and(js_leaf_primitive(primitive), js_leaf_args(args))
+    case BIR.Construct{_, _, fields}: js_leaf_fields(fields)
+    case BIR.Project{value, _, _, _}: js_leaf_atom(value)
+    case BIR.HasTag{value, _, _}: js_leaf_atom(value)
+    case _: False{}
+def js_leaf_block(body: BIR.Block) -> Bool:
+  match body:
+    case BIR.Return{value}: js_leaf_atom(value)
+    case BIR.Let{_, op, next}: js_leaf_next(js_leaf_op(op), next)
+    case BIR.Branch{condition, yes, no}: Bool.and(js_leaf_atom(condition), Bool.and(js_leaf_block(yes), js_leaf_block(no)))
+    case BIR.Failure{_}: True{}
+    case _: False{}
+def js_leaf_next(terminal: Bool, next: BIR.Block) -> Bool:
+  match terminal:
+    case True{}: js_leaf_block(next)
+    case False{}: False{}
+def js_leaf_codes(items: List<&2, BIR.Code>, leaves: Map<&2, Bool>) -> Map<&2, Bool>:
+  match items:
+    case Nil{}: leaves
+    case BIR.Code{id, _, _, body} <> rest: js_leaf_codes(rest, js_leaf_add(js_leaf_block(body), id, leaves))
+def js_leaf_add(terminal: Bool, id: U32, leaves: Map<&2, Bool>) -> Map<&2, Bool>:
+  match terminal:
+    case True{}: Map.set(&2, Bool, leaves, U32.show(id), True{})
+    case False{}: leaves
+def code(item: BIR.Code, leaves: Map<&2, Bool>) -> String:
   match item:
     case BIR.Code{id, captures, parameters, body}:
       names = List.append(&2, String, capture_names(captures, 0), parameter_names(parameters))
-      +ctx = js_ctx(U32.show(id), plan_of(body))
+      +ctx = js_ctx(U32.show(id), plan_of(body), leaves)
       cat(["function ", code_name(id), "(", String.join(List.append(&2, String, names, ["$td=0"]), ","), "){", block(body, ctx), "}\n", String.join(conts(body, ctx), "")])
-def codes(items: List<&2, BIR.Code>) -> String:
+def codes(items: List<&2, BIR.Code>, +leaves: Map<&2, Bool>) -> String:
   match items:
     case Nil{}: ""
-    case item <> rest: cat([code(item), codes(rest)])
+    case item <> rest: cat([code(item, leaves), codes(rest, leaves)])
 
 # A rendered block belongs to one owner, a code body or a lazy declaration
 # body, and sees the frame-form regions around it. `frames` names exactly the
@@ -862,27 +987,31 @@ def codes(items: List<&2, BIR.Code>) -> String:
 # is named after the call's own local id, which WF-2 makes program-unique.
 # `plan` is that one body's capture plan: the split emission and the hoisted
 # declaration of the same continuation read one entry, and the plan dies with
-# the body that built it.
-def js_ctx(owner: String, plan: Plan) -> JsCtx:
-  JsCtx{owner, plan, Nil{}}
+# the body that built it. `leaves` is shared across all owners, including lazy
+# bodies and their continuations; it never becomes emitted program data.
+def js_ctx(owner: String, plan: Plan, leaves: Map<&2, Bool>) -> JsCtx:
+  JsCtx{owner, plan, Nil{}, leaves}
 def js_ctx_inside(ctx: JsCtx, label: U32) -> JsCtx:
   match ctx:
-    case JsCtx{owner, plan, frames}: JsCtx{owner, plan, label <> frames}
+    case JsCtx{owner, plan, frames, leaves}: JsCtx{owner, plan, label <> frames, leaves}
 def js_ctx_owner(ctx: JsCtx) -> String:
   match ctx:
-    case JsCtx{owner, _, _}: owner
+    case JsCtx{owner, _, _, _}: owner
 def js_ctx_has(ctx: JsCtx, label: U32) -> Bool:
   match ctx:
-    case JsCtx{_, _, frames}: frame_has(frames, label)
+    case JsCtx{_, _, frames, _}: frame_has(frames, label)
 def js_ctx_cont(ctx: JsCtx, id: U32) -> Caps:
   match ctx:
-    case JsCtx{_, plan, _}: plan_cont(plan, id)
+    case JsCtx{_, plan, _, _}: plan_cont(plan, id)
 def js_ctx_thunk(ctx: JsCtx, label: U32) -> Caps:
   match ctx:
-    case JsCtx{_, plan, _}: plan_thunk(plan, label)
+    case JsCtx{_, plan, _, _}: plan_thunk(plan, label)
 def js_ctx_frame(ctx: JsCtx, label: U32) -> Bool:
   match ctx:
-    case JsCtx{_, plan, _}: plan_frame(plan, label)
+    case JsCtx{_, plan, _, _}: plan_frame(plan, label)
+def js_ctx_leaf(ctx: JsCtx, code: U32) -> Bool:
+  match ctx:
+    case JsCtx{_, _, _, leaves}: js_key_member(leaves, U32.show(code))
 def frame_has(frames: List<&2, U32>, label: U32) -> Bool:
   match frames:
     case Nil{}: False{}
@@ -1331,18 +1460,35 @@ def js_scalar_codes(items: List<&2, BIR.Code>, acc: List<&2, BIR.Code>) -> List<
 # filled.
 def let_step(id: U32, op: BIR.Op, next: BIR.Block, ctx: JsCtx) -> String:
   match op:
-    case BIR.Direct{code, args}: split_direct(id, code, args, js_ctx_cont(ctx, id))
+    case BIR.Direct{code, args}: split_direct(id, code, args, js_ctx_cont(ctx, id), Bool.and(js_ctx_leaf(ctx, code), js_leaf_args(args)))
     case BIR.Apply{fn, arg}: split_apply(id, fn, arg, js_ctx_cont(ctx, id))
     case _: cat(["const ", local(id), "=", operation(op), ";", block(next, ctx)])
-def split_direct(id: U32, code: U32, args: List<&2, BIR.Arg>, caps: Caps) -> String:
+def split_direct(id: U32, code: U32, args: List<&2, BIR.Arg>, caps: Caps, leaf: Bool) -> String:
   +count = List.length(&2, BIR.Arg, args)
-  split_direct_selected(Bool.and(Nat.is_gt(count, 0n), Nat.is_le(count, 32n)), id, code, args, caps, count)
-def split_direct_selected(selected: Bool, id: U32, code: U32, args: List<&2, BIR.Arg>, caps: Caps, count: Nat) -> String:
+  split_direct_selected(Bool.and(Nat.is_gt(count, 0n), Nat.is_le(count, 32n)), id, code, args, caps, count, leaf)
+def split_direct_selected(selected: Bool, id: U32, code: U32, args: List<&2, BIR.Arg>, caps: Caps, count: Nat, leaf: Bool) -> String:
   match selected:
-    case True{}: split_direct_args(id, code, args, caps, count)
+    case True{}: split_direct_args(id, code, args, caps, count, leaf)
     case False{}: split_direct_many(id, code, args, caps)
-def split_direct_args(id: U32, code: U32, args: List<&2, BIR.Arg>, caps: Caps, count: Nat) -> String:
-  cat(["{const ", arg_temps(args, 0n), ";", cap_stores(caps_locals(caps)), slot_stores(caps_slots(caps)), "if($td<64){const $kb=$sp-", Nat.show(cap_total(caps)), ",$ki=$split_enter(", cont_name(id), ",$kb);try{return $split_done(", code_name(code), "(", String.join(arg_temp_names(args, 0n), ","), "),$ki,$td+1);}catch($e){$split_abort($ki,$kb);throw $e;}}", arg_moves(count, 0n), "return $split(", code_name(code), ",", Nat.show(count), ",", cont_name(id), ",$sp-", Nat.show(cap_total(caps)), ");}"])
+def split_direct_args(id: U32, code: U32, args: List<&2, BIR.Arg>, caps: Caps, count: Nat, leaf: Bool) -> String:
+  cat(["{const ", arg_temps(args, 0n), ";", cap_stores(caps_locals(caps)), slot_stores(caps_slots(caps)), split_direct_eager(leaf, id, code, args, caps), arg_moves(count, 0n), "return $split(", code_name(code), ",", Nat.show(count), ",", cont_name(id), ",$sp-", Nat.show(cap_total(caps)), ");}"])
+# Both arms retain argument-before-capture order, the original continuation and
+# the depth-exhausted $split. A terminal leaf neither suspends nor changes the
+# private frame stack. Its success therefore has the same pre-frame ksp and
+# capture base as $split_done after popping; restore sp before entering k.
+# Save ksp even without a push: the SAME catch covers leaf AND continuation,
+# whose reentry/throw may have installed frames. $split_abort remains the
+# canonical unwind. Both callee and continuation receive the original td+1.
+def split_direct_eager(leaf: Bool, id: U32, code: U32, args: List<&2, BIR.Arg>, caps: Caps) -> String:
+  cat(["if($td<64){const $kb=$sp-", Nat.show(cap_total(caps)), ",$ki=", split_direct_frame(leaf, id), ";try{", split_direct_result(leaf, id, call(code, arg_temp_names(args, 0n))), "}catch($e){$split_abort($ki,$kb);throw $e;}}"])
+def split_direct_frame(leaf: Bool, id: U32) -> String:
+  match leaf:
+    case True{}: "$ksp"
+    case False{}: cat(["$split_enter(", cont_name(id), ",$kb)"])
+def split_direct_result(leaf: Bool, id: U32, value: String) -> String:
+  match leaf:
+    case True{}: cat(["const $x=", value, ";$sp=$kb;return ", cont_name(id), "($x,$kb,$td+1);"])
+    case False{}: cat(["return $split_done(", value, ",$ki,$td+1);"])
 def split_direct_many(id: U32, code: U32, args: List<&2, BIR.Arg>, caps: Caps) -> String:
   cat([cap_stores(caps_locals(caps)), slot_stores(caps_slots(caps)), "return $splitm(", code_name(code), ",[", String.join(arguments(args), ","), "],", cont_name(id), ",$sp-", Nat.show(cap_total(caps)), ");"])
 def split_apply(id: U32, fn: BIR.Atom, arg: BIR.Arg, caps: Caps) -> String:
@@ -1789,13 +1935,13 @@ def descriptor(value: BIR.Descriptor) -> String:
 
 def deferred(key: String, value: String) -> String:
   cat(["Object.defineProperty($D,", js_quote(key), ",{enumerable:true,configurable:true,get(){const $base0=$ksp,$sp0=$sp;return run_base(", value, ",$base0,$sp0);}});\n"])
-def declaration(item: BIR.Declaration, +natives: Map<&2, String>, index: Nat) -> String:
+def declaration(item: BIR.Declaration, +natives: Map<&2, String>, index: Nat, leaves: Map<&2, Bool>) -> String:
   match item:
     case BIR.FunctionDeclaration{key, code, parameters}:
       cat(["$D[", js_quote(key), "]=", closure(code, Nil{}, parameters), ";\n"])
     case BIR.LazyDeclaration{key, body}:
       scoped = js_scalar(body)
-      +ctx = js_ctx(cat(["L", Nat.show(index)]), plan_of(scoped))
+      +ctx = js_ctx(cat(["L", Nat.show(index)]), plan_of(scoped), leaves)
       cat([deferred(key, cat(["(()=>{", block(scoped, ctx), "})()"])), String.join(conts(scoped, ctx), "")])
     case BIR.NativeDeclaration{key, primitive, uses}:
       native_declaration(key, primitive, uses)
@@ -1811,10 +1957,10 @@ def foreign_source(chosen: Maybe<&2, String>, +key: String, +imported: String, a
       deferred(key, cat(["(()=>{throw new Error(", js_quote(String.append("bend: foreign definition has no .js import: ", imported)), ")})()"]))
 def native_declaration(+key: String, primitive: BIR.Primitive, +uses: List<&2, BIR.Quantity>) -> String:
   cat(["$D[", js_quote(key), "]=", primitive_public(primitive), ";\n$TYPEF[", js_quote(key), "]={n:", Nat.show(List.length(&2, BIR.Quantity, uses)), ",q:[", String.join(quantities(uses), ","), "],intrinsic:$D[", js_quote(key), "]};\n"])
-def declarations(items: List<&2, BIR.Declaration>, +natives: Map<&2, String>, index: Nat) -> String:
+def declarations(items: List<&2, BIR.Declaration>, +natives: Map<&2, String>, index: Nat, +leaves: Map<&2, Bool>) -> String:
   match items:
     case Nil{}: ""
-    case item <> rest: cat([declaration(item, natives, index), declarations(rest, natives, (index + 1n : Nat))])
+    case item <> rest: cat([declaration(item, natives, index, leaves), declarations(rest, natives, (index + 1n : Nat), leaves)])
 def field_names(items: List<&2, Maybe<&2, String>>) -> List<&2, String>:
   match items:
     case Nil{}: Nil{}
@@ -2056,7 +2202,8 @@ def program_source(+program: BIR.Program, effects: String) -> String:
   +natives = js_native_markers(program)
   match js_scalar_program(program):
     case BIR.Program{bodies, values, +layouts, types, functions, end}:
-      cat([js_runtime(), js_runtime_direct(), js_runtime_extra(), js_runtime_show(), js_runtime_cli(), js_runtime_io(), js_runtime_array(), js_runtime_foreign(), js_runtime_namespace(), primitive_runtime(), map_find_runtime(layouts), constructor_layouts(layouts), families(types), type_functions(functions), effects, codes(bodies), declarations(values, natives, 0n), ending(end, natives)])
+      +leaves = js_leaf_codes(bodies, Map.new(&2, Bool))
+      cat([js_runtime(), js_runtime_direct(), js_runtime_extra(), js_runtime_show(), js_runtime_cli(), js_runtime_io(), js_runtime_array(), js_runtime_foreign(), js_runtime_namespace(), primitive_runtime(), map_find_runtime(layouts), constructor_layouts(layouts), families(types), type_functions(functions), effects, codes(bodies, leaves), declarations(values, natives, 0n, leaves), ending(end, natives)])
 
 # Publish the same continuation frame before a bounded direct call. A pending
 # result or an unpopped region frame belongs to run_base; only an ordinary
