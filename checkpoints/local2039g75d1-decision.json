@@ -1,0 +1,162 @@
+{
+  "schemaVersion": 1,
+  "version": "local2039g75d1",
+  "status": "COMPLETE_E1_HOT_CLOSED_CLASS_CANDIDATES_AND_E2_IDENTITY_INSTABILITY_TRIGGER",
+  "sourceCompilerUnchanged": true,
+  "newCompilerBuild": "NOT_RUN_NOT_EARNED_BY_MEASUREMENT_STABILITY",
+  "defaultCutover": false,
+  "qualifiedSpeedOrMemoryGain": false,
+  "selfhostGreen": false,
+  "sourceCoverage": {
+    "baselineSites": 10739,
+    "provenElided": 1263,
+    "provenRetainedLexical": 8909,
+    "provenRetainedLazySymbol": 1,
+    "unmatchedOrAmbiguous": 566,
+    "C2Sites": 1268,
+    "C2SitesMatchedA": 1263,
+    "C2SitesUnmatchedA": 5,
+    "sameInputBookC1G72Sites": 10777,
+    "C1RetainedClosedLexicalPlainArguments": 9503,
+    "C1RetainedLexicalFloatBitsArguments": 5,
+    "C1RetainedLazySymbol": 1,
+    "C1C2ExactReverseHashBridge": true,
+    "dependencyClosedFunctionMatches": 37667,
+    "transferredSourceBoundPriorASelfShare": 0.22046842195771377,
+    "sourceSourceNotCapturedBIR": true,
+    "candidateAliases": [
+      {
+        "name": "checker_unbox",
+        "matchedRetainedSites": 2588
+      },
+      {
+        "name": "Bool.and",
+        "matchedRetainedSites": 287
+      },
+      {
+        "name": "arena_words_count",
+        "matchedRetainedSites": 92
+      }
+    ],
+    "limits": "StaticcountsandA-ownercaller/continuationpriorsarenotdynamicC2coverageorremovablesavings. Wholewell-scopedcall-freeCodeproofrequired;nohardcodednamesorblanketASTwhitelist."
+  },
+  "sourceProof": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g75-crosswalk-url-y5s4_64z/repository/checkpoints/local2039g75d1-source-proof.json",
+    "sha256": "c0bf19b6c3b3f8ec94b12df5380dc0e63743c7b9f56c5b882e651ffaa1105a18"
+  },
+  "executedCrosswalk": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g75-crosswalk-url-y5s4_64z/repository/checkpoints/local2039g75d1-crosswalk.json",
+    "sha256": "cad040f8f3afd9e6bd471d2baf06ee6ff229c01f067e9e5e0410ff8303b2f9bf"
+  },
+  "URLControl": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g75-crosswalk-url-y5s4_64z/repository/checkpoints/local2039g75d1-url-control-results.json",
+    "sha256": "26031911f191724075e26caf5ba76acdc5fbb89fccff32437982f6d31f5c2abd"
+  },
+  "URLResult": {
+    "schemaVersion": 1,
+    "Y_over_X": {
+      "checkerCpuMs": {
+        "n": 2,
+        "logRatios": [
+          0.05589257645982449,
+          0.12050567153098271
+        ],
+        "meanLog": 0.0881991239954036,
+        "varianceLog": 0.0020874260273372656,
+        "geometricMeanRatio": 1.0922055847162901,
+        "ci95": [
+          0.7244848102275929,
+          1.6465673571688908
+        ],
+        "baselineMedian": 66183.1425,
+        "variantMedian": 72275.699,
+        "direction": "inconclusive"
+      },
+      "checkerWallMs": {
+        "n": 2,
+        "logRatios": [
+          0.04040727448199976,
+          0.10665546410967358
+        ],
+        "meanLog": 0.07353136929583667,
+        "varianceLog": 0.0021944113144721144,
+        "geometricMeanRatio": 1.0763022989875657,
+        "ci95": [
+          0.7065578758466261,
+          1.6395353847239273
+        ],
+        "baselineMedian": 56357.7956665,
+        "variantMedian": 60630.6554585,
+        "direction": "inconclusive"
+      },
+      "footprintBytes": {
+        "n": 2,
+        "logRatios": [
+          -0.12108176004050504,
+          -0.14152055143864872
+        ],
+        "meanLog": -0.13130115573957687,
+        "varianceLog": 0.0002088720969084161,
+        "geometricMeanRatio": 0.8769536349989702,
+        "ci95": [
+          0.7701647008710987,
+          0.9985496310958835
+        ],
+        "baselineMedian": 1331704788,
+        "variantMedian": 1167826580,
+        "direction": "inconclusive"
+      },
+      "rssBytes": {
+        "n": 2,
+        "logRatios": [
+          -0.12577570040041877,
+          -0.1237026902103698
+        ],
+        "meanLog": -0.12473919530539429,
+        "varianceLog": 2.1486856240234474e-06,
+        "geometricMeanRatio": 0.8827270919356914,
+        "ci95": [
+          0.8711777551594873,
+          0.8944295400363987
+        ],
+        "baselineMedian": 1267728384,
+        "variantMedian": 1119068160,
+        "direction": "improvement"
+      },
+      "medianFootprintRatio": 0.8769410386771096,
+      "medianRSSRatio": 0.8827349565756824
+    },
+    "pairRatios": {
+      "cpu": [
+        1.0574840789513662,
+        1.1280671388153498
+      ],
+      "footprint": [
+        0.8859615203818072,
+        0.8680373359855224
+      ]
+    },
+    "sameDirectionBothPairs": {
+      "cpu": true,
+      "footprint": true
+    },
+    "stabilityTriggers": {
+      "cpuDeparture": true,
+      "footprintMedianDeparture": true,
+      "clearCPUOrderReversal": false,
+      "clearFootprintOrderReversal": false
+    },
+    "pauseSmallEffectAttribution": true,
+    "acceptanceEvidence": false,
+    "scope": "FourfreshXYYXsamebyteactualC2runs,onefixeddriver;existingpairedlogStudent95. Atriggerkeepsidentity/cohortunresolved;nullisnotCIequivalenceorrehabilitationofG73/G74;nohistoricalrowpooling."
+  },
+  "nextRequiredDiscriminator": {
+    "kind": "PREREGISTER_CONTENT_BY_MODULE_URL_SLOT_CROSSOVER",
+    "reason": "Identicalimagebyteswithonlyrequest.imageURLchangedmoveCPUandphysicalpeakenoughtoconfoundsmalltransformcomparisons;bothdirectionsconsistentherebutCIandcauseremainlimited.",
+    "proposedControls": "UseimmutableoriginalAandC2contentscrossedoverthesamefixedURLslotswithonefixeddriver/freshprocesses;recordcopy/snapshotandbefore/afterhashledgersforeachslot,balancedorders,originalworkloads/runtime/limitsandallrows. SourceorVMmechanismattributionrequiresseparatingcontentfromorigin/cohort.",
+    "notRunInThisE1E2Assignment": true,
+    "noRetrospectiveRehabilitation": "G73memoryrejection,G74testedformrejectionandoldunqualifiedCPUclaimsremainunchanged."
+  },
+  "sourceClassNextStepAfterControls": "Aseparateprospectivesemantic/activationdiagnosticmaytargetclosedtypedtag-guardedprojections/BooleanselectionwithoutSymbol/LoadSymbol/FloatBits/opaque/suspendingrelaxation;sourceBIRmustcertifywholeCode,captures/evaluation/depth/catch/reentryunchanged. E2pausessmall-effectperformanceattributionfirst.",
+  "scope": "Bothselectedexperimentscomplete.NoASTcandidateimagepatch,sourcechange,defaultcutover,newcompilerbuildorextrapolatedspeedup. ExactC1/C2bridgewascomputedinmemoryonly;fullmapsandimagesoutsideGit."
+}
