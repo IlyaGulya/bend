@@ -1,0 +1,353 @@
+{
+  "schemaVersion": 1,
+  "version": "G69R1",
+  "status": "AUTHENTIC_NATIVE_C1_FULL_SOURCE_PRODUCTION_PASS_OLD_WRAPPER_STORAGE_NOT_PERFORMANCE_CANDIDATE",
+  "sourceFreezeCheckpoint": "b5e1a0f9",
+  "sourceAlgorithmCheckpoint": "a5d6b207",
+  "command": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/evals/native_compiler_experiment.ts",
+    "--mode=run",
+    "--corpus=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/r1-compiler-source.corpus.json",
+    "--build=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g44d1-native-build.json",
+    "--report=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/native-stage1.json",
+    "--phase=compile",
+    "--threads=1"
+  ],
+  "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/repository",
+  "sourceManifest": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/r1-compiler-source.corpus.json",
+    "sha256": "f2e68c4e1363e94061520245c7bdca848fb0c5c8da22b0a1e0d446024d0cbb2d"
+  },
+  "image": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/native-stage1.json.mjs",
+    "sha256": "911dea40c1b15168e35adef3b6cbd45ba406d79f282462c3273e0f4a9ebe74f7"
+  },
+  "report": {
+    "status": "NATIVE_FULL_COMPILE_PASS",
+    "boundary": {
+      "host": "trusted C file/import loader and serial opaque native Run chunk driver",
+      "sourceAlgorithms": "unchanged canonical Bend parser/expansion/checker/JS library emitter",
+      "hostChecking": false,
+      "hostParsing": false,
+      "embeddedSource": false,
+      "cachedAst": false,
+      "parserFuelRepresentation": "eager native 8M-cell chain per source; JS harness uses lazy cells for the same finite fuel; allocation time remains included in parse",
+      "fuelMemoryEvidence": "per-source native process RSS high-water before/after allocation (not isolated live-byte attribution); guardian samples whole-tree RSS and physical footprint including fuel",
+      "outputPatches": 0,
+      "checksExcluded": 0,
+      "nativeBinaryBootstrap": false
+    },
+    "build": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g44d1-native-build.json",
+    "buildSha256": "fc276d3926b75a589e00c2cf45e2c0b725d080b83fae8c30df26d03eff1f398f",
+    "protectedPins": {
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/evals/native_compiler_experiment.ts": "5f952045eb0dc22444cce4941c359ff6d8e1851f5a720e9c776c111cf97b0ed4",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/evals/native_compiler_llvm.ts": "1adbf5da5b9535aee9e4cd9c62d9396c742a22ebf187d72672fa22de21f6abaf",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/bend2/bend.ts": "22b5915cd7cccd23b6aa28849b23a7f1e3549333cdd0954ab48103ddd0777e9e",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/bend2/comp.ts": "880a9b3b86f273852a39fc664f8c3d7b71e3860b6d365e4321949fc812b6e7cc",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/evals/native_compiler_driver.bend": "768203e900f53cdf8d90b50966631ca3a3964dd50003658b07a28b39395f3ec3",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/evals/native_compiler_host.c": "7d75edf7c7b8ac045df772b242e885801b9ab3fae5fc346957489a35847d66fe",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/bend2/base.bend": "21baec76caf1a6cfd4a544340b291f7bb55bf30cc841f9f5f29e3b12a1a4d614",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/evals/heavy_gate.ts": "e72f2b81970be76734df918e35b1a4289d0fb194039e5ca20e9785e5ac0ee015",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/evals/heavy_gate_native.c": "1ff233edacdbf13c6ffd4a8bf38cbf153629e8c76be4860deec8a5b591d3fa8b",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/r1-compiler-source.corpus.json": "f2e68c4e1363e94061520245c7bdca848fb0c5c8da22b0a1e0d446024d0cbb2d"
+    },
+    "corpus": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/r1-compiler-source.corpus.json",
+    "corpusSha256": "f2e68c4e1363e94061520245c7bdca848fb0c5c8da22b0a1e0d446024d0cbb2d",
+    "ccOptimization": {
+      "level": 1,
+      "flag": "-O1",
+      "officialDefault": false,
+      "diagnosticTradeoff": true
+    },
+    "threads": 1,
+    "multithread": false,
+    "command": [
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g44d1-native",
+      "+RTS",
+      "--threads",
+      "1",
+      "--gpu",
+      "off",
+      "--RTS",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/repository/checkpoints/local2039g49-compiler-root.bend",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/repository/bend2/base.bend",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/native-stage1.json.runtime.tsv",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/native-stage1.json.exports.txt",
+      "compile",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/native-stage1.json.mjs"
+    ],
+    "elapsedMs": 203206.119375,
+    "workload": {
+      "target": "js",
+      "sources": 18,
+      "externals": 35
+    },
+    "phases": [
+      {
+        "phase": "parse",
+        "elapsedMs": 56774.901,
+        "userCpuMs": 7849.577,
+        "systemCpuMs": 532.593,
+        "modules": 18,
+        "sourceBytes": 7900921,
+        "foreignBytes": 78415,
+        "eagerFuelCells": 144000000,
+        "fuelBuildMs": 8301.136
+      },
+      {
+        "phase": "expand",
+        "elapsedMs": 18886.411,
+        "userCpuMs": 5874.972,
+        "systemCpuMs": 318.025,
+        "chunkAdvances": 1071878,
+        "chunkQuantum": 64
+      },
+      {
+        "phase": "check",
+        "elapsedMs": 101697.279,
+        "userCpuMs": 78866.316,
+        "systemCpuMs": 1288.251,
+        "chunkAdvances": 10484206,
+        "chunkQuantum": 64
+      },
+      {
+        "phase": "emit",
+        "elapsedMs": 23570.319,
+        "userCpuMs": 16909.914,
+        "systemCpuMs": 520.725,
+        "chunkAdvances": 1290254,
+        "chunkQuantum": 64
+      }
+    ],
+    "phaseStarts": [
+      {
+        "phase": "parse"
+      },
+      {
+        "phase": "expand"
+      },
+      {
+        "phase": "check"
+      },
+      {
+        "phase": "emit"
+      }
+    ],
+    "fuel": [
+      {
+        "sourceOrdinal": 1,
+        "cells": 8000000,
+        "elapsedMs": 252.564,
+        "processPeakRssBeforeBytes": 5816320,
+        "processPeakRssAfterBytes": 133840896
+      },
+      {
+        "sourceOrdinal": 2,
+        "cells": 8000000,
+        "elapsedMs": 384.835,
+        "processPeakRssBeforeBytes": 176422912,
+        "processPeakRssAfterBytes": 176422912
+      },
+      {
+        "sourceOrdinal": 3,
+        "cells": 8000000,
+        "elapsedMs": 438.478,
+        "processPeakRssBeforeBytes": 177176576,
+        "processPeakRssAfterBytes": 177176576
+      },
+      {
+        "sourceOrdinal": 4,
+        "cells": 8000000,
+        "elapsedMs": 504.592,
+        "processPeakRssBeforeBytes": 177192960,
+        "processPeakRssAfterBytes": 177192960
+      },
+      {
+        "sourceOrdinal": 5,
+        "cells": 8000000,
+        "elapsedMs": 408.857,
+        "processPeakRssBeforeBytes": 177225728,
+        "processPeakRssAfterBytes": 177225728
+      },
+      {
+        "sourceOrdinal": 6,
+        "cells": 8000000,
+        "elapsedMs": 479.724,
+        "processPeakRssBeforeBytes": 177225728,
+        "processPeakRssAfterBytes": 177225728
+      },
+      {
+        "sourceOrdinal": 7,
+        "cells": 8000000,
+        "elapsedMs": 75.495,
+        "processPeakRssBeforeBytes": 177225728,
+        "processPeakRssAfterBytes": 177225728
+      },
+      {
+        "sourceOrdinal": 8,
+        "cells": 8000000,
+        "elapsedMs": 394.201,
+        "processPeakRssBeforeBytes": 177225728,
+        "processPeakRssAfterBytes": 177225728
+      },
+      {
+        "sourceOrdinal": 9,
+        "cells": 8000000,
+        "elapsedMs": 566.133,
+        "processPeakRssBeforeBytes": 177225728,
+        "processPeakRssAfterBytes": 177225728
+      },
+      {
+        "sourceOrdinal": 10,
+        "cells": 8000000,
+        "elapsedMs": 421.931,
+        "processPeakRssBeforeBytes": 177225728,
+        "processPeakRssAfterBytes": 177225728
+      },
+      {
+        "sourceOrdinal": 11,
+        "cells": 8000000,
+        "elapsedMs": 498.545,
+        "processPeakRssBeforeBytes": 177225728,
+        "processPeakRssAfterBytes": 177225728
+      },
+      {
+        "sourceOrdinal": 12,
+        "cells": 8000000,
+        "elapsedMs": 540.803,
+        "processPeakRssBeforeBytes": 177225728,
+        "processPeakRssAfterBytes": 177225728
+      },
+      {
+        "sourceOrdinal": 13,
+        "cells": 8000000,
+        "elapsedMs": 415.965,
+        "processPeakRssBeforeBytes": 177225728,
+        "processPeakRssAfterBytes": 177225728
+      },
+      {
+        "sourceOrdinal": 14,
+        "cells": 8000000,
+        "elapsedMs": 399.981,
+        "processPeakRssBeforeBytes": 186089472,
+        "processPeakRssAfterBytes": 186089472
+      },
+      {
+        "sourceOrdinal": 15,
+        "cells": 8000000,
+        "elapsedMs": 594.824,
+        "processPeakRssBeforeBytes": 186089472,
+        "processPeakRssAfterBytes": 186089472
+      },
+      {
+        "sourceOrdinal": 16,
+        "cells": 8000000,
+        "elapsedMs": 632.674,
+        "processPeakRssBeforeBytes": 189267968,
+        "processPeakRssAfterBytes": 189267968
+      },
+      {
+        "sourceOrdinal": 17,
+        "cells": 8000000,
+        "elapsedMs": 729.752,
+        "processPeakRssBeforeBytes": 362659840,
+        "processPeakRssAfterBytes": 362659840
+      },
+      {
+        "sourceOrdinal": 18,
+        "cells": 8000000,
+        "elapsedMs": 561.782,
+        "processPeakRssBeforeBytes": 454377472,
+        "processPeakRssAfterBytes": 454377472
+      }
+    ],
+    "result": {
+      "result": "EmitSuccess",
+      "bytes": 31876947,
+      "modules": 18
+    },
+    "exports": [
+      "parsed_module",
+      "parse_with_fuel",
+      "expand_modules_start",
+      "template_step",
+      "check_expanded_start",
+      "inspect_checked_start",
+      "checker_step",
+      "emit_modules_start",
+      "emit_library_start",
+      "emitter_step",
+      "emit_c_modules_start",
+      "emit_c_library_start",
+      "c_emitter_step"
+    ],
+    "semanticSmoke": {
+      "status": "NOT_REQUESTED"
+    },
+    "compilerProfile": null,
+    "output": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/native-stage1.json.mjs",
+    "outputSha256": "911dea40c1b15168e35adef3b6cbd45ba406d79f282462c3273e0f4a9ebe74f7",
+    "outputBytes": 31876947,
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 1410334720,
+      "peakFootprintBytes": 1770998208,
+      "elapsedMs": 204156,
+      "timeoutMs": 300000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 0,
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/evals/native_compiler_experiment.ts",
+        "--mode=run",
+        "--corpus=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/r1-compiler-source.corpus.json",
+        "--build=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g44d1-native-build.json",
+        "--report=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/native-stage1.json",
+        "--phase=compile",
+        "--threads=1",
+        "--internal=run"
+      ],
+      "label": "Native CPU compiler run",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793869369086-dc1f0868d3a61018.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    },
+    "lastProgress": {
+      "phase": "emit",
+      "event": "complete",
+      "unixMs": 1793869570960,
+      "pid": 82350,
+      "worker": false,
+      "rssBytes": 29803168,
+      "heapUsedBytes": 8006305,
+      "cpuMs": 288.395,
+      "native": {
+        "phase": "emit",
+        "elapsedMs": 23570.319,
+        "userCpuMs": 16909.914,
+        "systemCpuMs": 520.725,
+        "chunkAdvances": 1290254,
+        "chunkQuantum": 64
+      }
+    }
+  },
+  "sourceCounters": {
+    "expand": 1071878,
+    "check": 10484206,
+    "nativeEmit": 1290254
+  },
+  "sourceBytes": 7900921,
+  "foreignBytes": 78415,
+  "nativeSeed": "Existingauthenticated unchanged -O1diagnosticproducer,oneCPUthreadGPUoff,notnewnativeoptimization",
+  "meaning": "C1genuinelychecksallnew18modulecompilerSourceandcontainsnewwrapperpasscode,butcompilerimageitselfstilloldwrappers. ActualownC1emissiontoC2requiredbeforetiming.",
+  "actualOwnByteFixedpoint": false,
+  "selfhostGreen": false
+}

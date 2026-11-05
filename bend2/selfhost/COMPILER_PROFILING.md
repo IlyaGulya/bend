@@ -3310,3 +3310,60 @@ fixtures, failed harness revisions and rejected compiler source remain in the
 isolated source checkpoints. Main keeps its accepted compiler and unchanged
 FIR/BIR/C laws; it receives only this journal and compact JSON evidence.
 
+### G69R1: wrapper-only omission passes locally; C2 production misses deadline
+
+This version is **failed full-source production, unqualified, no cutover**,
+not a measured rejection of the wrapper mechanism. Main keeps the accepted
+compiler; experimental code and required frozen Bend inputs remain on
+`selfhost/g69-global-wrappers-vqgk3df3`.
+
+`ec93f070` freezes the protocol before implementation/data: preserve accepted
+CPU within2%, reduce peak RAM by5%, and retain the existing paired95% intervals
+and2% practical band. No additional3% CPU win is required for this memory goal.
+`a5d6b207` implements library-only unread global callable wrapper omission:
+one read map over original Code/Lazy operands and public exports, no Code/ID/
+ordinal change, no native/lazy/foreign or reflection-metadata removal.
+Executables keep all wrappers. Foreign eval/private-name/escape hazards fail
+closed; the unambiguous `{eval:true}` property case remains eligible.
+
+An AST census finds7268144B/12440 global registrations in accepted A's
+31758525B image. This is source-byte accounting, not retained or peak RAM.
+The changed Bend source is compiled by the canonical native checker with996
+live definitions and emits four real libraries. Separate default-stack Node
+consumers verify direct-only calls, Symbol/lazy values, original lazy ordinal,
+public partial-call fallback and conservative dynamic/escaped-private probes.
+Safe/property variants have4 registrations; hazardous variants keep6; all8
+private bodies/continuations remain. Runtime values are73 and714.
+
+`b5e1a0f9` freezes all53 compiler-source inputs before genuine native production.
+The existing authenticated diagnostic native seed (not a release-performance
+measurement) produces the complete18-module C1:31876947B,204156ms guardian wall,
+1410334720B peak RSS,1770998208B peak physical footprint. C1 contains the new
+emitter but still has the old physically emitted wrapper set, so is not the RAM
+candidate. Actual C1 inspection/recheck/library emission passes28 runtime
+contracts before `b3a5f42a` checkpoints its evidence and same-source C2 request.
+
+Real C1-to-C2 self-production reaches18 modules/13042 parsed declarations, then
+fails the unchanged600000ms wall limit during **check**, before **emit**.
+Guardian wall is600351ms; the owned process tree is stopped. No C2 image exists.
+Aborted-production peaks1913503744B RSS/2392289632B physical footprint are not
+candidate/control measurements. Interrupted-check CPU/progress is unknown.
+No retry, deadline increase, old-C1 substitution, image patch or AST replay is
+used. The40 planned candidate consumer cells, C2 readback28 and9 fresh selected
+processes are NOT_RUN_NO_C2_IMAGE; full six and C2-to-C3 byte fixedpoint are
+NOT_RUN_NOT_EARNED. No cost filters, confidence intervals, gain or selfhost-green
+claim is manufactured from this failure.
+
+Post-failure `uptime` observes load68.90/105.19/90.81 on10 logical/physical CPUs;
+`ps` observes competing QEMU, Node and other processes. `pmset -g therm` has no
+recorded thermal/performance/CPU-power status. These are not time-aligned
+utilization data and do not prove the interrupted check's cause. No unrelated
+process or system setting is changed. A controlled CPU slot is required before
+another full-production/performance protocol, rather than a blind deadline retry.
+
+All53 new-source,52 selected and53 full-frozen hashes still match. Seven owned
+throwaway scripts are removed after actual source/C1 proof; required sources
+stay in their committed experimental checkpoints, generated images/bulk logs
+stay outside Git. `checkpoints/local2039g69-receipts.json` indexes the compact
+protocol, source/consumer proof, exact production failure, hashes and decision.
+

@@ -1,0 +1,360 @@
+{
+  "schemaVersion": 1,
+  "version": "G69R1",
+  "status": "ACTUAL_C1_NEW_EMITTER_TYPED_READBACK_AND_28_LIBRARY_CONTRACTS_PASS",
+  "image": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/native-stage1.json.mjs",
+    "sha256": "911dea40c1b15168e35adef3b6cbd45ba406d79f282462c3273e0f4a9ebe74f7"
+  },
+  "command": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+    "--memory-mib=8192",
+    "--rss-mib=8192",
+    "--poll-ms=10",
+    "--timeout-ms=120000",
+    "--",
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+    "--experimental-strip-types",
+    "--max-old-space-size=6144",
+    "--max-semi-space-size=128",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository/evals/selfhost_ir_readback_probe.mjs",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/c1-readback-request.json",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/c1-readback-result.json"
+  ],
+  "request": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/c1-readback-request.json",
+    "sha256": "4fe087fb8146c9fe30b9961c0092e5eb2e91feaf6fe7fbf4c9f56e53eec8eb14"
+  },
+  "frozenProbe": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository/evals/selfhost_ir_readback_probe.mjs",
+    "sha256": "374a6635088e3a9c8366f3dc3d8b4e0690a78b1dd5f79bfd0793c228bb9e796f"
+  },
+  "report": {
+    "schemaVersion": 1,
+    "status": "PASS_ACTUAL_INSPECTION_RECHECK_AND_LIBRARY_CONSUMERS",
+    "diagnosticOnly": true,
+    "acceptanceEvidence": false,
+    "performanceEvidence": false,
+    "stages": [
+      {
+        "phase": "own-parse",
+        "status": "ParseSuccess"
+      },
+      {
+        "phase": "own-expand",
+        "status": "ExpandSuccess"
+      },
+      {
+        "phase": "own-check",
+        "status": "CheckSuccess"
+      },
+      {
+        "phase": "own-inspection",
+        "status": "Inspection"
+      },
+      {
+        "phase": "own-readback-recheck",
+        "status": "CheckSuccess"
+      },
+      {
+        "phase": "own-readback-library-emission",
+        "status": "EmitSuccess"
+      }
+    ],
+    "image": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/native-stage1.json.mjs",
+    "imageSha256": "911dea40c1b15168e35adef3b6cbd45ba406d79f282462c3273e0f4a9ebe74f7",
+    "source": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository/checkpoints/local2039g66-readback.bend",
+    "sourceSha256": "932163e5486d1d620e93cc8840f6b6b978b87227e95b27a4b07fb2dbc4e1d7e1",
+    "outputPatches": 0,
+    "astReplay": false,
+    "compilerBootstrapGreen": false,
+    "selfhostGreen": false,
+    "artifact": {
+      "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/c1-readback-consumer.mjs",
+      "sha256": "00bceddacd0b9f546c3152109b06944ef8e3e6ac1f0bf5b98ee71ca4a9c4b586",
+      "bytes": 73820
+    },
+    "runtimeRows": [
+      {
+        "name": "zero-nullary",
+        "observed": "BitZero",
+        "expected": "BitZero",
+        "passed": true
+      },
+      {
+        "name": "one-nullary",
+        "observed": "BitOne",
+        "expected": "BitOne",
+        "passed": true
+      },
+      {
+        "name": "positional-noncommutative",
+        "observed": [
+          "BitOne",
+          "BitZero"
+        ],
+        "expected": [
+          "BitOne",
+          "BitZero"
+        ],
+        "passed": true
+      },
+      {
+        "name": "positional-reversed-input",
+        "observed": [
+          "BitZero",
+          "BitOne"
+        ],
+        "expected": [
+          "BitZero",
+          "BitOne"
+        ],
+        "passed": true
+      },
+      {
+        "name": "pack-one-argument-is-curried-function",
+        "observed": "function",
+        "expected": "function",
+        "passed": true
+      },
+      {
+        "name": "pack-curried-second-argument",
+        "observed": [
+          "BitOne",
+          "BitZero"
+        ],
+        "expected": [
+          "BitOne",
+          "BitZero"
+        ],
+        "passed": true
+      },
+      {
+        "name": "returned-curried-function",
+        "observed": "function",
+        "expected": "function",
+        "passed": true
+      },
+      {
+        "name": "higher-order-positional-call",
+        "observed": [
+          "BitOne",
+          "BitZero"
+        ],
+        "expected": [
+          "BitOne",
+          "BitZero"
+        ],
+        "passed": true
+      },
+      {
+        "name": "over-applied-returned-function",
+        "observed": [
+          "BitOne",
+          "BitZero"
+        ],
+        "expected": [
+          "BitOne",
+          "BitZero"
+        ],
+        "passed": true
+      },
+      {
+        "name": "live-host-callback",
+        "observed": [
+          "BitZero",
+          "BitOne"
+        ],
+        "expected": [
+          "BitZero",
+          "BitOne"
+        ],
+        "passed": true
+      },
+      {
+        "name": "live-host-callback-evaluated-once",
+        "observed": 1,
+        "expected": 1,
+        "passed": true
+      },
+      {
+        "name": "erased-kind-and-type-effective-one-argument",
+        "observed": "BitOne",
+        "expected": "BitOne",
+        "passed": true
+      },
+      {
+        "name": "ordinary-type-reference-erasure-in-bend-application",
+        "observed": "BitZero",
+        "expected": "BitZero",
+        "passed": true
+      },
+      {
+        "name": "actual-template-specialization",
+        "observed": "BitOne",
+        "expected": "BitOne",
+        "passed": true
+      },
+      {
+        "name": "erased-expression-keeps-second-live-argument",
+        "observed": "BitOne",
+        "expected": "BitOne",
+        "passed": true
+      },
+      {
+        "name": "erased-expression-not-evaluated",
+        "observed": 0,
+        "expected": 0,
+        "passed": true
+      },
+      {
+        "name": "shared-local-value",
+        "observed": [
+          "BitOne",
+          "BitOne"
+        ],
+        "expected": [
+          "BitOne",
+          "BitOne"
+        ],
+        "passed": true
+      },
+      {
+        "name": "shared-local-evaluated-once",
+        "observed": 1,
+        "expected": 1,
+        "passed": true
+      },
+      {
+        "name": "unused-local-result",
+        "observed": "BitZero",
+        "expected": "BitZero",
+        "passed": true
+      },
+      {
+        "name": "unused-live-local-still-evaluated",
+        "observed": 1,
+        "expected": 1,
+        "passed": true
+      },
+      {
+        "name": "ordered-local-values",
+        "observed": [
+          "BitOne",
+          "BitZero"
+        ],
+        "expected": [
+          "BitOne",
+          "BitZero"
+        ],
+        "passed": true
+      },
+      {
+        "name": "local-evaluation-order",
+        "observed": [
+          "first",
+          "second"
+        ],
+        "expected": [
+          "first",
+          "second"
+        ],
+        "passed": true
+      },
+      {
+        "name": "named-over-application-value",
+        "observed": [
+          "BitOne",
+          "BitZero"
+        ],
+        "expected": [
+          "BitOne",
+          "BitZero"
+        ],
+        "passed": true
+      },
+      {
+        "name": "named-over-application-order",
+        "observed": [
+          "callee",
+          "argument"
+        ],
+        "expected": [
+          "callee",
+          "argument"
+        ],
+        "passed": true
+      },
+      {
+        "name": "generic-over-application-value",
+        "observed": [
+          "BitOne",
+          "BitZero"
+        ],
+        "expected": [
+          "BitOne",
+          "BitZero"
+        ],
+        "passed": true
+      },
+      {
+        "name": "generic-over-application-order",
+        "observed": [
+          "callee",
+          "argument",
+          "apply"
+        ],
+        "expected": [
+          "callee",
+          "argument",
+          "apply"
+        ],
+        "passed": true
+      },
+      {
+        "name": "constructor-eliminator-first-arm",
+        "observed": "BitOne",
+        "expected": "BitOne",
+        "passed": true
+      },
+      {
+        "name": "constructor-eliminator-default-chain",
+        "observed": "BitZero",
+        "expected": "BitZero",
+        "passed": true
+      }
+    ],
+    "artifactExecutedUnchanged": true
+  },
+  "guardian": {
+    "status": "PASS",
+    "reason": "command_exit",
+    "commandExitCode": 0,
+    "commandSignal": 0,
+    "peakRssBytes": 574603264,
+    "peakFootprintBytes": 457629688,
+    "elapsedMs": 1804,
+    "timeoutMs": 120000,
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 0,
+    "command": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "--experimental-strip-types",
+      "--max-old-space-size=6144",
+      "--max-semi-space-size=128",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository/evals/selfhost_ir_readback_probe.mjs",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/c1-readback-request.json",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/c1-readback-result.json"
+    ],
+    "label": "heavy command",
+    "exitCode": 0,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793869683477-a1d48fc49fedb974.json",
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592
+  },
+  "notPerformanceCandidate": true,
+  "selfhostGreen": false
+}

@@ -1,0 +1,186 @@
+{
+  "schemaVersion": 1,
+  "version": "G69R1",
+  "status": "FAILED_PRODUCTION_BEFORE_CANDIDATE_WRAPPER_ACTIVATION_UNQUALIFIED_NO_CUTOVER",
+  "mainBaseCheckpoint": "bf0fa6ea",
+  "prospectivePolicyCheckpoint": "ec93f070",
+  "sourceAlgorithmCheckpoint": "a5d6b207",
+  "completeCompilerSourceCheckpoint": "b5e1a0f9",
+  "nativeC1AndActualConsumersCheckpoint": "b3a5f42a",
+  "acceptedAlgorithmUnchanged": true,
+  "mechanism": "Library-only unread global callable wrapper omission; Code/IDs/ordinals/all reflection metadata and all native/lazy/foreign declarations preserved. No executable pruning or whole-Code DCE.",
+  "completedActualEvidence": {
+    "canonicalChangedSourceSmoke": {
+      "nativeCheckedDefinitions": 996,
+      "actualLibraries": 4,
+      "actualDefaultStackConsumerProcesses": 4,
+      "values": [
+        73,
+        714
+      ],
+      "curriedExportFallbacks": true,
+      "privateProbeFallbacks": true,
+      "declarationOrdinal": 2,
+      "registrations": {
+        "safe": 4,
+        "evalProperty": 4,
+        "dynamicEval": 6,
+        "escapedPrivateName": 6
+      },
+      "allVariantsPrivateBodies": 8,
+      "scope": "Source/runtime mechanism proof, not full compiler or RAM gain"
+    },
+    "nativeC1": {
+      "status": "PASS",
+      "modules": 18,
+      "sourceDeclarationsFromRealOwnParsing": 13042,
+      "outputBytes": 31876947,
+      "image": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/native-stage1.json.mjs",
+        "sha256": "911dea40c1b15168e35adef3b6cbd45ba406d79f282462c3273e0f4a9ebe74f7"
+      },
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 1410334720,
+        "peakFootprintBytes": 1770998208,
+        "elapsedMs": 204156,
+        "timeoutMs": 300000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/evals/native_compiler_experiment.ts",
+          "--mode=run",
+          "--corpus=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/r1-compiler-source.corpus.json",
+          "--build=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g44d1-native-build.json",
+          "--report=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/native-stage1.json",
+          "--phase=compile",
+          "--threads=1",
+          "--internal=run"
+        ],
+        "label": "Native CPU compiler run",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793869369086-dc1f0868d3a61018.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      },
+      "scope": "Authentic new compiler source, physical global wrapper set still old; not performance candidate"
+    },
+    "actualC1NewEmitterReadback": {
+      "status": "PASS_ACTUAL_INSPECTION_RECHECK_AND_LIBRARY_CONSUMERS",
+      "runtimeContracts": 28,
+      "artifactExecutedUnchanged": true,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 574603264,
+        "peakFootprintBytes": 457629688,
+        "elapsedMs": 1804,
+        "timeoutMs": 120000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--experimental-strip-types",
+          "--max-old-space-size=6144",
+          "--max-semi-space-size=128",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g66-scalar-id-t_3rtcm8/repository/evals/selfhost_ir_readback_probe.mjs",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/c1-readback-request.json",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/c1-readback-result.json"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793869683477-a1d48fc49fedb974.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      }
+    }
+  },
+  "failedPrerequisite": {
+    "receipt": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/repository/checkpoints/local2039g69-c2-production-failure.json",
+      "sha256": "413d6e951d7741baf4cc0e989e9c003dcec18f3d62a3c2ed1d2418092a061276"
+    },
+    "activePhase": "check",
+    "elapsedMs": 600351,
+    "reason": "deadline_exceeded",
+    "newCompilerWrapperPassExecuted": false,
+    "candidateC2Exists": false,
+    "peakRssBytes": 1913503744,
+    "peakFootprintBytes": 2392289632,
+    "scope": "Aborted production resource observation, not candidate performance comparison"
+  },
+  "selectedMeasurement": {
+    "status": "NOT_RUN_NO_C2_IMAGE",
+    "freshMeasuredProcesses": 0,
+    "pointFilterEvaluation": null,
+    "confidenceIntervals": null
+  },
+  "fullFrozenSix": "NOT_RUN_NOT_EARNED",
+  "actualC2ToC3ByteFixedpoint": "NOT_RUN_NOT_EARNED",
+  "selfhostGreen": false,
+  "cpuGainClaim": false,
+  "ramGainClaim": false,
+  "performanceRejectionClaim": false,
+  "deadlineReruns": 0,
+  "limitsRetuned": false,
+  "oldImageOrTransportSubstitution": false,
+  "sourceAndWorkloadClosingHashes": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/repository/checkpoints/local2039g69-closing-hashes.json",
+    "sha256": "8f3726523db3b868963fd9010e111c2d7cbad7e90b457bd2783126f14a23c07a"
+  },
+  "postFailureHostObservations": {
+    "scope": "Post-failure only; not time-aligned CPU utilization during check and not proof of timeout cause",
+    "uptimeCommand": [
+      "/usr/bin/uptime"
+    ],
+    "uptimeStdout": "14:22  up 24 days,  4:42, 45 users, load averages: 68.90 105.19 90.81",
+    "cpuCapacityCommand": [
+      "/usr/sbin/sysctl",
+      "-n",
+      "hw.logicalcpu",
+      "hw.physicalcpu",
+      "hw.memsize"
+    ],
+    "cpuCapacityStdout": "10\n10\n68719476736\n",
+    "thermalCommand": [
+      "/usr/bin/pmset",
+      "-g",
+      "therm"
+    ],
+    "thermalStdout": "Note: No thermal warning level has been recorded\nNote: No performance warning level has been recorded\nNote: No CPU power status has been recorded\n",
+    "processSnapshotCommand": [
+      "/bin/ps",
+      "-axo",
+      "pid,ppid,pcpu,stat,etime,comm",
+      "-r"
+    ],
+    "competingObservedExamples": [
+      {
+        "pid": 68523,
+        "cpuPercent": 73.0,
+        "name": "qemu-system-xtensa"
+      },
+      {
+        "pid": 21215,
+        "cpuPercent": 48.9,
+        "name": "qemu-system-aarch64"
+      },
+      {
+        "pid": 70516,
+        "cpuPercent": 46.6,
+        "name": "node"
+      }
+    ],
+    "unrelatedProcessesOrSystemSettingsChanged": false
+  },
+  "decision": "Close this version as failed full-source production under unchanged 600s/8GiB limits. Keep experimental source and executable regressions in its worktree branch. Do not merge compiler code, time old-wrapper C1, infer failed cost gates, or spend six full confirmations/C3 without a real C2. Host resource isolation is the prerequisite for another production/performance protocol, not a claimed compiler fix."
+}

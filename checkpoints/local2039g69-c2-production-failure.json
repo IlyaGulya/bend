@@ -1,0 +1,194 @@
+{
+  "schemaVersion": 1,
+  "version": "G69R1",
+  "status": "FAILED_FULL_C2_PRODUCTION_DEADLINE_BEFORE_NEW_EMISSION_NOT_PERFORMANCE_REJECTION",
+  "sourceFreezeCheckpoint": "b5e1a0f9",
+  "producerCheckpoint": "b3a5f42a",
+  "command": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+    "js",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/r1-c2-request.json",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/r1-c2-generation.json"
+  ],
+  "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/repository",
+  "request": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/r1-c2-request.json",
+    "sha256": "35c271f9340d52d4e5e1dec56c6e13518b1c8b416e4a22e159eb90e8a2983303"
+  },
+  "report": {
+    "schemaVersion": 1,
+    "status": "FAIL",
+    "diagnosticOnly": true,
+    "acceptanceEvidence": false,
+    "mode": "js",
+    "request": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/r1-c2-request.json",
+    "requestSha256": "35c271f9340d52d4e5e1dec56c6e13518b1c8b416e4a22e159eb90e8a2983303",
+    "source": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/repository/checkpoints/local2039g49-compiler-root.bend",
+    "sourceSha256": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed",
+    "runtime": {
+      "execPath": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "versions": {
+        "node": "23.11.0",
+        "acorn": "8.14.1",
+        "ada": "3.2.1",
+        "amaro": "0.4.1",
+        "ares": "1.34.4",
+        "brotli": "1.1.0",
+        "cjs_module_lexer": "2.1.0",
+        "cldr": "46.0",
+        "icu": "76.1",
+        "llhttp": "9.2.1",
+        "modules": "131",
+        "napi": "10",
+        "nbytes": "0.1.1",
+        "ncrypto": "0.0.1",
+        "nghttp2": "1.64.0",
+        "openssl": "3.0.16",
+        "simdjson": "3.12.2",
+        "simdutf": "6.0.3",
+        "sqlite": "3.49.1",
+        "tz": "2025a",
+        "undici": "6.21.2",
+        "unicode": "16.0",
+        "uv": "1.50.0",
+        "uvwasi": "0.0.21",
+        "v8": "12.9.202.28-node.14",
+        "zlib": "1.3.0.1-motley-788cb3c",
+        "zstd": "1.5.6"
+      },
+      "execArgv": [
+        "--experimental-strip-types",
+        "--max-old-space-size=6144",
+        "--max-semi-space-size=128"
+      ],
+      "heapLimitBytes": 6845104128
+    },
+    "limits": {
+      "memoryMiB": 8192,
+      "rssMiB": 8192,
+      "pollMs": 10,
+      "timeoutMs": 600000
+    },
+    "workerPolicy": {
+      "stackMiB": 256,
+      "oldGenerationMiB": 6144,
+      "youngGenerationMiB": 128
+    },
+    "exports": [
+      "parsed_module",
+      "parse_with_fuel",
+      "expand_modules_start",
+      "template_step",
+      "check_expanded_start",
+      "inspect_checked_start",
+      "checker_step",
+      "emit_modules_start",
+      "emit_library_start",
+      "emitter_step",
+      "emit_c_modules_start",
+      "emit_c_library_start",
+      "c_emitter_step"
+    ],
+    "phases": [
+      {
+        "phase": "startup",
+        "elapsedMs": 5453.879583,
+        "userCpuMs": 764.372,
+        "systemCpuMs": 173.203,
+        "memoryEnd": {
+          "rss": 437780480,
+          "heapTotal": 93224960,
+          "heapUsed": 80088728,
+          "external": 10493091,
+          "arrayBuffers": 25039
+        }
+      },
+      {
+        "phase": "load-parse",
+        "elapsedMs": 54747.573874999995,
+        "userCpuMs": 18642.157,
+        "systemCpuMs": 1022.918,
+        "memoryEnd": {
+          "rss": 804798464,
+          "heapTotal": 1080262656,
+          "heapUsed": 919559304,
+          "external": 10493131,
+          "arrayBuffers": 25039
+        }
+      },
+      {
+        "phase": "expand",
+        "elapsedMs": 21516.45775,
+        "userCpuMs": 24692.846,
+        "systemCpuMs": 1242.564,
+        "memoryEnd": {
+          "rss": 1908736000,
+          "heapTotal": 1804484608,
+          "heapUsed": 487306104,
+          "external": 10486368,
+          "arrayBuffers": 25039
+        }
+      }
+    ],
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "stopAfter": "compile",
+    "moduleCount": 18,
+    "sourceDeclarations": 13042,
+    "activePhase": "check",
+    "guardian": {
+      "status": "FAIL",
+      "reason": "deadline_exceeded",
+      "commandExitCode": -1,
+      "commandSignal": 15,
+      "peakRssBytes": 1913503744,
+      "peakFootprintBytes": 2392289632,
+      "elapsedMs": 600351,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 1,
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=6144",
+        "--max-semi-space-size=128",
+        "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+        "--worker",
+        "js",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/r1-c2-request.json",
+        "35c271f9340d52d4e5e1dec56c6e13518b1c8b416e4a22e159eb90e8a2983303",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/r1-c2-generation.json"
+      ],
+      "label": "Frozen full-root throughput js",
+      "exitCode": 1,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793869729386-620c656a06be4103.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    }
+  },
+  "candidateImageExists": false,
+  "completedPhases": [
+    "startup",
+    "load-parse",
+    "expand"
+  ],
+  "failedActivePhase": "check",
+  "newWrapperPassReachedForCompilerImage": false,
+  "checkPhaseCpuAtTermination": "UNKNOWN; partial progress report records only completed phase CPU; no inference of CPU regression or hang",
+  "performanceClaim": "NONE; physically pruned C2 does not exist and cannot be replaced by old-wrapper C1 or handcrafted image",
+  "nextGates": {
+    "candidate40Cells": "NOT_RUN_NO_C2_IMAGE",
+    "candidateTypedReadback28": "NOT_RUN_NO_C2_IMAGE",
+    "wholeImageWrapperIdentityC1C2": "NOT_RUN_NO_C2_IMAGE",
+    "selectedABC_CAB_BCA9FreshProcesses": "NOT_RUN_NO_C2_IMAGE",
+    "fullFrozenSixProcesses": "NOT_RUN_NOT_EARNED",
+    "actualC2ToC3ByteFixedpoint": "NOT_RUN_NOT_EARNED"
+  },
+  "retries": 0,
+  "timeoutChangedAfterObservation": false,
+  "forcedGC": false,
+  "selfhostGreen": false
+}

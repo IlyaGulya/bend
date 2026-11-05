@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "version": "G69R1",
+  "status": "CANONICAL_IMPLEMENTATION_AND_BEHAVIOR_INPUT_READY_NO_BEND_RUNTIME_YET",
+  "protocolCheckpoint": "ec93f070",
+  "sourceJSBackend": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/repository/bend2/selfhost/js_backend.bend",
+    "sha256": "8f3773a21343acd1f0772459f288968436cf4e55805001d11e39a159bc25f0db"
+  },
+  "smokeInput": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/repository/checkpoints/local2039g69-emitter-smoke.bend",
+    "sha256": "432eee4018f34912d51d2a1efef0618fa9de0c954aeaf1adc3bdc95641eb0910"
+  },
+  "implementationOwner": "G69WrapperPruning thorough-task-executor; onlyjs_backend, no builds/tests/generators/commits",
+  "smokeOwner": "G69WrapperSmoke; requiredtypedBIRinput. ReportedlocalNodeESMlexicalspotcheckonly,NOTcanonicalBendacceptance.",
+  "parentIntegrationFix": "AddedrealFunctionDeclarationsforpublicexports andDirect-onlyrawcalc, becauseEntryfastpathalone wouldnotexercise$Dexportfallback. Consumers nowverifyzeroargumentpartialapplication thenargument7. Addedrawcalcwrappertoberemovedwhilebodyexecutes;lazyordinalstays2. Noexpectedoutputrepin:73/714/function unchanged.",
+  "contracts": [
+    "Allcodes/IDs/layouts/type/native/lazy/foreignrowskept",
+    "Libraryonly,allSymbol/LoadSymbol/exportreadkeys",
+    "Allforeignopaqueeval/comment/parenthesis/Unicodefailsclosed",
+    "Workeroptionsgeneralpropertykeyremaineligible",
+    "Originaldeclordinalthroughskip",
+    "RealdefaultNodeconsumers,direct+curriedexports,higherordercallback,lazyregionflow,dynamicforeignfallback"
+  ],
+  "next": "Existingauthenticatedcanonicalcompose+ASTmatchnormalize+CPSsource generation; fullnativebodyvalidationthenactualsourceemitterandunchangedlibraries. Noimagepatch orstaticcountonlyacceptance."
+}

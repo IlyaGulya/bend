@@ -1,0 +1,455 @@
+{
+  "schemaVersion": 1,
+  "baseMainCheckpoint": "bf0fa6ea",
+  "chosen": "Backend-private elimination of unread FunctionDeclaration $D callable wrappers, not CodeDCE/metadata pruning. Keep code IDs/order, all native/lazy/foreign declarations/types/layouts, API13 andC unchanged.",
+  "actualImmutableImageASTCensus": {
+    "schemaVersion": 1,
+    "status": "STATIC_IMMUTABLE_IMAGE_AST_CENSUS_NOT_LIVENESS_OR_PEAKRAM_PROOF",
+    "image": {
+      "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs",
+      "sha256": "4636c05aa8c75e72212cb03949937e25561942bc00da250f876f37f001b9fc18",
+      "utf8Bytes": 31758525
+    },
+    "parser": "ExistingAcorn8.19.0",
+    "groups": {
+      "VariableDeclaration": {
+        "nodes": 132,
+        "utf8Bytes": 6943
+      },
+      "runtime-function": {
+        "nodes": 118,
+        "utf8Bytes": 56388
+      },
+      "ExpressionStatement": {
+        "nodes": 10576,
+        "utf8Bytes": 3596285
+      },
+      "private-body-or-continuation": {
+        "nodes": 39704,
+        "utf8Bytes": 20764924
+      },
+      "global-D-registration": {
+        "nodes": 12440,
+        "utf8Bytes": 7268144
+      },
+      "ExportDefaultDeclaration": {
+        "nodes": 1,
+        "utf8Bytes": 2835
+      }
+    },
+    "globalRegistrationCount": 12440,
+    "globalRegistrationBytes": 7268144,
+    "literalDReadKeys": [
+      "../bend2/selfhost/ast.string_literal_names",
+      "../bend2/selfhost/c_backend_sharing.s_cat_new",
+      "../bend2/selfhost/c_backend_sharing.s_flow_empty",
+      "../bend2/selfhost/c_backend_sharing.s_flow_unknown",
+      "../bend2/selfhost/c_backend_sharing.s_function_head",
+      "../bend2/selfhost/c_backend_sharing.s_heads_unknown",
+      "../bend2/selfhost/c_backend_sharing.s_reach_new",
+      "../bend2/selfhost/c_backend_sharing.s_sites_new",
+      "../bend2/selfhost/checker_arena.empty",
+      "../bend2/selfhost/checker_arena.empty_span",
+      "../bend2/selfhost/sha256.constants",
+      "Array.atomic.add",
+      "Array.atomic.and",
+      "Array.atomic.cas",
+      "Array.atomic.exch",
+      "Array.atomic.fadd",
+      "Array.atomic.max",
+      "Array.atomic.min",
+      "Array.atomic.or",
+      "Array.atomic.xor",
+      "Array.clone",
+      "Array.get",
+      "Array.new",
+      "Array.set",
+      "Array.size",
+      "Array.swap",
+      "Bool.or",
+      "Bool.xor",
+      "Chan.close",
+      "Chan.new",
+      "Chan.recv",
+      "Chan.send",
+      "F32.abs",
+      "F32.acos",
+      "F32.add",
+      "F32.asin",
+      "F32.atan",
+      "F32.atan2",
+      "F32.bits",
+      "F32.ceil",
+      "F32.cos",
+      "F32.cosh",
+      "F32.div",
+      "F32.exp",
+      "F32.floor",
+      "F32.is_eq",
+      "F32.is_ge",
+      "F32.is_gt",
+      "F32.is_le",
+      "F32.is_lt",
+      "F32.is_ne",
+      "F32.log",
+      "F32.log10",
+      "F32.log2",
+      "F32.mod",
+      "F32.mul",
+      "F32.neg",
+      "F32.pow",
+      "F32.read",
+      "F32.show",
+      "F32.sin",
+      "F32.sinh",
+      "F32.sqrt",
+      "F32.sub",
+      "F32.tan",
+      "F32.tanh",
+      "F32.to_u32",
+      "F32.trunc",
+      "IO.sleep",
+      "IO.spawn",
+      "Map.bit",
+      "Map.find",
+      "Map.new",
+      "Nat.add",
+      "Nat.cmp",
+      "Nat.divmod",
+      "Nat.double",
+      "Nat.is_lt",
+      "Nat.max",
+      "Nat.min",
+      "Nat.mul",
+      "Nat.sub",
+      "Set.new",
+      "String.append",
+      "String.cmp",
+      "String.eq",
+      "String.length",
+      "String.to_list",
+      "U32.add",
+      "U32.and",
+      "U32.cmp",
+      "U32.div",
+      "U32.from_nat",
+      "U32.inc",
+      "U32.is_eq",
+      "U32.is_ge",
+      "U32.is_gt",
+      "U32.is_le",
+      "U32.is_lt",
+      "U32.is_ne",
+      "U32.is_zero",
+      "U32.mod",
+      "U32.mul",
+      "U32.not",
+      "U32.or",
+      "U32.shl",
+      "U32.shln",
+      "U32.shr",
+      "U32.shrn",
+      "U32.sub",
+      "U32.to_f32",
+      "U32.to_nat",
+      "U32.xor",
+      "Window.close",
+      "Window.frame",
+      "c_emitter_step",
+      "check_expanded_start",
+      "checker_core_steps_v1.checker_body_pattern_row_index_empty",
+      "checker_core_steps_v1.checker_body_readback_diagnostic",
+      "checker_step",
+      "emit_c_library_start",
+      "emit_c_modules_start",
+      "emit_library_start",
+      "emit_modules_start",
+      "emitter_step",
+      "emitter_steps_v1.emitter_body_cps_provider_1_no_span",
+      "emitter_steps_v1.emitter_body_cps_provider_2_build_new",
+      "emitter_steps_v1.emitter_body_cps_provider_2_helper_core",
+      "emitter_steps_v1.emitter_body_cps_provider_2_no_remaining",
+      "emitter_steps_v1.emitter_body_cps_provider_2_scan_new",
+      "emitter_steps_v1.emitter_body_cps_provider_2_spins_part",
+      "emitter_steps_v1.emitter_body_cps_provider_3_layout_fuel",
+      "emitter_steps_v1.emitter_body_cps_provider_5_code_empty",
+      "emitter_steps_v1.emitter_body_cps_provider_5_show_state0",
+      "emitter_steps_v1.emitter_body_cps_provider_6_no_span",
+      "emitter_steps_v1.emitter_body_cps_provider_7_default_fuel",
+      "emitter_steps_v1.emitter_body_cps_provider_8_js_runtime",
+      "emitter_steps_v1.emitter_body_cps_provider_8_js_runtime_array",
+      "emitter_steps_v1.emitter_body_cps_provider_8_js_runtime_cli",
+      "emitter_steps_v1.emitter_body_cps_provider_8_js_runtime_direct",
+      "emitter_steps_v1.emitter_body_cps_provider_8_js_runtime_extra",
+      "emitter_steps_v1.emitter_body_cps_provider_8_js_runtime_foreign",
+      "emitter_steps_v1.emitter_body_cps_provider_8_js_runtime_io",
+      "emitter_steps_v1.emitter_body_cps_provider_8_js_runtime_namespace",
+      "emitter_steps_v1.emitter_body_cps_provider_8_js_runtime_native_type",
+      "emitter_steps_v1.emitter_body_cps_provider_8_js_runtime_show",
+      "emitter_steps_v1.emitter_body_cps_provider_8_js_runtime_type",
+      "emitter_steps_v1.emitter_body_cps_provider_8_js_runtime_type_eval",
+      "emitter_steps_v1.emitter_body_cps_provider_8_js_runtime_type_names",
+      "emitter_steps_v1.emitter_body_cps_provider_8_js_runtime_type_patterns",
+      "emitter_steps_v1.emitter_body_cps_provider_8_map_find_missing",
+      "emitter_steps_v1.emitter_body_cps_provider_8_plan_empty",
+      "emitter_steps_v1.emitter_body_cps_provider_8_primitive_runtime",
+      "emitter_steps_v1.emitter_body_cps_provider_8_reads_new",
+      "emitter_steps_v1.emitter_body_cps_provider_8_suffix_empty",
+      "expand_modules_start",
+      "feedback_make_Kont_328193",
+      "feedback_make_Kont_339827",
+      "feedback_make_Kont_339962",
+      "inspect_checked_start",
+      "parse_with_fuel",
+      "parsed_module",
+      "template_step"
+    ],
+    "dynamicDReads": [
+      {
+        "line": 189,
+        "column": 55,
+        "text": "$D[Object.hasOwn($D,q)?q:k]"
+      }
+    ],
+    "largestGlobalRegistrations": [
+      {
+        "key": "emitter_steps_v1.emitter_body_cps_provider_8_js_runtime",
+        "bytes": 39024,
+        "line": 62493
+      },
+      {
+        "key": "emitter_steps_v1.emitter_body_cps_provider_8_primitive_runtime",
+        "bytes": 6434,
+        "line": 62365
+      },
+      {
+        "key": "emitter_steps_v1.emitter_body_cps_provider_8_js_runtime_io",
+        "bytes": 5646,
+        "line": 62499
+      },
+      {
+        "key": "emitter_steps_v1.emitter_continuation_1062",
+        "bytes": 5152,
+        "line": 60373
+      },
+      {
+        "key": "emitter_steps_v1.emitter_continuation_1063",
+        "bytes": 4846,
+        "line": 60374
+      },
+      {
+        "key": "emitter_steps_v1.emitter_continuation_1064",
+        "bytes": 4540,
+        "line": 60375
+      },
+      {
+        "key": "emitter_steps_v1.emitter_continuation_1065",
+        "bytes": 4336,
+        "line": 60376
+      },
+      {
+        "key": "../bend2/selfhost/sha256.constants",
+        "bytes": 3889,
+        "line": 52521
+      },
+      {
+        "key": "emitter_steps_v1.emitter_continuation_1066",
+        "bytes": 3826,
+        "line": 60377
+      },
+      {
+        "key": "emitter_steps_v1.emitter_continuation_1067",
+        "bytes": 3169,
+        "line": 60378
+      },
+      {
+        "key": "emitter_steps_v1.emitter_continuation_2940",
+        "bytes": 3064,
+        "line": 62741
+      },
+      {
+        "key": "emitter_steps_v1.emitter_continuation_2941",
+        "bytes": 3064,
+        "line": 62742
+      }
+    ],
+    "elapsedMs": 12699.549874999999,
+    "meaning": "ASTpositions only, quotedruntime strings never parsedascode. Dynamicreads forbid naive deadwrapper pruning. Source/liveness proofs andreal newcompiler CPU/RAMstill required."
+  },
+  "staticDiagnostic": {
+    "command": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+      "--memory-mib=8192",
+      "--rss-mib=8192",
+      "--poll-ms=10",
+      "--timeout-ms=120000",
+      "--",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/image-retention-census.mjs",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/accepted-image-static-census.json"
+    ],
+    "script": "import{readFileSync,writeFileSync}from'node:fs';import{createHash}from'node:crypto';\nimport{parse}from'/Users/ilyagulya/.bun/install/cache/acorn@8.19.0@@@1/dist/acorn.mjs';\nconst[path,out]=process.argv.slice(2),source=readFileSync(path,'utf8'),start=performance.now(),ast=parse(source,{ecmaVersion:'latest',sourceType:'module',locations:true});\nconst groups={},dynamicReads=[],literalReads=new Set(),registrations=[];\nconst bytes=node=>Buffer.byteLength(source.slice(node.start,node.end));\nconst add=(kind,node)=>{const row=groups[kind]??={nodes:0,utf8Bytes:0};row.nodes++;row.utf8Bytes+=bytes(node);};\nconst isD=x=>x?.type==='Identifier'&&x.name==='$D';\nfor(const node of ast.body){\n let kind=node.type,expr=node.expression;\n if(node.type==='FunctionDeclaration')kind=/^\\$[bk][0-9]+$/.test(node.id?.name)?'private-body-or-continuation':'runtime-function';\n if(expr?.type==='AssignmentExpression'&&expr.left.type==='MemberExpression'&&isD(expr.left.object)){kind='global-D-registration';registrations.push({key:expr.left.property.value,bytes:bytes(node),line:node.loc.start.line});}\n if(expr?.type==='CallExpression'&&expr.callee.type==='MemberExpression'&&expr.callee.object.name==='Object'&&expr.callee.property.name==='defineProperty'&&isD(expr.arguments[0])){kind='global-D-registration';registrations.push({key:expr.arguments[1].value,bytes:bytes(node),line:node.loc.start.line});}\n add(kind,node);\n}\nconst visit=(node,parent)=>{if(!node||typeof node!=='object')return;if(node.type==='MemberExpression'&&isD(node.object)&&!(parent?.type==='AssignmentExpression'&&parent.left===node)){if(node.computed&&node.property.type==='Literal'&&typeof node.property.value==='string')literalReads.add(node.property.value);else dynamicReads.push({line:node.loc.start.line,column:node.loc.start.column,text:source.slice(node.start,node.end)});}for(const[key,value]of Object.entries(node)){if(['loc','start','end'].includes(key))continue;if(Array.isArray(value)){for(const child of value)if(child?.type)visit(child,node);}else if(value?.type)visit(value,node);}};visit(ast,null);\nconst report={schemaVersion:1,status:'STATIC_IMMUTABLE_IMAGE_AST_CENSUS_NOT_LIVENESS_OR_PEAKRAM_PROOF',image:{path,sha256:createHash('sha256').update(source).digest('hex'),utf8Bytes:Buffer.byteLength(source)},parser:'ExistingAcorn8.19.0',groups,globalRegistrationCount:registrations.length,globalRegistrationBytes:registrations.reduce((s,x)=>s+x.bytes,0),literalDReadKeys:[...literalReads].sort(),dynamicDReads:dynamicReads,largestGlobalRegistrations:registrations.sort((a,b)=>b.bytes-a.bytes).slice(0,12),elapsedMs:performance.now()-start,meaning:'ASTpositions only, quotedruntime strings never parsedascode. Dynamicreads forbid naive deadwrapper pruning. Source/liveness proofs andreal newcompiler CPU/RAMstill required.'};writeFileSync(out,JSON.stringify(report,null,2)+'\\n',{flag:'wx'});console.log(JSON.stringify(report));\n",
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 3896770560,
+      "peakFootprintBytes": 3896659256,
+      "elapsedMs": 13018,
+      "timeoutMs": 120000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 0,
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/image-retention-census.mjs",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/accepted-image-static-census.json"
+      ],
+      "label": "heavy command",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793867305435-c656bb5e1651f181.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    }
+  },
+  "heap": {
+    "snapshot": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/d0-A-snapshot.json.heapsnapshot",
+      "sha256": "81f05934374a4c3bd120070997a744ef1a793d4150e5fc8cd1ee326a9d82c043",
+      "bytes": 394243015
+    },
+    "shallowTotal": 324809598,
+    "topVMTypes": [
+      {
+        "type": "string",
+        "name": "const $D = Object.create(null);\nconst $BEND_TAIL = Symbol(\"bend.tail\");\nconst $td = 64;\nconst $TAIL_PENDING = Object.create(null), $tailArgs = Array(32);\nconst $CALL_PENDING = Object.create(null), $LEAVE_PENDING = Object.create(null);\nconst $stArgs = [], $kFn = [], $kBase = [], $kKind = [];\nlet $sp ",
+        "selfBytes": 31758544
+      },
+      {
+        "type": "code",
+        "name": "",
+        "selfBytes": 24881056
+      },
+      {
+        "type": "code",
+        "name": "system / TrustedByteArray",
+        "selfBytes": 19555416
+      },
+      {
+        "type": "code",
+        "name": "system / ObjectBoilerplateDescription",
+        "selfBytes": 7346352
+      },
+      {
+        "type": "code",
+        "name": "system / ProtectedFixedArray",
+        "selfBytes": 7141880
+      },
+      {
+        "type": "code",
+        "name": "system / BytecodeArray",
+        "selfBytes": 6632728
+      },
+      {
+        "type": "code",
+        "name": "system / FeedbackVector",
+        "selfBytes": 4305064
+      },
+      {
+        "type": "code",
+        "name": "(BASELINE instruction stream)",
+        "selfBytes": 3843392
+      },
+      {
+        "type": "code",
+        "name": "system / ScopeInfo",
+        "selfBytes": 2898704
+      },
+      {
+        "type": "code",
+        "name": "(constant pool)",
+        "selfBytes": 1905728
+      },
+      {
+        "type": "code",
+        "name": "system / FeedbackCell",
+        "selfBytes": 1483224
+      },
+      {
+        "type": "code",
+        "name": "(shared function info)",
+        "selfBytes": 1421424
+      }
+    ],
+    "topSyntaxObjects": [
+      {
+        "tag": "../bend2/selfhost/ast.SpanOf",
+        "count": 232709,
+        "selfBytes": 13031704
+      },
+      {
+        "tag": "../bend2/selfhost/ast.TermCtr",
+        "count": 43139,
+        "selfBytes": 2415784
+      },
+      {
+        "tag": "../bend2/selfhost/ast.TermRef",
+        "count": 45553,
+        "selfBytes": 2186544
+      },
+      {
+        "tag": "../bend2/selfhost/ast.Binder",
+        "count": 20193,
+        "selfBytes": 1453896
+      },
+      {
+        "tag": "../bend2/selfhost/ast.TermVar",
+        "count": 24375,
+        "selfBytes": 1365000
+      },
+      {
+        "tag": "../bend2/selfhost/ast.PatternCtr",
+        "count": 23619,
+        "selfBytes": 1322664
+      },
+      {
+        "tag": "../bend2/selfhost/ast.TermApp",
+        "count": 22269,
+        "selfBytes": 1247064
+      },
+      {
+        "tag": "../bend2/selfhost/ast.PatternVar",
+        "count": 18392,
+        "selfBytes": 1177088
+      },
+      {
+        "tag": "../bend2/selfhost/ast.QOne",
+        "count": 33859,
+        "selfBytes": 1083488
+      },
+      {
+        "tag": "../bend2/selfhost/ast.QMany",
+        "count": 17535,
+        "selfBytes": 561120
+      },
+      {
+        "tag": "../bend2/selfhost/ast.TermFill",
+        "count": 9608,
+        "selfBytes": 538048
+      }
+    ],
+    "scope": "Snapshot is GC-perturbed prefix evidence, not a clean peak-RAM measurement. Shallow counts are exact for snapshot nodes; source-data graph unions are strong-edge subsets, not exclusive retained bytes."
+  },
+  "priorArt": "G44D3plainDCE blocked; emitter source2056/2145reachable (89outside) too small. G58/G63/G64/G65/G66/G67/G68 algorithms not carried.",
+  "rejectedAlternative": "No justified ASTSpan mutation. Sourcepackingalreadyshares spans; priorpartialgraph unions cannot proveASTphysical nonretention. Globalroot pathsunknown; no claim snapshotAST is garbage.",
+  "historySearchLimit": "ctx searches detailedterms thenG65 withinclude-current-session returnednoindexedresults; committedsource/receipts remainprimary evidence.",
+  "lsp": "No language serversconfigured.",
+  "inference": "7.268MB wrappers22.886percentimageUTF8 is observedsourcebyte share,NOTliveheap/exclusiveretainedorpeakRAMprediction."
+}

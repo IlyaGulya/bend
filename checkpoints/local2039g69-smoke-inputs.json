@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 1,
+  "status": "SOURCE_ONLY_CPS_INPUT_GENERATED_NOT_CHECKED_OR_EXECUTED",
+  "adapter": "Existing c_backend_step_smoke composition/proof/config shape; existing generateNativeSteps does actual lowering, no new pass or fixture substitution.",
+  "config": {
+    "canonical": "checkpoints/local2039g69-emitter-smoke.bend",
+    "owned": "checkpoints/local2039g69-emitter-smoke-owned.bend",
+    "dependency": "checkpoints/local2039g69-emitter-smoke-cps-dependency.json",
+    "ownedManifest": "checkpoints/local2039g69-emitter-smoke-cps-owned.json",
+    "frozenSlice": "checkpoints/checker_core_slice.bend",
+    "frozenDriver": "checkpoints/checker_core_driver.bend",
+    "frozenCorpus": "checkpoints/bootstrap-real-source-corpus.json",
+    "kernel": "bend2/bend.ts",
+    "emitter": "bend2/comp.ts",
+    "parser": "bend2/selfhost/parser.bend",
+    "base": "bend2/base.bend",
+    "nodePolicy": "evals/heavy_gate.ts",
+    "validationPolicy": "evals/validation_profile.ts",
+    "generator": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/generate-wrapper-source-smoke.mjs",
+    "output": "checkpoints/local2039g69-emitter-smoke-steps.bend",
+    "component": "checkpoints/local2039g69-emitter-smoke-component.bend",
+    "manifest": "checkpoints/local2039g69-emitter-smoke-steps.json",
+    "mode": "template",
+    "root": "main",
+    "result": "G69WrapperSmoke",
+    "providerClosure": [
+      "bend2/selfhost/js_backend.bend"
+    ]
+  },
+  "sourceJSBackendSha256": "8f3773a21343acd1f0772459f288968436cf4e55805001d11e39a159bc25f0db",
+  "inputs": [
+    {
+      "path": "checkpoints/local2039g69-emitter-smoke.bend",
+      "sha256": "432eee4018f34912d51d2a1efef0618fa9de0c954aeaf1adc3bdc95641eb0910",
+      "bytes": 5847
+    },
+    {
+      "path": "checkpoints/local2039g69-emitter-smoke-owned.bend",
+      "sha256": "4f066db78cd0afbce9f45f04bbf4d55543d00713c354d063713a0293a0b262b1",
+      "bytes": 213528
+    },
+    {
+      "path": "checkpoints/local2039g69-emitter-smoke-cps-owned.json",
+      "sha256": "8a0040657717cc47c4a54992929937c51f10a9e260ac7886aa915ff3c117b896",
+      "bytes": 371389
+    },
+    {
+      "path": "checkpoints/local2039g69-emitter-smoke-cps-dependency.json",
+      "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+      "bytes": 3
+    },
+    {
+      "path": "checkpoints/local2039g69-emitter-smoke-steps.bend",
+      "sha256": "16cc107d1afc720004cd3c64d7f68316aaaba793c762a0d4c2644667e2ee51cb",
+      "bytes": 624196
+    },
+    {
+      "path": "checkpoints/local2039g69-emitter-smoke-component.bend",
+      "sha256": "a090cf892a98be1a481b75c37f1064ade42488e6464937cbe11278a918b0a8d5",
+      "bytes": 433
+    },
+    {
+      "path": "checkpoints/local2039g69-emitter-smoke-steps.json",
+      "sha256": "dc737f7b467890da401520f412857ee88516c064034ca7d15fcb1682bcf098fe",
+      "bytes": 1215159
+    }
+  ],
+  "expectedConsumers": {
+    "result": 73,
+    "symbolic": 714,
+    "dynamicProbe": "function",
+    "escapedProbe": "function"
+  },
+  "version": "G69R1",
+  "canonicalSourceCheckpoint": "a5d6b207",
+  "protocolCheckpoint": "ec93f070",
+  "generatorSource": "import{createHash}from'node:crypto';\nimport{readFileSync,writeFileSync}from'node:fs';\nimport{composeCanonicalCPSSource}from'./repository/evals/canonical_cps_source.ts';\nimport{normalizeNativeMatchSource}from'./repository/evals/native_match_source.ts';\nimport{checkerStepConfig,generateNativeSteps}from'./repository/evals/checker_core_step_lower.ts';\nconst canonical='checkpoints/local2039g69-emitter-smoke.bend',owned='checkpoints/local2039g69-emitter-smoke-owned.bend';\nconst ownedManifest='checkpoints/local2039g69-emitter-smoke-cps-owned.json',dependency='checkpoints/local2039g69-emitter-smoke-cps-dependency.json';\nconst output='checkpoints/local2039g69-emitter-smoke-steps.bend',component='checkpoints/local2039g69-emitter-smoke-component.bend',manifest='checkpoints/local2039g69-emitter-smoke-steps.json';\nconst providers=['bend2/selfhost/js_backend.bend'];\nconst sha=t=>createHash('sha256').update(t).digest('hex');\n// Established c_backend_step_smoke masking/inventory; this is not source checking.\nfunction mask(text){let result='',quote='',escaped=false,comment=false;for(let i=0;i<text.length;i++){const c=text[i];if(comment){if(c==='\\n'){comment=false;result+=c;}else result+=' ';}else if(quote){result+=c==='\\n'?'\\n':' ';if(escaped)escaped=false;else if(c==='\\\\')escaped=true;else if(c===quote)quote='';}else if(c==='\"'||c===\"'\"){quote=c;result+=' ';}else if(c==='#'||text.startsWith('//',i)){comment=true;result+=' ';}else result+=c;}if(quote)throw Error('Unterminated source string');return result;}\nfunction declarations(text){const starts=[...mask(text).matchAll(/^def ([A-Za-z_]\\w*)\\(/gm)];return{names:starts.map(m=>m[1]),hashes:Object.fromEntries(starts.map((m,i)=>[m[1],sha(text.slice(m.index,starts[i+1]?.index??text.length))]))};}\nconst canonicalText=readFileSync(canonical,'utf8'),composition=await composeCanonicalCPSSource(canonical,providers),normalized=await normalizeNativeMatchSource(canonical,composition.source);\n// Canonical and owned source share checkpoints/, so no import relocation applies.\nwriteFileSync(owned,normalized.source,{flag:'wx'});\nwriteFileSync(dependency,'{}\\n',{flag:'wx'});\nconst lowered=declarations(composition.source),normal=declarations(normalized.source),original=declarations(canonicalText);\nconst proof={canonical,owned,canonicalSha256:sha(canonicalText),sourceSha256:sha(normalized.source),definitionNames:normal.names,declarationHashes:normal.hashes,owners:Object.fromEntries(normalized.extractions.map(r=>[r.helper,r.owner])),canonicalDefinitionNames:original.names,canonicalDeclarationHashes:original.hashes,loweringDefinitionNames:lowered.names,loweringDeclarationHashes:lowered.hashes,composition:composition.proof};\nwriteFileSync(ownedManifest,JSON.stringify({schemaVersion:2,sourceOnlyParameterMatchFactoring:true,componentSources:[{mode:'template',...proof}],ownedModules:[]},null,2)+'\\n',{flag:'wx'});\nconst config={...checkerStepConfig,mode:'template',root:'main',result:'G69WrapperSmoke',canonical,owned,ownedManifest,dependency,generator:process.argv[1],output,component,manifest,driver:undefined,ownedDriver:undefined,providerClosure:providers};\nawait generateNativeSteps(config);\nconst receipt={schemaVersion:1,status:'SOURCE_ONLY_CPS_INPUT_GENERATED_NOT_CHECKED_OR_EXECUTED',adapter:'Existing c_backend_step_smoke composition/proof/config shape; existing generateNativeSteps does actual lowering, no new pass or fixture substitution.',config,sourceJSBackendSha256:sha(readFileSync('bend2/selfhost/js_backend.bend')),inputs:[canonical,owned,ownedManifest,dependency,output,component,manifest].map(path=>({path,sha256:sha(readFileSync(path)),bytes:readFileSync(path).length})),expectedConsumers:{result:73,symbolic:714,dynamicProbe:'function',escapedProbe:'function'}};\nwriteFileSync(process.argv[2],JSON.stringify(receipt,null,2)+'\\n',{flag:'wx'});console.log(JSON.stringify({status:receipt.status,component}));\n",
+  "generator": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/generate-wrapper-source-smoke.mjs",
+    "sha256": "1ebe6880f82084b8caddf81dd437a97ba754da18d910c0edf10c24871571ff3a"
+  },
+  "actualCommand": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/generate-wrapper-source-smoke.mjs",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/source-smoke-generation.json"
+  ],
+  "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/repository",
+  "meaning": "ExistingauthenticatedCPSsourceadapterwithproperLoaderrootandlocalresultcarrier,allrequiredBendinputsforactualchangedJSbackendproof. No codeimagepatch/bodycheckexclusion orperformanceclaim.",
+  "compilerRuntime": "NOT_RUN",
+  "selfhostGreen": false
+}

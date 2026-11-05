@@ -1,0 +1,102 @@
+{
+  "schemaVersion": 1,
+  "version": "G69R1",
+  "status": "FAILED_FULL_SOURCE_C2_PRODUCTION_BEFORE_EMIT_UNQUALIFIED_ACCEPTED_COMPILER_UNCHANGED",
+  "experimentalBranch": "selfhost/g69-global-wrappers-vqgk3df3",
+  "mainBaseCheckpoint": "bf0fa6ea",
+  "sourceCheckpoints": {
+    "prospectiveProtocol": "ec93f070",
+    "algorithmAndRegressionInput": "a5d6b207",
+    "workingTypedSourceSmokeInputs": "5a5ae936",
+    "actualSourceSmokeProof": "5b299c62",
+    "complete53FileCompilerSource": "b5e1a0f9",
+    "nativeC1AndActual28Consumers": "b3a5f42a"
+  },
+  "receipts": [
+    {
+      "repositoryPath": "checkpoints/local2039g69-protocol.json",
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/repository/checkpoints/local2039g69-protocol.json",
+      "sha256": "3a832b105180b3b1d71c6054cc426f9c4ef329cc8d6ae008809fe495b7605d9e",
+      "bytes": 5333
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g69-static-design.json",
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/repository/checkpoints/local2039g69-static-design.json",
+      "sha256": "3a48bafd8b056cf987cd86aebc4bbb5166866b4570f4407cc4da16da7adcc96b",
+      "bytes": 17886
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g69-preflight.json",
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/repository/checkpoints/local2039g69-preflight.json",
+      "sha256": "38522f16e70ecbacf1140c2054fb023a744a4acd98de71b5a3e7ab9feb181d88",
+      "bytes": 1930
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g69-smoke-inputs.json",
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/repository/checkpoints/local2039g69-smoke-inputs.json",
+      "sha256": "292a99bb97d2f48bc7c4d002c122c7dfd74fd55f4b9547f74d202be296d9b541",
+      "bytes": 8178
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g69-source-smoke-pass.json",
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/repository/checkpoints/local2039g69-source-smoke-pass.json",
+      "sha256": "6329fc0a5b80f6de04c513eaeb824392a084c3e85402c3ba11e9c4d5789d7a99",
+      "bytes": 37417
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g69-compiler-source-inputs.json",
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/repository/checkpoints/local2039g69-compiler-source-inputs.json",
+      "sha256": "e6ed91aad86135608a6aaf6c3fdf9bfd48e1f71d87f0d80acfe2a730df28c0e8",
+      "bytes": 14962
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g69-native-c1.json",
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/repository/checkpoints/local2039g69-native-c1.json",
+      "sha256": "b0d2a5b856004957c2fda218e3470b1cf0cf6bd104427c585ef2b0f5c94fb802",
+      "bytes": 14504
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g69-c1-consumers.json",
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/repository/checkpoints/local2039g69-c1-consumers.json",
+      "sha256": "bf040bdc34794466162a033f37dd9edfed1d4a7469e84090ab6b4d4b7ce612ea",
+      "bytes": 10088
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g69-c2-request.json",
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/repository/checkpoints/local2039g69-c2-request.json",
+      "sha256": "35c271f9340d52d4e5e1dec56c6e13518b1c8b416e4a22e159eb90e8a2983303",
+      "bytes": 18650
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g69-c2-production-failure.json",
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/repository/checkpoints/local2039g69-c2-production-failure.json",
+      "sha256": "413d6e951d7741baf4cc0e989e9c003dcec18f3d62a3c2ed1d2418092a061276",
+      "bytes": 6833
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g69-closing-hashes.json",
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/repository/checkpoints/local2039g69-closing-hashes.json",
+      "sha256": "8f3726523db3b868963fd9010e111c2d7cbad7e90b457bd2783126f14a23c07a",
+      "bytes": 45447
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g69-decision.json",
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/repository/checkpoints/local2039g69-decision.json",
+      "sha256": "c1439dff69f9bfa406aae55bcbd4024c77ca7c1346c69e758f6a92daad40372d",
+      "bytes": 7961
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g69-cleanup.json",
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/repository/checkpoints/local2039g69-cleanup.json",
+      "sha256": "295a3709c90b940b8a3bd07322ac37f1ff073a6d5daaf014530194da0ecf6cac",
+      "bytes": 3348
+    }
+  ],
+  "actualEvidence": "996defcanonicalsourcechecker;4actualdefault-stacklibraryconsumers;authentic18moduleC1production;28actualC1typed-readback/librarycontracts;158unchangedfrozeninputhashes.",
+  "notRun": "NoC2image:40candidateconsumercells,C2readback28,9selectedtimings,whole-imagewrapperidentity. Fullsix/C3NOT_RUN_NOT_EARNED.",
+  "fixedpointStatus": "NOT_RUN_NOT_EARNED",
+  "selfhostGreen": false,
+  "cpuRamGainClaim": false,
+  "mainIntegration": "Documentation and compact receipts only; no compiler algorithms, generated compiler images, transports or bulk archives.",
+  "experimentalClosureCheckpoint": "6941127a"
+}

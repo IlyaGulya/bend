@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "version": "G69R1",
+  "status": "OWNED_TEMPORARY_SCRIPTS_REMOVED_AFTER_ACTUAL_SOURCE_AND_C1_PROOF",
+  "removedScripts": [
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/image-retention-census.mjs",
+      "sha256": "25d50fd299ca7e6a1a555c69e94e198faf009136b6a7b4cb0859017771b10c27"
+    },
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/image-wrapper-identity.mjs",
+      "sha256": "31f7745736cbe607db8f4ed79998b6ce64306eeacceccfbd31871c92e9da91ec"
+    },
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/generate-wrapper-source-smoke.mjs",
+      "sha256": "1ebe6880f82084b8caddf81dd437a97ba754da18d910c0edf10c24871571ff3a"
+    },
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/run-wrapper-source-emitter.mjs",
+      "sha256": "61bc534bcc737de5720e47dd7d3f2a12c4500345a5040c3a635dd57446859ddf"
+    },
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/consume-wrapper-library.mjs",
+      "sha256": "ca339fc02b9db84a5352131fa1f4015c32242adc4068a42983ef31c67d767625"
+    },
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/experiment-controller.mjs",
+      "sha256": "72b9a9c2cb9b5eb468637a51bf54eab5e6096af4d43bb6e59763908799125b3b"
+    },
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/retention-statistics.ts",
+      "sha256": "0093f9103b426baa964ffeee3bcf4f77aef7e596b457d440daa9e2941a581e0c"
+    }
+  ],
+  "executedScripts": [
+    "image-retention-census.mjs",
+    "generate-wrapper-source-smoke.mjs",
+    "run-wrapper-source-emitter.mjs",
+    "consume-wrapper-library.mjs"
+  ],
+  "notExecutedBecauseNoC2OrMeasurements": [
+    "image-wrapper-identity.mjs",
+    "experiment-controller.mjs",
+    "retention-statistics.ts"
+  ],
+  "sourceSmokeReceipt": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/repository/checkpoints/local2039g69-source-smoke-pass.json",
+    "sha256": "6329fc0a5b80f6de04c513eaeb824392a084c3e85402c3ba11e9c4d5789d7a99"
+  },
+  "sourceInputReceipt": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g69-retained-vqgk3df3/repository/checkpoints/local2039g69-compiler-source-inputs.json",
+    "sha256": "e6ed91aad86135608a6aaf6c3fdf9bfd48e1f71d87f0d80acfe2a730df28c0e8"
+  },
+  "requiredFrozenBendSourcesRetainedInCheckpoints": [
+    "a5d6b207",
+    "5a5ae936",
+    "b5e1a0f9"
+  ],
+  "all158InputHashesStillMatch": true,
+  "nativeAndFailedC2GuardiansStopOwnedTrees": true,
+  "imagesAstTransportsCachesProfilesBulkLogsAddedToGit": false,
+  "unrelatedProcessesOrSettingsChanged": false,
+  "scope": "Seven owned throwaway scripts only; no required source or regression input removed. Failed production is not retried and unexecuted candidate gates are not relabelled as passes."
+}
