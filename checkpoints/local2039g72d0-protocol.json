@@ -1,0 +1,203 @@
+{
+  "schemaVersion": 1,
+  "version": "G72D0",
+  "status": "PROSPECTIVE_CPU_CAUSALITY_DIAGNOSIS_NO_OPTIMIZATION_OR_ACCEPTANCE_CLAIM",
+  "baseCheckpoint": "149590fe",
+  "protocol": "IdentifylargeexclusiveCPUfamiliesinactualmatchedcurrentA,thenoneboundedcausalprobechosenfrommeasuredownershipandpriorfailures. NoCPU/RAMretentionthresholdrescoring. No compiler sourcechangesornewversionaccepted.",
+  "release": "2.0.39",
+  "releaseCommit": "a3efe8a3801f423827424227172eed9802c5e6cb",
+  "runtime": {
+    "node": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+    "nodeVersion": "23.11.0",
+    "v8Version": "12.9.202.28-node.14",
+    "bunVersion": "1.4.3",
+    "os": "Darwin25.6.0arm64",
+    "isolated": false
+  },
+  "command": [
+    "/usr/bin/env",
+    "SELFHOST_CPU_PROFILE_DIR=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g72-cpu-causality-o2arrjf5/profiles",
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g72-cpu-causality-o2arrjf5/cpu-only-throughput.mjs",
+    "js",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g72-cpu-causality-o2arrjf5/cpu-only-request.json",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g72-cpu-causality-o2arrjf5/cpu-only-report.json"
+  ],
+  "cwd": "/Users/ilyagulya/Projects/My/bend",
+  "request": {
+    "schemaVersion": 1,
+    "repository": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g56-tail-complete-input",
+    "root": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g56-tail-complete-input/checkpoints/local2039g49-compiler-root.bend",
+    "image": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs",
+    "node": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+    "exports": [
+      "parsed_module",
+      "parse_with_fuel",
+      "expand_modules_start",
+      "template_step",
+      "check_expanded_start",
+      "inspect_checked_start",
+      "checker_step",
+      "emit_modules_start",
+      "emit_library_start",
+      "emitter_step",
+      "emit_c_modules_start",
+      "emit_c_library_start",
+      "c_emitter_step"
+    ],
+    "pins": {
+      "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs": "1a806befee02216a9499f6b4dcde7e2326e01f0a5b96bbd36b75295344c50317",
+      "/Users/ilyagulya/Projects/My/bend/evals/checker_core_step_runtime.mjs": "00cd400ac0452a3681bf6491db08be51f9ae3a33ff2baf88654a9763eb5073ed",
+      "/Users/ilyagulya/Projects/My/bend/evals/selfhost_cpu_profile.mjs": "5d5fc8d329a3b600522c58eeac59c49c515109bc7f48845d8177cb520129a1c0",
+      "/Users/ilyagulya/Projects/My/bend/evals/native_seed_runtime.mjs": "7f81a9b9013853355910b93bf59586b2acbcda4de7bcaa08d7942ebf45c0147a",
+      "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts": "e72f2b81970be76734df918e35b1a4289d0fb194039e5ca20e9785e5ac0ee015",
+      "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate_native.c": "1ff233edacdbf13c6ffd4a8bf38cbf153629e8c76be4860deec8a5b591d3fa8b",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs": "4636c05aa8c75e72212cb03949937e25561942bc00da250f876f37f001b9fc18",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json": "32b9d93cf4de5a8918b61dc9ae21ef2232beb27879b6629ec26f981626da248f",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json": "717ea720d6d117e4fb49ede7ea0d57f544571d336437bb992cdf78c055dc5135",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g60-lexer-cursor-kkoffczh/main-compiler-source.corpus.json": "4dcdf7518b43970eb0a3df0de930078b8c11000168880383fe56a9d5ec8fe636",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/main-complete.corpus.json": "1a269e15bf70257b019ab572c003b6eb130b4e3f63ad507783525e28d307b0e4",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node": "ead5889f15f4e17b37f941c7d9e92b624396786bd74d8155ef470f6381f032c5",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g65-heap-owners-isz5wzuq/repository/checkpoints/local2039g65-r2-protocol.json": "8fe459588872fb27f1924d11caf8b36e30d92edbc0ff24e4b617a264cd0a57d3",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g71-initialized-checker-lvi9rn4s/repository/checkpoints/local2039g71r1-protocol.json": "7dd5bf955ca03f84ddab15e5f22f178b20cc470231fe05603cf27e1ef23b2121",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g72-cpu-causality-o2arrjf5/cpu-only-throughput.mjs": "a529db0f4efb83061fc67758c58367f4418b0f139756159a110949e79c3f20fe",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g72-cpu-causality-o2arrjf5/cpu-only-inspector.mjs": "ea954d037de2c802bea5bde4e8539aba676e52abe22b87f18130557c75e3a455"
+    },
+    "inputs": {
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g56-tail-complete-input/bend2/base.bend": "21baec76caf1a6cfd4a544340b291f7bb55bf30cc841f9f5f29e3b12a1a4d614",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g56-tail-complete-input/bend2/selfhost/ast.bend": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g56-tail-complete-input/bend2/selfhost/backend_ir.bend": "c0286db6b192bf5cc917774b7ea5e393d4416263432eb130fb8393b1dffc1cb3",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g56-tail-complete-input/bend2/selfhost/c_backend_sharing.bend": "05adf4ac68b0658425f7fce430709f67bd29c3f1f8a43727412661084c4dbe2c",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g56-tail-complete-input/bend2/selfhost/checked_frontend.bend": "8287a44c524b001933cdba9d036b44ade13c34e549f5c926fd2cab45894e288e",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g56-tail-complete-input/bend2/selfhost/checker_arena.bend": "d74873488827c5a8568b1238f05356ef43ec7c8a285ca0e25ab7b052f070ebdf",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g56-tail-complete-input/bend2/selfhost/checker_ir.bend": "41db13db11d63102d3ea5c8ca14916e5f688685bba96c332abcb7a3533f1f17b",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g56-tail-complete-input/bend2/selfhost/core.bend": "33823e56b9c70306970ccb0e3b5fb3b995806d3a1907dd97d45c5c9634d13511",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g56-tail-complete-input/bend2/selfhost/index_lookup.bend": "7b7b45946be711d0ba384e15f6823fded5ff97d6a526a6fb74a0448c13d61f84",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g56-tail-complete-input/bend2/selfhost/lexer.bend": "342901897b30afc8ec7587718b1eb0b30150d46b01c1ea498ce369af26d1394d",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g56-tail-complete-input/bend2/selfhost/loaded_module.bend": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g56-tail-complete-input/bend2/selfhost/path.bend": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g56-tail-complete-input/bend2/selfhost/scope_lookup.bend": "e75dc874de6026e2104a7545a19f42fd6995aefecbb1d315c6ae3e097697e590",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g56-tail-complete-input/bend2/selfhost/sha256.bend": "2fe6b6fc50c90db1b4730a384724bc989398b0ce41752cc510aa2478a3e845d6",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g56-tail-complete-input/checkpoints/emitter_steps_v1.bend": "314c8b4cb2b97263dc148cb0a0b1cf0bda7d32dc67614ce5207da709570566f3",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g56-tail-complete-input/checkpoints/local2039g49-compiler-root.bend": "b8610312159cad7621ad5b9713bcb171fba9b32d4feaa4061e9664a7f8dae2e4",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g56-tail-complete-input/checkpoints/template_steps_v1.bend": "b9f4d860de0c58a274e1f23e90558191e23d7ac0de18d1fd452914160b9a5ae5",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g56-tail-complete-input/bend2/effs/args.js": "4fa9772d438257793425d4f9516e1411ce58455fdaec402ab836e6a6cf8a7a82",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g56-tail-complete-input/bend2/effs/audio_close.js": "c700e2fc0eda1f9a67afd317184999d9283912817aaec00637af41b135b84c62",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g56-tail-complete-input/bend2/effs/audio_open.js": "ed792cb29df28497c60fb6bfcebaa72d9f4bb0a9d8b22063567aa40ac4803fc9",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g56-tail-complete-input/bend2/effs/audio_write.js": "ca3731d6da39355c0b924007dfe4f3ea25ed1a9d7b06b7bf19cacf49fdcc0de6",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g56-tail-complete-input/bend2/effs/chan.js": "c8e4f3cdaea81cfd35dc22e07c29a86b8f08272d284bf3506dd5148dff8d168f",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g56-tail-complete-input/bend2/effs/file_close.js": "2b83f900113776ab875fa3afd29f31000a191fe48645abe78b1d7b34cb12a7fe",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g56-tail-complete-input/bend2/effs/file_open.js": "e6cbf6455aeae0768f1e8e7cabbafb8d0999eb27660cbaa23885757322b8c694",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g56-tail-complete-input/bend2/effs/file_read.js": "7aa8a95a0b02f3c8db1167da5a936958a90c64e7df3e327ba5c66766d5e57da7",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g56-tail-complete-input/bend2/effs/file_size.js": "508a931334016f725f0446d9c63f91d7e9de79b9fb347d0e148777dba834ef0b",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g56-tail-complete-input/bend2/effs/file_write.js": "fbb706714fe6724e12658ad638d8b7aa2228f6297791bf74bd4894af361776f0",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g56-tail-complete-input/bend2/effs/get_env.js": "4bbb377d73898055bd06b498bef605e81bc2a0885e7ac664bc77591fd7e3dfa4",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g56-tail-complete-input/bend2/effs/listener_close.js": "1b87fb43c373b1a8a54b5afaf0cf8e3ec2f8d39bdfde131e49527caa19ac0cb8",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g56-tail-complete-input/bend2/effs/now.js": "f41624aba3f07d56b671f41691b5cb833b4d018266668f5f48329290fc41b2d9",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g56-tail-complete-input/bend2/effs/print_err.js": "a7a00612edfe98af1a351e8f7b912af4ee33f4bb888c36f119f7712d72a9394e",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g56-tail-complete-input/bend2/effs/print.js": "814ceba4efbaa291b7b6a9ff29aa20e3a23c06eb4fa165c69ee0bd22878adaa9",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g56-tail-complete-input/bend2/effs/process_run.js": "26868538280a1df9570ed2fba234d2a329f1e1d9e86c6fe9353de417adaee729",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g56-tail-complete-input/bend2/effs/random_u32.js": "ab0b37cb6055ad08573d1263aa380c339c3fe7417530cfa63264629dce7744c2",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g56-tail-complete-input/bend2/effs/sleep.js": "6711ccd804dcaede381da9ff0283b4640feb440e1d413381101f22bfed65a934",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g56-tail-complete-input/bend2/effs/socket_close.js": "dc4bf1fa95692c91528d4eb855506dde8dfc9164a90de2c43cd1bd6916e0c380",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g56-tail-complete-input/bend2/effs/spawn.js": "8a14c7a7a5ff80b049f0659f9e58d43bf0f3b1a6724d35a199c3f864b3242e4b",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g56-tail-complete-input/bend2/effs/tcp_accept.js": "26406cce42c497994e597a7a032629fab65f43ec14f06ee69aace2b353afe28d",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g56-tail-complete-input/bend2/effs/tcp_connect.js": "c51c4b55ffbc4a520f01082a1307498801a17e5123bdffbd01077fb42730f1cb",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g56-tail-complete-input/bend2/effs/tcp_listen.js": "0da4cfafaa24ba5e17d9fda5e6a5b207b2b36031b2c888944f67b85842d76399",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g56-tail-complete-input/bend2/effs/tcp_recv.js": "e8c54490445cb71a4328c07be8c40a49cee3e643cbf74f42dc73d31ab95890d7",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g56-tail-complete-input/bend2/effs/tcp_send.js": "350bc6ac8f957d6a154cc9437b4ad871bd11ec65babbbd7c3b0d2c77590ec5c6",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g56-tail-complete-input/bend2/effs/thread_count.js": "f4ef6d8ded95fe3114e50b7d2b6eb873e693419b85150f681b4a54a5043c2de9",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g56-tail-complete-input/bend2/effs/udp_bind.js": "e3afae5bf246184e76703efbcf41cb35bf5289e746cc40dc0300eef98753dfb5",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g56-tail-complete-input/bend2/effs/udp_recv_from.js": "66435d23dd12f30aa47bf618c925a42250920768d5ae28c7c52c35d4e04fa5ad",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g56-tail-complete-input/bend2/effs/udp_send_to.js": "40c835c4d73eb15d089a41b425968d04931d02820cb901aadb8eb3dd4905f247",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g56-tail-complete-input/bend2/effs/window_close.js": "be4ef11e9ac57c59aa4aee847f15ece18034ca9fe1c4a68c6e0b0d7bbd7c3590",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g56-tail-complete-input/bend2/effs/window_frame.js": "78baa53aa46e02165c0c94da68d1f6362386ebcfb97dbb36fffb82792a03d34f",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g56-tail-complete-input/bend2/effs/window_grab.js": "55cfc1925114f2d1f177137fad24d6252fe28707d26a1aae18a98ad97060a668",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g56-tail-complete-input/bend2/effs/window_open.js": "cd716864b8dfb27ca955c8aa58643c7d693ce76eb56472bd8255ff7ac0656e8d",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g56-tail-complete-input/bend2/effs/window_set_title.js": "eee0bf26b7f381f8800364e22e8c735e47dd6db3f58e23ff3dda8478a8411513",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g56-tail-complete-input/bend2/effs/write.js": "e3495066a5d8c53fe1c46cfd2bb32577e3bd7dcae9797808801599073504dacb"
+    },
+    "limits": {
+      "memoryMiB": 8192,
+      "rssMiB": 8192,
+      "pollMs": 10,
+      "timeoutMs": 600000
+    },
+    "stopAfter": "check",
+    "producer": {
+      "compilerImage": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs",
+        "sha256": "4636c05aa8c75e72212cb03949937e25561942bc00da250f876f37f001b9fc18"
+      },
+      "ownSourceReport": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json",
+        "sha256": "32b9d93cf4de5a8918b61dc9ae21ef2232beb27879b6629ec26f981626da248f"
+      },
+      "actualOwnByteFixedpoint": true,
+      "nativeAncestorReceipt": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json",
+        "sha256": "717ea720d6d117e4fb49ede7ea0d57f544571d336437bb992cdf78c055dc5135"
+      },
+      "description": "unchanged main source, exact genuine own byte-fixed image reused, never old timing samples"
+    },
+    "scope": "G72D0diagnosticCPUonly, actualunchangedAimageandselectedsamework, noheapsampler/forcedGC/imagepatch. PipelineforkdiffersONLYfourimportspecifiers; originalactualparser/expander/checker/worker/guardunchanged."
+  },
+  "requestRef": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g72-cpu-causality-o2arrjf5/cpu-only-request.json",
+    "sha256": "42b6c4893ae6f07585e30a3fa8b68b09f20da387fb0c541709867cbb141cae01"
+  },
+  "image": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs",
+    "sha256": "4636c05aa8c75e72212cb03949937e25561942bc00da250f876f37f001b9fc18"
+  },
+  "expectedSameWork": {
+    "files": 52,
+    "modules": 17,
+    "declarations": 2954,
+    "expand": 263032,
+    "check": 1975761
+  },
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000
+  },
+  "worker": {
+    "stackMiB": 256,
+    "oldMiB": 6144,
+    "youngMiB": 128
+  },
+  "observer": {
+    "CPUInspectorIntervalUs": 1000,
+    "allocationSampler": false,
+    "heapSnapshot": false,
+    "explicitGC": false,
+    "noImagePatch": true,
+    "profiledIsolateSamplesAreNotCleanThroughput": true
+  },
+  "pipelineImportOnlyDelta": {
+    "'./heavy_gate.ts'": "'file:///Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts'",
+    "'./native_seed_runtime.mjs'": "'file:///Users/ilyagulya/Projects/My/bend/evals/native_seed_runtime.mjs'",
+    "'./checker_core_step_runtime.mjs'": "'file:///Users/ilyagulya/Projects/My/bend/evals/checker_core_step_runtime.mjs'",
+    "'./selfhost_cpu_profile.mjs'": "'file:///var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g72-cpu-causality-o2arrjf5/cpu-only-inspector.mjs'"
+  },
+  "originalDriver": {
+    "path": "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+    "sha256": "1a806befee02216a9499f6b4dcde7e2326e01f0a5b96bbd36b75295344c50317"
+  },
+  "diagnosticDriver": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g72-cpu-causality-o2arrjf5/cpu-only-throughput.mjs",
+    "sha256": "a529db0f4efb83061fc67758c58367f4418b0f139756159a110949e79c3f20fe",
+    "source": "#!/usr/bin/env bun\n// Comparable clean root-to-JS runs. Source algorithms and artifacts are pinned;\n// this driver performs IO and advances opaque native-owned Run values only.\nimport {createHash} from 'node:crypto';\nimport {readFileSync,writeFileSync,existsSync,realpathSync} from 'node:fs';\nimport {resolve,dirname,posix,isAbsolute} from 'node:path';\nimport {pathToFileURL,fileURLToPath} from 'node:url';\nimport {Worker,isMainThread,workerData} from 'node:worker_threads';\nimport {getHeapStatistics} from 'node:v8';\nimport {runHeavyGate} from 'file:///Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts';\nimport {ABI,workloadRows,corpusFor,runtimeManifest,runNativeStage0,requireNativeRun} from 'file:///Users/ilyagulya/Projects/My/bend/evals/native_seed_runtime.mjs';\nimport {runTemplateSteps,runCheckerSteps,runLibraryEmitterSteps,sourceFiles,sourceFileTagFromRoot} from 'file:///Users/ilyagulya/Projects/My/bend/evals/checker_core_step_runtime.mjs';\nimport {createCpuProfiler} from 'file:///var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g72-cpu-causality-o2arrjf5/cpu-only-inspector.mjs';\n\nconst script=fileURLToPath(import.meta.url);\nconst sha=bytes=>createHash('sha256').update(bytes).digest('hex');\nconst hash=path=>sha(readFileSync(path));\nconst save=(path,value)=>writeFileSync(path,JSON.stringify(value,null,2)+'\\n');\nconst tag=value=>typeof value?.$==='string'?value.$.split('.').at(-1):null;\nconst items=value=>{const out=[];while(tag(value)==='Con'){out.push(value.head);value=value.tail;}if(tag(value)!=='Nil')throw Error('Malformed native list');return out;};\nconst list=values=>values.reduceRight((tail,head)=>({$:'Con',head,tail}),{$:'Nil'});\nconst fuelEnd=Object.freeze({$:'FeedbackFuelEnd'}),fuelPrototype={get tail(){return fuel(this.remaining-1);}};\nfunction fuel(remaining){if(remaining===0)return fuelEnd;const node=Object.create(fuelPrototype);node.$='FeedbackFuelCell';node.remaining=remaining;return node;}\nfunction verify(pins){for(const [path,digest]of Object.entries(pins))if(realpathSync(path)!==path||hash(path)!==digest)throw Error('Pinned input drift: '+path);}\nfunction requestAt(path){\n  const request=JSON.parse(readFileSync(path,'utf8'));\n  if(request.schemaVersion!==1||!request.pins||!request.inputs||JSON.stringify(request.exports)!==JSON.stringify(ABI))throw Error('Invalid throughput request');\n  if(request.limits?.memoryMiB!==8192||request.limits?.rssMiB!==8192||request.limits?.timeoutMs!==600000)throw Error('Throughput guard must retain original limits');\n  if(!['check','compile'].includes(request.stopAfter??'compile'))throw Error('Invalid throughput stopAfter');\n  if(request.stopAfter==='check'&&request.expectedSelfhostOutput!==undefined)throw Error('Check-only runs cannot claim emitted output equality');\n  verify(request.pins);verify(request.inputs);\n  return request;\n}\nasync function run(mode,requestPath,requestSha256,reportPath){\n  if(hash(requestPath)!==requestSha256)throw Error('Throughput request drift');\n  const request=requestAt(requestPath),output=reportPath+'.output.mjs';\n  if(request.stopAfter==='check'&&mode!=='js')throw Error('Check-only mode requires the actual JS component pipeline');\n  if(existsSync(output))throw Error('Output path already exists');\n  const report={schemaVersion:1,status:'RUNNING',diagnosticOnly:true,acceptanceEvidence:false,mode,request:requestPath,requestSha256,source:request.root,sourceSha256:hash(request.root),runtime:{execPath:process.execPath,versions:process.versions,execArgv:process.execArgv,heapLimitBytes:getHeapStatistics().heap_size_limit},limits:request.limits,workerPolicy:{stackMiB:256,oldGenerationMiB:6144,youngGenerationMiB:128},exports:ABI,phases:[],checksExcluded:0,outputPatches:0};\n  report.stopAfter=request.stopAfter??'compile';\n  const started=performance.now();save(reportPath,report);\n  const profileDirectory=process.env.SELFHOST_CPU_PROFILE_DIR;\n  const profiler=profileDirectory?createCpuProfiler(profileDirectory,{mode,root:request.root,image:request.image,request:requestPath,requestSha256}):undefined;\n  let profileError;\n  const phase=async(name,action)=>{\n    profiler?.mark(name,{root:request.root,mode});\n    const before=performance.now(),cpu=process.cpuUsage();report.activePhase=name;save(reportPath,report);\n    const result=await action(),used=process.cpuUsage(cpu);\n    report.phases.push({phase:name,elapsedMs:performance.now()-before,userCpuMs:used.user/1000,systemCpuMs:used.system/1000,memoryEnd:process.memoryUsage()});delete report.activePhase;save(reportPath,report);return result;\n  };\n  try{\n    let source;\n    if(mode==='native'){\n      const work=workloadRows(request.root,'js'),corpus=corpusFor(work);\n      if(JSON.stringify(Object.fromEntries([...work.sources,...work.externals].map(row=>[row.file,row.sha256]).sort()))!==JSON.stringify(Object.fromEntries(Object.entries(request.inputs).sort())))throw Error('Native source closure differs from request');\n      const manifest=reportPath+'.runtime.tsv',exportsPath=reportPath+'.exports.txt';\n      writeFileSync(manifest,runtimeManifest(corpus),{flag:'wx'});writeFileSync(exportsPath,ABI.join('\\n')+'\\n',{flag:'wx'});\n      const native=runNativeStage0(request.binary,{root:request.root,base:resolve(request.repository,'bend2/base.bend'),manifest,exports:exportsPath,phase:'compile',output},{timeoutMs:request.limits.timeoutMs});\n      writeFileSync(reportPath+'.native.stdout',native.stdout,{flag:'wx'});writeFileSync(reportPath+'.native.stderr',native.stderr,{flag:'wx'});\n      requireNativeRun(native,{phases:['parse','expand','check','emit'],sources:work.sources.length,output});\n      report.native={command:native.command,status:native.status,signal:native.signal,elapsedMs:native.elapsedMs,begins:native.begins,fuel:native.fuel,result:native.results};\n      report.phases=native.phases;report.moduleCount=work.sources.length;\n      report.phaseCpuScope='Native process RUSAGE_SELF; wrapper and guardian excluded';\n    }else if(mode==='ts'){\n      const {K,C}=await phase('startup',async()=>({K:await import(pathToFileURL(resolve(request.repository,'bend2/bend.ts')).href),C:await import(pathToFileURL(resolve(request.repository,'bend2/comp.ts')).href)}));\n      const book=K.book_nil(),observed=new Set();\n      class Inputs extends Map{set(path,namespace){if(namespace===null)observed.add(realpathSync(path));return super.set(path,namespace);}}\n      await phase('load-parse-expand',()=>K.book_load(book,request.root,'',new Inputs()));\n      for(const def of Object.values(book.tlds))if(def.$==='Def')for(const path of def.i??[])if(path.endsWith('.js'))observed.add(realpathSync(path));\n      if(observed.size!==Object.keys(request.inputs).length||[...observed].some(path=>!Object.hasOwn(request.inputs,path)))throw Error('TS source closure differs from request');\n      await phase('check',()=>K.book_valid(book));\n      if(book.hols)throw Error('Unfilled TS book');\n      const definitions=Object.values(book.tlds).filter(def=>def.$==='Def'&&def.v!==null);\n      if(definitions.some(def=>def.e===undefined))throw Error('Unchecked TS body');\n      report.checkedDefinitions=definitions.length;report.validationEvents=book.order.length;\n      source=await phase('emit',()=>C.js_lib(book,true,ABI));\n      report.phaseCpuScope='Node process-wide CPU; includes worker/helper threads, excludes child processes';\n    }else if(mode==='js'){\n      const api=await phase('startup',async()=>(await import(pathToFileURL(request.image).href)).default);\n      if(!api||!ABI.every(key=>typeof api[key]==='function'))throw Error('Emitted compiler ABI incomplete');\n      let modules=[],files=[],declarations=0;\n      await phase('load-parse',()=>{\n        const seen=new Map(),active=new Set(),observed=new Set(),foreign=new Map();\n        const observe=path=>{const real=realpathSync(path);if(!Object.hasOwn(request.inputs,real))throw Error('Unexpected input: '+real);observed.add(real);return real;};\n        const namespace=(scope,path)=>path==='Base'?'':posix.normalize(isAbsolute(path)?path.replace(/\\.bend$/,''):posix.dirname(scope)+'/'+path.replace(/\\.bend$/,''));\n        const foreignSource=(file,path)=>{const real=observe(resolve(dirname(file),path));foreign.set(real,readFileSync(real,'utf8'));};\n        const visit=(file,scope)=>{\n          const real=observe(file);if(active.has(real))throw Error('Import cycle: '+real);\n          if(seen.has(real)){if(seen.get(real)!==scope)throw Error('Namespace conflict');return;}seen.set(real,scope);active.add(real);\n          const feedback=api.parse_with_fuel(fuel(8000000),real,readFileSync(real,'utf8'));\n          if(tag(feedback)!=='FeedbackComplete'||tag(feedback.value.result)!=='ParseSuccess')throw Error('Own parser rejected '+real);\n          const module=feedback.value.result.module;declarations+=items(module.declarations).length;\n          for(const top of items(module.declarations))if(tag(top)==='DefTop'&&tag(top.definition.body)==='DefImports')for(const path of items(top.definition.body.paths))if(path.endsWith('.js'))foreignSource(real,path);\n          for(const imported of items(module.imports)){const path=imported.path;if(path.endsWith('.js'))foreignSource(real,path);else if(!path.endsWith('.c'))visit(path==='Base'?resolve(request.repository,'bend2/base.bend'):resolve(dirname(real),path),namespace(scope,path));}\n          modules.push(api.parsed_module(scope,module));active.delete(real);\n        };\n        visit(request.root,'');\n        if(observed.size!==Object.keys(request.inputs).length)throw Error('Own parser omitted a frozen input');\n        report.moduleCount=seen.size;report.sourceDeclarations=declarations;files=[...foreign].map(([path,source])=>({path,source}));modules=list(modules);\n      });\n      const stepCounts={};\n      let expanded=await phase('expand',()=>runTemplateSteps({...api,expand_modules_start:input=>{modules=undefined;return api.expand_modules_start(input);}},modules,{onFinish(_,steps){stepCounts.expand=steps;}}));\n      if(tag(expanded)!=='ExpandSuccess')throw Error('Own expansion failed');\n      let checked=await phase('check',()=>runCheckerSteps({...api,check_expanded_start:input=>{expanded=undefined;return api.check_expanded_start(input);}},expanded.modules,{onFinish(_,steps){stepCounts.check=steps;}}));\n      if(tag(checked)!=='CheckSuccess')throw Error('Own checking failed');\n      if(request.stopAfter!=='check'){\n        const carrier=sourceFileTagFromRoot(readFileSync(request.root,'utf8'),'selfhost');\n        const emitted=await phase('emit',()=>runLibraryEmitterSteps({...api,emit_library_start:(program,names,sources)=>{checked=undefined;return api.emit_library_start(program,names,sources);}},checked.program,list(ABI),sourceFiles(files,carrier),{onFinish(_,steps){stepCounts.emit=steps;}}));\n        if(tag(emitted)!=='EmitSuccess')throw Error('Own emission failed');source=emitted.source;\n      }\n      report.stepCounts=stepCounts;report.phaseCpuScope='Node process-wide CPU; includes worker/helper threads, excludes child processes';\n    }else throw Error('Unknown throughput mode: '+mode);\n    report.pipelineElapsedMs=performance.now()-started;\n    if(source!==undefined){writeFileSync(output,source,{flag:'wx'});source=undefined;}\n    if(request.stopAfter!=='check'){\n      report.output={path:output,bytes:readFileSync(output).length,sha256:hash(output)};\n      if(mode!=='ts'&&request.expectedSelfhostOutput&&report.output.sha256!==request.expectedSelfhostOutput)throw Error('Unchanged G21 output bytes differ');\n    }\n    verify(request.pins);verify(request.inputs);\n    report.status='PASS';\n  }catch(error){profileError=error;report.status='FAIL';report.error=String(error);report.stack=error?.stack;process.exitCode=1;}\n  try{profiler?.finish(profileError);}catch(error){report.status='FAIL';report.error=String(error);report.stack=error?.stack;process.exitCode=1;}\n  report.totalElapsedMs=performance.now()-started;save(reportPath,report);console.log(JSON.stringify({status:report.status,mode,report:reportPath,pipelineElapsedMs:report.pipelineElapsedMs,phases:report.phases.map(row=>({phase:row.phase,elapsedMs:row.elapsedMs})),output:report.output,error:report.error}));\n}\nif(!isMainThread){await run(workerData.mode,workerData.requestPath,workerData.requestSha256,workerData.reportPath);}\nelse if(process.argv[2]==='--worker'){\n  const [,mode,requestPath,requestSha256,reportPath]=process.argv.slice(2);\n  if(!mode||!requestPath||!requestSha256||!reportPath)throw Error('Expected worker arguments');\n  const child=new Worker(new URL(import.meta.url),{workerData:{mode,requestPath,requestSha256,reportPath},resourceLimits:{stackSizeMb:256,maxOldGenerationSizeMb:6144,maxYoungGenerationSizeMb:128}});\n  await new Promise((done,reject)=>{child.once('error',reject);child.once('exit',code=>code===0?done():reject(Error('Throughput worker failed: '+code)));});\n}else{\n  const [mode,requestPath,reportPath]=process.argv.slice(2);\n  if(!['ts','native','js'].includes(mode)||!requestPath||!reportPath||process.argv.length!==5)throw Error('Usage: bun evals/selfhost_throughput.mjs ts|native|js REQUEST.json FRESH-REPORT.json');\n  if(existsSync(reportPath))throw Error('Use a fresh report path');\n  const request=requestAt(resolve(requestPath));save(reportPath,{schemaVersion:1,status:'RUNNING',mode,diagnosticOnly:true,acceptanceEvidence:false});\n  const guarded=await runHeavyGate([request.node,'--experimental-strip-types','--max-old-space-size=6144','--max-semi-space-size=128',script,'--worker',mode,resolve(requestPath),hash(requestPath),resolve(reportPath)],{...request.limits,pollMs:10,label:'Frozen full-root throughput '+mode});\n  const report=JSON.parse(readFileSync(reportPath,'utf8'));report.guardian=guarded;\n  if(guarded.status!=='PASS'||report.status!=='PASS'){report.status='FAIL';process.exitCode=guarded.exitCode||1;}\n  save(reportPath,report);\n}\n"
+  },
+  "CPUObserver": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g72-cpu-causality-o2arrjf5/cpu-only-inspector.mjs",
+    "sha256": "ea954d037de2c802bea5bde4e8539aba676e52abe22b87f18130557c75e3a455",
+    "source": "import {Session} from 'node:inspector';\nimport {mkdirSync,writeFileSync} from 'node:fs';\nimport {join,resolve} from 'node:path';\nimport {threadId,isMainThread} from 'node:worker_threads';\nexport function createCpuProfiler(directory,execution){\n const root=resolve(directory);mkdirSync(root,{recursive:true});\n const session=new Session();session.connect();\n const post=(method,params={})=>{let done=false,value,error;session.post(method,params,(err,result)=>{done=true;error=err;value=result;});if(!done)throw Error('Synchronous Inspector required: '+method);if(error)throw error;return value;};\n post('Profiler.enable');post('Profiler.setSamplingInterval',{interval:1000});\n let active,sequence=0;\n const save=(path,value)=>writeFileSync(path,JSON.stringify(value)+'\\n',{flag:'wx'});\n save(join(root,'run.json'),{kind:'CPU_ONLY_NO_HEAP_PROFILER_NO_FORCED_GC',acceptanceEvidence:false,execution,runtime:{versions:process.versions,execArgv:process.execArgv,execPath:process.execPath},pid:process.pid,threadId,isMainThread,samplingIntervalUs:1000,profileScope:'Worker-isolate elapsed samples, not processCPU; check interval includes final request/input hash verification before finally',phaseCpuScope:'Original driver phase process.cpuUsage including helper threads'});\n function stop(boundary,status='completed'){\n  if(!active)return;const interval=active;\n  const ended=performance.now(),cpuUs=process.cpuUsage(interval.cpuStart);\n  const {profile}=post('Profiler.stop');active=undefined;\n  save(interval.stem+'.cpuprofile',profile);\n  save(interval.stem+'.json',{phase:interval.phase,status,boundary,profilePath:interval.stem+'.cpuprofile',wallMs:ended-interval.started,cpuUs,details:interval.details,sampledIsolateOnly:true,allocationSampling:false,explicitGC:false});\n }\n return {mark(phase,details={}){stop({phase,details});const stem=join(root,String(++sequence).padStart(2,'0')+'-'+phase);post('Profiler.start');active={phase,details,stem,started:performance.now(),cpuStart:process.cpuUsage()};},finish(error){try{stop({phase:'finally',error:error?String(error):undefined},error?'error':'completed');}finally{session.disconnect();}}};\n}\n"
+  },
+  "previousEvidenceLimit": "G65actualACPUprofilewascollectedwithallocationprofilingandforcedretrievalGC;useonlyaspriorhotspotmap,notcleanCPUweightorpeakcost. G58/G64Runstateelision/G65Mapget/G68Tupledeforestationarenotnewideas.",
+  "fixedpoint": "NOT_APPLICABLE_UNCHANGED_COMPILER_IMAGE",
+  "selfhostGreen": false
+}
