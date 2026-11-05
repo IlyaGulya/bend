@@ -1,0 +1,1624 @@
+{
+  "schemaVersion": 1,
+  "version": "local2039g73r1",
+  "status": "PASS_ACTUAL_GENUINE_C2_ALL_CONSUMERS",
+  "preflightCheckpoint": "50ae6d7c",
+  "C2": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/real-own-c2.json.output.mjs",
+    "sha256": "505d4c08336e6f6312346806d97e2d189b6e0bd5783f829ead6723e62c24edaa"
+  },
+  "C2Receipt": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/repository/checkpoints/local2039g73r1-own-c2.json",
+    "sha256": "1f81ed54a89d5e19b31afc0f879c926d9ce553668af23b1fef0c731d52680cb6"
+  },
+  "command": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun --smol /var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/experiment-controller.mjs /var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/actual-c2-consumers-plan.json",
+  "execution": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/actual-c2-consumers-execution.json",
+    "sha256": "4ba17aa9382233e448f17ac7b7e589465a843aa4f6b24d0442fa996f8ce68143"
+  },
+  "own69": {
+    "report": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/c2-own-consumers.json",
+      "sha256": "26b6888aa2e5d235470b86c2406808456ef4f6a24d8c9dcf1bc098993c130da5"
+    },
+    "passed": true,
+    "finished": true,
+    "totalCases": 69,
+    "passedCases": 69
+  },
+  "typedReadback": {
+    "report": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/actual-typed-readback-report.json",
+      "sha256": "2232cf674512a13d57a4bc0e84b49a5a1503f8941dcdc0a380ee583a23746c04"
+    },
+    "status": "PASS_ACTUAL_INSPECTION_RECHECK_AND_LIBRARY_CONSUMERS",
+    "runtimeRows": [
+      {
+        "name": "zero-nullary",
+        "observed": "BitZero",
+        "expected": "BitZero",
+        "passed": true
+      },
+      {
+        "name": "one-nullary",
+        "observed": "BitOne",
+        "expected": "BitOne",
+        "passed": true
+      },
+      {
+        "name": "positional-noncommutative",
+        "observed": [
+          "BitOne",
+          "BitZero"
+        ],
+        "expected": [
+          "BitOne",
+          "BitZero"
+        ],
+        "passed": true
+      },
+      {
+        "name": "positional-reversed-input",
+        "observed": [
+          "BitZero",
+          "BitOne"
+        ],
+        "expected": [
+          "BitZero",
+          "BitOne"
+        ],
+        "passed": true
+      },
+      {
+        "name": "pack-one-argument-is-curried-function",
+        "observed": "function",
+        "expected": "function",
+        "passed": true
+      },
+      {
+        "name": "pack-curried-second-argument",
+        "observed": [
+          "BitOne",
+          "BitZero"
+        ],
+        "expected": [
+          "BitOne",
+          "BitZero"
+        ],
+        "passed": true
+      },
+      {
+        "name": "returned-curried-function",
+        "observed": "function",
+        "expected": "function",
+        "passed": true
+      },
+      {
+        "name": "higher-order-positional-call",
+        "observed": [
+          "BitOne",
+          "BitZero"
+        ],
+        "expected": [
+          "BitOne",
+          "BitZero"
+        ],
+        "passed": true
+      },
+      {
+        "name": "over-applied-returned-function",
+        "observed": [
+          "BitOne",
+          "BitZero"
+        ],
+        "expected": [
+          "BitOne",
+          "BitZero"
+        ],
+        "passed": true
+      },
+      {
+        "name": "live-host-callback",
+        "observed": [
+          "BitZero",
+          "BitOne"
+        ],
+        "expected": [
+          "BitZero",
+          "BitOne"
+        ],
+        "passed": true
+      },
+      {
+        "name": "live-host-callback-evaluated-once",
+        "observed": 1,
+        "expected": 1,
+        "passed": true
+      },
+      {
+        "name": "erased-kind-and-type-effective-one-argument",
+        "observed": "BitOne",
+        "expected": "BitOne",
+        "passed": true
+      },
+      {
+        "name": "ordinary-type-reference-erasure-in-bend-application",
+        "observed": "BitZero",
+        "expected": "BitZero",
+        "passed": true
+      },
+      {
+        "name": "actual-template-specialization",
+        "observed": "BitOne",
+        "expected": "BitOne",
+        "passed": true
+      },
+      {
+        "name": "erased-expression-keeps-second-live-argument",
+        "observed": "BitOne",
+        "expected": "BitOne",
+        "passed": true
+      },
+      {
+        "name": "erased-expression-not-evaluated",
+        "observed": 0,
+        "expected": 0,
+        "passed": true
+      },
+      {
+        "name": "shared-local-value",
+        "observed": [
+          "BitOne",
+          "BitOne"
+        ],
+        "expected": [
+          "BitOne",
+          "BitOne"
+        ],
+        "passed": true
+      },
+      {
+        "name": "shared-local-evaluated-once",
+        "observed": 1,
+        "expected": 1,
+        "passed": true
+      },
+      {
+        "name": "unused-local-result",
+        "observed": "BitZero",
+        "expected": "BitZero",
+        "passed": true
+      },
+      {
+        "name": "unused-live-local-still-evaluated",
+        "observed": 1,
+        "expected": 1,
+        "passed": true
+      },
+      {
+        "name": "ordered-local-values",
+        "observed": [
+          "BitOne",
+          "BitZero"
+        ],
+        "expected": [
+          "BitOne",
+          "BitZero"
+        ],
+        "passed": true
+      },
+      {
+        "name": "local-evaluation-order",
+        "observed": [
+          "first",
+          "second"
+        ],
+        "expected": [
+          "first",
+          "second"
+        ],
+        "passed": true
+      },
+      {
+        "name": "named-over-application-value",
+        "observed": [
+          "BitOne",
+          "BitZero"
+        ],
+        "expected": [
+          "BitOne",
+          "BitZero"
+        ],
+        "passed": true
+      },
+      {
+        "name": "named-over-application-order",
+        "observed": [
+          "callee",
+          "argument"
+        ],
+        "expected": [
+          "callee",
+          "argument"
+        ],
+        "passed": true
+      },
+      {
+        "name": "generic-over-application-value",
+        "observed": [
+          "BitOne",
+          "BitZero"
+        ],
+        "expected": [
+          "BitOne",
+          "BitZero"
+        ],
+        "passed": true
+      },
+      {
+        "name": "generic-over-application-order",
+        "observed": [
+          "callee",
+          "argument",
+          "apply"
+        ],
+        "expected": [
+          "callee",
+          "argument",
+          "apply"
+        ],
+        "passed": true
+      },
+      {
+        "name": "constructor-eliminator-first-arm",
+        "observed": "BitOne",
+        "expected": "BitOne",
+        "passed": true
+      },
+      {
+        "name": "constructor-eliminator-default-chain",
+        "observed": "BitZero",
+        "expected": "BitZero",
+        "passed": true
+      }
+    ]
+  },
+  "cells": [
+    {
+      "id": "c2-own-69",
+      "elapsedMs": 84374.7185,
+      "exitCode": 0,
+      "passed": true,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 616333312,
+        "peakFootprintBytes": 423567280,
+        "elapsedMs": 1342,
+        "timeoutMs": 600000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "node",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/repository/evals/checker_core_target_worker.mjs",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-checker-gate-bty5DT/enum-constant.json",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/c2-own-consumers.json.cases/enum-constant.json"
+        ],
+        "label": "Compiled CheckerCore target enum-constant",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793888196334-f2022207c0df4fec.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      }
+    },
+    {
+      "id": "c2-js-0-emit",
+      "elapsedMs": 10874.647666999997,
+      "exitCode": 0,
+      "passed": true,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 1251639296,
+        "peakFootprintBytes": 1222858824,
+        "elapsedMs": 10708,
+        "timeoutMs": 120000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--experimental-strip-types",
+          "--max-old-space-size=6144",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/repository/evals/candidate_host.ts",
+          "--candidate=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/real-own-c2.json.output.mjs",
+          "--parser=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/real-own-c2.json.output.mjs",
+          "--base=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/repository/bend2/base.bend",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/repository/tests/base/map_ops.bend",
+          "-o",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/c2-js-0.js"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793888280717-bf6e358f27c1e04d.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      }
+    },
+    {
+      "id": "c2-js-0-node",
+      "elapsedMs": 100.46391700000095,
+      "exitCode": 0,
+      "passed": true,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 44154880,
+        "peakFootprintBytes": 13993568,
+        "elapsedMs": 42,
+        "timeoutMs": 120000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/c2-js-0.js"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793888291484-1b5eddc4438e23b2.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      },
+      "expectedStdout": "7\n"
+    },
+    {
+      "id": "c2-js-1-emit",
+      "elapsedMs": 9660.154125000001,
+      "exitCode": 0,
+      "passed": true,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 1289125888,
+        "peakFootprintBytes": 1135619824,
+        "elapsedMs": 9604,
+        "timeoutMs": 120000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--experimental-strip-types",
+          "--max-old-space-size=6144",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/repository/evals/candidate_host.ts",
+          "--candidate=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/real-own-c2.json.output.mjs",
+          "--parser=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/real-own-c2.json.output.mjs",
+          "--base=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/repository/bend2/base.bend",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/repository/tests/base/map_prefix_keys.bend",
+          "-o",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/c2-js-1.js"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793888291582-2cd0cc319bd95b71.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      }
+    },
+    {
+      "id": "c2-js-1-node",
+      "elapsedMs": 116.04379199999676,
+      "exitCode": 0,
+      "passed": true,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 44548096,
+        "peakFootprintBytes": 18663080,
+        "elapsedMs": 55,
+        "timeoutMs": 120000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/c2-js-1.js"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793888301250-f7b08857c8defbc4.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      },
+      "expectedStdout": "a=2,ab=1,b=3,.\na=20,ab=1,b=3,c=30,.\na=2,ab=1,b=3,c=30,.\nLTGTLT\n\ue000=4,\ud834\udd1e=5,\ud834\udd1ea=6,.\nLTGTLT\nTFTTF\n"
+    },
+    {
+      "id": "c2-js-2-emit",
+      "elapsedMs": 10505.460625000007,
+      "exitCode": 0,
+      "passed": true,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 1260175360,
+        "peakFootprintBytes": 1116886080,
+        "elapsedMs": 10448,
+        "timeoutMs": 120000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--experimental-strip-types",
+          "--max-old-space-size=6144",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/repository/evals/candidate_host.ts",
+          "--candidate=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/real-own-c2.json.output.mjs",
+          "--parser=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/real-own-c2.json.output.mjs",
+          "--base=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/repository/bend2/base.bend",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/repository/tests/rfc/share_map.bend",
+          "-o",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/c2-js-2.js"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793888301364-6f21fd26d1f8d2f7.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      }
+    },
+    {
+      "id": "c2-js-2-node",
+      "elapsedMs": 95.31862499999988,
+      "exitCode": 0,
+      "passed": true,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 43810816,
+        "peakFootprintBytes": 13665912,
+        "elapsedMs": 41,
+        "timeoutMs": 120000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/c2-js-2.js"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793888311869-66a63f0b2d4423fa.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      },
+      "expectedStdout": "6n\n"
+    },
+    {
+      "id": "c2-js-3-emit",
+      "elapsedMs": 12776.34825000001,
+      "exitCode": 0,
+      "passed": true,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 1287602176,
+        "peakFootprintBytes": 1273358200,
+        "elapsedMs": 12726,
+        "timeoutMs": 120000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--experimental-strip-types",
+          "--max-old-space-size=6144",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/repository/evals/candidate_host.ts",
+          "--candidate=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/real-own-c2.json.output.mjs",
+          "--parser=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/real-own-c2.json.output.mjs",
+          "--base=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/repository/bend2/base.bend",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/repository/tests/run/map_set_ops.bend",
+          "-o",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/c2-js-3.js"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793888311960-df1d73b7d9906a43.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      }
+    },
+    {
+      "id": "c2-js-3-node",
+      "elapsedMs": 108.5671250000014,
+      "exitCode": 0,
+      "passed": true,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 44564480,
+        "peakFootprintBytes": 18319016,
+        "elapsedMs": 54,
+        "timeoutMs": 120000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/c2-js-3.js"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793888324742-b363e01ef89deee0.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      },
+      "expectedStdout": "11111\n"
+    },
+    {
+      "id": "c2-js-4-emit",
+      "elapsedMs": 10251.079790999996,
+      "exitCode": 0,
+      "passed": true,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 1258078208,
+        "peakFootprintBytes": 1207914600,
+        "elapsedMs": 10197,
+        "timeoutMs": 120000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--experimental-strip-types",
+          "--max-old-space-size=6144",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/repository/evals/candidate_host.ts",
+          "--candidate=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/real-own-c2.json.output.mjs",
+          "--parser=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/real-own-c2.json.output.mjs",
+          "--base=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/repository/bend2/base.bend",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/repository/tests/run/native_map_read_positions.bend",
+          "-o",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/c2-js-4.js"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793888324849-f51803c6bfa7100c.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      }
+    },
+    {
+      "id": "c2-js-4-node",
+      "elapsedMs": 106.94679099999485,
+      "exitCode": 0,
+      "passed": true,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 44892160,
+        "peakFootprintBytes": 18663080,
+        "elapsedMs": 53,
+        "timeoutMs": 120000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/c2-js-4.js"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793888335104-7e930470608efca7.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      },
+      "expectedStdout": "410117\n11\n61101\n13620011\n12900\n"
+    },
+    {
+      "id": "c2-js-5-emit",
+      "elapsedMs": 11749.718499999988,
+      "exitCode": 0,
+      "passed": true,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 1277837312,
+        "peakFootprintBytes": 1137815664,
+        "elapsedMs": 11698,
+        "timeoutMs": 120000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--experimental-strip-types",
+          "--max-old-space-size=6144",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/repository/evals/candidate_host.ts",
+          "--candidate=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/real-own-c2.json.output.mjs",
+          "--parser=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/real-own-c2.json.output.mjs",
+          "--base=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/repository/bend2/base.bend",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/repository/tests/run/native_map_read_shapes.bend",
+          "-o",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/c2-js-5.js"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793888335208-3882dc224efabd11.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      }
+    },
+    {
+      "id": "c2-js-5-node",
+      "elapsedMs": 108.77854200001457,
+      "exitCode": 0,
+      "passed": true,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 49512448,
+        "peakFootprintBytes": 18761432,
+        "elapsedMs": 54,
+        "timeoutMs": 120000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/c2-js-5.js"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793888346962-e8c2af6cc6338afa.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      },
+      "expectedStdout": "1771016\n702\n58101\n202\n11111\n111\n1111\n1110111\n12321\n1044\n111111\n101106\n"
+    },
+    {
+      "id": "c2-js-6-emit",
+      "elapsedMs": 12550.712790999998,
+      "exitCode": 0,
+      "passed": true,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 1309130752,
+        "peakFootprintBytes": 1140011024,
+        "elapsedMs": 12495,
+        "timeoutMs": 120000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--experimental-strip-types",
+          "--max-old-space-size=6144",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/repository/evals/candidate_host.ts",
+          "--candidate=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/real-own-c2.json.output.mjs",
+          "--parser=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/real-own-c2.json.output.mjs",
+          "--base=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/repository/bend2/base.bend",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/repository/tests/run/native_map_read_unique.bend",
+          "-o",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/c2-js-6.js"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793888347070-ef6f1c7227214960.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      }
+    },
+    {
+      "id": "c2-js-6-node",
+      "elapsedMs": 140.4916249999951,
+      "exitCode": 0,
+      "passed": true,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 49119232,
+        "peakFootprintBytes": 18138792,
+        "elapsedMs": 70,
+        "timeoutMs": 120000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/c2-js-6.js"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793888359638-baecf9056e59bc2e.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      },
+      "expectedStdout": "11111\n11\n1121221\n93\n11\n"
+    },
+    {
+      "id": "c2-js-7-emit",
+      "elapsedMs": 11078.885167,
+      "exitCode": 0,
+      "passed": true,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 1227390976,
+        "peakFootprintBytes": 1197068224,
+        "elapsedMs": 11005,
+        "timeoutMs": 120000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--experimental-strip-types",
+          "--max-old-space-size=6144",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/repository/evals/candidate_host.ts",
+          "--candidate=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/real-own-c2.json.output.mjs",
+          "--parser=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/real-own-c2.json.output.mjs",
+          "--base=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/repository/bend2/base.bend",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/repository/tests/compile/js_map_find_identity.bend",
+          "-o",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/c2-js-7.js"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793888359781-fa509ad768350ea6.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      }
+    },
+    {
+      "id": "c2-js-7-node",
+      "elapsedMs": 123.96745900000678,
+      "exitCode": 0,
+      "passed": true,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 43696128,
+        "peakFootprintBytes": 13534840,
+        "elapsedMs": 43,
+        "timeoutMs": 120000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/c2-js-7.js"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793888370871-ed4a700b9464f314.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      },
+      "expectedStdout": "19\n"
+    },
+    {
+      "id": "c2-js-8-emit",
+      "elapsedMs": 12386.465124999988,
+      "exitCode": 0,
+      "passed": true,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 1245298688,
+        "peakFootprintBytes": 1264068832,
+        "elapsedMs": 12330,
+        "timeoutMs": 120000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--experimental-strip-types",
+          "--max-old-space-size=6144",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/repository/evals/candidate_host.ts",
+          "--candidate=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/real-own-c2.json.output.mjs",
+          "--parser=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/real-own-c2.json.output.mjs",
+          "--base=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/repository/bend2/base.bend",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/repository/tests/compile/js_split_capture_chain.bend",
+          "-o",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/c2-js-8.js"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793888370971-6b933411024828b1.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      }
+    },
+    {
+      "id": "c2-js-8-node",
+      "elapsedMs": 106.73649999999907,
+      "exitCode": 0,
+      "passed": true,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 44187648,
+        "peakFootprintBytes": 17827520,
+        "elapsedMs": 51,
+        "timeoutMs": 120000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/c2-js-8.js"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793888383358-2eabae9c5b110053.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      },
+      "expectedStdout": "206\n45\n32\n24\n"
+    },
+    {
+      "id": "c2-js-9-emit",
+      "elapsedMs": 9735.545125000004,
+      "exitCode": 0,
+      "passed": true,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 1349468160,
+        "peakFootprintBytes": 1204601000,
+        "elapsedMs": 9679,
+        "timeoutMs": 120000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--experimental-strip-types",
+          "--max-old-space-size=6144",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/repository/evals/candidate_host.ts",
+          "--candidate=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/real-own-c2.json.output.mjs",
+          "--parser=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/real-own-c2.json.output.mjs",
+          "--base=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/repository/bend2/base.bend",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/repository/tests/compile/js_multi_reentrant.bend",
+          "-o",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/c2-js-9.js"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793888383466-4573a7b437ae5479.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      }
+    },
+    {
+      "id": "c2-js-9-node",
+      "elapsedMs": 138.3096249999944,
+      "exitCode": 0,
+      "passed": true,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 44187648,
+        "peakFootprintBytes": 14042744,
+        "elapsedMs": 41,
+        "timeoutMs": 120000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/c2-js-9.js"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793888393244-9682f57ff9a716ab.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      },
+      "expectedStdout": "10109\n76\n"
+    },
+    {
+      "id": "c2-js-10-emit",
+      "elapsedMs": 10940.175750000024,
+      "exitCode": 0,
+      "passed": true,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 1288536064,
+        "peakFootprintBytes": 1137525672,
+        "elapsedMs": 10870,
+        "timeoutMs": 120000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--experimental-strip-types",
+          "--max-old-space-size=6144",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/repository/evals/candidate_host.ts",
+          "--candidate=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/real-own-c2.json.output.mjs",
+          "--parser=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/real-own-c2.json.output.mjs",
+          "--base=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/repository/bend2/base.bend",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/repository/tests/compile/js_scalar_region_tail.bend",
+          "-o",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/c2-js-10.js"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793888393356-b0c5aff3b7fcea61.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      }
+    },
+    {
+      "id": "c2-js-10-node",
+      "elapsedMs": 98.17916699999478,
+      "exitCode": 0,
+      "passed": true,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 43974656,
+        "peakFootprintBytes": 13813344,
+        "elapsedMs": 41,
+        "timeoutMs": 120000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/c2-js-10.js"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793888404284-ddd9ee8c9338160a.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      },
+      "expectedStdout": "13\n5\n22\n"
+    },
+    {
+      "id": "c2-js-11-emit",
+      "elapsedMs": 12170.508667000016,
+      "exitCode": 0,
+      "passed": true,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 1337704448,
+        "peakFootprintBytes": 1133932368,
+        "elapsedMs": 12116,
+        "timeoutMs": 120000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--experimental-strip-types",
+          "--max-old-space-size=6144",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/repository/evals/candidate_host.ts",
+          "--candidate=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/real-own-c2.json.output.mjs",
+          "--parser=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/real-own-c2.json.output.mjs",
+          "--base=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/repository/bend2/base.bend",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/repository/tests/compile/js_closure_host_depth.bend",
+          "-o",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/c2-js-11.js"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793888404380-321da08fa4dd19c1.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      }
+    },
+    {
+      "id": "c2-js-11-node",
+      "elapsedMs": 166.4210000000021,
+      "exitCode": 0,
+      "passed": true,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 44843008,
+        "peakFootprintBytes": 14730896,
+        "elapsedMs": 74,
+        "timeoutMs": 120000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/c2-js-11.js"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793888416581-c9f7ce1286be9c47.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      },
+      "expectedStdout": "20000\n"
+    },
+    {
+      "id": "c2-js-12-emit",
+      "elapsedMs": 17332.43437500001,
+      "exitCode": 0,
+      "passed": true,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 1236303872,
+        "peakFootprintBytes": 1110216904,
+        "elapsedMs": 17245,
+        "timeoutMs": 120000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--experimental-strip-types",
+          "--max-old-space-size=6144",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/repository/evals/candidate_host.ts",
+          "--candidate=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/real-own-c2.json.output.mjs",
+          "--parser=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/real-own-c2.json.output.mjs",
+          "--base=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/repository/bend2/base.bend",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/repository/evals/repro_js_non_tail_stack.bend",
+          "-o",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/c2-js-12.js"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793888416753-3df566d10cdc1802.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      }
+    },
+    {
+      "id": "c2-js-12-node",
+      "elapsedMs": 150.90379099998972,
+      "exitCode": 0,
+      "passed": true,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 68747264,
+        "peakFootprintBytes": 35311792,
+        "elapsedMs": 83,
+        "timeoutMs": 120000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/c2-js-12.js"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793888434070-5007b79ea959351f.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      },
+      "expectedStdout": "60000\n20000\n40000\n"
+    },
+    {
+      "id": "c2-js-13-emit",
+      "elapsedMs": 16884.224624999973,
+      "exitCode": 0,
+      "passed": true,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 1389740032,
+        "peakFootprintBytes": 1339146008,
+        "elapsedMs": 16812,
+        "timeoutMs": 120000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--experimental-strip-types",
+          "--max-old-space-size=6144",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/repository/evals/candidate_host.ts",
+          "--candidate=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/real-own-c2.json.output.mjs",
+          "--parser=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/real-own-c2.json.output.mjs",
+          "--base=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/repository/bend2/base.bend",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/repository/tests/compile/js_multi_identity.bend",
+          "-o",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/c2-js-13.js"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793888434218-4893a9acbbbf2392.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      }
+    },
+    {
+      "id": "c2-js-13-node",
+      "elapsedMs": 229.67383300000802,
+      "exitCode": 0,
+      "passed": true,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 47267840,
+        "peakFootprintBytes": 17122960,
+        "elapsedMs": 70,
+        "timeoutMs": 120000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/c2-js-13.js"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793888451187-6572e44c9ff027e1.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      },
+      "expectedStdout": "213\n"
+    },
+    {
+      "id": "c2-js-14-emit",
+      "elapsedMs": 14734.31820800004,
+      "exitCode": 0,
+      "passed": true,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 1286176768,
+        "peakFootprintBytes": 1187532352,
+        "elapsedMs": 14615,
+        "timeoutMs": 120000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--experimental-strip-types",
+          "--max-old-space-size=6144",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/repository/evals/candidate_host.ts",
+          "--candidate=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/real-own-c2.json.output.mjs",
+          "--parser=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/real-own-c2.json.output.mjs",
+          "--base=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/repository/bend2/base.bend",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/repository/tests/compile/js_multi_boxed_adapter.bend",
+          "-o",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/c2-js-14.js"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793888451375-aee979c1c67a62b4.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      }
+    },
+    {
+      "id": "c2-js-14-node",
+      "elapsedMs": 96.11233400000492,
+      "exitCode": 0,
+      "passed": true,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 44236800,
+        "peakFootprintBytes": 14091896,
+        "elapsedMs": 40,
+        "timeoutMs": 120000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/c2-js-14.js"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793888466067-3432f9d29407dfa3.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      },
+      "expectedStdout": "35\n"
+    },
+    {
+      "id": "c2-c-0-emit",
+      "elapsedMs": 23306.26666699996,
+      "exitCode": 0,
+      "passed": true,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 1554513920,
+        "peakFootprintBytes": 1804888480,
+        "elapsedMs": 23253,
+        "timeoutMs": 120000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--experimental-strip-types",
+          "--max-old-space-size=6144",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/repository/evals/candidate_host.ts",
+          "--candidate=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/real-own-c2.json.output.mjs",
+          "--parser=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/real-own-c2.json.output.mjs",
+          "--base=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/repository/bend2/base.bend",
+          "--runtime-c=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/repository/bend2/selfhost/c_runtime.c",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/repository/tests/rfc/share_map.bend",
+          "-o",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/c2-c-0.c"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793888466160-ee9b2fb33481feb6.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      }
+    },
+    {
+      "id": "c2-c-0-clang",
+      "elapsedMs": 4021.473667000013,
+      "exitCode": 0,
+      "passed": true,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 275873792,
+        "peakFootprintBytes": 191169328,
+        "elapsedMs": 3958,
+        "timeoutMs": 120000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/usr/bin/clang",
+          "-std=c11",
+          "-O3",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/c2-c-0.c",
+          "-lpthread",
+          "-lm",
+          "-o",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/c2-c-0.bin"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793888489471-88a815c54cc2a06d.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      }
+    },
+    {
+      "id": "c2-c-0-binary",
+      "elapsedMs": 74.41904100001557,
+      "exitCode": 0,
+      "passed": true,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 131072,
+        "peakFootprintBytes": 311440,
+        "elapsedMs": 15,
+        "timeoutMs": 120000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/c2-c-0.bin"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793888493505-153d2069fd31491c.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      },
+      "expectedStdout": "6n\n"
+    },
+    {
+      "id": "c2-c-1-emit",
+      "elapsedMs": 23298.608707999985,
+      "exitCode": 0,
+      "passed": true,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 1610809344,
+        "peakFootprintBytes": 1809559816,
+        "elapsedMs": 23210,
+        "timeoutMs": 120000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--experimental-strip-types",
+          "--max-old-space-size=6144",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/repository/evals/candidate_host.ts",
+          "--candidate=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/real-own-c2.json.output.mjs",
+          "--parser=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/real-own-c2.json.output.mjs",
+          "--base=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/repository/bend2/base.bend",
+          "--runtime-c=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/repository/bend2/selfhost/c_runtime.c",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/repository/tests/run/native_map_read_positions.bend",
+          "-o",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/c2-c-1.c"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793888493575-16d7cabbe74ef677.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      }
+    },
+    {
+      "id": "c2-c-1-clang",
+      "elapsedMs": 3682.316749999998,
+      "exitCode": 0,
+      "passed": true,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 303546368,
+        "peakFootprintBytes": 204718920,
+        "elapsedMs": 3625,
+        "timeoutMs": 120000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/usr/bin/clang",
+          "-std=c11",
+          "-O3",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/c2-c-1.c",
+          "-lpthread",
+          "-lm",
+          "-o",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/c2-c-1.bin"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793888516841-72eec9f8ffa49930.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      }
+    },
+    {
+      "id": "c2-c-1-binary",
+      "elapsedMs": 66.39795899996534,
+      "exitCode": 0,
+      "passed": true,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 131072,
+        "peakFootprintBytes": 311440,
+        "elapsedMs": 15,
+        "timeoutMs": 120000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/c2-c-1.bin"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793888520519-ac0d01f01af49af4.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      },
+      "expectedStdout": "410117\n11\n61101\n13620011\n12900\n"
+    },
+    {
+      "id": "c2-c-2-emit",
+      "elapsedMs": 25218.779667000053,
+      "exitCode": 0,
+      "passed": true,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 2000846848,
+        "peakFootprintBytes": 1781395360,
+        "elapsedMs": 25153,
+        "timeoutMs": 120000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--experimental-strip-types",
+          "--max-old-space-size=6144",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/repository/evals/candidate_host.ts",
+          "--candidate=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/real-own-c2.json.output.mjs",
+          "--parser=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/real-own-c2.json.output.mjs",
+          "--base=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/repository/bend2/base.bend",
+          "--runtime-c=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/repository/bend2/selfhost/c_runtime.c",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/repository/tests/run/native_map_read_shapes.bend",
+          "-o",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/c2-c-2.c"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793888520585-748e632c08384702.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      }
+    },
+    {
+      "id": "c2-c-2-clang",
+      "elapsedMs": 4371.871083000035,
+      "exitCode": 0,
+      "passed": true,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 325795840,
+        "peakFootprintBytes": 223363936,
+        "elapsedMs": 4311,
+        "timeoutMs": 120000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/usr/bin/clang",
+          "-std=c11",
+          "-O3",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/c2-c-2.c",
+          "-lpthread",
+          "-lm",
+          "-o",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/c2-c-2.bin"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793888545807-0321686d6b14ed95.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      }
+    },
+    {
+      "id": "c2-c-2-binary",
+      "elapsedMs": 68.58729100000346,
+      "exitCode": 0,
+      "passed": true,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 131072,
+        "peakFootprintBytes": 311440,
+        "elapsedMs": 15,
+        "timeoutMs": 120000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/c2-c-2.bin"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793888550172-5740254104c075d1.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      },
+      "expectedStdout": "1771016\n702\n58101\n202\n11111\n111\n1111\n1110111\n12321\n1044\n111111\n101106\n"
+    },
+    {
+      "id": "c2-actual-typed-readback-28",
+      "elapsedMs": 1504.7856250000186,
+      "exitCode": 0,
+      "passed": true,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 657391616,
+        "peakFootprintBytes": 570662856,
+        "elapsedMs": 1452,
+        "timeoutMs": 120000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--experimental-strip-types",
+          "--max-old-space-size=6144",
+          "--max-semi-space-size=128",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/actual-typed-readback.mjs",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/actual-typed-readback-request.json",
+          "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/actual-typed-readback-report.json"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793888550241-9e1a6fb22d315409.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      }
+    }
+  ],
+  "scope": "Actual69owncases,15JSemit+default-stackNodebehaviors,3Cemit+clang-O3+binarybehaviors,28actualinspection/recheck/librarycontracts. Reentry/throw/capture/hostextraargs/non-tail included. NoASTtransport/outputpatch/repinnedexpectedvalues."
+}
