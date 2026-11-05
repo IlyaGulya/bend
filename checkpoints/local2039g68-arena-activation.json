@@ -1,0 +1,417 @@
+{
+  "schemaVersion": 1,
+  "version": "G68R1",
+  "status": "BOTH_REAL_C2_ARENA_GET_SITES_EXECUTED_DURING_COMPLETE_SAME_WORK_CHECK",
+  "image": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/r1-c2-generation.json.output.mjs",
+    "sha256": "76ed3cc2bb11db4dc85a5ceb51c91240a4398fc167f42596ee0448ef0dfa2213"
+  },
+  "command": [
+    "/usr/bin/env",
+    "G68_ARENA_ACTIVATION_CONFIG=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/arena-activation-config.json",
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+    "--memory-mib=8192",
+    "--rss-mib=8192",
+    "--poll-ms=10",
+    "--timeout-ms=600000",
+    "--",
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+    "--import=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/observe-native-get-activation.mjs",
+    "--experimental-strip-types",
+    "--max-old-space-size=6144",
+    "--max-semi-space-size=128",
+    "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+    "--worker",
+    "js",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/selected-C-request.json",
+    "89b8593800a91cab4560282f246f9ac3b623ae68183db5cf74d06a6ab381c7b5",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/arena-activation-check-report.json"
+  ],
+  "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/repository",
+  "preloader": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/observe-native-get-activation.mjs",
+    "sha256": "c367aae68701425d0b07e04189f49fbdb723d1b8cd764579357cb5969dbb9b93"
+  },
+  "preloaderSource": "import{isMainThread}from'node:worker_threads';\nimport{readFileSync,writeFileSync,realpathSync}from'node:fs';\nimport{createHash}from'node:crypto';import{pathToFileURL}from'node:url';import{Session}from'node:inspector';\nif(!isMainThread){\n const configPath=process.env.G68_ARENA_ACTIVATION_CONFIG;\n if(!configPath)throw Error('Missing activation diagnostic config');\n const config=JSON.parse(readFileSync(configPath,'utf8'));\n const target=realpathSync(config.image.path),digest=createHash('sha256').update(readFileSync(target)).digest('hex');\n if(digest!==config.image.sha256)throw Error('Activation target image drift');\n const session=new Session();session.connect();\n const sites=new Map(),hits=new Map(),errors=[],resolutions=[];\n const post=(method,params={})=>new Promise((resolve,reject)=>session.post(method,params,(error,result)=>error?reject(error):resolve(result)));\n session.on('Debugger.breakpointResolved',({params})=>resolutions.push(params));\n session.on('Debugger.paused',({params})=>{\n  try{\n   for(const id of params.hitBreakpoints??[]){\n    const site=sites.get(id);if(!site)continue;\n    if(!hits.has(site.owner))hits.set(site.owner,{owner:site.owner,requested:site,breakpointId:id,reason:params.reason,frames:params.callFrames.slice(0,5).map(frame=>({functionName:frame.functionName,url:frame.url,location:frame.location}))});\n    session.post('Debugger.removeBreakpoint',{breakpointId:id},error=>{if(error)errors.push(String(error));});\n   }\n  }catch(error){errors.push(String(error));}\n  finally{session.post('Debugger.resume',{},error=>{if(error)errors.push(String(error));});}\n });\n await post('Debugger.enable');\n for(const site of config.sites){\n  const point=await post('Debugger.setBreakpointByUrl',{url:pathToFileURL(target).href,lineNumber:site.lineNumber,columnNumber:site.columnNumber});\n  sites.set(point.breakpointId,site);for(const location of point.locations??[])resolutions.push({breakpointId:point.breakpointId,location});\n }\n process.once('exit',code=>{\n  const result={schemaVersion:1,status:code===0&&hits.size===config.sites.length&&errors.length===0?'BOTH_REAL_COMPILER_VIRTUAL_READ_SITES_EXECUTED':'ACTIVATION_NOT_PROVED',diagnosticOnly:true,acceptanceTiming:false,image:config.image,configPath,execArgv:process.execArgv,node:process.version,v8:process.versions.v8,hits:[...hits.values()],resolutions,errors,exitCode:code,outputPatches:0,manualGC:false,meaning:'Inspector breakpoint at actual inlined virtualnativeGETread in each realArena.word/get_node function. Whole actual frozen checker run must separately PASS with unchanged counters. No target source evaluation/patching, no forcedGC, not cleanCPU/RAMmeasurement.'};\n  writeFileSync(config.output,JSON.stringify(result,null,2)+'\\n',{flag:'wx'});\n });\n}\n",
+  "config": {
+    "schemaVersion": 1,
+    "status": "DIAGNOSTIC_CONFIG_NOT_EXECUTED",
+    "image": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/r1-c2-generation.json.output.mjs",
+      "sha256": "76ed3cc2bb11db4dc85a5ceb51c91240a4398fc167f42596ee0448ef0dfa2213"
+    },
+    "sites": [
+      {
+        "owner": "Arena.get_node",
+        "functionName": "$b573",
+        "lineNumber": 12919,
+        "columnNumber": 537,
+        "sourceLine1Based": 12920,
+        "expression": "$g6042_0[$g6042_2%$g6042_0.length]",
+        "sourceLineSha256": "f26ceeee8e616bdf2dfab86778774951640f60e08621f98cef06434ba52a9069",
+        "sourceLine": "function $b573($v0,$v1,$td=0){$case6012:{const $v6013=($v0&&$v0.$===\"../bend2/selfhost/checker_arena.Arena\");if($v6013){const $v6014=$v0.nodes;const $v6016=$v0.patterns;const $v6018=$v0.binders;const $v6020=$v0.words;const $v6022=$v0.naturals;const $v6024=$v0.names;const $v6026=$v0.counts;const $v6028=$v0.depths;const $v6030=$v0.name_ids;const $v6032=$v0.node_closed;const $v6034=$v0.node_bounds;const $v6036=$v0.pattern_depths;const $v6038=$v0.case_prefix;const $v6040=$v0.subst_memo;const $g6042_0=$v6014,$g6042_2=$v1;const $g6042_1=$g6042_0[$g6042_2%$g6042_0.length];const $v289007=$v6038;const $v289008=$v6040;const $v289009=$v6034;const $v289010=$v6036;const $v289011=$v6032;const $v289012=$v6016;const $v289013=$v6018;const $v289014=$v6020;const $v289015=$v6022;const $v289016=$v6024;const $v289017=$v6026;const $v289018=$v6028;const $v289019=$v6030;$case295011:{const $v295012=true;if($v295012){const $v295013=$g6042_0;const $v295015=$g6042_1;const $v295017=({$:\"../bend2/selfhost/checker_arena.Arena\",\"nodes\":$v295013,\"patterns\":$v289012,\"binders\":$v289013,\"words\":$v289014,\"naturals\":$v289015,\"names\":$v289016,\"counts\":$v289017,\"depths\":$v289018,\"name_ids\":$v289019,\"node_closed\":$v289011,\"node_bounds\":$v289009,\"pattern_depths\":$v289010,\"case_prefix\":$v289007,\"subst_memo\":$v289008});const $v295018=({$:\"Tuple\",\"fst\":$v295017,\"snd\":$v295015});return $v295018;}else{break $case295011;}}throw \"bend: runtime fail-stop\";}else{break $case6012;}}throw \"bend: runtime fail-stop\";}"
+      },
+      {
+        "owner": "Arena.word",
+        "functionName": "$b589",
+        "lineNumber": 12939,
+        "columnNumber": 537,
+        "sourceLine1Based": 12940,
+        "expression": "$g6357_0[$g6357_2%$g6357_0.length]",
+        "sourceLineSha256": "e42450f1813f4802a14106613ff26b7f3a1e534e8d15dcbe37c466ab2dd11362",
+        "sourceLine": "function $b589($v0,$v1,$td=0){$case6327:{const $v6328=($v0&&$v0.$===\"../bend2/selfhost/checker_arena.Arena\");if($v6328){const $v6329=$v0.nodes;const $v6331=$v0.patterns;const $v6333=$v0.binders;const $v6335=$v0.words;const $v6337=$v0.naturals;const $v6339=$v0.names;const $v6341=$v0.counts;const $v6343=$v0.depths;const $v6345=$v0.name_ids;const $v6347=$v0.node_closed;const $v6349=$v0.node_bounds;const $v6351=$v0.pattern_depths;const $v6353=$v0.case_prefix;const $v6355=$v0.subst_memo;const $g6357_0=$v6335,$g6357_2=$v1;const $g6357_1=$g6357_0[$g6357_2%$g6357_0.length];const $v325754=$v6353;const $v325755=$v6355;const $v325756=$v6349;const $v325757=$v6351;const $v325758=$v6347;const $v325759=$v6329;const $v325760=$v6331;const $v325761=$v6333;const $v325762=$v6337;const $v325763=$v6339;const $v325764=$v6341;const $v325765=$v6343;const $v325766=$v6345;$case332073:{const $v332074=true;if($v332074){const $v332075=$g6357_0;const $v332077=$g6357_1;const $v332079=({$:\"../bend2/selfhost/checker_arena.Arena\",\"nodes\":$v325759,\"patterns\":$v325760,\"binders\":$v325761,\"words\":$v332075,\"naturals\":$v325762,\"names\":$v325763,\"counts\":$v325764,\"depths\":$v325765,\"name_ids\":$v325766,\"node_closed\":$v325758,\"node_bounds\":$v325756,\"pattern_depths\":$v325757,\"case_prefix\":$v325754,\"subst_memo\":$v325755});const $v332080=({$:\"Tuple\",\"fst\":$v332079,\"snd\":$v332077});return $v332080;}else{break $case332073;}}throw \"bend: runtime fail-stop\";}else{break $case6327;}}throw \"bend: runtime fail-stop\";}"
+      }
+    ],
+    "output": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/arena-activation-observed.json",
+    "meaning": "Two exact nativeArrayGETvirtualread sites in real fullcompiler C2, not syntheticBIR/staticcounts. Intrusive observation excluded from ninecleantimingprocesses."
+  },
+  "observations": {
+    "schemaVersion": 1,
+    "status": "BOTH_REAL_COMPILER_VIRTUAL_READ_SITES_EXECUTED",
+    "diagnosticOnly": true,
+    "acceptanceTiming": false,
+    "image": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/r1-c2-generation.json.output.mjs",
+      "sha256": "76ed3cc2bb11db4dc85a5ceb51c91240a4398fc167f42596ee0448ef0dfa2213"
+    },
+    "configPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/arena-activation-config.json",
+    "execArgv": [
+      "--import=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/observe-native-get-activation.mjs",
+      "--experimental-strip-types",
+      "--max-old-space-size=6144",
+      "--max-semi-space-size=128"
+    ],
+    "node": "v23.11.0",
+    "v8": "12.9.202.28-node.14",
+    "hits": [
+      {
+        "owner": "Arena.word",
+        "requested": {
+          "owner": "Arena.word",
+          "functionName": "$b589",
+          "lineNumber": 12939,
+          "columnNumber": 537,
+          "sourceLine1Based": 12940,
+          "expression": "$g6357_0[$g6357_2%$g6357_0.length]",
+          "sourceLineSha256": "e42450f1813f4802a14106613ff26b7f3a1e534e8d15dcbe37c466ab2dd11362",
+          "sourceLine": "function $b589($v0,$v1,$td=0){$case6327:{const $v6328=($v0&&$v0.$===\"../bend2/selfhost/checker_arena.Arena\");if($v6328){const $v6329=$v0.nodes;const $v6331=$v0.patterns;const $v6333=$v0.binders;const $v6335=$v0.words;const $v6337=$v0.naturals;const $v6339=$v0.names;const $v6341=$v0.counts;const $v6343=$v0.depths;const $v6345=$v0.name_ids;const $v6347=$v0.node_closed;const $v6349=$v0.node_bounds;const $v6351=$v0.pattern_depths;const $v6353=$v0.case_prefix;const $v6355=$v0.subst_memo;const $g6357_0=$v6335,$g6357_2=$v1;const $g6357_1=$g6357_0[$g6357_2%$g6357_0.length];const $v325754=$v6353;const $v325755=$v6355;const $v325756=$v6349;const $v325757=$v6351;const $v325758=$v6347;const $v325759=$v6329;const $v325760=$v6331;const $v325761=$v6333;const $v325762=$v6337;const $v325763=$v6339;const $v325764=$v6341;const $v325765=$v6343;const $v325766=$v6345;$case332073:{const $v332074=true;if($v332074){const $v332075=$g6357_0;const $v332077=$g6357_1;const $v332079=({$:\"../bend2/selfhost/checker_arena.Arena\",\"nodes\":$v325759,\"patterns\":$v325760,\"binders\":$v325761,\"words\":$v332075,\"naturals\":$v325762,\"names\":$v325763,\"counts\":$v325764,\"depths\":$v325765,\"name_ids\":$v325766,\"node_closed\":$v325758,\"node_bounds\":$v325756,\"pattern_depths\":$v325757,\"case_prefix\":$v325754,\"subst_memo\":$v325755});const $v332080=({$:\"Tuple\",\"fst\":$v332079,\"snd\":$v332077});return $v332080;}else{break $case332073;}}throw \"bend: runtime fail-stop\";}else{break $case6327;}}throw \"bend: runtime fail-stop\";}"
+        },
+        "breakpointId": "1:12939:537:file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/r1-c2-generation.json.output.mjs",
+        "reason": "other",
+        "frames": [
+          {
+            "functionName": "$b589",
+            "url": "",
+            "location": {
+              "scriptId": "240",
+              "lineNumber": 12939,
+              "columnNumber": 564
+            }
+          },
+          {
+            "functionName": "$b12665",
+            "url": "",
+            "location": {
+              "scriptId": "240",
+              "lineNumber": 13022,
+              "columnNumber": 531
+            }
+          },
+          {
+            "functionName": "$b12664",
+            "url": "",
+            "location": {
+              "scriptId": "240",
+              "lineNumber": 13025,
+              "columnNumber": 174
+            }
+          },
+          {
+            "functionName": "$b644",
+            "url": "",
+            "location": {
+              "scriptId": "240",
+              "lineNumber": 13026,
+              "columnNumber": 244
+            }
+          },
+          {
+            "functionName": "$b645",
+            "url": "",
+            "location": {
+              "scriptId": "240",
+              "lineNumber": 13027,
+              "columnNumber": 287
+            }
+          }
+        ]
+      },
+      {
+        "owner": "Arena.get_node",
+        "requested": {
+          "owner": "Arena.get_node",
+          "functionName": "$b573",
+          "lineNumber": 12919,
+          "columnNumber": 537,
+          "sourceLine1Based": 12920,
+          "expression": "$g6042_0[$g6042_2%$g6042_0.length]",
+          "sourceLineSha256": "f26ceeee8e616bdf2dfab86778774951640f60e08621f98cef06434ba52a9069",
+          "sourceLine": "function $b573($v0,$v1,$td=0){$case6012:{const $v6013=($v0&&$v0.$===\"../bend2/selfhost/checker_arena.Arena\");if($v6013){const $v6014=$v0.nodes;const $v6016=$v0.patterns;const $v6018=$v0.binders;const $v6020=$v0.words;const $v6022=$v0.naturals;const $v6024=$v0.names;const $v6026=$v0.counts;const $v6028=$v0.depths;const $v6030=$v0.name_ids;const $v6032=$v0.node_closed;const $v6034=$v0.node_bounds;const $v6036=$v0.pattern_depths;const $v6038=$v0.case_prefix;const $v6040=$v0.subst_memo;const $g6042_0=$v6014,$g6042_2=$v1;const $g6042_1=$g6042_0[$g6042_2%$g6042_0.length];const $v289007=$v6038;const $v289008=$v6040;const $v289009=$v6034;const $v289010=$v6036;const $v289011=$v6032;const $v289012=$v6016;const $v289013=$v6018;const $v289014=$v6020;const $v289015=$v6022;const $v289016=$v6024;const $v289017=$v6026;const $v289018=$v6028;const $v289019=$v6030;$case295011:{const $v295012=true;if($v295012){const $v295013=$g6042_0;const $v295015=$g6042_1;const $v295017=({$:\"../bend2/selfhost/checker_arena.Arena\",\"nodes\":$v295013,\"patterns\":$v289012,\"binders\":$v289013,\"words\":$v289014,\"naturals\":$v289015,\"names\":$v289016,\"counts\":$v289017,\"depths\":$v289018,\"name_ids\":$v289019,\"node_closed\":$v289011,\"node_bounds\":$v289009,\"pattern_depths\":$v289010,\"case_prefix\":$v289007,\"subst_memo\":$v289008});const $v295018=({$:\"Tuple\",\"fst\":$v295017,\"snd\":$v295015});return $v295018;}else{break $case295011;}}throw \"bend: runtime fail-stop\";}else{break $case6012;}}throw \"bend: runtime fail-stop\";}"
+        },
+        "breakpointId": "1:12919:537:file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/r1-c2-generation.json.output.mjs",
+        "reason": "other",
+        "frames": [
+          {
+            "functionName": "$b573",
+            "url": "",
+            "location": {
+              "scriptId": "240",
+              "lineNumber": 12919,
+              "columnNumber": 564
+            }
+          },
+          {
+            "functionName": "$k98328",
+            "url": "",
+            "location": {
+              "scriptId": "240",
+              "lineNumber": 29397,
+              "columnNumber": 264
+            }
+          },
+          {
+            "functionName": "$split_done",
+            "url": "",
+            "location": {
+              "scriptId": "240",
+              "lineNumber": 103,
+              "columnNumber": 182
+            }
+          },
+          {
+            "functionName": "$b6424",
+            "url": "",
+            "location": {
+              "scriptId": "240",
+              "lineNumber": 29394,
+              "columnNumber": 596
+            }
+          },
+          {
+            "functionName": "$k98339",
+            "url": "",
+            "location": {
+              "scriptId": "240",
+              "lineNumber": 29400,
+              "columnNumber": 142
+            }
+          }
+        ]
+      }
+    ],
+    "resolutions": [
+      {
+        "breakpointId": "1:12919:537:file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/r1-c2-generation.json.output.mjs",
+        "location": {
+          "scriptId": "240",
+          "lineNumber": 12919,
+          "columnNumber": 564
+        }
+      },
+      {
+        "breakpointId": "1:12939:537:file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/r1-c2-generation.json.output.mjs",
+        "location": {
+          "scriptId": "240",
+          "lineNumber": 12939,
+          "columnNumber": 564
+        }
+      }
+    ],
+    "errors": [],
+    "exitCode": 0,
+    "outputPatches": 0,
+    "manualGC": false,
+    "meaning": "Inspector breakpoint at actual inlined virtualnativeGETread in each realArena.word/get_node function. Whole actual frozen checker run must separately PASS with unchanged counters. No target source evaluation/patching, no forcedGC, not cleanCPU/RAMmeasurement."
+  },
+  "fullActualFrozenCheck": {
+    "schemaVersion": 1,
+    "status": "PASS",
+    "diagnosticOnly": true,
+    "acceptanceEvidence": false,
+    "mode": "js",
+    "request": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/selected-C-request.json",
+    "requestSha256": "89b8593800a91cab4560282f246f9ac3b623ae68183db5cf74d06a6ab381c7b5",
+    "source": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g56-tail-complete-input/checkpoints/local2039g49-compiler-root.bend",
+    "sourceSha256": "b8610312159cad7621ad5b9713bcb171fba9b32d4feaa4061e9664a7f8dae2e4",
+    "runtime": {
+      "execPath": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "versions": {
+        "node": "23.11.0",
+        "acorn": "8.14.1",
+        "ada": "3.2.1",
+        "amaro": "0.4.1",
+        "ares": "1.34.4",
+        "brotli": "1.1.0",
+        "cjs_module_lexer": "2.1.0",
+        "cldr": "46.0",
+        "icu": "76.1",
+        "llhttp": "9.2.1",
+        "modules": "131",
+        "napi": "10",
+        "nbytes": "0.1.1",
+        "ncrypto": "0.0.1",
+        "nghttp2": "1.64.0",
+        "openssl": "3.0.16",
+        "simdjson": "3.12.2",
+        "simdutf": "6.0.3",
+        "sqlite": "3.49.1",
+        "tz": "2025a",
+        "undici": "6.21.2",
+        "unicode": "16.0",
+        "uv": "1.50.0",
+        "uvwasi": "0.0.21",
+        "v8": "12.9.202.28-node.14",
+        "zlib": "1.3.0.1-motley-788cb3c",
+        "zstd": "1.5.6"
+      },
+      "execArgv": [
+        "--import=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/observe-native-get-activation.mjs",
+        "--experimental-strip-types",
+        "--max-old-space-size=6144",
+        "--max-semi-space-size=128"
+      ],
+      "heapLimitBytes": 6845104128
+    },
+    "limits": {
+      "memoryMiB": 8192,
+      "rssMiB": 8192,
+      "pollMs": 10,
+      "timeoutMs": 600000
+    },
+    "workerPolicy": {
+      "stackMiB": 256,
+      "oldGenerationMiB": 6144,
+      "youngGenerationMiB": 128
+    },
+    "exports": [
+      "parsed_module",
+      "parse_with_fuel",
+      "expand_modules_start",
+      "template_step",
+      "check_expanded_start",
+      "inspect_checked_start",
+      "checker_step",
+      "emit_modules_start",
+      "emit_library_start",
+      "emitter_step",
+      "emit_c_modules_start",
+      "emit_c_library_start",
+      "c_emitter_step"
+    ],
+    "phases": [
+      {
+        "phase": "startup",
+        "elapsedMs": 1111.890166,
+        "userCpuMs": 908.822,
+        "systemCpuMs": 95.287,
+        "memoryEnd": {
+          "rss": 535871488,
+          "heapTotal": 94912512,
+          "heapUsed": 82409112,
+          "external": 42627096,
+          "arrayBuffers": 32166622
+        }
+      },
+      {
+        "phase": "load-parse",
+        "elapsedMs": 2711.8714579999996,
+        "userCpuMs": 4212.068,
+        "systemCpuMs": 153.303,
+        "memoryEnd": {
+          "rss": 698826752,
+          "heapTotal": 365281280,
+          "heapUsed": 261030920,
+          "external": 10484488,
+          "arrayBuffers": 25039
+        }
+      },
+      {
+        "phase": "expand",
+        "elapsedMs": 1719.4751669999996,
+        "userCpuMs": 2327.488,
+        "systemCpuMs": 67.522,
+        "memoryEnd": {
+          "rss": 861585408,
+          "heapTotal": 588365824,
+          "heapUsed": 378383000,
+          "external": 10484488,
+          "arrayBuffers": 25039
+        }
+      },
+      {
+        "phase": "check",
+        "elapsedMs": 53503.513833,
+        "userCpuMs": 65111.441,
+        "systemCpuMs": 698.666,
+        "memoryEnd": {
+          "rss": 978501632,
+          "heapTotal": 846397440,
+          "heapUsed": 639314664,
+          "external": 10484488,
+          "arrayBuffers": 25039
+        }
+      }
+    ],
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "stopAfter": "check",
+    "moduleCount": 17,
+    "sourceDeclarations": 2954,
+    "stepCounts": {
+      "expand": 263032,
+      "check": 1975761
+    },
+    "phaseCpuScope": "Node process-wide CPU; includes worker/helper threads, excludes child processes",
+    "pipelineElapsedMs": 59048.397750000004,
+    "totalElapsedMs": 59205.021167
+  },
+  "guardian": {
+    "status": "PASS",
+    "reason": "command_exit",
+    "commandExitCode": 0,
+    "commandSignal": 0,
+    "peakRssBytes": 1193361408,
+    "peakFootprintBytes": 1223353912,
+    "elapsedMs": 60108,
+    "timeoutMs": 600000,
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 0,
+    "command": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "--import=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/observe-native-get-activation.mjs",
+      "--experimental-strip-types",
+      "--max-old-space-size=6144",
+      "--max-semi-space-size=128",
+      "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+      "--worker",
+      "js",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/selected-C-request.json",
+      "89b8593800a91cab4560282f246f9ac3b623ae68183db5cf74d06a6ab381c7b5",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/arena-activation-check-report.json"
+    ],
+    "label": "heavy command",
+    "exitCode": 0,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793862972882-7f52227c450c1289.json",
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592
+  },
+  "diagnosticOnly": true,
+  "cleanTimingEvidence": false,
+  "outputPatches": 0,
+  "forcedGC": false,
+  "claim": "Both real C2Arena.word($b589) andget_node($b573)pausedinside actualeagerlexical nativeGETread, not merelywrapperentry/staticcount. Exactsource image/SHA andreadline/columnmatch. Complete17module2954decl frozenchecker thenPASS with263032expand/1975761checksteps. No targetsourceevaluation/imagepatch. Inspectortrace excluded fromall9cleanprocessmeasurements.",
+  "selfhostGreen": false
+}

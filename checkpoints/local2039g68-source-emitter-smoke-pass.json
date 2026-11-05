@@ -1,0 +1,223 @@
+{
+  "schemaVersion": 1,
+  "version": "G68R1",
+  "status": "ACTUAL_CHANGED_SOURCE_EMITTER_AND_DEFAULT_STACK_CONSUMER_PASS",
+  "algorithmSourceCheckpoint": "a8cd96aa",
+  "typedSmokeRequiredInputsCheckpoint": "c3b73ec2",
+  "previousRejectedDriverCheckpoint": "fd231e4b",
+  "source": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/repository/bend2/selfhost/js_backend.bend",
+    "sha256": "555aa0f965e00adfd192d45744e0b6aeaf186cd8bbfa2ea24a02065f7a648ee5"
+  },
+  "canonicalSmoke": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/repository/checkpoints/local2039g68-emitter-smoke.bend",
+    "sha256": "6b0456887dab1c425e80e7265cac485ff62c63d32f628810448a1a4fd0c26425"
+  },
+  "component": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/cps-emitter-r4-library.mjs",
+    "sha256": "b537613547f444b2f0e85fda291b028109b5f11c043fb225ff2212941b420278"
+  },
+  "fullNativeCheck": {
+    "status": "JS_GENERATED_NOT_YET_EXECUTED",
+    "provenancePath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/cps-emitter-r4-validation.provenance.json",
+    "provenanceSha256": "737e7b33a86157b95c26bf805d409a0159d9ddaa6fc5550f3eea20676b13f6ed",
+    "sourcePath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/repository/checkpoints/local2039g68-emitter-smoke-component-r4.bend",
+    "sourceSha256": "3ffeffec314710c27d283a31ec5821a0a7d871f6df5fc46939b613b6fd65d6e8",
+    "exports": [
+      "expand_modules_start",
+      "template_step"
+    ],
+    "artifactPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/cps-emitter-r4-library.mjs",
+    "artifactSha256": "b537613547f444b2f0e85fda291b028109b5f11c043fb225ff2212941b420278",
+    "bytes": 1527902,
+    "eventsFullyValidated": 1270,
+    "checkedDefinitions": 1037,
+    "liveBodies": 1037,
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "checkedOutputRetention": "native e",
+    "nativeRetention": "native checked e retained through all JS definition folding; scope-local higher caches released between definitions; no serialization or source-value fallback",
+    "nativeCheckedBodies": 1037,
+    "expectedSourceDefinitions": 1037,
+    "toolchain": "CANONICAL NATIVE LOAD/CHECK; CANONICAL JS PREPARE/EMIT/RELEASE; Node/V8 automatic GC",
+    "preparedCount": 740,
+    "releasedCount": 740,
+    "maxSimultaneousE": 1037,
+    "maxSimultaneousH": 473,
+    "countsCaveat": "Definition slots, not unique term graphs; signature metadata does not prepare higher bodies",
+    "runtime": {
+      "name": "node",
+      "node": "23.11.0",
+      "v8": "12.9.202.28-node.14",
+      "executable": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "heapLimitMiB": 3072,
+      "stackSizeMb": 256,
+      "heapSizeLimitBytes": 3271557120,
+      "manualGC": false
+    },
+    "cpuMs": 7126.102,
+    "compiledExecution": "NOT_RUN",
+    "selfhostGreen": false,
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 1144782848,
+      "peakFootprintBytes": 1169256568,
+      "elapsedMs": 5698,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 0,
+      "command": [
+        "node",
+        "--experimental-strip-types",
+        "--max-old-space-size=3072",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/repository/evals/checker_core_component_build.ts",
+        "--worker",
+        "--file=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/repository/checkpoints/local2039g68-emitter-smoke-component-r4.bend",
+        "--exports=expand_modules_start,template_step",
+        "--artifact=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/cps-emitter-r4-library.mjs",
+        "--report=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/cps-emitter-r4-validation",
+        "--inputs-sha256=3bc2660fe28d27fd5d708853ace68e405b26f1886e5f8dbdef267e899c4153ae"
+      ],
+      "label": "Full-native CheckerCore component JS build",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793860825345-841948609864883e.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    }
+  },
+  "sourceEmitterInvocation": {
+    "command": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+      "--memory-mib=8192",
+      "--rss-mib=8192",
+      "--poll-ms=10",
+      "--timeout-ms=120000",
+      "--",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/run-cps-source-emitter-smoke.mjs",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/cps-emitter-r4-library.mjs",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/actual-source-emitter-smoke.js",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/cps-r4-actual-source-emission.json"
+    ],
+    "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/repository",
+    "driver": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/run-cps-source-emitter-smoke.mjs",
+      "sha256": "30f93eb8612386441b0bdea386709c23be08f20e7d86ee743112ed5075b65973"
+    },
+    "driverSource": "import{readFileSync,writeFileSync}from'node:fs';\nimport{createHash}from'node:crypto';import{pathToFileURL}from'node:url';\nconst[library,output,receipt]=process.argv.slice(2);if(!library||!output||!receipt)throw Error('library output receipt required');\nconst sha=b=>createHash('sha256').update(b).digest('hex');\nconst loaded=await import(pathToFileURL(library).href),api=loaded.default??loaded;\nif(typeof api.expand_modules_start!=='function'||typeof api.template_step!=='function')throw Error('Missing native CPS smoke exports');\nfunction chunk(x){if(!x||typeof x!=='object'||Array.isArray(x)||typeof x.$!=='string')throw Error('Invalid native Run constructor');return x;}\nconst start=performance.now();let steps=0,current=api.expand_modules_start({$:'Nil'}),source;\nfor(;;){\n  const state=chunk(current),tag=state.$.split('.').at(-1);\n  if(tag==='TemplateRunState'){\n    current=undefined;current=api.template_step(state);\n    if(++steps>100000000)throw Error('Source-emitter smoke did not finish');\n    continue;\n  }\n  if(tag!=='TemplateRunFinished')throw Error('Unexpected native Run tag '+state.$);\n  const box=chunk(state.box),value=chunk(box.value);\n  if(box.$.split('.').at(-1)!=='TemplateValue'||value.$.split('.').at(-1)!=='G68GetSmoke')throw Error('Wrong source result carrier');\n  source=value.source;break;\n}\nif(typeof source!=='string')throw Error('Actual source emitter did not return JavaScript text');\nwriteFileSync(output,source,{flag:'wx'});\nconst result={schemaVersion:1,status:'ACTUAL_CHANGED_SOURCE_CPS_EMITTER_RETURNED_JAVASCRIPT_CONSUMER_EXECUTION_STILL_REQUIRED',library:{path:library,sha256:sha(readFileSync(library))},output:{path:output,sha256:sha(Buffer.from(source)),utf8Bytes:Buffer.byteLength(source)},emitterWallMs:performance.now()-start,sourceCPSSteps:steps,runtime:{node:process.version,v8:process.versions.v8},outputPatches:0,compiledExecution:'NOT_RUN',expectedConsumerStdout:'799\\n'};\nwriteFileSync(receipt,JSON.stringify(result,null,2)+'\\n',{flag:'wx'});console.log(JSON.stringify(result));\n",
+    "receipt": {
+      "schemaVersion": 1,
+      "status": "ACTUAL_CHANGED_SOURCE_CPS_EMITTER_RETURNED_JAVASCRIPT_CONSUMER_EXECUTION_STILL_REQUIRED",
+      "library": {
+        "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/cps-emitter-r4-library.mjs",
+        "sha256": "b537613547f444b2f0e85fda291b028109b5f11c043fb225ff2212941b420278"
+      },
+      "output": {
+        "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/actual-source-emitter-smoke.js",
+        "sha256": "6f3f7c99c72dac184ff9b29365c4f56dd620c2b8a6217392da9fbc530332e6c6",
+        "utf8Bytes": 64612
+      },
+      "emitterWallMs": 28.540707999999995,
+      "sourceCPSSteps": 59,
+      "runtime": {
+        "node": "v23.11.0",
+        "v8": "12.9.202.28-node.14"
+      },
+      "outputPatches": 0,
+      "compiledExecution": "NOT_RUN",
+      "expectedConsumerStdout": "799\n"
+    },
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 57720832,
+      "peakFootprintBytes": 25086760,
+      "elapsedMs": 183,
+      "timeoutMs": 120000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 0,
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/run-cps-source-emitter-smoke.mjs",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/cps-emitter-r4-library.mjs",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/actual-source-emitter-smoke.js",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/cps-r4-actual-source-emission.json"
+      ],
+      "label": "heavy command",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793861005368-2771deb0ae54b677.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    }
+  },
+  "unchangedGeneratedProgram": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/actual-source-emitter-smoke.js",
+    "sha256": "6f3f7c99c72dac184ff9b29365c4f56dd620c2b8a6217392da9fbc530332e6c6"
+  },
+  "consumer": {
+    "command": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+      "--memory-mib=8192",
+      "--rss-mib=8192",
+      "--poll-ms=10",
+      "--timeout-ms=120000",
+      "--",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/actual-source-emitter-smoke.js"
+    ],
+    "defaultStackNode": true,
+    "nodeFlags": [],
+    "exitCode": 0,
+    "stdout": "799\n",
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 39911424,
+      "peakFootprintBytes": 12502600,
+      "elapsedMs": 56,
+      "timeoutMs": 120000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 0,
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/actual-source-emitter-smoke.js"
+      ],
+      "label": "heavy command",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793861005610-491b683de7bcbf27.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    }
+  },
+  "activationObserved": {
+    "sourceFile": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/actual-source-emitter-smoke.js",
+    "sourceLine": 320,
+    "producer": "$b0",
+    "exposedPrivateConsumer": "$b1",
+    "eagerRead": "const $g2_0=$v1,$g2_2=0;const $g2_1=$g2_0[$g2_2%$g2_0.length];",
+    "consumerTagTest": "const$v9=true",
+    "freshRegion": "$case8, originalconsumer$case0",
+    "freshLocals": "9..15, originalconsumer1..7",
+    "nativeTupleProducerRetainedInConsumer": "No logicalGETpair binding or $p_array_get call in actual$b0; boxedoriginal$b1 remainsavailable",
+    "savedBeforeMutation": "$v11=$g2_1 precedes $p_array_set($v10,0,99), then7*100+99 observed799"
+  },
+  "claimScope": "Synthetic BIRproducer invokes actual changed canonical Bend source emitter. Full native1037definitions/1270events checked with0 exclusions and0 patches. Actual new emitted JS executed unchanged. This is activation+behavior proof, not compiler throughput/RAM evidence or realArenaactivation.",
+  "compilerImageProduction": "NOT_RUN",
+  "actualArenaWordAndGetNodeActivation": "NOT_RUN",
+  "selectedPerformance": "NOT_RUN",
+  "selfhostGreen": false
+}

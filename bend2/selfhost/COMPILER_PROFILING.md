@@ -3172,3 +3172,141 @@ statistics and census scripts were removed after proof; exact sources and
 commands remain in the receipts. Main FIR/BIR laws and historical baseline
 artifacts are intentionally unchanged.
 
+### G68R1: native get Tuple deforestation executes, but fails CPU/RAM qualification
+
+`47bb7e58` freezes the prospective protocol; `a8cd96aa` freezes the compiler
+change and behavioral fixtures. This is not the rejected G58B/G64R2 scheduler
+carrier, G65 Map-find reuse, G66 handle packing or G67 nullary sharing.
+Only the JS backend changes: FIR/BIR schemas and the C emitter stay unchanged.
+A native array-get result may use two lexical values instead of a Tuple object.
+The read still occurs exactly once at the original operation, including when
+only the array projection is used. Escaping/captured/unsupported pairs stay boxed;
+the public standalone native Array.get result is not a shared object or scratch.
+An immediate private zero-capture leaf consumer can be exposed before planning,
+with at most32 arguments/32 nodes; virtual-use analysis is bounded to64 nodes.
+Other argument evaluation order and fresh local/region identities are preserved.
+
+The small activation input calls the actual changed Bend JS emitter through the
+existing authenticated CPS source pipeline, not a copied optimization or patched
+image. Its first unlowered source route and successive invalid template-boundary
+configurations were rejected and checkpointed, never counted as compiler passes.
+The final input uses a real Loader modules parameter and local source-result
+carrier. The first driver incorrectly assumed tag/fields; it was rejected before
+steps and replaced with the existing native `$`/whole-Run calling convention.
+`c3b73ec2` freezes the working source inputs; `fd231e4b` retains the driver failure.
+
+Full canonical native validation checks all1270 events/1037 live definitions,
+with zero exclusions/patches. The resulting component invokes the changed
+emitter; its unchanged emitted program then runs separately on default-stack
+Node23.11.0/V8 12.9.202.28-node.14 and prints799.
+
+| Actual smoke phase | Guardian wall ms | Peak physical footprint B | Peak RSS B |
+|---|---:|---:|---:|
+| Native full-check + source-emitter component generation | 5698 | 1169256568 | 1144782848 |
+| Changed Bend source-emitter invocation | 183 | 25086760 | 57720832 |
+| Unchanged emitted JS, default-stack Node | 56 | 12502600 | 39911424 |
+
+The emitted producer has eager `$g2_0/$g2_1` values, no native get Tuple call,
+fresh region8/locals9..15 and a saved7 before its consumer writes99; actual
+`7*100+99` is799. The original boxed private consumer remains callable.
+This proves the changed path, strict saved-read semantics and alpha freshness;
+it is not representative compiler timing, a RAM win or real Arena activation.
+The new Host getter/identity/order/exception/reentry fixture and pure saved-read
+fixture also emit and run on unchanged A, printing171 and559 respectively.
+Those baseline fixture passes are not new-emitter acceptance.
+
+Actual full-source C1/C2 production, real Arena.word/get_node activation,
+own-parser69, existing JS/C/readback consumers and nine fresh selected runs
+remain required before a decision. No performance or fixedpoint acceptance is
+claimed here. The existing native first-stage producer is a build-route reuse,
+not a new compiler speedup; source counters and release/runtime limits must
+still be recorded. Full-corpus confirmation and C2-to-C3 byte equality are earned
+only after the unchanged prospective selected CPU/RAM filters pass.
+The selected orders are ABC/CAB/BCA: three counterbalanced triads, not nine triads.
+
+#### Genuine full compiler images and real consumers
+
+`53b1c2f4` freezes all53 input identities/18 source modules. Both native C1
+and its actual JS own-source C2 check13094 declarations, with1078590 expansion
+and10516073 checker advances at quantum64. C1's unchanged native seed emits
+1299194 advances; the new C1 JS emitter uses1361633 to emit C2. Different
+emitter work is recorded, not disguised as different checker work.
+
+| Actual production | Guardian wall ms | Peak footprint B | Peak RSS B | Image B |
+|---|---:|---:|---:|---:|
+| Existing authenticated native seed emits new C1 | 89485 | 1787628064 | 1777745920 | 32127290 |
+| Actual C1 new JS emitter emits same full source to C2 | 301928 | 2706323536 | 2540011520 | 32141583 |
+
+These are different production stages, not paired runtime measurements or a new
+speedup claim. The reused native seed retains its authenticated `-O1` diagnostic
+build tradeoff, one CPU thread and GPU off; it is not an official release build.
+Native production uses8192MiB footprint/RSS,300s,10ms; JS production uses the
+same memory/poll limits,600s and Node worker256MiB stack/6144MiB old/128MiB young.
+C1 SHA is62be693646eae7f08b4aea8bced38fc18154b1a9cc73124f24db824e67b3642c;
+C2 SHA is76ed3cc2bb11db4dc85a5ceb51c91240a4398fc167f42596ee0448ef0dfa2213.
+C1 still has the old physical get representation. C2 applies the new one to
+the compiler itself; neither this emission nor differing C1/C2 bytes is an
+actual C2-to-C3 fixedpoint claim.
+
+C2 passes69 own-parser/checker cases, emits/runs17 unchanged standalone JS
+consumers on default-stack Node, and emits four C programs, all compiled with
+clang `-std=c11 -O3 -pthread -lm` and executed against their expected stdout.
+The frozen readback probe uses actual own parse/expand/check/inspection, discards
+the original owner, rechecks reconstructed modules, emits15 exports and passes
+28 live consumer contracts. These are real outputs, not source-text/mock tests;
+FIR/BIR schemas, C emission algorithms and their laws remain unchanged.
+
+A separate local Inspector diagnostic deterministically pauses *inside* the
+native reads of real C2 `Arena.get_node` (`$b573`, line12920) and `Arena.word`
+(`$b589`, line12940), at resolved column564 within each eager read expression.
+Both resume; the complete frozen17-module2954-declaration check passes with
+263032 expansion/1975761 checker advances. Thus both physical sites execute in
+the real compiler, not only in synthetic BIR or static source counts.
+The debugger process, its600s guard and its timing/memory are excluded from
+every clean measurement. No source evaluation, image patch or forced GC occurs.
+The temporary source-smoke generators/runners and Inspector preload are removed
+after proof; exact executed sources/commands remain in the compact receipts.
+The clean counterbalanced nine-process costs and any earned confirmation remain
+the decision gate; these semantic and activation passes do not qualify a gain.
+
+#### Selected clean costs: rejected, no qualified CPU or peak-RAM gain
+
+All nine fresh processes in the frozen ABC/CAB/BCA order pass: identical52
+inputs,17 modules,2954 declarations,263032 expansion and1975761 checker
+advances. Every request/report/image pin, Node/V8 version,256/6144/128 worker
+policy,8192MiB footprint/RSS/600s/10ms guard and process-wide CPU scope matches.
+Actual runtime flags contain only strip-types/old6144/young128: no Inspector
+preload, profiler, exposed GC or source/image patch. No old timing, retry,
+discarded row or diagnostic run enters the three paired comparisons.
+
+| Selected metric | C2 / unchanged A | C2 / control B |
+|---|---|---|
+| Checker CPU, geometric ratio and paired95 CI | 0.999039 [0.910521, 1.096163] | 0.988648 [0.903646, 1.081646] |
+| Checker wall, geometric ratio and paired95 CI | 0.990175 [0.921347, 1.064145] | 0.998293 [0.926957, 1.075118] |
+| Peak footprint, geometric ratio and paired95 CI | 0.994933 [0.741065, 1.335771] | 1.049801 [0.993229, 1.109597] |
+| Peak RSS, geometric ratio and paired95 CI | 1.060639 [0.876028, 1.284154] | 1.075246 [0.873950, 1.322906] |
+| Peak footprint, ratio of medians (no CI claimed) | 1.054168 | 1.050608 |
+
+All candidate confidence intervals are inconclusive under the existing2%
+practical band. Four of six prospective point-cost filters also fail:
+CPU/A is not at most0.97; not every CPU/A pair is faster; median peak footprint/A
+is above1; geometric peak footprint/B is not at most0.95. CPU/B at most1.02 and
+wall/A at most1 pass, but neither rescues the failed cost screen. The higher
+memory points are not a statistically qualified regression claim; equally,
+removing a real temporary Tuple is not evidence of a qualified RAM saving.
+
+**G68R1 is rejected.** Actual real-compiler physical activation, saved-read
+semantics and every consumer pass are retained as evidence, not relabelled as
+a speed/memory win. The six full-corpus confirmation runs and actual C2-to-C3
+byte fixedpoint are `NOT_RUN_NOT_EARNED`; no byte-fixedpoint or selfhost-green
+claim is made. No wider inliner, cache, pooling or GC flag is added to save
+this result.
+
+At closure all53 candidate,52 selected and53 conditional-full input identities
+are unchanged. All seven owned temporary generator/runner/Inspector/controller/
+statistics scripts are removed after proof; exact executed sources and commands
+remain in the receipts. Required canonical/generated Bend inputs, new regression
+fixtures, failed harness revisions and rejected compiler source remain in the
+isolated source checkpoints. Main keeps its accepted compiler and unchanged
+FIR/BIR/C laws; it receives only this journal and compact JSON evidence.
+

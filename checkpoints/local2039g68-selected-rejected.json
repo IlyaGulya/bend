@@ -1,0 +1,2505 @@
+{
+  "schemaVersion": 1,
+  "version": "G68R1",
+  "status": "REJECTED_SELECTED_COST_FILTER_CPU_AND_RAM_NOT_QUALIFIED",
+  "protocolCheckpoint": "47bb7e58",
+  "algorithmCheckpoint": "a8cd96aa",
+  "sourceCheckpoint": "53b1c2f4",
+  "fullFunctionalAndActivationCheckpoint": "7fbcf885",
+  "candidateImage": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/r1-c2-generation.json.output.mjs",
+    "sha256": "76ed3cc2bb11db4dc85a5ceb51c91240a4398fc167f42596ee0448ef0dfa2213"
+  },
+  "controls": {
+    "A": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs",
+      "sha256": "4636c05aa8c75e72212cb03949937e25561942bc00da250f876f37f001b9fc18"
+    },
+    "B": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/g63-baseline-self-stage2.json.output.mjs",
+      "sha256": "65a07432de9482e67a71a70d1a2696474c8aca08a75e4e7dfe13fa6c006df045"
+    }
+  },
+  "measurementCommand": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/experiment-controller.mjs",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/selected-nine-process-plan.json"
+  ],
+  "measurementExecution": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/selected-nine-process-execution.json",
+    "sha256": "9debde2a321196fc0de919d591a20238f1f79b2964c487772cb0e058dc04c4cb"
+  },
+  "sameWorkCollection": {
+    "schemaVersion": 1,
+    "rows": [
+      {
+        "id": "selected-triad0-A",
+        "role": "A",
+        "triad": 0,
+        "checkerCpuMs": 65201.082,
+        "checkerWallMs": 53466.820583,
+        "footprintBytes": 1131502712,
+        "rssBytes": 1153646592,
+        "processWallMs": 59145,
+        "pipelineWallMs": 58597.713209,
+        "phaseCpuScope": "Node process-wide CPU; includes worker/helper threads, excludes child processes",
+        "stepCounts": {
+          "expand": 263032,
+          "check": 1975761
+        },
+        "checks": {
+          "freshExecutionCell": true,
+          "completed": true,
+          "requestPinned": true,
+          "actualImage": true,
+          "sourceNotImageHash": true,
+          "sameInputs": true,
+          "sameWork": true,
+          "completeCheckNotEmit": true,
+          "noImagePatches": true,
+          "sameLimits": true,
+          "sameWorker": true,
+          "sameRuntime": true,
+          "sameCpuScope": true
+        },
+        "allChecksPassed": true,
+        "report": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/selected-triad0-A.json",
+          "sha256": "9142eea3981b107a4e7c921fcc0642ab15687a5238b32d413ac61c3c64c7cef0"
+        },
+        "request": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/selected-A-request.json",
+          "sha256": "d70005eb24ee7d0c79825a4368b13a2876f2a804c9f10a8eb137bef10e620e83"
+        }
+      },
+      {
+        "id": "selected-triad0-B",
+        "role": "B",
+        "triad": 0,
+        "checkerCpuMs": 65192.443,
+        "checkerWallMs": 53036.31375,
+        "footprintBytes": 1135337024,
+        "rssBytes": 1148993536,
+        "processWallMs": 58396,
+        "pipelineWallMs": 57954.827166999996,
+        "phaseCpuScope": "Node process-wide CPU; includes worker/helper threads, excludes child processes",
+        "stepCounts": {
+          "expand": 263032,
+          "check": 1975761
+        },
+        "checks": {
+          "freshExecutionCell": true,
+          "completed": true,
+          "requestPinned": true,
+          "actualImage": true,
+          "sourceNotImageHash": true,
+          "sameInputs": true,
+          "sameWork": true,
+          "completeCheckNotEmit": true,
+          "noImagePatches": true,
+          "sameLimits": true,
+          "sameWorker": true,
+          "sameRuntime": true,
+          "sameCpuScope": true
+        },
+        "allChecksPassed": true,
+        "report": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/selected-triad0-B.json",
+          "sha256": "c78514543eb3d8723d1ce0bacc761ce2cdccf8a5eccc9a70e009307d722b52d3"
+        },
+        "request": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/selected-B-request.json",
+          "sha256": "565eb336e23c8421f9e2a544ce7f54c793570faaa24f16b0e243911e94b5a9bc"
+        }
+      },
+      {
+        "id": "selected-triad0-C",
+        "role": "C",
+        "triad": 0,
+        "checkerCpuMs": 67063.91600000001,
+        "checkerWallMs": 54626.798459,
+        "footprintBytes": 1192794440,
+        "rssBytes": 1121976320,
+        "processWallMs": 60495,
+        "pipelineWallMs": 59973.445332999996,
+        "phaseCpuScope": "Node process-wide CPU; includes worker/helper threads, excludes child processes",
+        "stepCounts": {
+          "expand": 263032,
+          "check": 1975761
+        },
+        "checks": {
+          "freshExecutionCell": true,
+          "completed": true,
+          "requestPinned": true,
+          "actualImage": true,
+          "sourceNotImageHash": true,
+          "sameInputs": true,
+          "sameWork": true,
+          "completeCheckNotEmit": true,
+          "noImagePatches": true,
+          "sameLimits": true,
+          "sameWorker": true,
+          "sameRuntime": true,
+          "sameCpuScope": true
+        },
+        "allChecksPassed": true,
+        "report": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/selected-triad0-C.json",
+          "sha256": "5162a24a70f97fcb510a438081dc45eb78b01363f2c5f12e273c9a3123adc6dd"
+        },
+        "request": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/selected-C-request.json",
+          "sha256": "89b8593800a91cab4560282f246f9ac3b623ae68183db5cf74d06a6ab381c7b5"
+        }
+      },
+      {
+        "id": "selected-triad1-C",
+        "role": "C",
+        "triad": 1,
+        "checkerCpuMs": 64266.206,
+        "checkerWallMs": 52733.10975,
+        "footprintBytes": 1171447000,
+        "rssBytes": 1279590400,
+        "processWallMs": 58293,
+        "pipelineWallMs": 57781.909,
+        "phaseCpuScope": "Node process-wide CPU; includes worker/helper threads, excludes child processes",
+        "stepCounts": {
+          "expand": 263032,
+          "check": 1975761
+        },
+        "checks": {
+          "freshExecutionCell": true,
+          "completed": true,
+          "requestPinned": true,
+          "actualImage": true,
+          "sourceNotImageHash": true,
+          "sameInputs": true,
+          "sameWork": true,
+          "completeCheckNotEmit": true,
+          "noImagePatches": true,
+          "sameLimits": true,
+          "sameWorker": true,
+          "sameRuntime": true,
+          "sameCpuScope": true
+        },
+        "allChecksPassed": true,
+        "report": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/selected-triad1-C.json",
+          "sha256": "a6191adff9718afe5a9e8318283a01595bac058481d39b2e9e8377126f63ae03"
+        },
+        "request": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/selected-C-request.json",
+          "sha256": "89b8593800a91cab4560282f246f9ac3b623ae68183db5cf74d06a6ab381c7b5"
+        }
+      },
+      {
+        "id": "selected-triad1-A",
+        "role": "A",
+        "triad": 1,
+        "checkerCpuMs": 63498.907,
+        "checkerWallMs": 53546.822374999996,
+        "footprintBytes": 1349491192,
+        "rssBytes": 1174994944,
+        "processWallMs": 58769,
+        "pipelineWallMs": 58319.304916,
+        "phaseCpuScope": "Node process-wide CPU; includes worker/helper threads, excludes child processes",
+        "stepCounts": {
+          "expand": 263032,
+          "check": 1975761
+        },
+        "checks": {
+          "freshExecutionCell": true,
+          "completed": true,
+          "requestPinned": true,
+          "actualImage": true,
+          "sourceNotImageHash": true,
+          "sameInputs": true,
+          "sameWork": true,
+          "completeCheckNotEmit": true,
+          "noImagePatches": true,
+          "sameLimits": true,
+          "sameWorker": true,
+          "sameRuntime": true,
+          "sameCpuScope": true
+        },
+        "allChecksPassed": true,
+        "report": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/selected-triad1-A.json",
+          "sha256": "463d3d4ad1021541de408dd858bf65c4ae8fefd1348b0b7ab9450aac1faca8dd"
+        },
+        "request": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/selected-A-request.json",
+          "sha256": "d70005eb24ee7d0c79825a4368b13a2876f2a804c9f10a8eb137bef10e620e83"
+        }
+      },
+      {
+        "id": "selected-triad1-B",
+        "role": "B",
+        "triad": 1,
+        "checkerCpuMs": 65566.53,
+        "checkerWallMs": 52985.039875,
+        "footprintBytes": 1141465144,
+        "rssBytes": 1133002752,
+        "processWallMs": 58150,
+        "pipelineWallMs": 57698.184584,
+        "phaseCpuScope": "Node process-wide CPU; includes worker/helper threads, excludes child processes",
+        "stepCounts": {
+          "expand": 263032,
+          "check": 1975761
+        },
+        "checks": {
+          "freshExecutionCell": true,
+          "completed": true,
+          "requestPinned": true,
+          "actualImage": true,
+          "sourceNotImageHash": true,
+          "sameInputs": true,
+          "sameWork": true,
+          "completeCheckNotEmit": true,
+          "noImagePatches": true,
+          "sameLimits": true,
+          "sameWorker": true,
+          "sameRuntime": true,
+          "sameCpuScope": true
+        },
+        "allChecksPassed": true,
+        "report": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/selected-triad1-B.json",
+          "sha256": "8d38a40618fa26f88b551022ba45d896527279dcbcef3a799d3ed817e10bb54f"
+        },
+        "request": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/selected-B-request.json",
+          "sha256": "565eb336e23c8421f9e2a544ce7f54c793570faaa24f16b0e243911e94b5a9bc"
+        }
+      },
+      {
+        "id": "selected-triad2-B",
+        "role": "B",
+        "triad": 2,
+        "checkerCpuMs": 66925.538,
+        "checkerWallMs": 54322.970125,
+        "footprintBytes": 1130846800,
+        "rssBytes": 1062797312,
+        "processWallMs": 59270,
+        "pipelineWallMs": 58834.961542,
+        "phaseCpuScope": "Node process-wide CPU; includes worker/helper threads, excludes child processes",
+        "stepCounts": {
+          "expand": 263032,
+          "check": 1975761
+        },
+        "checks": {
+          "freshExecutionCell": true,
+          "completed": true,
+          "requestPinned": true,
+          "actualImage": true,
+          "sourceNotImageHash": true,
+          "sameInputs": true,
+          "sameWork": true,
+          "completeCheckNotEmit": true,
+          "noImagePatches": true,
+          "sameLimits": true,
+          "sameWorker": true,
+          "sameRuntime": true,
+          "sameCpuScope": true
+        },
+        "allChecksPassed": true,
+        "report": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/selected-triad2-B.json",
+          "sha256": "4f38d00885ebed5cb80dd08314d6c5b4e93c6131925bd4d58d4f58952aa89ba8"
+        },
+        "request": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/selected-B-request.json",
+          "sha256": "565eb336e23c8421f9e2a544ce7f54c793570faaa24f16b0e243911e94b5a9bc"
+        }
+      },
+      {
+        "id": "selected-triad2-C",
+        "role": "C",
+        "triad": 2,
+        "checkerCpuMs": 64139.341,
+        "checkerWallMs": 52722.387416,
+        "footprintBytes": 1213457040,
+        "rssBytes": 1198030848,
+        "processWallMs": 57981,
+        "pipelineWallMs": 57456.702833,
+        "phaseCpuScope": "Node process-wide CPU; includes worker/helper threads, excludes child processes",
+        "stepCounts": {
+          "expand": 263032,
+          "check": 1975761
+        },
+        "checks": {
+          "freshExecutionCell": true,
+          "completed": true,
+          "requestPinned": true,
+          "actualImage": true,
+          "sourceNotImageHash": true,
+          "sameInputs": true,
+          "sameWork": true,
+          "completeCheckNotEmit": true,
+          "noImagePatches": true,
+          "sameLimits": true,
+          "sameWorker": true,
+          "sameRuntime": true,
+          "sameCpuScope": true
+        },
+        "allChecksPassed": true,
+        "report": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/selected-triad2-C.json",
+          "sha256": "82a88cf6168aa99c0e6cfb96ec2d2a22b27608e19f7430c2b3d35018b377e9d3"
+        },
+        "request": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/selected-C-request.json",
+          "sha256": "89b8593800a91cab4560282f246f9ac3b623ae68183db5cf74d06a6ab381c7b5"
+        }
+      },
+      {
+        "id": "selected-triad2-A",
+        "role": "A",
+        "triad": 2,
+        "checkerCpuMs": 66961.89600000001,
+        "checkerWallMs": 54642.441625,
+        "footprintBytes": 1127469992,
+        "rssBytes": 1063436288,
+        "processWallMs": 59747,
+        "pipelineWallMs": 59270.171417000005,
+        "phaseCpuScope": "Node process-wide CPU; includes worker/helper threads, excludes child processes",
+        "stepCounts": {
+          "expand": 263032,
+          "check": 1975761
+        },
+        "checks": {
+          "freshExecutionCell": true,
+          "completed": true,
+          "requestPinned": true,
+          "actualImage": true,
+          "sourceNotImageHash": true,
+          "sameInputs": true,
+          "sameWork": true,
+          "completeCheckNotEmit": true,
+          "noImagePatches": true,
+          "sameLimits": true,
+          "sameWorker": true,
+          "sameRuntime": true,
+          "sameCpuScope": true
+        },
+        "allChecksPassed": true,
+        "report": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/selected-triad2-A.json",
+          "sha256": "f448629622b663d1fc73f92dd2ae34c95b125c56e012d993606b32b77866794c"
+        },
+        "request": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/selected-A-request.json",
+          "sha256": "d70005eb24ee7d0c79825a4368b13a2876f2a804c9f10a8eb137bef10e620e83"
+        }
+      }
+    ],
+    "allChecksPassed": true,
+    "triads": [
+      {
+        "A": {
+          "id": "selected-triad0-A",
+          "role": "A",
+          "triad": 0,
+          "checkerCpuMs": 65201.082,
+          "checkerWallMs": 53466.820583,
+          "footprintBytes": 1131502712,
+          "rssBytes": 1153646592,
+          "processWallMs": 59145,
+          "pipelineWallMs": 58597.713209,
+          "phaseCpuScope": "Node process-wide CPU; includes worker/helper threads, excludes child processes",
+          "stepCounts": {
+            "expand": 263032,
+            "check": 1975761
+          },
+          "checks": {
+            "freshExecutionCell": true,
+            "completed": true,
+            "requestPinned": true,
+            "actualImage": true,
+            "sourceNotImageHash": true,
+            "sameInputs": true,
+            "sameWork": true,
+            "completeCheckNotEmit": true,
+            "noImagePatches": true,
+            "sameLimits": true,
+            "sameWorker": true,
+            "sameRuntime": true,
+            "sameCpuScope": true
+          },
+          "allChecksPassed": true,
+          "report": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/selected-triad0-A.json",
+            "sha256": "9142eea3981b107a4e7c921fcc0642ab15687a5238b32d413ac61c3c64c7cef0"
+          },
+          "request": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/selected-A-request.json",
+            "sha256": "d70005eb24ee7d0c79825a4368b13a2876f2a804c9f10a8eb137bef10e620e83"
+          }
+        },
+        "B": {
+          "id": "selected-triad0-B",
+          "role": "B",
+          "triad": 0,
+          "checkerCpuMs": 65192.443,
+          "checkerWallMs": 53036.31375,
+          "footprintBytes": 1135337024,
+          "rssBytes": 1148993536,
+          "processWallMs": 58396,
+          "pipelineWallMs": 57954.827166999996,
+          "phaseCpuScope": "Node process-wide CPU; includes worker/helper threads, excludes child processes",
+          "stepCounts": {
+            "expand": 263032,
+            "check": 1975761
+          },
+          "checks": {
+            "freshExecutionCell": true,
+            "completed": true,
+            "requestPinned": true,
+            "actualImage": true,
+            "sourceNotImageHash": true,
+            "sameInputs": true,
+            "sameWork": true,
+            "completeCheckNotEmit": true,
+            "noImagePatches": true,
+            "sameLimits": true,
+            "sameWorker": true,
+            "sameRuntime": true,
+            "sameCpuScope": true
+          },
+          "allChecksPassed": true,
+          "report": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/selected-triad0-B.json",
+            "sha256": "c78514543eb3d8723d1ce0bacc761ce2cdccf8a5eccc9a70e009307d722b52d3"
+          },
+          "request": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/selected-B-request.json",
+            "sha256": "565eb336e23c8421f9e2a544ce7f54c793570faaa24f16b0e243911e94b5a9bc"
+          }
+        },
+        "C": {
+          "id": "selected-triad0-C",
+          "role": "C",
+          "triad": 0,
+          "checkerCpuMs": 67063.91600000001,
+          "checkerWallMs": 54626.798459,
+          "footprintBytes": 1192794440,
+          "rssBytes": 1121976320,
+          "processWallMs": 60495,
+          "pipelineWallMs": 59973.445332999996,
+          "phaseCpuScope": "Node process-wide CPU; includes worker/helper threads, excludes child processes",
+          "stepCounts": {
+            "expand": 263032,
+            "check": 1975761
+          },
+          "checks": {
+            "freshExecutionCell": true,
+            "completed": true,
+            "requestPinned": true,
+            "actualImage": true,
+            "sourceNotImageHash": true,
+            "sameInputs": true,
+            "sameWork": true,
+            "completeCheckNotEmit": true,
+            "noImagePatches": true,
+            "sameLimits": true,
+            "sameWorker": true,
+            "sameRuntime": true,
+            "sameCpuScope": true
+          },
+          "allChecksPassed": true,
+          "report": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/selected-triad0-C.json",
+            "sha256": "5162a24a70f97fcb510a438081dc45eb78b01363f2c5f12e273c9a3123adc6dd"
+          },
+          "request": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/selected-C-request.json",
+            "sha256": "89b8593800a91cab4560282f246f9ac3b623ae68183db5cf74d06a6ab381c7b5"
+          }
+        }
+      },
+      {
+        "C": {
+          "id": "selected-triad1-C",
+          "role": "C",
+          "triad": 1,
+          "checkerCpuMs": 64266.206,
+          "checkerWallMs": 52733.10975,
+          "footprintBytes": 1171447000,
+          "rssBytes": 1279590400,
+          "processWallMs": 58293,
+          "pipelineWallMs": 57781.909,
+          "phaseCpuScope": "Node process-wide CPU; includes worker/helper threads, excludes child processes",
+          "stepCounts": {
+            "expand": 263032,
+            "check": 1975761
+          },
+          "checks": {
+            "freshExecutionCell": true,
+            "completed": true,
+            "requestPinned": true,
+            "actualImage": true,
+            "sourceNotImageHash": true,
+            "sameInputs": true,
+            "sameWork": true,
+            "completeCheckNotEmit": true,
+            "noImagePatches": true,
+            "sameLimits": true,
+            "sameWorker": true,
+            "sameRuntime": true,
+            "sameCpuScope": true
+          },
+          "allChecksPassed": true,
+          "report": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/selected-triad1-C.json",
+            "sha256": "a6191adff9718afe5a9e8318283a01595bac058481d39b2e9e8377126f63ae03"
+          },
+          "request": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/selected-C-request.json",
+            "sha256": "89b8593800a91cab4560282f246f9ac3b623ae68183db5cf74d06a6ab381c7b5"
+          }
+        },
+        "A": {
+          "id": "selected-triad1-A",
+          "role": "A",
+          "triad": 1,
+          "checkerCpuMs": 63498.907,
+          "checkerWallMs": 53546.822374999996,
+          "footprintBytes": 1349491192,
+          "rssBytes": 1174994944,
+          "processWallMs": 58769,
+          "pipelineWallMs": 58319.304916,
+          "phaseCpuScope": "Node process-wide CPU; includes worker/helper threads, excludes child processes",
+          "stepCounts": {
+            "expand": 263032,
+            "check": 1975761
+          },
+          "checks": {
+            "freshExecutionCell": true,
+            "completed": true,
+            "requestPinned": true,
+            "actualImage": true,
+            "sourceNotImageHash": true,
+            "sameInputs": true,
+            "sameWork": true,
+            "completeCheckNotEmit": true,
+            "noImagePatches": true,
+            "sameLimits": true,
+            "sameWorker": true,
+            "sameRuntime": true,
+            "sameCpuScope": true
+          },
+          "allChecksPassed": true,
+          "report": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/selected-triad1-A.json",
+            "sha256": "463d3d4ad1021541de408dd858bf65c4ae8fefd1348b0b7ab9450aac1faca8dd"
+          },
+          "request": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/selected-A-request.json",
+            "sha256": "d70005eb24ee7d0c79825a4368b13a2876f2a804c9f10a8eb137bef10e620e83"
+          }
+        },
+        "B": {
+          "id": "selected-triad1-B",
+          "role": "B",
+          "triad": 1,
+          "checkerCpuMs": 65566.53,
+          "checkerWallMs": 52985.039875,
+          "footprintBytes": 1141465144,
+          "rssBytes": 1133002752,
+          "processWallMs": 58150,
+          "pipelineWallMs": 57698.184584,
+          "phaseCpuScope": "Node process-wide CPU; includes worker/helper threads, excludes child processes",
+          "stepCounts": {
+            "expand": 263032,
+            "check": 1975761
+          },
+          "checks": {
+            "freshExecutionCell": true,
+            "completed": true,
+            "requestPinned": true,
+            "actualImage": true,
+            "sourceNotImageHash": true,
+            "sameInputs": true,
+            "sameWork": true,
+            "completeCheckNotEmit": true,
+            "noImagePatches": true,
+            "sameLimits": true,
+            "sameWorker": true,
+            "sameRuntime": true,
+            "sameCpuScope": true
+          },
+          "allChecksPassed": true,
+          "report": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/selected-triad1-B.json",
+            "sha256": "8d38a40618fa26f88b551022ba45d896527279dcbcef3a799d3ed817e10bb54f"
+          },
+          "request": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/selected-B-request.json",
+            "sha256": "565eb336e23c8421f9e2a544ce7f54c793570faaa24f16b0e243911e94b5a9bc"
+          }
+        }
+      },
+      {
+        "B": {
+          "id": "selected-triad2-B",
+          "role": "B",
+          "triad": 2,
+          "checkerCpuMs": 66925.538,
+          "checkerWallMs": 54322.970125,
+          "footprintBytes": 1130846800,
+          "rssBytes": 1062797312,
+          "processWallMs": 59270,
+          "pipelineWallMs": 58834.961542,
+          "phaseCpuScope": "Node process-wide CPU; includes worker/helper threads, excludes child processes",
+          "stepCounts": {
+            "expand": 263032,
+            "check": 1975761
+          },
+          "checks": {
+            "freshExecutionCell": true,
+            "completed": true,
+            "requestPinned": true,
+            "actualImage": true,
+            "sourceNotImageHash": true,
+            "sameInputs": true,
+            "sameWork": true,
+            "completeCheckNotEmit": true,
+            "noImagePatches": true,
+            "sameLimits": true,
+            "sameWorker": true,
+            "sameRuntime": true,
+            "sameCpuScope": true
+          },
+          "allChecksPassed": true,
+          "report": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/selected-triad2-B.json",
+            "sha256": "4f38d00885ebed5cb80dd08314d6c5b4e93c6131925bd4d58d4f58952aa89ba8"
+          },
+          "request": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/selected-B-request.json",
+            "sha256": "565eb336e23c8421f9e2a544ce7f54c793570faaa24f16b0e243911e94b5a9bc"
+          }
+        },
+        "C": {
+          "id": "selected-triad2-C",
+          "role": "C",
+          "triad": 2,
+          "checkerCpuMs": 64139.341,
+          "checkerWallMs": 52722.387416,
+          "footprintBytes": 1213457040,
+          "rssBytes": 1198030848,
+          "processWallMs": 57981,
+          "pipelineWallMs": 57456.702833,
+          "phaseCpuScope": "Node process-wide CPU; includes worker/helper threads, excludes child processes",
+          "stepCounts": {
+            "expand": 263032,
+            "check": 1975761
+          },
+          "checks": {
+            "freshExecutionCell": true,
+            "completed": true,
+            "requestPinned": true,
+            "actualImage": true,
+            "sourceNotImageHash": true,
+            "sameInputs": true,
+            "sameWork": true,
+            "completeCheckNotEmit": true,
+            "noImagePatches": true,
+            "sameLimits": true,
+            "sameWorker": true,
+            "sameRuntime": true,
+            "sameCpuScope": true
+          },
+          "allChecksPassed": true,
+          "report": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/selected-triad2-C.json",
+            "sha256": "82a88cf6168aa99c0e6cfb96ec2d2a22b27608e19f7430c2b3d35018b377e9d3"
+          },
+          "request": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/selected-C-request.json",
+            "sha256": "89b8593800a91cab4560282f246f9ac3b623ae68183db5cf74d06a6ab381c7b5"
+          }
+        },
+        "A": {
+          "id": "selected-triad2-A",
+          "role": "A",
+          "triad": 2,
+          "checkerCpuMs": 66961.89600000001,
+          "checkerWallMs": 54642.441625,
+          "footprintBytes": 1127469992,
+          "rssBytes": 1063436288,
+          "processWallMs": 59747,
+          "pipelineWallMs": 59270.171417000005,
+          "phaseCpuScope": "Node process-wide CPU; includes worker/helper threads, excludes child processes",
+          "stepCounts": {
+            "expand": 263032,
+            "check": 1975761
+          },
+          "checks": {
+            "freshExecutionCell": true,
+            "completed": true,
+            "requestPinned": true,
+            "actualImage": true,
+            "sourceNotImageHash": true,
+            "sameInputs": true,
+            "sameWork": true,
+            "completeCheckNotEmit": true,
+            "noImagePatches": true,
+            "sameLimits": true,
+            "sameWorker": true,
+            "sameRuntime": true,
+            "sameCpuScope": true
+          },
+          "allChecksPassed": true,
+          "report": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/selected-triad2-A.json",
+            "sha256": "f448629622b663d1fc73f92dd2ae34c95b125c56e012d993606b32b77866794c"
+          },
+          "request": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/selected-A-request.json",
+            "sha256": "d70005eb24ee7d0c79825a4368b13a2876f2a804c9f10a8eb137bef10e620e83"
+          }
+        }
+      }
+    ],
+    "cleanRuntimeEvidence": [
+      {
+        "id": "selected-triad0-A",
+        "execArgv": [
+          "--experimental-strip-types",
+          "--max-old-space-size=6144",
+          "--max-semi-space-size=128"
+        ],
+        "profile": null,
+        "report": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/selected-triad0-A.json",
+          "sha256": "9142eea3981b107a4e7c921fcc0642ab15687a5238b32d413ac61c3c64c7cef0"
+        }
+      },
+      {
+        "id": "selected-triad0-B",
+        "execArgv": [
+          "--experimental-strip-types",
+          "--max-old-space-size=6144",
+          "--max-semi-space-size=128"
+        ],
+        "profile": null,
+        "report": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/selected-triad0-B.json",
+          "sha256": "c78514543eb3d8723d1ce0bacc761ce2cdccf8a5eccc9a70e009307d722b52d3"
+        }
+      },
+      {
+        "id": "selected-triad0-C",
+        "execArgv": [
+          "--experimental-strip-types",
+          "--max-old-space-size=6144",
+          "--max-semi-space-size=128"
+        ],
+        "profile": null,
+        "report": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/selected-triad0-C.json",
+          "sha256": "5162a24a70f97fcb510a438081dc45eb78b01363f2c5f12e273c9a3123adc6dd"
+        }
+      },
+      {
+        "id": "selected-triad1-C",
+        "execArgv": [
+          "--experimental-strip-types",
+          "--max-old-space-size=6144",
+          "--max-semi-space-size=128"
+        ],
+        "profile": null,
+        "report": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/selected-triad1-C.json",
+          "sha256": "a6191adff9718afe5a9e8318283a01595bac058481d39b2e9e8377126f63ae03"
+        }
+      },
+      {
+        "id": "selected-triad1-A",
+        "execArgv": [
+          "--experimental-strip-types",
+          "--max-old-space-size=6144",
+          "--max-semi-space-size=128"
+        ],
+        "profile": null,
+        "report": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/selected-triad1-A.json",
+          "sha256": "463d3d4ad1021541de408dd858bf65c4ae8fefd1348b0b7ab9450aac1faca8dd"
+        }
+      },
+      {
+        "id": "selected-triad1-B",
+        "execArgv": [
+          "--experimental-strip-types",
+          "--max-old-space-size=6144",
+          "--max-semi-space-size=128"
+        ],
+        "profile": null,
+        "report": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/selected-triad1-B.json",
+          "sha256": "8d38a40618fa26f88b551022ba45d896527279dcbcef3a799d3ed817e10bb54f"
+        }
+      },
+      {
+        "id": "selected-triad2-B",
+        "execArgv": [
+          "--experimental-strip-types",
+          "--max-old-space-size=6144",
+          "--max-semi-space-size=128"
+        ],
+        "profile": null,
+        "report": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/selected-triad2-B.json",
+          "sha256": "4f38d00885ebed5cb80dd08314d6c5b4e93c6131925bd4d58d4f58952aa89ba8"
+        }
+      },
+      {
+        "id": "selected-triad2-C",
+        "execArgv": [
+          "--experimental-strip-types",
+          "--max-old-space-size=6144",
+          "--max-semi-space-size=128"
+        ],
+        "profile": null,
+        "report": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/selected-triad2-C.json",
+          "sha256": "82a88cf6168aa99c0e6cfb96ec2d2a22b27608e19f7430c2b3d35018b377e9d3"
+        }
+      },
+      {
+        "id": "selected-triad2-A",
+        "execArgv": [
+          "--experimental-strip-types",
+          "--max-old-space-size=6144",
+          "--max-semi-space-size=128"
+        ],
+        "profile": null,
+        "report": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/selected-triad2-A.json",
+          "sha256": "f448629622b663d1fc73f92dd2ae34c95b125c56e012d993606b32b77866794c"
+        }
+      }
+    ]
+  },
+  "statisticsCommand": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/selected-statistics.ts",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/selected-triads.json",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/selected-policy.json"
+  ],
+  "statisticsSource": "import {readFileSync} from 'node:fs';\nimport {pairedStats,classifyRatio,median} from \"/Users/ilyagulya/Projects/My/bend/evals/selfhost_corpus_calibration.ts\";\nconst triads=JSON.parse(readFileSync(process.argv[2]!,'utf8'));\nconst protocol=JSON.parse(readFileSync(process.argv[3]!,'utf8')),limit=protocol.selected.costGate;\nconst result:any={schemaVersion:1,triads};\nfor(const [variant,baseline] of [['C','A'],['C','B'],['B','A']]){\n const comparison:any={};\n for(const metric of ['checkerCpuMs','checkerWallMs','footprintBytes','rssBytes']){\n  const a=triads.map((t:any)=>t[baseline][metric]),c=triads.map((t:any)=>t[variant][metric]);\n  const statistics=pairedStats(a,c);comparison[metric]={...statistics,direction:classifyRatio(statistics.ci95,.02)};\n }\n comparison.medianFootprintRatio=median(triads.map((t:any)=>t[variant].footprintBytes))!/median(triads.map((t:any)=>t[baseline].footprintBytes))!;\n result[variant+'_over_'+baseline]=comparison;\n}\nresult.costGate={cpuCAatMostPoint97:result.C_over_A.checkerCpuMs.geometricMeanRatio<=limit.geometricCpu_C_over_A_atMost,cpuCBatMost1Point02:result.C_over_B.checkerCpuMs.geometricMeanRatio<=limit.geometricCpu_C_over_B_atMost,everyCpuCAfaster:triads.every((t:any)=>t.C.checkerCpuMs/t.A.checkerCpuMs<limit.everyCpuPair_C_over_A_below),wallCAatMost1:result.C_over_A.checkerWallMs.geometricMeanRatio<=limit.geometricWall_C_over_A_atMost,medianFootCAatMost1:result.C_over_A.medianFootprintRatio<=limit.medianFootprint_C_over_A_atMost,geometricFootCBatMostPoint95:result.C_over_B.footprintBytes.geometricMeanRatio<=limit.geometricFootprint_C_over_B_atMost};\nresult.costGatePassed=Object.values(result.costGate).every(Boolean);\nconsole.log(JSON.stringify(result,null,2));\n",
+  "canonicalStatisticsHelper": {
+    "path": "/Users/ilyagulya/Projects/My/bend/evals/selfhost_corpus_calibration.ts",
+    "sha256": "1c1eb7f5cdf2bffa338b9cdf0c7ca86ace856348522f0add27631005543e10a9"
+  },
+  "statistics": {
+    "schemaVersion": 1,
+    "triads": [
+      {
+        "A": {
+          "id": "selected-triad0-A",
+          "role": "A",
+          "triad": 0,
+          "checkerCpuMs": 65201.082,
+          "checkerWallMs": 53466.820583,
+          "footprintBytes": 1131502712,
+          "rssBytes": 1153646592,
+          "processWallMs": 59145,
+          "pipelineWallMs": 58597.713209,
+          "phaseCpuScope": "Node process-wide CPU; includes worker/helper threads, excludes child processes",
+          "stepCounts": {
+            "expand": 263032,
+            "check": 1975761
+          },
+          "checks": {
+            "freshExecutionCell": true,
+            "completed": true,
+            "requestPinned": true,
+            "actualImage": true,
+            "sourceNotImageHash": true,
+            "sameInputs": true,
+            "sameWork": true,
+            "completeCheckNotEmit": true,
+            "noImagePatches": true,
+            "sameLimits": true,
+            "sameWorker": true,
+            "sameRuntime": true,
+            "sameCpuScope": true
+          },
+          "allChecksPassed": true,
+          "report": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/selected-triad0-A.json",
+            "sha256": "9142eea3981b107a4e7c921fcc0642ab15687a5238b32d413ac61c3c64c7cef0"
+          },
+          "request": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/selected-A-request.json",
+            "sha256": "d70005eb24ee7d0c79825a4368b13a2876f2a804c9f10a8eb137bef10e620e83"
+          }
+        },
+        "B": {
+          "id": "selected-triad0-B",
+          "role": "B",
+          "triad": 0,
+          "checkerCpuMs": 65192.443,
+          "checkerWallMs": 53036.31375,
+          "footprintBytes": 1135337024,
+          "rssBytes": 1148993536,
+          "processWallMs": 58396,
+          "pipelineWallMs": 57954.827166999996,
+          "phaseCpuScope": "Node process-wide CPU; includes worker/helper threads, excludes child processes",
+          "stepCounts": {
+            "expand": 263032,
+            "check": 1975761
+          },
+          "checks": {
+            "freshExecutionCell": true,
+            "completed": true,
+            "requestPinned": true,
+            "actualImage": true,
+            "sourceNotImageHash": true,
+            "sameInputs": true,
+            "sameWork": true,
+            "completeCheckNotEmit": true,
+            "noImagePatches": true,
+            "sameLimits": true,
+            "sameWorker": true,
+            "sameRuntime": true,
+            "sameCpuScope": true
+          },
+          "allChecksPassed": true,
+          "report": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/selected-triad0-B.json",
+            "sha256": "c78514543eb3d8723d1ce0bacc761ce2cdccf8a5eccc9a70e009307d722b52d3"
+          },
+          "request": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/selected-B-request.json",
+            "sha256": "565eb336e23c8421f9e2a544ce7f54c793570faaa24f16b0e243911e94b5a9bc"
+          }
+        },
+        "C": {
+          "id": "selected-triad0-C",
+          "role": "C",
+          "triad": 0,
+          "checkerCpuMs": 67063.91600000001,
+          "checkerWallMs": 54626.798459,
+          "footprintBytes": 1192794440,
+          "rssBytes": 1121976320,
+          "processWallMs": 60495,
+          "pipelineWallMs": 59973.445332999996,
+          "phaseCpuScope": "Node process-wide CPU; includes worker/helper threads, excludes child processes",
+          "stepCounts": {
+            "expand": 263032,
+            "check": 1975761
+          },
+          "checks": {
+            "freshExecutionCell": true,
+            "completed": true,
+            "requestPinned": true,
+            "actualImage": true,
+            "sourceNotImageHash": true,
+            "sameInputs": true,
+            "sameWork": true,
+            "completeCheckNotEmit": true,
+            "noImagePatches": true,
+            "sameLimits": true,
+            "sameWorker": true,
+            "sameRuntime": true,
+            "sameCpuScope": true
+          },
+          "allChecksPassed": true,
+          "report": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/selected-triad0-C.json",
+            "sha256": "5162a24a70f97fcb510a438081dc45eb78b01363f2c5f12e273c9a3123adc6dd"
+          },
+          "request": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/selected-C-request.json",
+            "sha256": "89b8593800a91cab4560282f246f9ac3b623ae68183db5cf74d06a6ab381c7b5"
+          }
+        }
+      },
+      {
+        "C": {
+          "id": "selected-triad1-C",
+          "role": "C",
+          "triad": 1,
+          "checkerCpuMs": 64266.206,
+          "checkerWallMs": 52733.10975,
+          "footprintBytes": 1171447000,
+          "rssBytes": 1279590400,
+          "processWallMs": 58293,
+          "pipelineWallMs": 57781.909,
+          "phaseCpuScope": "Node process-wide CPU; includes worker/helper threads, excludes child processes",
+          "stepCounts": {
+            "expand": 263032,
+            "check": 1975761
+          },
+          "checks": {
+            "freshExecutionCell": true,
+            "completed": true,
+            "requestPinned": true,
+            "actualImage": true,
+            "sourceNotImageHash": true,
+            "sameInputs": true,
+            "sameWork": true,
+            "completeCheckNotEmit": true,
+            "noImagePatches": true,
+            "sameLimits": true,
+            "sameWorker": true,
+            "sameRuntime": true,
+            "sameCpuScope": true
+          },
+          "allChecksPassed": true,
+          "report": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/selected-triad1-C.json",
+            "sha256": "a6191adff9718afe5a9e8318283a01595bac058481d39b2e9e8377126f63ae03"
+          },
+          "request": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/selected-C-request.json",
+            "sha256": "89b8593800a91cab4560282f246f9ac3b623ae68183db5cf74d06a6ab381c7b5"
+          }
+        },
+        "A": {
+          "id": "selected-triad1-A",
+          "role": "A",
+          "triad": 1,
+          "checkerCpuMs": 63498.907,
+          "checkerWallMs": 53546.822374999996,
+          "footprintBytes": 1349491192,
+          "rssBytes": 1174994944,
+          "processWallMs": 58769,
+          "pipelineWallMs": 58319.304916,
+          "phaseCpuScope": "Node process-wide CPU; includes worker/helper threads, excludes child processes",
+          "stepCounts": {
+            "expand": 263032,
+            "check": 1975761
+          },
+          "checks": {
+            "freshExecutionCell": true,
+            "completed": true,
+            "requestPinned": true,
+            "actualImage": true,
+            "sourceNotImageHash": true,
+            "sameInputs": true,
+            "sameWork": true,
+            "completeCheckNotEmit": true,
+            "noImagePatches": true,
+            "sameLimits": true,
+            "sameWorker": true,
+            "sameRuntime": true,
+            "sameCpuScope": true
+          },
+          "allChecksPassed": true,
+          "report": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/selected-triad1-A.json",
+            "sha256": "463d3d4ad1021541de408dd858bf65c4ae8fefd1348b0b7ab9450aac1faca8dd"
+          },
+          "request": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/selected-A-request.json",
+            "sha256": "d70005eb24ee7d0c79825a4368b13a2876f2a804c9f10a8eb137bef10e620e83"
+          }
+        },
+        "B": {
+          "id": "selected-triad1-B",
+          "role": "B",
+          "triad": 1,
+          "checkerCpuMs": 65566.53,
+          "checkerWallMs": 52985.039875,
+          "footprintBytes": 1141465144,
+          "rssBytes": 1133002752,
+          "processWallMs": 58150,
+          "pipelineWallMs": 57698.184584,
+          "phaseCpuScope": "Node process-wide CPU; includes worker/helper threads, excludes child processes",
+          "stepCounts": {
+            "expand": 263032,
+            "check": 1975761
+          },
+          "checks": {
+            "freshExecutionCell": true,
+            "completed": true,
+            "requestPinned": true,
+            "actualImage": true,
+            "sourceNotImageHash": true,
+            "sameInputs": true,
+            "sameWork": true,
+            "completeCheckNotEmit": true,
+            "noImagePatches": true,
+            "sameLimits": true,
+            "sameWorker": true,
+            "sameRuntime": true,
+            "sameCpuScope": true
+          },
+          "allChecksPassed": true,
+          "report": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/selected-triad1-B.json",
+            "sha256": "8d38a40618fa26f88b551022ba45d896527279dcbcef3a799d3ed817e10bb54f"
+          },
+          "request": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/selected-B-request.json",
+            "sha256": "565eb336e23c8421f9e2a544ce7f54c793570faaa24f16b0e243911e94b5a9bc"
+          }
+        }
+      },
+      {
+        "B": {
+          "id": "selected-triad2-B",
+          "role": "B",
+          "triad": 2,
+          "checkerCpuMs": 66925.538,
+          "checkerWallMs": 54322.970125,
+          "footprintBytes": 1130846800,
+          "rssBytes": 1062797312,
+          "processWallMs": 59270,
+          "pipelineWallMs": 58834.961542,
+          "phaseCpuScope": "Node process-wide CPU; includes worker/helper threads, excludes child processes",
+          "stepCounts": {
+            "expand": 263032,
+            "check": 1975761
+          },
+          "checks": {
+            "freshExecutionCell": true,
+            "completed": true,
+            "requestPinned": true,
+            "actualImage": true,
+            "sourceNotImageHash": true,
+            "sameInputs": true,
+            "sameWork": true,
+            "completeCheckNotEmit": true,
+            "noImagePatches": true,
+            "sameLimits": true,
+            "sameWorker": true,
+            "sameRuntime": true,
+            "sameCpuScope": true
+          },
+          "allChecksPassed": true,
+          "report": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/selected-triad2-B.json",
+            "sha256": "4f38d00885ebed5cb80dd08314d6c5b4e93c6131925bd4d58d4f58952aa89ba8"
+          },
+          "request": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/selected-B-request.json",
+            "sha256": "565eb336e23c8421f9e2a544ce7f54c793570faaa24f16b0e243911e94b5a9bc"
+          }
+        },
+        "C": {
+          "id": "selected-triad2-C",
+          "role": "C",
+          "triad": 2,
+          "checkerCpuMs": 64139.341,
+          "checkerWallMs": 52722.387416,
+          "footprintBytes": 1213457040,
+          "rssBytes": 1198030848,
+          "processWallMs": 57981,
+          "pipelineWallMs": 57456.702833,
+          "phaseCpuScope": "Node process-wide CPU; includes worker/helper threads, excludes child processes",
+          "stepCounts": {
+            "expand": 263032,
+            "check": 1975761
+          },
+          "checks": {
+            "freshExecutionCell": true,
+            "completed": true,
+            "requestPinned": true,
+            "actualImage": true,
+            "sourceNotImageHash": true,
+            "sameInputs": true,
+            "sameWork": true,
+            "completeCheckNotEmit": true,
+            "noImagePatches": true,
+            "sameLimits": true,
+            "sameWorker": true,
+            "sameRuntime": true,
+            "sameCpuScope": true
+          },
+          "allChecksPassed": true,
+          "report": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/selected-triad2-C.json",
+            "sha256": "82a88cf6168aa99c0e6cfb96ec2d2a22b27608e19f7430c2b3d35018b377e9d3"
+          },
+          "request": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/selected-C-request.json",
+            "sha256": "89b8593800a91cab4560282f246f9ac3b623ae68183db5cf74d06a6ab381c7b5"
+          }
+        },
+        "A": {
+          "id": "selected-triad2-A",
+          "role": "A",
+          "triad": 2,
+          "checkerCpuMs": 66961.89600000001,
+          "checkerWallMs": 54642.441625,
+          "footprintBytes": 1127469992,
+          "rssBytes": 1063436288,
+          "processWallMs": 59747,
+          "pipelineWallMs": 59270.171417000005,
+          "phaseCpuScope": "Node process-wide CPU; includes worker/helper threads, excludes child processes",
+          "stepCounts": {
+            "expand": 263032,
+            "check": 1975761
+          },
+          "checks": {
+            "freshExecutionCell": true,
+            "completed": true,
+            "requestPinned": true,
+            "actualImage": true,
+            "sourceNotImageHash": true,
+            "sameInputs": true,
+            "sameWork": true,
+            "completeCheckNotEmit": true,
+            "noImagePatches": true,
+            "sameLimits": true,
+            "sameWorker": true,
+            "sameRuntime": true,
+            "sameCpuScope": true
+          },
+          "allChecksPassed": true,
+          "report": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/selected-triad2-A.json",
+            "sha256": "f448629622b663d1fc73f92dd2ae34c95b125c56e012d993606b32b77866794c"
+          },
+          "request": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/selected-A-request.json",
+            "sha256": "d70005eb24ee7d0c79825a4368b13a2876f2a804c9f10a8eb137bef10e620e83"
+          }
+        }
+      }
+    ],
+    "C_over_A": {
+      "checkerCpuMs": {
+        "n": 3,
+        "logRatios": [
+          0.028170070912945197,
+          0.01201123228077008,
+          -0.04306582138005631
+        ],
+        "meanLog": -0.0009615060621136785,
+        "varianceLog": 0.0013948570427797227,
+        "geometricMeanRatio": 0.9990389560367245,
+        "ci95": [
+          0.9105207893538807,
+          1.0961625998536513
+        ],
+        "baselineMedian": 65201.082,
+        "variantMedian": 64266.206,
+        "direction": "inconclusive"
+      },
+      "checkerWallMs": {
+        "n": 3,
+        "logRatios": [
+          0.021463291113758803,
+          -0.01531292896044256,
+          -0.035770725939580576
+        ],
+        "meanLog": -0.009873454595421445,
+        "varianceLog": 0.0008411240880412771,
+        "geometricMeanRatio": 0.9901751279334672,
+        "ci95": [
+          0.9213468033588732,
+          1.0641452061305572
+        ],
+        "baselineMedian": 53546.822374999996,
+        "variantMedian": 52733.10975,
+        "direction": "inconclusive"
+      },
+      "footprintBytes": {
+        "n": 3,
+        "logRatios": [
+          0.05275224024942221,
+          -0.1414878897943523,
+          0.07349716642095709
+        ],
+        "meanLog": -0.00507949437465767,
+        "varianceLog": 0.014063025746197434,
+        "geometricMeanRatio": 0.9949333844417079,
+        "ci95": [
+          0.741064586910786,
+          1.335770804543654
+        ],
+        "baselineMedian": 1131502712,
+        "variantMedian": 1192794440,
+        "direction": "inconclusive"
+      },
+      "rssBytes": {
+        "n": 3,
+        "logRatios": [
+          -0.02783617337402785,
+          0.08527618211245945,
+          0.11917380293220664
+        ],
+        "meanLog": 0.058871270556879414,
+        "varianceLog": 0.00592589779908341,
+        "geometricMeanRatio": 1.0606386965229615,
+        "ci95": [
+          0.8760279467880562,
+          1.2841536034170553
+        ],
+        "baselineMedian": 1153646592,
+        "variantMedian": 1198030848,
+        "direction": "inconclusive"
+      },
+      "medianFootprintRatio": 1.0541684322538327
+    },
+    "C_over_B": {
+      "checkerCpuMs": {
+        "n": 3,
+        "logRatios": [
+          0.02830257749274103,
+          -0.02003142689940312,
+          -0.04252270841108689
+        ],
+        "meanLog": -0.01141718593924966,
+        "varianceLog": 0.0013097091413294308,
+        "geometricMeanRatio": 0.9886477427920823,
+        "ci95": [
+          0.9036457264687793,
+          1.0816455284389035
+        ],
+        "baselineMedian": 65566.53,
+        "variantMedian": 64266.206,
+        "direction": "inconclusive"
+      },
+      "checkerWallMs": {
+        "n": 3,
+        "logRatios": [
+          0.02954773258031329,
+          -0.004766080427763152,
+          -0.02990698605650619
+        ],
+        "meanLog": -0.001708444634652016,
+        "varianceLog": 0.0008907277445283281,
+        "geometricMeanRatio": 0.9982930139261411,
+        "ci95": [
+          0.9269573812071583,
+          1.0751184055041456
+        ],
+        "baselineMedian": 53036.31375,
+        "variantMedian": 52733.10975,
+        "direction": "inconclusive"
+      },
+      "footprintBytes": {
+        "n": 3,
+        "logRatios": [
+          0.049369278855285505,
+          0.025927085537588497,
+          0.0705066112175009
+        ],
+        "meanLog": 0.048600991870124975,
+        "varianceLog": 0.0004972762261301677,
+        "geometricMeanRatio": 1.0498013878722763,
+        "ci95": [
+          0.9932285185887698,
+          1.1095965665025949
+        ],
+        "baselineMedian": 1135337024,
+        "variantMedian": 1192794440,
+        "direction": "inconclusive"
+      },
+      "rssBytes": {
+        "n": 3,
+        "logRatios": [
+          -0.023794671380815324,
+          0.12166861572798997,
+          0.1197748432122923
+        ],
+        "meanLog": 0.07254959585315564,
+        "varianceLog": 0.006962559965223413,
+        "geometricMeanRatio": 1.0752461325170537,
+        "ci95": [
+          0.8739503497935065,
+          1.3229060961713133
+        ],
+        "baselineMedian": 1133002752,
+        "variantMedian": 1198030848,
+        "direction": "inconclusive"
+      },
+      "medianFootprintRatio": 1.0506082465253948
+    },
+    "B_over_A": {
+      "checkerCpuMs": {
+        "n": 3,
+        "logRatios": [
+          -0.00013250657979594745,
+          0.03204265918017325,
+          -0.0005431129689694694
+        ],
+        "meanLog": 0.010455679877135944,
+        "varianceLog": 0.00034954040597402834,
+        "geometricMeanRatio": 1.0105105315016407,
+        "ci95": [
+          0.9646521025702959,
+          1.0585490163292488
+        ],
+        "baselineMedian": 65201.082,
+        "variantMedian": 65566.53,
+        "direction": "inconclusive"
+      },
+      "checkerWallMs": {
+        "n": 3,
+        "logRatios": [
+          -0.008084441466554465,
+          -0.010546848532679409,
+          -0.005863739883074388
+        ],
+        "meanLog": -0.00816500996076942,
+        "varianceLog": 5.48774511769639e-06,
+        "geometricMeanRatio": 0.9918682331946335,
+        "ci95": [
+          0.9861129913576605,
+          0.9976570642945938
+        ],
+        "baselineMedian": 53546.822374999996,
+        "variantMedian": 53036.31375,
+        "direction": "equivalent"
+      },
+      "footprintBytes": {
+        "n": 3,
+        "logRatios": [
+          0.0033829613941367136,
+          -0.16741497533194094,
+          0.0029905552034561814
+        ],
+        "meanLog": -0.05368048624478269,
+        "varianceLog": 0.00970168900159231,
+        "geometricMeanRatio": 0.9477348724583282,
+        "ci95": [
+          0.7420334346520618,
+          1.2104594571197034
+        ],
+        "baselineMedian": 1131502712,
+        "variantMedian": 1135337024,
+        "direction": "inconclusive"
+      },
+      "rssBytes": {
+        "n": 3,
+        "logRatios": [
+          -0.004041501993212533,
+          -0.036392433615530614,
+          -0.0006010402800856572
+        ],
+        "meanLog": -0.01367832529627627,
+        "varianceLog": 0.0003899072317539876,
+        "geometricMeanRatio": 0.9864147979217581,
+        "ci95": [
+          0.9391967602623557,
+          1.036006718429502
+        ],
+        "baselineMedian": 1153646592,
+        "variantMedian": 1133002752,
+        "direction": "inconclusive"
+      },
+      "medianFootprintRatio": 1.003388690066171
+    },
+    "costGate": {
+      "cpuCAatMostPoint97": false,
+      "cpuCBatMost1Point02": true,
+      "everyCpuCAfaster": false,
+      "wallCAatMost1": true,
+      "medianFootCAatMost1": false,
+      "geometricFootCBatMostPoint95": false
+    },
+    "costGatePassed": false
+  },
+  "costFilterPassed": false,
+  "failedCostFilters": [
+    "cpuCAatMostPoint97",
+    "everyCpuCAfaster",
+    "medianFootCAatMost1",
+    "geometricFootCBatMostPoint95"
+  ],
+  "retries": 0,
+  "excludedRows": 0,
+  "oldTimingRowsReused": 0,
+  "diagnosticActivationIncludedInTimings": false,
+  "inference": "All candidateCPU/wall/footprint/RSS paired95intervals areinconclusive underexisting2percentband. No qualifiedCPUgain, RAMsaving or statisticallyqualifiedregressionclaimed. Pointcostfilters fail4of6; medianfootprintC/A1.054168 andgeometricfootprintC/B1.049801 failprospectiveconstraints. Realphysicalactivationandsemanticpassesdonotchangerejection.",
+  "earnedConditionalFullSixRuns": "NOT_RUN_NOT_EARNED",
+  "earnedActualC2ToC3ByteFixedpoint": "NOT_RUN_NOT_EARNED",
+  "actualOwnByteFixedpoint": false,
+  "inputHashesAtClosure": [
+    {
+      "scope": "candidateCompiler53",
+      "manifest": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/r1-compiler-source.corpus.json",
+        "sha256": "3f89cefec84548729b231903e0165f837d2f9630cd4e239653a71ac0b76c2eba"
+      },
+      "files": 53,
+      "passed": true,
+      "rows": [
+        {
+          "path": "bend2/base.bend",
+          "sha256": "21baec76caf1a6cfd4a544340b291f7bb55bf30cc841f9f5f29e3b12a1a4d614",
+          "expectedSha256": "21baec76caf1a6cfd4a544340b291f7bb55bf30cc841f9f5f29e3b12a1a4d614",
+          "passed": true
+        },
+        {
+          "path": "bend2/selfhost/ast.bend",
+          "sha256": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
+          "expectedSha256": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
+          "passed": true
+        },
+        {
+          "path": "bend2/selfhost/backend_ir.bend",
+          "sha256": "c0286db6b192bf5cc917774b7ea5e393d4416263432eb130fb8393b1dffc1cb3",
+          "expectedSha256": "c0286db6b192bf5cc917774b7ea5e393d4416263432eb130fb8393b1dffc1cb3",
+          "passed": true
+        },
+        {
+          "path": "bend2/selfhost/c_backend_sharing.bend",
+          "sha256": "05adf4ac68b0658425f7fce430709f67bd29c3f1f8a43727412661084c4dbe2c",
+          "expectedSha256": "05adf4ac68b0658425f7fce430709f67bd29c3f1f8a43727412661084c4dbe2c",
+          "passed": true
+        },
+        {
+          "path": "bend2/selfhost/checked_frontend.bend",
+          "sha256": "8287a44c524b001933cdba9d036b44ade13c34e549f5c926fd2cab45894e288e",
+          "expectedSha256": "8287a44c524b001933cdba9d036b44ade13c34e549f5c926fd2cab45894e288e",
+          "passed": true
+        },
+        {
+          "path": "bend2/selfhost/checker_arena.bend",
+          "sha256": "d74873488827c5a8568b1238f05356ef43ec7c8a285ca0e25ab7b052f070ebdf",
+          "expectedSha256": "d74873488827c5a8568b1238f05356ef43ec7c8a285ca0e25ab7b052f070ebdf",
+          "passed": true
+        },
+        {
+          "path": "bend2/selfhost/checker_ir.bend",
+          "sha256": "41db13db11d63102d3ea5c8ca14916e5f688685bba96c332abcb7a3533f1f17b",
+          "expectedSha256": "41db13db11d63102d3ea5c8ca14916e5f688685bba96c332abcb7a3533f1f17b",
+          "passed": true
+        },
+        {
+          "path": "bend2/selfhost/core.bend",
+          "sha256": "33823e56b9c70306970ccb0e3b5fb3b995806d3a1907dd97d45c5c9634d13511",
+          "expectedSha256": "33823e56b9c70306970ccb0e3b5fb3b995806d3a1907dd97d45c5c9634d13511",
+          "passed": true
+        },
+        {
+          "path": "bend2/selfhost/index_lookup.bend",
+          "sha256": "7b7b45946be711d0ba384e15f6823fded5ff97d6a526a6fb74a0448c13d61f84",
+          "expectedSha256": "7b7b45946be711d0ba384e15f6823fded5ff97d6a526a6fb74a0448c13d61f84",
+          "passed": true
+        },
+        {
+          "path": "bend2/selfhost/lexer.bend",
+          "sha256": "db129431989584b4faa5ac2b65bbcf1fea5036218884d5e4c2b7cd6bb8b643d7",
+          "expectedSha256": "db129431989584b4faa5ac2b65bbcf1fea5036218884d5e4c2b7cd6bb8b643d7",
+          "passed": true
+        },
+        {
+          "path": "bend2/selfhost/loaded_module.bend",
+          "sha256": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e",
+          "expectedSha256": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e",
+          "passed": true
+        },
+        {
+          "path": "bend2/selfhost/path.bend",
+          "sha256": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
+          "expectedSha256": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
+          "passed": true
+        },
+        {
+          "path": "bend2/selfhost/scope_lookup.bend",
+          "sha256": "e75dc874de6026e2104a7545a19f42fd6995aefecbb1d315c6ae3e097697e590",
+          "expectedSha256": "e75dc874de6026e2104a7545a19f42fd6995aefecbb1d315c6ae3e097697e590",
+          "passed": true
+        },
+        {
+          "path": "bend2/selfhost/sha256.bend",
+          "sha256": "2fe6b6fc50c90db1b4730a384724bc989398b0ce41752cc510aa2478a3e845d6",
+          "expectedSha256": "2fe6b6fc50c90db1b4730a384724bc989398b0ce41752cc510aa2478a3e845d6",
+          "passed": true
+        },
+        {
+          "path": "checkpoints/checker_core_steps_v1.bend",
+          "sha256": "e4c1197d63129394551d5643ef2934be84af82eaeacfa3da1e4e660c6ff603a4",
+          "expectedSha256": "e4c1197d63129394551d5643ef2934be84af82eaeacfa3da1e4e660c6ff603a4",
+          "passed": true
+        },
+        {
+          "path": "checkpoints/emitter_steps_v1.bend",
+          "sha256": "b22bf70c727181310131f88cefdfa4aa5d83feee65e054be25c4584b935a02f6",
+          "expectedSha256": "b22bf70c727181310131f88cefdfa4aa5d83feee65e054be25c4584b935a02f6",
+          "passed": true
+        },
+        {
+          "path": "checkpoints/local2039g49-compiler-root.bend",
+          "sha256": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed",
+          "expectedSha256": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed",
+          "passed": true
+        },
+        {
+          "path": "checkpoints/template_steps_v1.bend",
+          "sha256": "b9f4d860de0c58a274e1f23e90558191e23d7ac0de18d1fd452914160b9a5ae5",
+          "expectedSha256": "b9f4d860de0c58a274e1f23e90558191e23d7ac0de18d1fd452914160b9a5ae5",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/args.js",
+          "sha256": "4fa9772d438257793425d4f9516e1411ce58455fdaec402ab836e6a6cf8a7a82",
+          "expectedSha256": "4fa9772d438257793425d4f9516e1411ce58455fdaec402ab836e6a6cf8a7a82",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/audio_close.js",
+          "sha256": "c700e2fc0eda1f9a67afd317184999d9283912817aaec00637af41b135b84c62",
+          "expectedSha256": "c700e2fc0eda1f9a67afd317184999d9283912817aaec00637af41b135b84c62",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/audio_open.js",
+          "sha256": "ed792cb29df28497c60fb6bfcebaa72d9f4bb0a9d8b22063567aa40ac4803fc9",
+          "expectedSha256": "ed792cb29df28497c60fb6bfcebaa72d9f4bb0a9d8b22063567aa40ac4803fc9",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/audio_write.js",
+          "sha256": "ca3731d6da39355c0b924007dfe4f3ea25ed1a9d7b06b7bf19cacf49fdcc0de6",
+          "expectedSha256": "ca3731d6da39355c0b924007dfe4f3ea25ed1a9d7b06b7bf19cacf49fdcc0de6",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/chan.js",
+          "sha256": "c8e4f3cdaea81cfd35dc22e07c29a86b8f08272d284bf3506dd5148dff8d168f",
+          "expectedSha256": "c8e4f3cdaea81cfd35dc22e07c29a86b8f08272d284bf3506dd5148dff8d168f",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/file_close.js",
+          "sha256": "2b83f900113776ab875fa3afd29f31000a191fe48645abe78b1d7b34cb12a7fe",
+          "expectedSha256": "2b83f900113776ab875fa3afd29f31000a191fe48645abe78b1d7b34cb12a7fe",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/file_open.js",
+          "sha256": "e6cbf6455aeae0768f1e8e7cabbafb8d0999eb27660cbaa23885757322b8c694",
+          "expectedSha256": "e6cbf6455aeae0768f1e8e7cabbafb8d0999eb27660cbaa23885757322b8c694",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/file_read.js",
+          "sha256": "7aa8a95a0b02f3c8db1167da5a936958a90c64e7df3e327ba5c66766d5e57da7",
+          "expectedSha256": "7aa8a95a0b02f3c8db1167da5a936958a90c64e7df3e327ba5c66766d5e57da7",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/file_size.js",
+          "sha256": "508a931334016f725f0446d9c63f91d7e9de79b9fb347d0e148777dba834ef0b",
+          "expectedSha256": "508a931334016f725f0446d9c63f91d7e9de79b9fb347d0e148777dba834ef0b",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/file_write.js",
+          "sha256": "fbb706714fe6724e12658ad638d8b7aa2228f6297791bf74bd4894af361776f0",
+          "expectedSha256": "fbb706714fe6724e12658ad638d8b7aa2228f6297791bf74bd4894af361776f0",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/get_env.js",
+          "sha256": "4bbb377d73898055bd06b498bef605e81bc2a0885e7ac664bc77591fd7e3dfa4",
+          "expectedSha256": "4bbb377d73898055bd06b498bef605e81bc2a0885e7ac664bc77591fd7e3dfa4",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/listener_close.js",
+          "sha256": "1b87fb43c373b1a8a54b5afaf0cf8e3ec2f8d39bdfde131e49527caa19ac0cb8",
+          "expectedSha256": "1b87fb43c373b1a8a54b5afaf0cf8e3ec2f8d39bdfde131e49527caa19ac0cb8",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/now.js",
+          "sha256": "f41624aba3f07d56b671f41691b5cb833b4d018266668f5f48329290fc41b2d9",
+          "expectedSha256": "f41624aba3f07d56b671f41691b5cb833b4d018266668f5f48329290fc41b2d9",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/print_err.js",
+          "sha256": "a7a00612edfe98af1a351e8f7b912af4ee33f4bb888c36f119f7712d72a9394e",
+          "expectedSha256": "a7a00612edfe98af1a351e8f7b912af4ee33f4bb888c36f119f7712d72a9394e",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/print.js",
+          "sha256": "814ceba4efbaa291b7b6a9ff29aa20e3a23c06eb4fa165c69ee0bd22878adaa9",
+          "expectedSha256": "814ceba4efbaa291b7b6a9ff29aa20e3a23c06eb4fa165c69ee0bd22878adaa9",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/process_run.js",
+          "sha256": "26868538280a1df9570ed2fba234d2a329f1e1d9e86c6fe9353de417adaee729",
+          "expectedSha256": "26868538280a1df9570ed2fba234d2a329f1e1d9e86c6fe9353de417adaee729",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/random_u32.js",
+          "sha256": "ab0b37cb6055ad08573d1263aa380c339c3fe7417530cfa63264629dce7744c2",
+          "expectedSha256": "ab0b37cb6055ad08573d1263aa380c339c3fe7417530cfa63264629dce7744c2",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/sleep.js",
+          "sha256": "6711ccd804dcaede381da9ff0283b4640feb440e1d413381101f22bfed65a934",
+          "expectedSha256": "6711ccd804dcaede381da9ff0283b4640feb440e1d413381101f22bfed65a934",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/socket_close.js",
+          "sha256": "dc4bf1fa95692c91528d4eb855506dde8dfc9164a90de2c43cd1bd6916e0c380",
+          "expectedSha256": "dc4bf1fa95692c91528d4eb855506dde8dfc9164a90de2c43cd1bd6916e0c380",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/spawn.js",
+          "sha256": "8a14c7a7a5ff80b049f0659f9e58d43bf0f3b1a6724d35a199c3f864b3242e4b",
+          "expectedSha256": "8a14c7a7a5ff80b049f0659f9e58d43bf0f3b1a6724d35a199c3f864b3242e4b",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/tcp_accept.js",
+          "sha256": "26406cce42c497994e597a7a032629fab65f43ec14f06ee69aace2b353afe28d",
+          "expectedSha256": "26406cce42c497994e597a7a032629fab65f43ec14f06ee69aace2b353afe28d",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/tcp_connect.js",
+          "sha256": "c51c4b55ffbc4a520f01082a1307498801a17e5123bdffbd01077fb42730f1cb",
+          "expectedSha256": "c51c4b55ffbc4a520f01082a1307498801a17e5123bdffbd01077fb42730f1cb",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/tcp_listen.js",
+          "sha256": "0da4cfafaa24ba5e17d9fda5e6a5b207b2b36031b2c888944f67b85842d76399",
+          "expectedSha256": "0da4cfafaa24ba5e17d9fda5e6a5b207b2b36031b2c888944f67b85842d76399",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/tcp_recv.js",
+          "sha256": "e8c54490445cb71a4328c07be8c40a49cee3e643cbf74f42dc73d31ab95890d7",
+          "expectedSha256": "e8c54490445cb71a4328c07be8c40a49cee3e643cbf74f42dc73d31ab95890d7",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/tcp_send.js",
+          "sha256": "350bc6ac8f957d6a154cc9437b4ad871bd11ec65babbbd7c3b0d2c77590ec5c6",
+          "expectedSha256": "350bc6ac8f957d6a154cc9437b4ad871bd11ec65babbbd7c3b0d2c77590ec5c6",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/thread_count.js",
+          "sha256": "f4ef6d8ded95fe3114e50b7d2b6eb873e693419b85150f681b4a54a5043c2de9",
+          "expectedSha256": "f4ef6d8ded95fe3114e50b7d2b6eb873e693419b85150f681b4a54a5043c2de9",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/udp_bind.js",
+          "sha256": "e3afae5bf246184e76703efbcf41cb35bf5289e746cc40dc0300eef98753dfb5",
+          "expectedSha256": "e3afae5bf246184e76703efbcf41cb35bf5289e746cc40dc0300eef98753dfb5",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/udp_recv_from.js",
+          "sha256": "66435d23dd12f30aa47bf618c925a42250920768d5ae28c7c52c35d4e04fa5ad",
+          "expectedSha256": "66435d23dd12f30aa47bf618c925a42250920768d5ae28c7c52c35d4e04fa5ad",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/udp_send_to.js",
+          "sha256": "40c835c4d73eb15d089a41b425968d04931d02820cb901aadb8eb3dd4905f247",
+          "expectedSha256": "40c835c4d73eb15d089a41b425968d04931d02820cb901aadb8eb3dd4905f247",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/window_close.js",
+          "sha256": "be4ef11e9ac57c59aa4aee847f15ece18034ca9fe1c4a68c6e0b0d7bbd7c3590",
+          "expectedSha256": "be4ef11e9ac57c59aa4aee847f15ece18034ca9fe1c4a68c6e0b0d7bbd7c3590",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/window_frame.js",
+          "sha256": "78baa53aa46e02165c0c94da68d1f6362386ebcfb97dbb36fffb82792a03d34f",
+          "expectedSha256": "78baa53aa46e02165c0c94da68d1f6362386ebcfb97dbb36fffb82792a03d34f",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/window_grab.js",
+          "sha256": "55cfc1925114f2d1f177137fad24d6252fe28707d26a1aae18a98ad97060a668",
+          "expectedSha256": "55cfc1925114f2d1f177137fad24d6252fe28707d26a1aae18a98ad97060a668",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/window_open.js",
+          "sha256": "cd716864b8dfb27ca955c8aa58643c7d693ce76eb56472bd8255ff7ac0656e8d",
+          "expectedSha256": "cd716864b8dfb27ca955c8aa58643c7d693ce76eb56472bd8255ff7ac0656e8d",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/window_set_title.js",
+          "sha256": "eee0bf26b7f381f8800364e22e8c735e47dd6db3f58e23ff3dda8478a8411513",
+          "expectedSha256": "eee0bf26b7f381f8800364e22e8c735e47dd6db3f58e23ff3dda8478a8411513",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/write.js",
+          "sha256": "e3495066a5d8c53fe1c46cfd2bb32577e3bd7dcae9797808801599073504dacb",
+          "expectedSha256": "e3495066a5d8c53fe1c46cfd2bb32577e3bd7dcae9797808801599073504dacb",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "scope": "selectedFrozen52",
+      "manifest": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/main-complete.corpus.json",
+        "sha256": "1a269e15bf70257b019ab572c003b6eb130b4e3f63ad507783525e28d307b0e4"
+      },
+      "files": 52,
+      "passed": true,
+      "rows": [
+        {
+          "path": "bend2/base.bend",
+          "sha256": "21baec76caf1a6cfd4a544340b291f7bb55bf30cc841f9f5f29e3b12a1a4d614",
+          "expectedSha256": "21baec76caf1a6cfd4a544340b291f7bb55bf30cc841f9f5f29e3b12a1a4d614",
+          "passed": true
+        },
+        {
+          "path": "bend2/selfhost/ast.bend",
+          "sha256": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
+          "expectedSha256": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
+          "passed": true
+        },
+        {
+          "path": "bend2/selfhost/backend_ir.bend",
+          "sha256": "c0286db6b192bf5cc917774b7ea5e393d4416263432eb130fb8393b1dffc1cb3",
+          "expectedSha256": "c0286db6b192bf5cc917774b7ea5e393d4416263432eb130fb8393b1dffc1cb3",
+          "passed": true
+        },
+        {
+          "path": "bend2/selfhost/c_backend_sharing.bend",
+          "sha256": "05adf4ac68b0658425f7fce430709f67bd29c3f1f8a43727412661084c4dbe2c",
+          "expectedSha256": "05adf4ac68b0658425f7fce430709f67bd29c3f1f8a43727412661084c4dbe2c",
+          "passed": true
+        },
+        {
+          "path": "bend2/selfhost/checked_frontend.bend",
+          "sha256": "8287a44c524b001933cdba9d036b44ade13c34e549f5c926fd2cab45894e288e",
+          "expectedSha256": "8287a44c524b001933cdba9d036b44ade13c34e549f5c926fd2cab45894e288e",
+          "passed": true
+        },
+        {
+          "path": "bend2/selfhost/checker_arena.bend",
+          "sha256": "d74873488827c5a8568b1238f05356ef43ec7c8a285ca0e25ab7b052f070ebdf",
+          "expectedSha256": "d74873488827c5a8568b1238f05356ef43ec7c8a285ca0e25ab7b052f070ebdf",
+          "passed": true
+        },
+        {
+          "path": "bend2/selfhost/checker_ir.bend",
+          "sha256": "41db13db11d63102d3ea5c8ca14916e5f688685bba96c332abcb7a3533f1f17b",
+          "expectedSha256": "41db13db11d63102d3ea5c8ca14916e5f688685bba96c332abcb7a3533f1f17b",
+          "passed": true
+        },
+        {
+          "path": "bend2/selfhost/core.bend",
+          "sha256": "33823e56b9c70306970ccb0e3b5fb3b995806d3a1907dd97d45c5c9634d13511",
+          "expectedSha256": "33823e56b9c70306970ccb0e3b5fb3b995806d3a1907dd97d45c5c9634d13511",
+          "passed": true
+        },
+        {
+          "path": "bend2/selfhost/index_lookup.bend",
+          "sha256": "7b7b45946be711d0ba384e15f6823fded5ff97d6a526a6fb74a0448c13d61f84",
+          "expectedSha256": "7b7b45946be711d0ba384e15f6823fded5ff97d6a526a6fb74a0448c13d61f84",
+          "passed": true
+        },
+        {
+          "path": "bend2/selfhost/lexer.bend",
+          "sha256": "342901897b30afc8ec7587718b1eb0b30150d46b01c1ea498ce369af26d1394d",
+          "expectedSha256": "342901897b30afc8ec7587718b1eb0b30150d46b01c1ea498ce369af26d1394d",
+          "passed": true
+        },
+        {
+          "path": "bend2/selfhost/loaded_module.bend",
+          "sha256": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e",
+          "expectedSha256": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e",
+          "passed": true
+        },
+        {
+          "path": "bend2/selfhost/path.bend",
+          "sha256": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
+          "expectedSha256": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
+          "passed": true
+        },
+        {
+          "path": "bend2/selfhost/scope_lookup.bend",
+          "sha256": "e75dc874de6026e2104a7545a19f42fd6995aefecbb1d315c6ae3e097697e590",
+          "expectedSha256": "e75dc874de6026e2104a7545a19f42fd6995aefecbb1d315c6ae3e097697e590",
+          "passed": true
+        },
+        {
+          "path": "bend2/selfhost/sha256.bend",
+          "sha256": "2fe6b6fc50c90db1b4730a384724bc989398b0ce41752cc510aa2478a3e845d6",
+          "expectedSha256": "2fe6b6fc50c90db1b4730a384724bc989398b0ce41752cc510aa2478a3e845d6",
+          "passed": true
+        },
+        {
+          "path": "checkpoints/emitter_steps_v1.bend",
+          "sha256": "314c8b4cb2b97263dc148cb0a0b1cf0bda7d32dc67614ce5207da709570566f3",
+          "expectedSha256": "314c8b4cb2b97263dc148cb0a0b1cf0bda7d32dc67614ce5207da709570566f3",
+          "passed": true
+        },
+        {
+          "path": "checkpoints/local2039g49-compiler-root.bend",
+          "sha256": "b8610312159cad7621ad5b9713bcb171fba9b32d4feaa4061e9664a7f8dae2e4",
+          "expectedSha256": "b8610312159cad7621ad5b9713bcb171fba9b32d4feaa4061e9664a7f8dae2e4",
+          "passed": true
+        },
+        {
+          "path": "checkpoints/template_steps_v1.bend",
+          "sha256": "b9f4d860de0c58a274e1f23e90558191e23d7ac0de18d1fd452914160b9a5ae5",
+          "expectedSha256": "b9f4d860de0c58a274e1f23e90558191e23d7ac0de18d1fd452914160b9a5ae5",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/args.js",
+          "sha256": "4fa9772d438257793425d4f9516e1411ce58455fdaec402ab836e6a6cf8a7a82",
+          "expectedSha256": "4fa9772d438257793425d4f9516e1411ce58455fdaec402ab836e6a6cf8a7a82",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/audio_close.js",
+          "sha256": "c700e2fc0eda1f9a67afd317184999d9283912817aaec00637af41b135b84c62",
+          "expectedSha256": "c700e2fc0eda1f9a67afd317184999d9283912817aaec00637af41b135b84c62",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/audio_open.js",
+          "sha256": "ed792cb29df28497c60fb6bfcebaa72d9f4bb0a9d8b22063567aa40ac4803fc9",
+          "expectedSha256": "ed792cb29df28497c60fb6bfcebaa72d9f4bb0a9d8b22063567aa40ac4803fc9",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/audio_write.js",
+          "sha256": "ca3731d6da39355c0b924007dfe4f3ea25ed1a9d7b06b7bf19cacf49fdcc0de6",
+          "expectedSha256": "ca3731d6da39355c0b924007dfe4f3ea25ed1a9d7b06b7bf19cacf49fdcc0de6",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/chan.js",
+          "sha256": "c8e4f3cdaea81cfd35dc22e07c29a86b8f08272d284bf3506dd5148dff8d168f",
+          "expectedSha256": "c8e4f3cdaea81cfd35dc22e07c29a86b8f08272d284bf3506dd5148dff8d168f",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/file_close.js",
+          "sha256": "2b83f900113776ab875fa3afd29f31000a191fe48645abe78b1d7b34cb12a7fe",
+          "expectedSha256": "2b83f900113776ab875fa3afd29f31000a191fe48645abe78b1d7b34cb12a7fe",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/file_open.js",
+          "sha256": "e6cbf6455aeae0768f1e8e7cabbafb8d0999eb27660cbaa23885757322b8c694",
+          "expectedSha256": "e6cbf6455aeae0768f1e8e7cabbafb8d0999eb27660cbaa23885757322b8c694",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/file_read.js",
+          "sha256": "7aa8a95a0b02f3c8db1167da5a936958a90c64e7df3e327ba5c66766d5e57da7",
+          "expectedSha256": "7aa8a95a0b02f3c8db1167da5a936958a90c64e7df3e327ba5c66766d5e57da7",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/file_size.js",
+          "sha256": "508a931334016f725f0446d9c63f91d7e9de79b9fb347d0e148777dba834ef0b",
+          "expectedSha256": "508a931334016f725f0446d9c63f91d7e9de79b9fb347d0e148777dba834ef0b",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/file_write.js",
+          "sha256": "fbb706714fe6724e12658ad638d8b7aa2228f6297791bf74bd4894af361776f0",
+          "expectedSha256": "fbb706714fe6724e12658ad638d8b7aa2228f6297791bf74bd4894af361776f0",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/get_env.js",
+          "sha256": "4bbb377d73898055bd06b498bef605e81bc2a0885e7ac664bc77591fd7e3dfa4",
+          "expectedSha256": "4bbb377d73898055bd06b498bef605e81bc2a0885e7ac664bc77591fd7e3dfa4",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/listener_close.js",
+          "sha256": "1b87fb43c373b1a8a54b5afaf0cf8e3ec2f8d39bdfde131e49527caa19ac0cb8",
+          "expectedSha256": "1b87fb43c373b1a8a54b5afaf0cf8e3ec2f8d39bdfde131e49527caa19ac0cb8",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/now.js",
+          "sha256": "f41624aba3f07d56b671f41691b5cb833b4d018266668f5f48329290fc41b2d9",
+          "expectedSha256": "f41624aba3f07d56b671f41691b5cb833b4d018266668f5f48329290fc41b2d9",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/print_err.js",
+          "sha256": "a7a00612edfe98af1a351e8f7b912af4ee33f4bb888c36f119f7712d72a9394e",
+          "expectedSha256": "a7a00612edfe98af1a351e8f7b912af4ee33f4bb888c36f119f7712d72a9394e",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/print.js",
+          "sha256": "814ceba4efbaa291b7b6a9ff29aa20e3a23c06eb4fa165c69ee0bd22878adaa9",
+          "expectedSha256": "814ceba4efbaa291b7b6a9ff29aa20e3a23c06eb4fa165c69ee0bd22878adaa9",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/process_run.js",
+          "sha256": "26868538280a1df9570ed2fba234d2a329f1e1d9e86c6fe9353de417adaee729",
+          "expectedSha256": "26868538280a1df9570ed2fba234d2a329f1e1d9e86c6fe9353de417adaee729",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/random_u32.js",
+          "sha256": "ab0b37cb6055ad08573d1263aa380c339c3fe7417530cfa63264629dce7744c2",
+          "expectedSha256": "ab0b37cb6055ad08573d1263aa380c339c3fe7417530cfa63264629dce7744c2",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/sleep.js",
+          "sha256": "6711ccd804dcaede381da9ff0283b4640feb440e1d413381101f22bfed65a934",
+          "expectedSha256": "6711ccd804dcaede381da9ff0283b4640feb440e1d413381101f22bfed65a934",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/socket_close.js",
+          "sha256": "dc4bf1fa95692c91528d4eb855506dde8dfc9164a90de2c43cd1bd6916e0c380",
+          "expectedSha256": "dc4bf1fa95692c91528d4eb855506dde8dfc9164a90de2c43cd1bd6916e0c380",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/spawn.js",
+          "sha256": "8a14c7a7a5ff80b049f0659f9e58d43bf0f3b1a6724d35a199c3f864b3242e4b",
+          "expectedSha256": "8a14c7a7a5ff80b049f0659f9e58d43bf0f3b1a6724d35a199c3f864b3242e4b",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/tcp_accept.js",
+          "sha256": "26406cce42c497994e597a7a032629fab65f43ec14f06ee69aace2b353afe28d",
+          "expectedSha256": "26406cce42c497994e597a7a032629fab65f43ec14f06ee69aace2b353afe28d",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/tcp_connect.js",
+          "sha256": "c51c4b55ffbc4a520f01082a1307498801a17e5123bdffbd01077fb42730f1cb",
+          "expectedSha256": "c51c4b55ffbc4a520f01082a1307498801a17e5123bdffbd01077fb42730f1cb",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/tcp_listen.js",
+          "sha256": "0da4cfafaa24ba5e17d9fda5e6a5b207b2b36031b2c888944f67b85842d76399",
+          "expectedSha256": "0da4cfafaa24ba5e17d9fda5e6a5b207b2b36031b2c888944f67b85842d76399",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/tcp_recv.js",
+          "sha256": "e8c54490445cb71a4328c07be8c40a49cee3e643cbf74f42dc73d31ab95890d7",
+          "expectedSha256": "e8c54490445cb71a4328c07be8c40a49cee3e643cbf74f42dc73d31ab95890d7",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/tcp_send.js",
+          "sha256": "350bc6ac8f957d6a154cc9437b4ad871bd11ec65babbbd7c3b0d2c77590ec5c6",
+          "expectedSha256": "350bc6ac8f957d6a154cc9437b4ad871bd11ec65babbbd7c3b0d2c77590ec5c6",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/thread_count.js",
+          "sha256": "f4ef6d8ded95fe3114e50b7d2b6eb873e693419b85150f681b4a54a5043c2de9",
+          "expectedSha256": "f4ef6d8ded95fe3114e50b7d2b6eb873e693419b85150f681b4a54a5043c2de9",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/udp_bind.js",
+          "sha256": "e3afae5bf246184e76703efbcf41cb35bf5289e746cc40dc0300eef98753dfb5",
+          "expectedSha256": "e3afae5bf246184e76703efbcf41cb35bf5289e746cc40dc0300eef98753dfb5",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/udp_recv_from.js",
+          "sha256": "66435d23dd12f30aa47bf618c925a42250920768d5ae28c7c52c35d4e04fa5ad",
+          "expectedSha256": "66435d23dd12f30aa47bf618c925a42250920768d5ae28c7c52c35d4e04fa5ad",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/udp_send_to.js",
+          "sha256": "40c835c4d73eb15d089a41b425968d04931d02820cb901aadb8eb3dd4905f247",
+          "expectedSha256": "40c835c4d73eb15d089a41b425968d04931d02820cb901aadb8eb3dd4905f247",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/window_close.js",
+          "sha256": "be4ef11e9ac57c59aa4aee847f15ece18034ca9fe1c4a68c6e0b0d7bbd7c3590",
+          "expectedSha256": "be4ef11e9ac57c59aa4aee847f15ece18034ca9fe1c4a68c6e0b0d7bbd7c3590",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/window_frame.js",
+          "sha256": "78baa53aa46e02165c0c94da68d1f6362386ebcfb97dbb36fffb82792a03d34f",
+          "expectedSha256": "78baa53aa46e02165c0c94da68d1f6362386ebcfb97dbb36fffb82792a03d34f",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/window_grab.js",
+          "sha256": "55cfc1925114f2d1f177137fad24d6252fe28707d26a1aae18a98ad97060a668",
+          "expectedSha256": "55cfc1925114f2d1f177137fad24d6252fe28707d26a1aae18a98ad97060a668",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/window_open.js",
+          "sha256": "cd716864b8dfb27ca955c8aa58643c7d693ce76eb56472bd8255ff7ac0656e8d",
+          "expectedSha256": "cd716864b8dfb27ca955c8aa58643c7d693ce76eb56472bd8255ff7ac0656e8d",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/window_set_title.js",
+          "sha256": "eee0bf26b7f381f8800364e22e8c735e47dd6db3f58e23ff3dda8478a8411513",
+          "expectedSha256": "eee0bf26b7f381f8800364e22e8c735e47dd6db3f58e23ff3dda8478a8411513",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/write.js",
+          "sha256": "e3495066a5d8c53fe1c46cfd2bb32577e3bd7dcae9797808801599073504dacb",
+          "expectedSha256": "e3495066a5d8c53fe1c46cfd2bb32577e3bd7dcae9797808801599073504dacb",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "scope": "conditionalFullFrozen53",
+      "manifest": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/full-frozen.corpus.json",
+        "sha256": "60bf820e76a9c336e58c848eec6a40b3f8fbb4b7ac2ae45ffd1abdb1d217ebc6"
+      },
+      "files": 53,
+      "passed": true,
+      "rows": [
+        {
+          "path": "bend2/base.bend",
+          "sha256": "21baec76caf1a6cfd4a544340b291f7bb55bf30cc841f9f5f29e3b12a1a4d614",
+          "expectedSha256": "21baec76caf1a6cfd4a544340b291f7bb55bf30cc841f9f5f29e3b12a1a4d614",
+          "passed": true
+        },
+        {
+          "path": "bend2/selfhost/ast.bend",
+          "sha256": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
+          "expectedSha256": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
+          "passed": true
+        },
+        {
+          "path": "bend2/selfhost/backend_ir.bend",
+          "sha256": "c0286db6b192bf5cc917774b7ea5e393d4416263432eb130fb8393b1dffc1cb3",
+          "expectedSha256": "c0286db6b192bf5cc917774b7ea5e393d4416263432eb130fb8393b1dffc1cb3",
+          "passed": true
+        },
+        {
+          "path": "bend2/selfhost/c_backend_sharing.bend",
+          "sha256": "05adf4ac68b0658425f7fce430709f67bd29c3f1f8a43727412661084c4dbe2c",
+          "expectedSha256": "05adf4ac68b0658425f7fce430709f67bd29c3f1f8a43727412661084c4dbe2c",
+          "passed": true
+        },
+        {
+          "path": "bend2/selfhost/checked_frontend.bend",
+          "sha256": "8287a44c524b001933cdba9d036b44ade13c34e549f5c926fd2cab45894e288e",
+          "expectedSha256": "8287a44c524b001933cdba9d036b44ade13c34e549f5c926fd2cab45894e288e",
+          "passed": true
+        },
+        {
+          "path": "bend2/selfhost/checker_arena.bend",
+          "sha256": "d74873488827c5a8568b1238f05356ef43ec7c8a285ca0e25ab7b052f070ebdf",
+          "expectedSha256": "d74873488827c5a8568b1238f05356ef43ec7c8a285ca0e25ab7b052f070ebdf",
+          "passed": true
+        },
+        {
+          "path": "bend2/selfhost/checker_ir.bend",
+          "sha256": "41db13db11d63102d3ea5c8ca14916e5f688685bba96c332abcb7a3533f1f17b",
+          "expectedSha256": "41db13db11d63102d3ea5c8ca14916e5f688685bba96c332abcb7a3533f1f17b",
+          "passed": true
+        },
+        {
+          "path": "bend2/selfhost/core.bend",
+          "sha256": "33823e56b9c70306970ccb0e3b5fb3b995806d3a1907dd97d45c5c9634d13511",
+          "expectedSha256": "33823e56b9c70306970ccb0e3b5fb3b995806d3a1907dd97d45c5c9634d13511",
+          "passed": true
+        },
+        {
+          "path": "bend2/selfhost/index_lookup.bend",
+          "sha256": "7b7b45946be711d0ba384e15f6823fded5ff97d6a526a6fb74a0448c13d61f84",
+          "expectedSha256": "7b7b45946be711d0ba384e15f6823fded5ff97d6a526a6fb74a0448c13d61f84",
+          "passed": true
+        },
+        {
+          "path": "bend2/selfhost/lexer.bend",
+          "sha256": "342901897b30afc8ec7587718b1eb0b30150d46b01c1ea498ce369af26d1394d",
+          "expectedSha256": "342901897b30afc8ec7587718b1eb0b30150d46b01c1ea498ce369af26d1394d",
+          "passed": true
+        },
+        {
+          "path": "bend2/selfhost/loaded_module.bend",
+          "sha256": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e",
+          "expectedSha256": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e",
+          "passed": true
+        },
+        {
+          "path": "bend2/selfhost/path.bend",
+          "sha256": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
+          "expectedSha256": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
+          "passed": true
+        },
+        {
+          "path": "bend2/selfhost/scope_lookup.bend",
+          "sha256": "e75dc874de6026e2104a7545a19f42fd6995aefecbb1d315c6ae3e097697e590",
+          "expectedSha256": "e75dc874de6026e2104a7545a19f42fd6995aefecbb1d315c6ae3e097697e590",
+          "passed": true
+        },
+        {
+          "path": "bend2/selfhost/sha256.bend",
+          "sha256": "2fe6b6fc50c90db1b4730a384724bc989398b0ce41752cc510aa2478a3e845d6",
+          "expectedSha256": "2fe6b6fc50c90db1b4730a384724bc989398b0ce41752cc510aa2478a3e845d6",
+          "passed": true
+        },
+        {
+          "path": "checkpoints/checker_core_steps_v1.bend",
+          "sha256": "e4c1197d63129394551d5643ef2934be84af82eaeacfa3da1e4e660c6ff603a4",
+          "expectedSha256": "e4c1197d63129394551d5643ef2934be84af82eaeacfa3da1e4e660c6ff603a4",
+          "passed": true
+        },
+        {
+          "path": "checkpoints/emitter_steps_v1.bend",
+          "sha256": "b292b8a767c27d46497915e12f2bd91012bc5fd280d6b537ca90d1dd214d2bb0",
+          "expectedSha256": "b292b8a767c27d46497915e12f2bd91012bc5fd280d6b537ca90d1dd214d2bb0",
+          "passed": true
+        },
+        {
+          "path": "checkpoints/local2039g49-compiler-root.bend",
+          "sha256": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed",
+          "expectedSha256": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed",
+          "passed": true
+        },
+        {
+          "path": "checkpoints/template_steps_v1.bend",
+          "sha256": "b9f4d860de0c58a274e1f23e90558191e23d7ac0de18d1fd452914160b9a5ae5",
+          "expectedSha256": "b9f4d860de0c58a274e1f23e90558191e23d7ac0de18d1fd452914160b9a5ae5",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/args.js",
+          "sha256": "4fa9772d438257793425d4f9516e1411ce58455fdaec402ab836e6a6cf8a7a82",
+          "expectedSha256": "4fa9772d438257793425d4f9516e1411ce58455fdaec402ab836e6a6cf8a7a82",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/audio_close.js",
+          "sha256": "c700e2fc0eda1f9a67afd317184999d9283912817aaec00637af41b135b84c62",
+          "expectedSha256": "c700e2fc0eda1f9a67afd317184999d9283912817aaec00637af41b135b84c62",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/audio_open.js",
+          "sha256": "ed792cb29df28497c60fb6bfcebaa72d9f4bb0a9d8b22063567aa40ac4803fc9",
+          "expectedSha256": "ed792cb29df28497c60fb6bfcebaa72d9f4bb0a9d8b22063567aa40ac4803fc9",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/audio_write.js",
+          "sha256": "ca3731d6da39355c0b924007dfe4f3ea25ed1a9d7b06b7bf19cacf49fdcc0de6",
+          "expectedSha256": "ca3731d6da39355c0b924007dfe4f3ea25ed1a9d7b06b7bf19cacf49fdcc0de6",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/chan.js",
+          "sha256": "c8e4f3cdaea81cfd35dc22e07c29a86b8f08272d284bf3506dd5148dff8d168f",
+          "expectedSha256": "c8e4f3cdaea81cfd35dc22e07c29a86b8f08272d284bf3506dd5148dff8d168f",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/file_close.js",
+          "sha256": "2b83f900113776ab875fa3afd29f31000a191fe48645abe78b1d7b34cb12a7fe",
+          "expectedSha256": "2b83f900113776ab875fa3afd29f31000a191fe48645abe78b1d7b34cb12a7fe",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/file_open.js",
+          "sha256": "e6cbf6455aeae0768f1e8e7cabbafb8d0999eb27660cbaa23885757322b8c694",
+          "expectedSha256": "e6cbf6455aeae0768f1e8e7cabbafb8d0999eb27660cbaa23885757322b8c694",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/file_read.js",
+          "sha256": "7aa8a95a0b02f3c8db1167da5a936958a90c64e7df3e327ba5c66766d5e57da7",
+          "expectedSha256": "7aa8a95a0b02f3c8db1167da5a936958a90c64e7df3e327ba5c66766d5e57da7",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/file_size.js",
+          "sha256": "508a931334016f725f0446d9c63f91d7e9de79b9fb347d0e148777dba834ef0b",
+          "expectedSha256": "508a931334016f725f0446d9c63f91d7e9de79b9fb347d0e148777dba834ef0b",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/file_write.js",
+          "sha256": "fbb706714fe6724e12658ad638d8b7aa2228f6297791bf74bd4894af361776f0",
+          "expectedSha256": "fbb706714fe6724e12658ad638d8b7aa2228f6297791bf74bd4894af361776f0",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/get_env.js",
+          "sha256": "4bbb377d73898055bd06b498bef605e81bc2a0885e7ac664bc77591fd7e3dfa4",
+          "expectedSha256": "4bbb377d73898055bd06b498bef605e81bc2a0885e7ac664bc77591fd7e3dfa4",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/listener_close.js",
+          "sha256": "1b87fb43c373b1a8a54b5afaf0cf8e3ec2f8d39bdfde131e49527caa19ac0cb8",
+          "expectedSha256": "1b87fb43c373b1a8a54b5afaf0cf8e3ec2f8d39bdfde131e49527caa19ac0cb8",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/now.js",
+          "sha256": "f41624aba3f07d56b671f41691b5cb833b4d018266668f5f48329290fc41b2d9",
+          "expectedSha256": "f41624aba3f07d56b671f41691b5cb833b4d018266668f5f48329290fc41b2d9",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/print_err.js",
+          "sha256": "a7a00612edfe98af1a351e8f7b912af4ee33f4bb888c36f119f7712d72a9394e",
+          "expectedSha256": "a7a00612edfe98af1a351e8f7b912af4ee33f4bb888c36f119f7712d72a9394e",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/print.js",
+          "sha256": "814ceba4efbaa291b7b6a9ff29aa20e3a23c06eb4fa165c69ee0bd22878adaa9",
+          "expectedSha256": "814ceba4efbaa291b7b6a9ff29aa20e3a23c06eb4fa165c69ee0bd22878adaa9",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/process_run.js",
+          "sha256": "26868538280a1df9570ed2fba234d2a329f1e1d9e86c6fe9353de417adaee729",
+          "expectedSha256": "26868538280a1df9570ed2fba234d2a329f1e1d9e86c6fe9353de417adaee729",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/random_u32.js",
+          "sha256": "ab0b37cb6055ad08573d1263aa380c339c3fe7417530cfa63264629dce7744c2",
+          "expectedSha256": "ab0b37cb6055ad08573d1263aa380c339c3fe7417530cfa63264629dce7744c2",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/sleep.js",
+          "sha256": "6711ccd804dcaede381da9ff0283b4640feb440e1d413381101f22bfed65a934",
+          "expectedSha256": "6711ccd804dcaede381da9ff0283b4640feb440e1d413381101f22bfed65a934",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/socket_close.js",
+          "sha256": "dc4bf1fa95692c91528d4eb855506dde8dfc9164a90de2c43cd1bd6916e0c380",
+          "expectedSha256": "dc4bf1fa95692c91528d4eb855506dde8dfc9164a90de2c43cd1bd6916e0c380",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/spawn.js",
+          "sha256": "8a14c7a7a5ff80b049f0659f9e58d43bf0f3b1a6724d35a199c3f864b3242e4b",
+          "expectedSha256": "8a14c7a7a5ff80b049f0659f9e58d43bf0f3b1a6724d35a199c3f864b3242e4b",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/tcp_accept.js",
+          "sha256": "26406cce42c497994e597a7a032629fab65f43ec14f06ee69aace2b353afe28d",
+          "expectedSha256": "26406cce42c497994e597a7a032629fab65f43ec14f06ee69aace2b353afe28d",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/tcp_connect.js",
+          "sha256": "c51c4b55ffbc4a520f01082a1307498801a17e5123bdffbd01077fb42730f1cb",
+          "expectedSha256": "c51c4b55ffbc4a520f01082a1307498801a17e5123bdffbd01077fb42730f1cb",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/tcp_listen.js",
+          "sha256": "0da4cfafaa24ba5e17d9fda5e6a5b207b2b36031b2c888944f67b85842d76399",
+          "expectedSha256": "0da4cfafaa24ba5e17d9fda5e6a5b207b2b36031b2c888944f67b85842d76399",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/tcp_recv.js",
+          "sha256": "e8c54490445cb71a4328c07be8c40a49cee3e643cbf74f42dc73d31ab95890d7",
+          "expectedSha256": "e8c54490445cb71a4328c07be8c40a49cee3e643cbf74f42dc73d31ab95890d7",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/tcp_send.js",
+          "sha256": "350bc6ac8f957d6a154cc9437b4ad871bd11ec65babbbd7c3b0d2c77590ec5c6",
+          "expectedSha256": "350bc6ac8f957d6a154cc9437b4ad871bd11ec65babbbd7c3b0d2c77590ec5c6",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/thread_count.js",
+          "sha256": "f4ef6d8ded95fe3114e50b7d2b6eb873e693419b85150f681b4a54a5043c2de9",
+          "expectedSha256": "f4ef6d8ded95fe3114e50b7d2b6eb873e693419b85150f681b4a54a5043c2de9",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/udp_bind.js",
+          "sha256": "e3afae5bf246184e76703efbcf41cb35bf5289e746cc40dc0300eef98753dfb5",
+          "expectedSha256": "e3afae5bf246184e76703efbcf41cb35bf5289e746cc40dc0300eef98753dfb5",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/udp_recv_from.js",
+          "sha256": "66435d23dd12f30aa47bf618c925a42250920768d5ae28c7c52c35d4e04fa5ad",
+          "expectedSha256": "66435d23dd12f30aa47bf618c925a42250920768d5ae28c7c52c35d4e04fa5ad",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/udp_send_to.js",
+          "sha256": "40c835c4d73eb15d089a41b425968d04931d02820cb901aadb8eb3dd4905f247",
+          "expectedSha256": "40c835c4d73eb15d089a41b425968d04931d02820cb901aadb8eb3dd4905f247",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/window_close.js",
+          "sha256": "be4ef11e9ac57c59aa4aee847f15ece18034ca9fe1c4a68c6e0b0d7bbd7c3590",
+          "expectedSha256": "be4ef11e9ac57c59aa4aee847f15ece18034ca9fe1c4a68c6e0b0d7bbd7c3590",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/window_frame.js",
+          "sha256": "78baa53aa46e02165c0c94da68d1f6362386ebcfb97dbb36fffb82792a03d34f",
+          "expectedSha256": "78baa53aa46e02165c0c94da68d1f6362386ebcfb97dbb36fffb82792a03d34f",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/window_grab.js",
+          "sha256": "55cfc1925114f2d1f177137fad24d6252fe28707d26a1aae18a98ad97060a668",
+          "expectedSha256": "55cfc1925114f2d1f177137fad24d6252fe28707d26a1aae18a98ad97060a668",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/window_open.js",
+          "sha256": "cd716864b8dfb27ca955c8aa58643c7d693ce76eb56472bd8255ff7ac0656e8d",
+          "expectedSha256": "cd716864b8dfb27ca955c8aa58643c7d693ce76eb56472bd8255ff7ac0656e8d",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/window_set_title.js",
+          "sha256": "eee0bf26b7f381f8800364e22e8c735e47dd6db3f58e23ff3dda8478a8411513",
+          "expectedSha256": "eee0bf26b7f381f8800364e22e8c735e47dd6db3f58e23ff3dda8478a8411513",
+          "passed": true
+        },
+        {
+          "path": "bend2/effs/write.js",
+          "sha256": "e3495066a5d8c53fe1c46cfd2bb32577e3bd7dcae9797808801599073504dacb",
+          "expectedSha256": "e3495066a5d8c53fe1c46cfd2bb32577e3bd7dcae9797808801599073504dacb",
+          "passed": true
+        }
+      ]
+    }
+  ],
+  "integrationDecision": "KeepG68algorithm,focusedfixtures,requiredBendsourceinputs andfailedharnessversionsisolated onsourcebranch. Mainreceivesexistingjournal+compactJSONevidenceonly; no JSbackend/FIR/BIR/C cutover. PreserveacceptedA unchanged.",
+  "accepted": false,
+  "acceptedG24R12": false,
+  "selfhostGreen": false
+}

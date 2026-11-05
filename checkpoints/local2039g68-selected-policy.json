@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "version": "G68R1",
+  "prospectiveProtocolCheckpoint": "47bb7e58",
+  "sourceCheckpoint": "a8cd96aa",
+  "selected": {
+    "order": [
+      "ABC",
+      "CAB",
+      "BCA"
+    ],
+    "costGate": {
+      "geometricCpu_C_over_A_atMost": 0.97,
+      "geometricCpu_C_over_B_atMost": 1.02,
+      "everyCpuPair_C_over_A_below": 1,
+      "geometricWall_C_over_A_atMost": 1,
+      "medianFootprint_C_over_A_atMost": 1,
+      "geometricFootprint_C_over_B_atMost": 0.95
+    }
+  },
+  "statistics": "Existing pairedStats Student95 confidence interval, classifyRatio practical2percent band; no changed thresholds, retries, excluded runs or old timings",
+  "compilerCandidate": "C2only: C1produced by unchanged authenticated nativeCseed whose frozen-source output equals A; C1actual new emitter thenproduces C2on identical new fullsource. Native producerroute is not a runtime optimization or bytefixedpoint claim.",
+  "sameWork": {
+    "moduleCount": 17,
+    "sourceDeclarations": 2954,
+    "stepCounts": {
+      "expand": 263032,
+      "check": 1975761
+    }
+  },
+  "samplingClarification": {
+    "orders": [
+      "ABC",
+      "CAB",
+      "BCA"
+    ],
+    "counterbalancedTriads": 3,
+    "freshProcessRuns": 9,
+    "pairedSamplesPerComparison": 3,
+    "noRetriesOrExclusions": true,
+    "existingPolicyUnchanged": true
+  }
+}

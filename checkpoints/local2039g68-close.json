@@ -1,0 +1,166 @@
+{
+  "schemaVersion": 1,
+  "version": "G68R1",
+  "status": "CLOSED_REJECTED_NO_COMPILER_INTEGRATION",
+  "baseMainCheckpoint": "91369ddf",
+  "sourceBranch": "selfhost/g68-native-tuples-lhggp0w3",
+  "sourceWorktree": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/repository",
+  "algorithmCheckpoint": "a8cd96aa",
+  "sourceFreezeCheckpoint": "53b1c2f4",
+  "allConsumersAndActivationCheckpoint": "7fbcf885",
+  "candidateImage": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/r1-c2-generation.json.output.mjs",
+    "sha256": "76ed3cc2bb11db4dc85a5ceb51c91240a4398fc167f42596ee0448ef0dfa2213"
+  },
+  "selectedDecision": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/repository/checkpoints/local2039g68-selected-rejected.json",
+    "sha256": "2e0998c39e210ed35ff0df09eb458b9c7dae6ee22e0bda23c6b519d446e4d01b"
+  },
+  "complete": true,
+  "accepted": false,
+  "sourceKernelAndActualEmitterSmoke": "PASS",
+  "nativeC1FullSourceProduction": "PASS",
+  "actualC1ToC2FullSourceEmission": "PASS",
+  "actualC2RealArenaWordAndGetNodeExecution": "PASS",
+  "own69": "PASS",
+  "defaultStackEmittedJS17": "PASS",
+  "actualClangO3EmittedCBinaries4": "PASS",
+  "ownTypedReadbackRuntimeContracts28": "PASS",
+  "freshIdenticalWorkloadRuns9": "PASS_COMPLETION_ONLY",
+  "selectedCostGate": "FAIL4OF6",
+  "qualifiedCpuGain": false,
+  "qualifiedRamSaving": false,
+  "statisticallyQualifiedRegressionClaim": false,
+  "conditionalFullSix": "NOT_RUN_NOT_EARNED",
+  "actualC2ToC3ByteFixedpoint": "NOT_RUN_NOT_EARNED",
+  "selfhostGreen": false,
+  "acceptedG24R12": false,
+  "sourceInputsAtClosure": [
+    {
+      "scope": "candidateCompiler53",
+      "manifest": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/r1-compiler-source.corpus.json",
+        "sha256": "3f89cefec84548729b231903e0165f837d2f9630cd4e239653a71ac0b76c2eba"
+      },
+      "files": 53,
+      "passed": true
+    },
+    {
+      "scope": "selectedFrozen52",
+      "manifest": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/main-complete.corpus.json",
+        "sha256": "1a269e15bf70257b019ab572c003b6eb130b4e3f63ad507783525e28d307b0e4"
+      },
+      "files": 52,
+      "passed": true
+    },
+    {
+      "scope": "conditionalFullFrozen53",
+      "manifest": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/full-frozen.corpus.json",
+        "sha256": "60bf820e76a9c336e58c848eec6a40b3f8fbb4b7ac2ae45ffd1abdb1d217ebc6"
+      },
+      "files": 53,
+      "passed": true
+    }
+  ],
+  "coreEvidence": [
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/repository/checkpoints/local2039g68-protocol.json",
+      "sha256": "a4e776c561a45405e7e8fa0982d5d2f717a7eb7e2bc8b91cb0ff0f02d85ec11d"
+    },
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/repository/checkpoints/local2039g68-compiler-source-inputs.json",
+      "sha256": "1bc4ddf6fd899db8f0b9b8d8edaec6588b94297acd4c7f2a5285169db6065766"
+    },
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/repository/checkpoints/local2039g68-source-emitter-smoke-pass.json",
+      "sha256": "8e5d74f7bc6edd2734c873bc4816b01b9a1cdd850a7772922051eeea0fcaed87"
+    },
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/repository/checkpoints/local2039g68-baseline-fixtures.json",
+      "sha256": "069e807bee99b0ce58031e4ce02489474eae9c0efd9f9a5d7695fbe4e220664b"
+    },
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/repository/checkpoints/local2039g68-native-c1.json",
+      "sha256": "818bd394295f85d2274462774aca68ec93296e1789a674ec1fabc3445aec37a6"
+    },
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/repository/checkpoints/local2039g68-c1-consumers.json",
+      "sha256": "ecfb898e301c285c5881d3573e7db193d97640938650c5d73d70ef1a5992d9e7"
+    },
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/repository/checkpoints/local2039g68-c2-production.json",
+      "sha256": "e03a7815c0fa6a976d31dfc2a46f5bffc7d60dc7f5cb4263ce33c35ddce1d288"
+    },
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/repository/checkpoints/local2039g68-c2-consumers.json",
+      "sha256": "4c14b2b707959a1233bcf7f3779205183ee926e2085852a12df1851dbd04a6a1"
+    },
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/repository/checkpoints/local2039g68-arena-activation.json",
+      "sha256": "bd7509b67e4c292842472e915739a562cd397b83cd2204c2b0582344f797b627"
+    },
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/repository/checkpoints/local2039g68-selected-policy.json",
+      "sha256": "3e3c0c06cc078d197851c8e70110e8145c9413d7fc801b5c29bfeb544e80c4d6"
+    },
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/repository/checkpoints/local2039g68-selected-plan.json",
+      "sha256": "b8d74ca0a93430d0056611224e6c31aee250fd89e63c12753a1b5002a6b13634"
+    },
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/repository/checkpoints/local2039g68-selected-rejected.json",
+      "sha256": "2e0998c39e210ed35ff0df09eb458b9c7dae6ee22e0bda23c6b519d446e4d01b"
+    }
+  ],
+  "failedSmokeHarnessVersions": [
+    {
+      "checkpoint": "f38d97b3",
+      "receipt": "checkpoints/local2039g68-direct-source-smoke-rejected.json",
+      "status": "REJECTED"
+    },
+    {
+      "checkpoint": "31d190a4",
+      "receipt": "checkpoints/local2039g68-cps-source-generation-rejected.json",
+      "status": "REJECTED"
+    },
+    {
+      "checkpoint": "dac31d15",
+      "receipt": "checkpoints/local2039g68-cps-smoke-r2-rejected.json",
+      "status": "REJECTED"
+    },
+    {
+      "checkpoint": "f330b811",
+      "receipt": "checkpoints/local2039g68-cps-smoke-r3-rejected.json",
+      "status": "REJECTED"
+    },
+    {
+      "checkpoint": "fd231e4b",
+      "receipt": "checkpoints/local2039g68-cps-smoke-r4-driver-rejected.json",
+      "status": "REJECTED_AFTER_FULL_NATIVE_CHECK_PASS"
+    }
+  ],
+  "cleanup": {
+    "removedOwnedTemporaryScripts": [
+      "generate-source-emitter-smoke.mjs",
+      "run-source-emitter-smoke.mjs",
+      "generate-cps-source-emitter-smoke.mjs",
+      "run-cps-source-emitter-smoke.mjs",
+      "observe-native-get-activation.mjs",
+      "experiment-controller.mjs",
+      "selected-statistics.ts"
+    ],
+    "actualRemoval": "SpecializededitREM confirmedall7, aftertheirruntimeproofs; executedsource stringsandexactcommands preservedinJSONreceipts.",
+    "requiredFrozenBendInputsAndRegressionFixtures": "Preservedin sourcecheckpoints,not discardedor replacedwith compilerimages",
+    "imagesProfilesBulkLogsAndHeapSnapshotsInGit": false
+  },
+  "unmodifiedParentProfilerEnvironment": {
+    "SELFHOST_CPU_PROFILE_DIR": null,
+    "NODE_OPTIONS": null,
+    "meaning": "Direct host env lookup; no mutation. Exact clean launch commands contain no scoped environment assignment and no import/profiler/expose-GC flags."
+  },
+  "mainDecision": "AcceptedmainA algorithmunchanged. Integrateexisting profilingjournalG68sectionandcompactJSONreceipts/indexonly,notG68jsbackend/fixtures/generatedsource/laws. No compatibilityshim or halfimplemented cutover.",
+  "archivePolicy": "ExperimentalG68sourceandallrequiredfrozenBendinputsremainin sourcebranch;largegeneratedimages andrawlogsoutsideGit.",
+  "nextConstraint": "Do not relabelrealnativeTupleeliminationor semanticpassesas performancewin,do notwideninliner/addpool/cache/GCflags torescue rejectedcosts. Any nextselfhostversion starts onlyafterthisclosedcheckpoint."
+}

@@ -1,0 +1,232 @@
+{
+  "schemaVersion": 1,
+  "version": "G68R1",
+  "status": "ACTUAL_C1_TO_C2_COMPLETE_COMPILER_SELF_PRODUCTION_PASS_NOT_YET_QUALIFIED",
+  "sourceCheckpoint": "53b1c2f4",
+  "c1AndRequestCheckpoint": "205cac20",
+  "command": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+    "js",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/r1-c2-request.json",
+    "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/r1-c2-generation.json"
+  ],
+  "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/repository",
+  "request": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/r1-c2-request.json",
+    "sha256": "9620448348972979fb35236d227eac39765b61c98c185c5291cee98e1bff0fd0"
+  },
+  "sourceManifest": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/r1-compiler-source.corpus.json",
+    "sha256": "3f89cefec84548729b231903e0165f837d2f9630cd4e239653a71ac0b76c2eba"
+  },
+  "sourceIdenticalToNativeC1": true,
+  "producerImage": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/native-stage1.json.mjs",
+    "sha256": "62be693646eae7f08b4aea8bced38fc18154b1a9cc73124f24db824e67b3642c"
+  },
+  "image": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/r1-c2-generation.json.output.mjs",
+    "sha256": "76ed3cc2bb11db4dc85a5ceb51c91240a4398fc167f42596ee0448ef0dfa2213"
+  },
+  "report": {
+    "schemaVersion": 1,
+    "status": "PASS",
+    "diagnosticOnly": true,
+    "acceptanceEvidence": false,
+    "mode": "js",
+    "request": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/r1-c2-request.json",
+    "requestSha256": "9620448348972979fb35236d227eac39765b61c98c185c5291cee98e1bff0fd0",
+    "source": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/repository/checkpoints/local2039g49-compiler-root.bend",
+    "sourceSha256": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed",
+    "runtime": {
+      "execPath": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "versions": {
+        "node": "23.11.0",
+        "acorn": "8.14.1",
+        "ada": "3.2.1",
+        "amaro": "0.4.1",
+        "ares": "1.34.4",
+        "brotli": "1.1.0",
+        "cjs_module_lexer": "2.1.0",
+        "cldr": "46.0",
+        "icu": "76.1",
+        "llhttp": "9.2.1",
+        "modules": "131",
+        "napi": "10",
+        "nbytes": "0.1.1",
+        "ncrypto": "0.0.1",
+        "nghttp2": "1.64.0",
+        "openssl": "3.0.16",
+        "simdjson": "3.12.2",
+        "simdutf": "6.0.3",
+        "sqlite": "3.49.1",
+        "tz": "2025a",
+        "undici": "6.21.2",
+        "unicode": "16.0",
+        "uv": "1.50.0",
+        "uvwasi": "0.0.21",
+        "v8": "12.9.202.28-node.14",
+        "zlib": "1.3.0.1-motley-788cb3c",
+        "zstd": "1.5.6"
+      },
+      "execArgv": [
+        "--experimental-strip-types",
+        "--max-old-space-size=6144",
+        "--max-semi-space-size=128"
+      ],
+      "heapLimitBytes": 6845104128
+    },
+    "limits": {
+      "memoryMiB": 8192,
+      "rssMiB": 8192,
+      "pollMs": 10,
+      "timeoutMs": 600000
+    },
+    "workerPolicy": {
+      "stackMiB": 256,
+      "oldGenerationMiB": 6144,
+      "youngGenerationMiB": 128
+    },
+    "exports": [
+      "parsed_module",
+      "parse_with_fuel",
+      "expand_modules_start",
+      "template_step",
+      "check_expanded_start",
+      "inspect_checked_start",
+      "checker_step",
+      "emit_modules_start",
+      "emit_library_start",
+      "emitter_step",
+      "emit_c_modules_start",
+      "emit_c_library_start",
+      "c_emitter_step"
+    ],
+    "phases": [
+      {
+        "phase": "startup",
+        "elapsedMs": 562.277833,
+        "userCpuMs": 564.169,
+        "systemCpuMs": 67.858,
+        "memoryEnd": {
+          "rss": 517488640,
+          "heapTotal": 97452032,
+          "heapUsed": 85003752,
+          "external": 42622381,
+          "arrayBuffers": 32154329
+        }
+      },
+      {
+        "phase": "load-parse",
+        "elapsedMs": 10607.209708,
+        "userCpuMs": 13972.488,
+        "systemCpuMs": 457.183,
+        "memoryEnd": {
+          "rss": 1686405120,
+          "heapTotal": 1471528960,
+          "heapUsed": 621533256,
+          "external": 10487433,
+          "arrayBuffers": 25039
+        }
+      },
+      {
+        "phase": "expand",
+        "elapsedMs": 6648.446374999998,
+        "userCpuMs": 7537.64,
+        "systemCpuMs": 53.745,
+        "memoryEnd": {
+          "rss": 1691009024,
+          "heapTotal": 1480441856,
+          "heapUsed": 724742256,
+          "external": 10487433,
+          "arrayBuffers": 25039
+        }
+      },
+      {
+        "phase": "check",
+        "elapsedMs": 263453.607,
+        "userCpuMs": 282634.84,
+        "systemCpuMs": 4163.84,
+        "memoryEnd": {
+          "rss": 1914568704,
+          "heapTotal": 1821704192,
+          "heapUsed": 1474815960,
+          "external": 10486368,
+          "arrayBuffers": 25039
+        }
+      },
+      {
+        "phase": "emit",
+        "elapsedMs": 19900.155916999967,
+        "userCpuMs": 24066.026,
+        "systemCpuMs": 270.567,
+        "memoryEnd": {
+          "rss": 2315173888,
+          "heapTotal": 2173140992,
+          "heapUsed": 1900727392,
+          "external": 10486368,
+          "arrayBuffers": 25039
+        }
+      }
+    ],
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "stopAfter": "compile",
+    "moduleCount": 18,
+    "sourceDeclarations": 13094,
+    "stepCounts": {
+      "expand": 1078590,
+      "check": 10516073,
+      "emit": 1361633
+    },
+    "phaseCpuScope": "Node process-wide CPU; includes worker/helper threads, excludes child processes",
+    "pipelineElapsedMs": 301177.83362499997,
+    "output": {
+      "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/r1-c2-generation.json.output.mjs",
+      "bytes": 32141583,
+      "sha256": "76ed3cc2bb11db4dc85a5ceb51c91240a4398fc167f42596ee0448ef0dfa2213"
+    },
+    "totalElapsedMs": 301478.91283399996,
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 2540011520,
+      "peakFootprintBytes": 2706323536,
+      "elapsedMs": 301928,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 0,
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=6144",
+        "--max-semi-space-size=128",
+        "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+        "--worker",
+        "js",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/r1-c2-request.json",
+        "9620448348972979fb35236d227eac39765b61c98c185c5291cee98e1bff0fd0",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/r1-c2-generation.json"
+      ],
+      "label": "Frozen full-root throughput js",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793861982352-73633c52870fe4f0.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    }
+  },
+  "expectedSourceCounters": {
+    "expand": 1078590,
+    "check": 10516073
+  },
+  "actualOwnByteFixedpoint": false,
+  "actualArenaRuntimeActivation": "NOT_RUN",
+  "consumerMatrix": "NOT_RUN",
+  "selectedPerformance": "NOT_RUN",
+  "selfhostGreen": false
+}

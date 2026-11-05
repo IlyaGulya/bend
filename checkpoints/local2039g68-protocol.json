@@ -1,0 +1,173 @@
+{
+  "schemaVersion": 1,
+  "version": "G68R1",
+  "status": "PROSPECTIVE_GET_ONLY_NATIVE_RESULT_DEFORESTATION",
+  "baselineCheckpoint": "91369ddf",
+  "previousVersion": {
+    "G67Main": "f253185e",
+    "G67SourceClosed": "4a7b9411",
+    "outcome": "REJECTED_ALL6FILTERS_ZERO_LIVE_MECHANISM_NOT_PEAK_RAM"
+  },
+  "branch": "selfhost/g68-native-tuples-lhggp0w3",
+  "worktree": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g68-native-tuples-lhggp0w3/repository",
+  "design": {
+    "schemaVersion": 1,
+    "version": "G68R1",
+    "choice": "GET_ONLY_NATIVE_TUPLE_DEFORESTATION_WITH_BOUNDED_PRIVATE_TAIL_CONSUMER_EXPOSURE",
+    "rejectedAlternatives": {
+      "scalarCarry": "AlreadyG26/G58B/G64R2; no repeat",
+      "scratchBanks": "Thorough review no-go on current evidence; ordinarytailArgs alreadycleared,E12highwaterpriorart,G64takepriorart"
+    },
+    "mechanism": "NativeArrayGet result record only: evaluate args once/order and dereference at originalLet, virtual fst=originalarray, snd=savedread; noTuple allocation. ExactTuple tag/projection uses only, no recordescape/capture/split whilevirtualvalue needed. Generalbounded leafconsumer exposure for immediateTailDirect privatecallee requiredtoactivateactualArena.get_node/Arena.word; no schedulerfusion, newBIR, Cchange orpublicABI.",
+    "privateConsumer": "Only nativeget immediate sole TailDirect use; zeroCapture nonrecursive leafcallee with strict boundedbody (no Direct/Apply/TailCall, bounded32BIRnodes; nativePrimitiveCalls permitted preservingorder), exactTupleinput tag/project only. Copy all other callargs in originalorderatcallpoint, bind repeatabletupleparamtoexistingnativeLetlocal, alpha-fresh allconsumer locals/regionlabels before splicing tailbody. Keep ordinarycalleeifothercallsneed it. No genericinliner orsharedreturnbuffer.",
+    "physicalPlan": "BIR staysvalid/exportedformsunchanged. Emitter-private virtualrecordmapping carries onlyevaluatedJSnamedtemps. Alluses in localnosplitspan; ifcapturing/splitcrossing needed rejectsite ratherthan altercapturesemantics. Bodyemission/captureplanning mustagree; no isolatedop substitution changingLocalmeaning.",
+    "proof": "Realnativeprimitive-to-private-destructor activation at Arena.get_node/Arena.word is required; toyonly local sites notenough. Snapshot/staticSourceNotperformance. Payloadescape/nativefunctionABI stayboxedandfresh, hostarrays/proxies notnormalized.",
+    "semantics": [
+      "savedvalue pre-mutation whileforwardedarrayoriginalidentity",
+      "unusedsnd stillperformsgetterread/throwonceatoriginalpoint",
+      "argumentevaluation andlength/indexgetbeforelatermutation",
+      "reentrantgetter/callbackandexceptionunwind preservation",
+      "escapingTuplefreshnessandunsupported/crosssplitcase correctwithoutoptimizing"
+    ],
+    "sourceReferences": [
+      "backend_ir.bend:188-214",
+      "js_backend.bend:1180-1330",
+      "baselineAimage:12779-12780,12799-12800"
+    ],
+    "allocationBound": "ExistingG65ownerword2.282GB/node1.043GB4.934%combined is broadsourceowner attribution, not Tuple traffic orpredictedgain",
+    "integrator": "Parent owns protocol, source generation, checkpoints, activation/runtime andclean singleheavy lane."
+  },
+  "runtime": {
+    "bun": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "node": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+    "release": "2.0.39",
+    "releaseCommit": "a3efe8a3801f423827424227172eed9802c5e6cb",
+    "os": "darwin25.6.0 arm64",
+    "helperFiles": {
+      "selfhost_throughput.mjs": {
+        "path": "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+        "sha256": "1a806befee02216a9499f6b4dcde7e2326e01f0a5b96bbd36b75295344c50317"
+      },
+      "checker_core_step_runtime.mjs": {
+        "path": "/Users/ilyagulya/Projects/My/bend/evals/checker_core_step_runtime.mjs",
+        "sha256": "00cd400ac0452a3681bf6491db08be51f9ae3a33ff2baf88654a9763eb5073ed"
+      },
+      "selfhost_cpu_profile.mjs": {
+        "path": "/Users/ilyagulya/Projects/My/bend/evals/selfhost_cpu_profile.mjs",
+        "sha256": "5d5fc8d329a3b600522c58eeac59c49c515109bc7f48845d8177cb520129a1c0"
+      },
+      "native_seed_runtime.mjs": {
+        "path": "/Users/ilyagulya/Projects/My/bend/evals/native_seed_runtime.mjs",
+        "sha256": "7f81a9b9013853355910b93bf59586b2acbcda4de7bcaa08d7942ebf45c0147a"
+      },
+      "heavy_gate.ts": {
+        "path": "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+        "sha256": "e72f2b81970be76734df918e35b1a4289d0fb194039e5ca20e9785e5ac0ee015"
+      },
+      "heavy_gate_native.c": {
+        "path": "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate_native.c",
+        "sha256": "1ff233edacdbf13c6ffd4a8bf38cbf153629e8c76be4860deec8a5b591d3fa8b"
+      }
+    }
+  },
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "nativeProductionTimeoutMs": 300000,
+    "sourcePreflightTimeoutMs": 120000,
+    "throughputTimeoutMs": 600000,
+    "workerStackMiB": 256,
+    "oldGenerationMiB": 6144,
+    "youngGenerationMiB": 128,
+    "parserFuelPerModule": 8000000,
+    "oneHeavyLane": true,
+    "chunkQuantum": 64,
+    "abi": 13
+  },
+  "sourceBound": "CurrentCode unchangedacceptedA; no rejected G58/G63/G64/G65/G66/G67 code carried. OnlyjsBackendsource +focusedbehaviorfixtures +requiredregeneratedBendinputs; BIR/FIR/C/ownership/nativeArraypublicABI13/quantum64 unchanged.",
+  "cheapFirst": [
+    "Checkpointthisprotocol beforeedits. Parentonlygenerator/build/test/profiling lane; agents skipallchecks midflight.",
+    "Source-level actualchangedJSemitter smoke (smallvalidBIRorproductionBendroute), not TS compiler output relabelledasactivation; outputs executeddefault-stackNode. A fixturecanonicalcompileonly establishesfixturevalidity.",
+    "Freeze canonical plusrequiredgeneratednativeBendinputs/checkpointsource before expensiveproduction.",
+    "Useunchanged authenticatedexistingCseed native_compiler_experiment.ts mode=run fullcandidatefrozencorpus,phasecompile,threads1,cwdcandidateworktree,freshreport. ActualC1 hasnewemittercode butoldphysicalcompilerstorage.",
+    "C1 actualfocusedJS+same frozenSource->C2 actualnewphysicalrepresentation; noopimagepatch/ASTreplay.",
+    "RequireactualArena.get_node andArena.word primitive->privateconsumer activation inemittedcompiler, syntax-awareexactsourceownership not aggregateownerestimates. No toy-only success; stopifnotactivated withinbound.",
+    "ActualC2 own69, unchanged13JS+focusedarraygetboundaryroots+existinginputidentity/payloadfreshness,3C controls, actualcheckedinspection/recheck28.",
+    "OnlyafterallsemanticandactivationPASS:9freshclean ABC/CAB/BCA onunchanged17mods2954decl52files; noGCtuning, profiling, retries, exclusions oroldtimings.",
+    "IfstrictselectedfiltersPASS:conditional6fullsourceABC/CBA pluscandidateownbytefixedpoint. ElsemarkNOT_RUN_NOT_EARNED andexplicitreject. Separatepost-timingmechanismdiagnosticscannotreversefilter."
+  ],
+  "selectedCorpus": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/main-complete.corpus.json",
+    "sha256": "1a269e15bf70257b019ab572c003b6eb130b4e3f63ad507783525e28d307b0e4"
+  },
+  "fullCorpus": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g58-hotpaths-vin3knc9/full-frozen.corpus.json",
+    "sha256": "60bf820e76a9c336e58c848eec6a40b3f8fbb4b7ac2ae45ffd1abdb1d217ebc6"
+  },
+  "selectedFrozenWork": {
+    "moduleCount": 17,
+    "sourceDeclarations": 2954,
+    "stepCounts": {
+      "expand": 263032,
+      "check": 1975761
+    }
+  },
+  "costFilter": {
+    "cpuGeometricCOverAAtMost": 0.97,
+    "cpuGeometricCOverBAtMost": 1.02,
+    "everyCpuPairCOverALessThan": 1,
+    "wallGeometricCOverAAtMost": 1,
+    "medianPeakFootprintCOverAAtMost": 1,
+    "geometricPeakFootprintCOverBAtMost": 0.95,
+    "inference": "Report paired Student95 intervals and existing2percent practical band; CPU point alone is not qualified proof."
+  },
+  "fastNativeProducerRoute": {
+    "schemaVersion": 1,
+    "status": "EXISTING_AUTHENTICATED_FAST_PRODUCER_ROUTE_NOT_NEW_COMPILER_OPTIMIZATION",
+    "mainCheckpoint": "91369ddf",
+    "wrapper": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/evals/native_compiler_experiment.ts",
+      "sha256": "5f952045eb0dc22444cce4941c359ff6d8e1851f5a720e9c776c111cf97b0ed4"
+    },
+    "buildReceipt": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g44d1-native-build.json",
+      "sha256": "fc276d3926b75a589e00c2cf45e2c0b725d080b83fae8c30df26d03eff1f398f"
+    },
+    "nativeAncestorReceipt": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-native-producer-d1.json",
+      "sha256": "717ea720d6d117e4fb49ede7ea0d57f544571d336437bb992cdf78c055dc5135"
+    },
+    "observedNativeBaseline": {
+      "status": "NATIVE_FULL_COMPILE_PASS",
+      "elapsedMs": 96965.276167,
+      "guardianElapsedMs": 97191,
+      "peakFootprintBytes": 1771424264,
+      "outputSha256": "4636c05aa8c75e72212cb03949937e25561942bc00da250f876f37f001b9fc18",
+      "equalsCurrentAImage": true,
+      "sourceCorpus": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g60-lexer-cursor-kkoffczh/main-compiler-source.corpus.json",
+      "ccOptimization": {
+        "level": 1,
+        "flag": "-O1",
+        "officialDefault": false,
+        "diagnosticTradeoff": true
+      }
+    },
+    "prospectiveCommandTemplate": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/evals/native_compiler_experiment.ts",
+      "--mode=run",
+      "--corpus=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/candidate-source.corpus.json",
+      "--build=/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g44d1-x9mu8dat/repository/checkpoints/local2039g44d1-native-build.json",
+      "--report=/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g64-capture-lifetime-5omwcc8o/candidate-native-stage0.json",
+      "--phase=compile",
+      "--threads=1"
+    ],
+    "policy": "Reuse unchanged authenticatedCseed via existing wrapper mode=run, full frozen new-source corpus,phasecompile,threads1,cwdcandidateworktree,freshreport. Native8GiB/300s/10ms and ABI13; no imagepatch,ASTtransport,excludedchecks orrebuildCseed. Source compiler algorithms checked/emitted genuinely. If JS emitter/runtime changed, C1oldphysicalstorage must still emit same full source to C2 before candidate timing. This is not accepted release flags, a new measured runtime gain, or a source-version fixedpoint."
+  },
+  "inference": "PairedStudent95 andexisting2percentband, no point-only accelerationclaim. Strictselectedexpand/checkcounts263032/1975761 expectedbecausechecker/template sourceunchanged; allobservedmismatchretained, no adjustedwork.",
+  "acceptance": "Endtoendactualemitter+realcompilerstorage+actualarenasites+consumercontracts+clean filters+earned full/fixedpoint. No scaffold/local-only or static-source-count acceptance.",
+  "selfhostGreen": false,
+  "acceptedG24R12": "UNCHANGED_UNTIL_FULL_QUALIFICATION"
+}
