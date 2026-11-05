@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "version": "local2039g79d1",
+  "status": "COMPLETED_G79_DIAGNOSTIC_EVIDENCE_ONLY_NO_COMPILER_CUTOVER",
+  "experimentalCheckpoint": "c3d3cf9c",
+  "experimentalBranch": "selfhost/g79-projection-e3afg2vc",
+  "screenPreflightCheckpoint": "a9cacef1",
+  "index": {
+    "repositoryPath": "checkpoints/local2039g79d1-index.json",
+    "sha256": "811b9f4c19d4c153f5b570f64d3d25151c29fa6edc8adc48f6d6c82d02823c64"
+  },
+  "allTenReceiptsByteExactCopies": true,
+  "actualSemanticMatrixPass": true,
+  "actualFullWorkActivationRuns": 2,
+  "exactCheckFrameRegistrationElisions": 75565159,
+  "actualCounterFreeCostRuns": 4,
+  "cpuPointGatePass": true,
+  "memoryPointGateFail": true,
+  "sourceImplementationEarned": false,
+  "sourceBIRClassCertification": false,
+  "mainCompilerDriverHelperSourceUnchanged": true,
+  "acceptedOptimization": false,
+  "newC1C2C3": false,
+  "oldDecisionsNotRescored": true,
+  "nextVersionNotStarted": true
+}

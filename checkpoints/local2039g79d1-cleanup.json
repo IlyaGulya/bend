@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "version": "local2039g79d1",
+  "status": "EXACT_SOURCES_ARCHIVED_NINE_OWNED_SCAFFOLDS_REMOVED_AFTER_RUNTIME_PROOF",
+  "ownedSourcesRemoved": true,
+  "count": 9,
+  "sourceRefs": [
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/projection-generator.mjs",
+      "sha256": "0117903c8ca895e5c13afbd1b06351106ae23200e8319372834679c670914308"
+    },
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/projection-semantics.mjs",
+      "sha256": "05de8d0b3cb5442e77a9d874cb0c6539e649e9579dc6d1af02d5352340445300"
+    },
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/projection-private-fixtures.mjs",
+      "sha256": "74ef913a2972c3c97aff1ff7bf75e18c91540fe0693e449593a9770f83d68dc9"
+    },
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/projection-semantics.bend",
+      "sha256": "432fd375cb6762a493235895ba80d3cbaab821c09e6698404296db325b5e5ea2"
+    },
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/repository/evals/.g79-activation.mjs",
+      "sha256": "101bb907f9e723bad823c8a222e55fca8d37c86e2e78d3986a6f6fb1f0902ecf"
+    },
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/projection-controller.mjs",
+      "sha256": "c2a4b3a7e1a3508c163db7b2129710fa4314db7f96bf3b312c344b92ef97f5ed"
+    },
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/projection-screen.ts",
+      "sha256": "40545b20b41019ac31ec9ccbea80df5613fb079e891f640c982bc8aee0fe60d3"
+    },
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/reviewed-g72-generator.mjs",
+      "sha256": "3901137c1ecc7b9cb8bffd3f04329c18a96fb66a149ac60057223bc4f67e2db9"
+    },
+    {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/projection-artifact-proof.mjs",
+      "sha256": "6f027a52d2f438e70ed4f150a8f3debc07c2b204219539503c94ce7774802580"
+    }
+  ],
+  "exactArchives": {
+    "initialGeneratorPrivateFixtureActivationControllerAnalysisReviewedSource": "checkpoints/local2039g79d1-semantic-preflight.json:sourceSources",
+    "correctedFullCoverageSemanticHarnessAndBendFixture": "checkpoints/local2039g79d1-fixture-correction.json:sources",
+    "independentByteSpanProof": "checkpoints/local2039g79d1-screen-preflight.json:artifactProof.source",
+    "everyCurrentSourceByteMatchedBeforeDeletion": true
+  },
+  "originalFailureRetained": "FirstoriginalAfixtureboxed/nativeBoolinteropmismatchandfailedreportrecorded. Originalincorrectfixture/harnesssourcefrozeninsemantic-preflight;correctedsourceandfreshoutputsneveroverwritefailedreport.",
+  "outsideGit": {
+    "directory": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc",
+    "retainedArtifacts": "OriginalAunchanged,historicalcounter/candidate/neutralgeneratedimages,generatedsemanticcomponents/privateadapters,actualsourcegeneration/activation/screenrequestsandreports,census/fullsource-spaninventories,rawanalysis,finalownedmutableimage/counterslots. Noimages/ASTtransports/caches/bulklogs/evidencearchivesinGit.",
+    "artifactVsSource": "GeneratedJSimages/inputcomponentsareevidenceartifacts,notpermanentrepohelper/sourcecode. Nineownedgenerators/harnesses/fixture/activationdriverremovedafterproof."
+  },
+  "canonicalCompilerAndRuntimeSourceUnchanged": true,
+  "newPermanentTestsDocs": false,
+  "scope": "Completedinvestigationonly,notcompileroptimizationimplementation. Compactrequiredsource/evidenceJSONcheckpointpreserved. Sourceadmissionfailedmemory;noC1/C2/C3build."
+}

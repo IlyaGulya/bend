@@ -1,0 +1,1101 @@
+{
+  "schemaVersion": 1,
+  "version": "local2039g79d1",
+  "status": "COMPLETE_SEMANTICS_AND_EXACT_FRAME_ACTIVATION_PASS_CPU_POINT_SCREEN_PASS_MEMORY_POINT_SCREEN_FAIL_NO_SOURCE_IMPLEMENTATION_EARNED",
+  "screenPreflightCheckpoint": "a9cacef1",
+  "runtime": {
+    "node": "23.11.0",
+    "v8": "12.9.202.28-node.14",
+    "nodeBinary": {
+      "path": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "sha256": "ead5889f15f4e17b37f941c7d9e92b624396786bd74d8155ef470f6381f032c5"
+    },
+    "execArgv": [
+      "--experimental-strip-types",
+      "--max-old-space-size=6144",
+      "--max-semi-space-size=128"
+    ],
+    "workerPolicy": {
+      "stackMiB": 256,
+      "oldGenerationMiB": 6144,
+      "youngGenerationMiB": 128
+    },
+    "ABIExports": [
+      "parsed_module",
+      "parse_with_fuel",
+      "expand_modules_start",
+      "template_step",
+      "check_expanded_start",
+      "inspect_checked_start",
+      "checker_step",
+      "emit_modules_start",
+      "emit_library_start",
+      "emitter_step",
+      "emit_c_modules_start",
+      "emit_c_library_start",
+      "c_emitter_step"
+    ],
+    "schedulerQuantum": 64
+  },
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000
+  },
+  "screenCommand": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun --smol /private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/projection-controller.mjs /private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/screen-plan.json",
+  "screenCells": [
+    {
+      "id": "screen-1-C",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+        "--memory-mib=8192",
+        "--rss-mib=8192",
+        "--poll-ms=10",
+        "--timeout-ms=600000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=6144",
+        "--max-semi-space-size=128",
+        "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+        "--worker",
+        "js",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/screen-1-C-request.json",
+        "6f120a619deec3f6c716ed4771d29810b5a0bf48e665dd4a46192bc4e1dd3f4c",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/screen-1-C-report.json"
+      ],
+      "exitCode": 0,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 1316454400,
+        "peakFootprintBytes": 1318918600,
+        "elapsedMs": 54044,
+        "timeoutMs": 600000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--experimental-strip-types",
+          "--max-old-space-size=6144",
+          "--max-semi-space-size=128",
+          "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+          "--worker",
+          "js",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/screen-1-C-request.json",
+          "6f120a619deec3f6c716ed4771d29810b5a0bf48e665dd4a46192bc4e1dd3f4c",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/screen-1-C-report.json"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793906767442-2dad1f5750cb512f.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      },
+      "activation": {
+        "before": null,
+        "active": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/fixed-image/compiler.mjs",
+          "sha256": "4b2763cfc25e2cd6c3299ab15062b4ea838ee3d37f56adeb5700838b57ba938d"
+        },
+        "post": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/fixed-image/compiler.mjs",
+          "sha256": "4b2763cfc25e2cd6c3299ab15062b4ea838ee3d37f56adeb5700838b57ba938d"
+        },
+        "postPinsVerified": true
+      },
+      "passed": true,
+      "elapsedMs": 54175.272917,
+      "stdout": "{\"status\":\"PASS\",\"mode\":\"js\",\"report\":\"/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/screen-1-C-report.json\",\"pipelineElapsedMs\":53564.930667,\"phases\":[{\"phase\":\"startup\",\"elapsedMs\":566.721959},{\"phase\":\"load-parse\",\"elapsedMs\":2328.195417},{\"phase\":\"expand\",\"elapsedMs\":1664.5159999999996},{\"phase\":\"check\",\"elapsedMs\":49003.930417}]}\n"
+    },
+    {
+      "id": "screen-2-N",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+        "--memory-mib=8192",
+        "--rss-mib=8192",
+        "--poll-ms=10",
+        "--timeout-ms=600000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=6144",
+        "--max-semi-space-size=128",
+        "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+        "--worker",
+        "js",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/screen-2-N-request.json",
+        "9124e4bc5e754c60c064a63ba5cf324e7a66b0434283a6770f731fb2b8056eee",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/screen-2-N-report.json"
+      ],
+      "exitCode": 0,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 1048461312,
+        "peakFootprintBytes": 1081952960,
+        "elapsedMs": 59592,
+        "timeoutMs": 600000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--experimental-strip-types",
+          "--max-old-space-size=6144",
+          "--max-semi-space-size=128",
+          "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+          "--worker",
+          "js",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/screen-2-N-request.json",
+          "9124e4bc5e754c60c064a63ba5cf324e7a66b0434283a6770f731fb2b8056eee",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/screen-2-N-report.json"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793906821881-83c6e56c47f64154.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      },
+      "activation": {
+        "before": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/fixed-image/compiler.mjs",
+          "sha256": "4b2763cfc25e2cd6c3299ab15062b4ea838ee3d37f56adeb5700838b57ba938d"
+        },
+        "active": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/fixed-image/compiler.mjs",
+          "sha256": "d0e146649057fef3a294672fed06e155a95bbd3b2fcbe854526f6dc6f518ad58"
+        },
+        "post": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/fixed-image/compiler.mjs",
+          "sha256": "d0e146649057fef3a294672fed06e155a95bbd3b2fcbe854526f6dc6f518ad58"
+        },
+        "postPinsVerified": true
+      },
+      "passed": true,
+      "elapsedMs": 59709.876833999995,
+      "stdout": "{\"status\":\"PASS\",\"mode\":\"js\",\"report\":\"/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/screen-2-N-report.json\",\"pipelineElapsedMs\":59135.372791,\"phases\":[{\"phase\":\"startup\",\"elapsedMs\":578.809375},{\"phase\":\"load-parse\",\"elapsedMs\":2460.510209},{\"phase\":\"expand\",\"elapsedMs\":1709.2650829999998},{\"phase\":\"check\",\"elapsedMs\":54385.18075}]}\n"
+    },
+    {
+      "id": "screen-3-N",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+        "--memory-mib=8192",
+        "--rss-mib=8192",
+        "--poll-ms=10",
+        "--timeout-ms=600000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=6144",
+        "--max-semi-space-size=128",
+        "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+        "--worker",
+        "js",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/screen-3-N-request.json",
+        "9124e4bc5e754c60c064a63ba5cf324e7a66b0434283a6770f731fb2b8056eee",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/screen-3-N-report.json"
+      ],
+      "exitCode": 0,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 1226670080,
+        "peakFootprintBytes": 1324716784,
+        "elapsedMs": 60270,
+        "timeoutMs": 600000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--experimental-strip-types",
+          "--max-old-space-size=6144",
+          "--max-semi-space-size=128",
+          "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+          "--worker",
+          "js",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/screen-3-N-request.json",
+          "9124e4bc5e754c60c064a63ba5cf324e7a66b0434283a6770f731fb2b8056eee",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/screen-3-N-report.json"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793906881871-c2f20496b5f09315.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      },
+      "activation": {
+        "before": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/fixed-image/compiler.mjs",
+          "sha256": "d0e146649057fef3a294672fed06e155a95bbd3b2fcbe854526f6dc6f518ad58"
+        },
+        "active": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/fixed-image/compiler.mjs",
+          "sha256": "d0e146649057fef3a294672fed06e155a95bbd3b2fcbe854526f6dc6f518ad58"
+        },
+        "post": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/fixed-image/compiler.mjs",
+          "sha256": "d0e146649057fef3a294672fed06e155a95bbd3b2fcbe854526f6dc6f518ad58"
+        },
+        "postPinsVerified": true
+      },
+      "passed": true,
+      "elapsedMs": 60402.468542,
+      "stdout": "{\"status\":\"PASS\",\"mode\":\"js\",\"report\":\"/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/screen-3-N-report.json\",\"pipelineElapsedMs\":59785.240083,\"phases\":[{\"phase\":\"startup\",\"elapsedMs\":593.0068749999999},{\"phase\":\"load-parse\",\"elapsedMs\":2700.68475},{\"phase\":\"expand\",\"elapsedMs\":1769.0305420000004},{\"phase\":\"check\",\"elapsedMs\":54720.672}]}\n"
+    },
+    {
+      "id": "screen-4-C",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+        "--memory-mib=8192",
+        "--rss-mib=8192",
+        "--poll-ms=10",
+        "--timeout-ms=600000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=6144",
+        "--max-semi-space-size=128",
+        "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+        "--worker",
+        "js",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/screen-4-C-request.json",
+        "6f120a619deec3f6c716ed4771d29810b5a0bf48e665dd4a46192bc4e1dd3f4c",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/screen-4-C-report.json"
+      ],
+      "exitCode": 0,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 1140932608,
+        "peakFootprintBytes": 1123801728,
+        "elapsedMs": 55824,
+        "timeoutMs": 600000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--experimental-strip-types",
+          "--max-old-space-size=6144",
+          "--max-semi-space-size=128",
+          "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+          "--worker",
+          "js",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/screen-4-C-request.json",
+          "6f120a619deec3f6c716ed4771d29810b5a0bf48e665dd4a46192bc4e1dd3f4c",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/screen-4-C-report.json"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793906942561-bd5e585a562ca847.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      },
+      "activation": {
+        "before": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/fixed-image/compiler.mjs",
+          "sha256": "d0e146649057fef3a294672fed06e155a95bbd3b2fcbe854526f6dc6f518ad58"
+        },
+        "active": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/fixed-image/compiler.mjs",
+          "sha256": "4b2763cfc25e2cd6c3299ab15062b4ea838ee3d37f56adeb5700838b57ba938d"
+        },
+        "post": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/fixed-image/compiler.mjs",
+          "sha256": "4b2763cfc25e2cd6c3299ab15062b4ea838ee3d37f56adeb5700838b57ba938d"
+        },
+        "postPinsVerified": true
+      },
+      "passed": true,
+      "elapsedMs": 55950.246291999996,
+      "stdout": "{\"status\":\"PASS\",\"mode\":\"js\",\"report\":\"/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/screen-4-C-report.json\",\"pipelineElapsedMs\":55340.494875000004,\"phases\":[{\"phase\":\"startup\",\"elapsedMs\":612.167792},{\"phase\":\"load-parse\",\"elapsedMs\":2464.687083},{\"phase\":\"expand\",\"elapsedMs\":1574.7875829999998},{\"phase\":\"check\",\"elapsedMs\":50687.332666}]}\n"
+    }
+  ],
+  "screenRows": [
+    {
+      "id": "screen-1-C",
+      "sequence": 1,
+      "role": "C",
+      "request": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/screen-1-C-request.json",
+        "sha256": "6f120a619deec3f6c716ed4771d29810b5a0bf48e665dd4a46192bc4e1dd3f4c"
+      },
+      "report": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/screen-1-C-report.json",
+        "sha256": "627445df6a3fdc308a303f189934b6e66d9e298114bdadb2c96ae0f1db54b684"
+      },
+      "image": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/A-projection.candidate.mjs",
+        "sha256": "4b2763cfc25e2cd6c3299ab15062b4ea838ee3d37f56adeb5700838b57ba938d"
+      },
+      "activation": {
+        "before": null,
+        "active": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/fixed-image/compiler.mjs",
+          "sha256": "4b2763cfc25e2cd6c3299ab15062b4ea838ee3d37f56adeb5700838b57ba938d"
+        },
+        "post": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/fixed-image/compiler.mjs",
+          "sha256": "4b2763cfc25e2cd6c3299ab15062b4ea838ee3d37f56adeb5700838b57ba938d"
+        },
+        "postPinsVerified": true
+      },
+      "checkerCpuMs": 58194.148,
+      "checkerWallMs": 49003.930417,
+      "footprintBytes": 1318918600,
+      "rssBytes": 1316454400,
+      "guardElapsedMs": 54044
+    },
+    {
+      "id": "screen-2-N",
+      "sequence": 2,
+      "role": "N",
+      "request": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/screen-2-N-request.json",
+        "sha256": "9124e4bc5e754c60c064a63ba5cf324e7a66b0434283a6770f731fb2b8056eee"
+      },
+      "report": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/screen-2-N-report.json",
+        "sha256": "1dfd58435632be8cc6e5107ddca17d797a862a9f2b7a88aa75fe4b8cce00ad29"
+      },
+      "image": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/A-projection.neutral.mjs",
+        "sha256": "d0e146649057fef3a294672fed06e155a95bbd3b2fcbe854526f6dc6f518ad58"
+      },
+      "activation": {
+        "before": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/fixed-image/compiler.mjs",
+          "sha256": "4b2763cfc25e2cd6c3299ab15062b4ea838ee3d37f56adeb5700838b57ba938d"
+        },
+        "active": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/fixed-image/compiler.mjs",
+          "sha256": "d0e146649057fef3a294672fed06e155a95bbd3b2fcbe854526f6dc6f518ad58"
+        },
+        "post": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/fixed-image/compiler.mjs",
+          "sha256": "d0e146649057fef3a294672fed06e155a95bbd3b2fcbe854526f6dc6f518ad58"
+        },
+        "postPinsVerified": true
+      },
+      "checkerCpuMs": 66866.371,
+      "checkerWallMs": 54385.18075,
+      "footprintBytes": 1081952960,
+      "rssBytes": 1048461312,
+      "guardElapsedMs": 59592
+    },
+    {
+      "id": "screen-3-N",
+      "sequence": 3,
+      "role": "N",
+      "request": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/screen-3-N-request.json",
+        "sha256": "9124e4bc5e754c60c064a63ba5cf324e7a66b0434283a6770f731fb2b8056eee"
+      },
+      "report": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/screen-3-N-report.json",
+        "sha256": "5f20dd753ffcbaf1b279396c0b33a362833a80ba5bd1757eab999173849b6710"
+      },
+      "image": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/A-projection.neutral.mjs",
+        "sha256": "d0e146649057fef3a294672fed06e155a95bbd3b2fcbe854526f6dc6f518ad58"
+      },
+      "activation": {
+        "before": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/fixed-image/compiler.mjs",
+          "sha256": "d0e146649057fef3a294672fed06e155a95bbd3b2fcbe854526f6dc6f518ad58"
+        },
+        "active": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/fixed-image/compiler.mjs",
+          "sha256": "d0e146649057fef3a294672fed06e155a95bbd3b2fcbe854526f6dc6f518ad58"
+        },
+        "post": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/fixed-image/compiler.mjs",
+          "sha256": "d0e146649057fef3a294672fed06e155a95bbd3b2fcbe854526f6dc6f518ad58"
+        },
+        "postPinsVerified": true
+      },
+      "checkerCpuMs": 64717.018,
+      "checkerWallMs": 54720.672,
+      "footprintBytes": 1324716784,
+      "rssBytes": 1226670080,
+      "guardElapsedMs": 60270
+    },
+    {
+      "id": "screen-4-C",
+      "sequence": 4,
+      "role": "C",
+      "request": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/screen-4-C-request.json",
+        "sha256": "6f120a619deec3f6c716ed4771d29810b5a0bf48e665dd4a46192bc4e1dd3f4c"
+      },
+      "report": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/screen-4-C-report.json",
+        "sha256": "dab5aeed7cb17f4645af63fac69bc8a037964a6c448d7b3f4b46de8b2b447798"
+      },
+      "image": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/A-projection.candidate.mjs",
+        "sha256": "4b2763cfc25e2cd6c3299ab15062b4ea838ee3d37f56adeb5700838b57ba938d"
+      },
+      "activation": {
+        "before": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/fixed-image/compiler.mjs",
+          "sha256": "d0e146649057fef3a294672fed06e155a95bbd3b2fcbe854526f6dc6f518ad58"
+        },
+        "active": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/fixed-image/compiler.mjs",
+          "sha256": "4b2763cfc25e2cd6c3299ab15062b4ea838ee3d37f56adeb5700838b57ba938d"
+        },
+        "post": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/fixed-image/compiler.mjs",
+          "sha256": "4b2763cfc25e2cd6c3299ab15062b4ea838ee3d37f56adeb5700838b57ba938d"
+        },
+        "postPinsVerified": true
+      },
+      "checkerCpuMs": 61822.466,
+      "checkerWallMs": 50687.332666,
+      "footprintBytes": 1123801728,
+      "rssBytes": 1140932608,
+      "guardElapsedMs": 55824
+    }
+  ],
+  "screenAnalysis": {
+    "schemaVersion": 1,
+    "status": "POINT_SCREEN_FAILS_NO_SOURCE_IMPLEMENTATION_EARNED",
+    "pairs": [
+      {
+        "candidate": "screen-1-C",
+        "neutral": "screen-2-N"
+      },
+      {
+        "candidate": "screen-4-C",
+        "neutral": "screen-3-N"
+      }
+    ],
+    "statistics": {
+      "checkerCpuMs": {
+        "n": 2,
+        "logRatios": [
+          -0.13891136526141332,
+          -0.045757370375381336
+        ],
+        "meanLog": -0.09233436781839732,
+        "varianceLog": 0.004338833381613436,
+        "geometricMeanRatio": 0.9118002219179218,
+        "ci95": [
+          0.5045182661884677,
+          1.6478682743649193
+        ],
+        "baselineMedian": 65791.6945,
+        "variantMedian": 60008.307,
+        "direction": "inconclusive",
+        "pairedRatios": [
+          0.8703051643104723,
+          0.9552737117770167
+        ]
+      },
+      "checkerWallMs": {
+        "n": 2,
+        "logRatios": [
+          -0.1041911965813929,
+          -0.07656552335775935
+        ],
+        "meanLog": -0.09037835996957613,
+        "varianceLog": 0.0003815889105294921,
+        "geometricMeanRatio": 0.9135854557050128,
+        "ci95": [
+          0.7665256710695229,
+          1.0888590120030506
+        ],
+        "baselineMedian": 54552.926374999995,
+        "variantMedian": 49845.6315415,
+        "direction": "inconclusive",
+        "pairedRatios": [
+          0.901053002696879,
+          0.9262922185239246
+        ]
+      },
+      "footprintBytes": {
+        "n": 2,
+        "logRatios": [
+          0.19804445397855722,
+          -0.16448135133138575
+        ],
+        "meanLog": 0.016781551323585733,
+        "varianceLog": 0.06571247975781133,
+        "geometricMeanRatio": 1.0169231525430888,
+        "ci95": [
+          0.10163350740823612,
+          10.175115712816291
+        ],
+        "baselineMedian": 1203334872,
+        "variantMedian": 1221360164,
+        "direction": "inconclusive",
+        "pairedRatios": [
+          1.2190165827542077,
+          0.8483335770885801
+        ]
+      },
+      "rssBytes": {
+        "n": 2,
+        "logRatios": [
+          0.22761838980573126,
+          -0.07245724096092679
+        ],
+        "meanLog": 0.07758057442240224,
+        "varianceLog": 0.04502269209000385,
+        "geometricMeanRatio": 1.0806693032555907,
+        "ci95": [
+          0.16060126094989544,
+          7.271712165219364
+        ],
+        "baselineMedian": 1137565696,
+        "variantMedian": 1228693504,
+        "direction": "inconclusive",
+        "pairedRatios": [
+          1.2556060819152095,
+          0.9301055162281288
+        ]
+      },
+      "guardElapsedMs": {
+        "n": 2,
+        "logRatios": [
+          -0.09772280727626247,
+          -0.07663058305053447
+        ],
+        "meanLog": -0.08717669516339846,
+        "varianceLog": 0.00022244096139419355,
+        "geometricMeanRatio": 0.9165151375329836,
+        "ci95": [
+          0.8015741839349684,
+          1.0479379378256686
+        ],
+        "baselineMedian": 59931,
+        "variantMedian": 54934,
+        "direction": "inconclusive",
+        "pairedRatios": [
+          0.9069002550677944,
+          0.926231956197113
+        ]
+      }
+    },
+    "medianFootprintRatio": 1.0149794478822352,
+    "gate": {
+      "everyCheckerCpuBelow1": true,
+      "geometricCheckerCpuAtMost095": true,
+      "medianWholeTreePhysicalAtMost1": false,
+      "everyPairedPhysicalAtMost105": false
+    },
+    "passed": false,
+    "acceptedOptimization": false,
+    "sourceRebuildExecuted": false,
+    "scope": "TwofreshC/Npairs,fixedimageURL,fixedunmodifiedROOTproductiondriver,identical52files17modules2954decl263032expand1975761checkand8GiB600sguards. OriginalAonlyartifactauthority,NOTtimedhere. CandidateispatchedJSdiagnosticonly,Nexactoriginaltokensandcandidatebytes. Pointscreenonly,notcausalframetime/precision/equivalence/performancequalification/promotion. Nooldpooling,resampling,outlierexclusion,relaxedgates,changedhashdriverorheap/GCflags."
+  },
+  "checkEndMemory": [
+    {
+      "id": "screen-1-C",
+      "role": "C",
+      "checkerCpuMs": 58194.148,
+      "checkerWallMs": 49003.930417,
+      "wholeTreePhysicalPeakBytes": 1318918600,
+      "checkEnd": {
+        "rss": 1145454592,
+        "heapTotal": 1016348672,
+        "heapUsed": 774599480,
+        "external": 10493131,
+        "arrayBuffers": 25039
+      },
+      "requestSha256": "6f120a619deec3f6c716ed4771d29810b5a0bf48e665dd4a46192bc4e1dd3f4c"
+    },
+    {
+      "id": "screen-2-N",
+      "role": "N",
+      "checkerCpuMs": 66866.371,
+      "checkerWallMs": 54385.18075,
+      "wholeTreePhysicalPeakBytes": 1081952960,
+      "checkEnd": {
+        "rss": 899891200,
+        "heapTotal": 779075584,
+        "heapUsed": 564840600,
+        "external": 10486368,
+        "arrayBuffers": 25039
+      },
+      "requestSha256": "9124e4bc5e754c60c064a63ba5cf324e7a66b0434283a6770f731fb2b8056eee"
+    },
+    {
+      "id": "screen-3-N",
+      "role": "N",
+      "checkerCpuMs": 64717.018,
+      "checkerWallMs": 54720.672,
+      "wholeTreePhysicalPeakBytes": 1324716784,
+      "checkEnd": {
+        "rss": 994951168,
+        "heapTotal": 1002356736,
+        "heapUsed": 828002984,
+        "external": 10493131,
+        "arrayBuffers": 25039
+      },
+      "requestSha256": "9124e4bc5e754c60c064a63ba5cf324e7a66b0434283a6770f731fb2b8056eee"
+    },
+    {
+      "id": "screen-4-C",
+      "role": "C",
+      "checkerCpuMs": 61822.466,
+      "checkerWallMs": 50687.332666,
+      "wholeTreePhysicalPeakBytes": 1123801728,
+      "checkEnd": {
+        "rss": 992690176,
+        "heapTotal": 819494912,
+        "heapUsed": 623171856,
+        "external": 10487506,
+        "arrayBuffers": 25039
+      },
+      "requestSha256": "6f120a619deec3f6c716ed4771d29810b5a0bf48e665dd4a46192bc4e1dd3f4c"
+    }
+  ],
+  "completeScreenExecution": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/screen-execution.json",
+    "sha256": "59af2f82b625e4b07ebfda41e84a215fb8adff0cc8efbe06224ea1c59fa8cac0"
+  },
+  "completeScreenAnalysis": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/screen-analysis.json",
+    "sha256": "c39681263ab430c56a31c480d3fa277a1ff307e1c62482485e15ffa78e33ccf0"
+  },
+  "activationCommand": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun --smol /private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/projection-controller.mjs /private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/full-activation-plan.json",
+  "activationCells": [
+    {
+      "id": "activation-BC",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+        "--memory-mib=8192",
+        "--rss-mib=8192",
+        "--poll-ms=10",
+        "--timeout-ms=600000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=6144",
+        "--max-semi-space-size=128",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/repository/evals/.g79-activation.mjs",
+        "--worker",
+        "js",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/activation-BC-request.json",
+        "95160a2b3103d8a8e2410c92103accf0118052bc4c659ee1d66f2a379d5de26b",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/activation-BC-report.json"
+      ],
+      "exitCode": 0,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 1184104448,
+        "peakFootprintBytes": 1348507312,
+        "elapsedMs": 58781,
+        "timeoutMs": 600000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--experimental-strip-types",
+          "--max-old-space-size=6144",
+          "--max-semi-space-size=128",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/repository/evals/.g79-activation.mjs",
+          "--worker",
+          "js",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/activation-BC-request.json",
+          "95160a2b3103d8a8e2410c92103accf0118052bc4c659ee1d66f2a379d5de26b",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/activation-BC-report.json"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793906567342-fb9d5b09ddf2ac06.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      },
+      "activation": {
+        "before": null,
+        "active": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/fixed-counter-image/compiler.mjs",
+          "sha256": "89a66d35c5d9261c5a142dc6ad20b0be5a2a149cf0b19f21400e18bebe120b7a"
+        },
+        "post": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/fixed-counter-image/compiler.mjs",
+          "sha256": "89a66d35c5d9261c5a142dc6ad20b0be5a2a149cf0b19f21400e18bebe120b7a"
+        },
+        "postPinsVerified": true
+      },
+      "passed": true,
+      "elapsedMs": 58905.91979199999,
+      "stdout": "{\"status\":\"PASS\",\"mode\":\"js\",\"report\":\"/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/activation-BC-report.json\",\"pipelineElapsedMs\":58308.621959000004,\"phases\":[{\"phase\":\"startup\",\"elapsedMs\":563.8154999999999},{\"phase\":\"load-parse\",\"elapsedMs\":2387.519375},{\"phase\":\"expand\",\"elapsedMs\":1802.4724169999995},{\"phase\":\"check\",\"elapsedMs\":53552.875708}]}\n"
+    },
+    {
+      "id": "activation-CC",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+        "--memory-mib=8192",
+        "--rss-mib=8192",
+        "--poll-ms=10",
+        "--timeout-ms=600000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=6144",
+        "--max-semi-space-size=128",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/repository/evals/.g79-activation.mjs",
+        "--worker",
+        "js",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/activation-CC-request.json",
+        "368118895d9455dad96f7ca2462b84e46437ab19ea612b2c9f05526012c1866b",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/activation-CC-report.json"
+      ],
+      "exitCode": 0,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 1130332160,
+        "peakFootprintBytes": 1336923128,
+        "elapsedMs": 54605,
+        "timeoutMs": 600000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--experimental-strip-types",
+          "--max-old-space-size=6144",
+          "--max-semi-space-size=128",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/repository/evals/.g79-activation.mjs",
+          "--worker",
+          "js",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/activation-CC-request.json",
+          "368118895d9455dad96f7ca2462b84e46437ab19ea612b2c9f05526012c1866b",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/activation-CC-report.json"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793906626520-b4f5a2f31ce73a10.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      },
+      "activation": {
+        "before": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/fixed-counter-image/compiler.mjs",
+          "sha256": "89a66d35c5d9261c5a142dc6ad20b0be5a2a149cf0b19f21400e18bebe120b7a"
+        },
+        "active": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/fixed-counter-image/compiler.mjs",
+          "sha256": "68d886dc28b4594999078e2c41f9fc3c874d1d994c75ae47c5c2f77951f51fa2"
+        },
+        "post": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/fixed-counter-image/compiler.mjs",
+          "sha256": "68d886dc28b4594999078e2c41f9fc3c874d1d994c75ae47c5c2f77951f51fa2"
+        },
+        "postPinsVerified": true
+      },
+      "passed": true,
+      "elapsedMs": 54722.39533300001,
+      "stdout": "{\"status\":\"PASS\",\"mode\":\"js\",\"report\":\"/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/activation-CC-report.json\",\"pipelineElapsedMs\":54145.686958,\"phases\":[{\"phase\":\"startup\",\"elapsedMs\":537.7267919999999},{\"phase\":\"load-parse\",\"elapsedMs\":2241.032},{\"phase\":\"expand\",\"elapsedMs\":1651.3659169999996},{\"phase\":\"check\",\"elapsedMs\":49713.815375}]}\n"
+    }
+  ],
+  "activationRows": [
+    {
+      "id": "activation-BC",
+      "sequence": 1,
+      "role": "BC",
+      "request": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/activation-BC-request.json",
+        "sha256": "95160a2b3103d8a8e2410c92103accf0118052bc4c659ee1d66f2a379d5de26b"
+      },
+      "report": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/activation-BC-report.json",
+        "sha256": "533ea038c0e2d926511a3dfe6909ae13722bb4f36fa6da70eadd5c6d9a76329f"
+      },
+      "image": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/A-projection.baseline-counters.mjs",
+        "sha256": "89a66d35c5d9261c5a142dc6ad20b0be5a2a149cf0b19f21400e18bebe120b7a"
+      },
+      "activation": {
+        "before": null,
+        "active": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/fixed-counter-image/compiler.mjs",
+          "sha256": "89a66d35c5d9261c5a142dc6ad20b0be5a2a149cf0b19f21400e18bebe120b7a"
+        },
+        "post": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/fixed-counter-image/compiler.mjs",
+          "sha256": "89a66d35c5d9261c5a142dc6ad20b0be5a2a149cf0b19f21400e18bebe120b7a"
+        },
+        "postPinsVerified": true
+      },
+      "checkerCpuMs": 63645.017,
+      "checkerWallMs": 53552.875708,
+      "footprintBytes": 1348507312,
+      "rssBytes": 1184104448,
+      "guardElapsedMs": 58781,
+      "checkCounters": {
+        "selectedGeneric": 75565159,
+        "selectedElided": 0,
+        "selectedFallback": 108851
+      },
+      "finalCounters": {
+        "selectedGeneric": 89091939,
+        "selectedElided": 0,
+        "selectedFallback": 194547
+      }
+    },
+    {
+      "id": "activation-CC",
+      "sequence": 2,
+      "role": "CC",
+      "request": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/activation-CC-request.json",
+        "sha256": "368118895d9455dad96f7ca2462b84e46437ab19ea612b2c9f05526012c1866b"
+      },
+      "report": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/activation-CC-report.json",
+        "sha256": "fa2c9dd2c0aa4556de7c7cbe405e95961d9eaf9fd17e8d578a6ce47bf71c830f"
+      },
+      "image": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/A-projection.candidate-counters.mjs",
+        "sha256": "68d886dc28b4594999078e2c41f9fc3c874d1d994c75ae47c5c2f77951f51fa2"
+      },
+      "activation": {
+        "before": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/fixed-counter-image/compiler.mjs",
+          "sha256": "89a66d35c5d9261c5a142dc6ad20b0be5a2a149cf0b19f21400e18bebe120b7a"
+        },
+        "active": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/fixed-counter-image/compiler.mjs",
+          "sha256": "68d886dc28b4594999078e2c41f9fc3c874d1d994c75ae47c5c2f77951f51fa2"
+        },
+        "post": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/fixed-counter-image/compiler.mjs",
+          "sha256": "68d886dc28b4594999078e2c41f9fc3c874d1d994c75ae47c5c2f77951f51fa2"
+        },
+        "postPinsVerified": true
+      },
+      "checkerCpuMs": 59241.078,
+      "checkerWallMs": 49713.815375,
+      "footprintBytes": 1336923128,
+      "rssBytes": 1130332160,
+      "guardElapsedMs": 54605,
+      "checkCounters": {
+        "selectedGeneric": 0,
+        "selectedElided": 75565159,
+        "selectedFallback": 108851
+      },
+      "finalCounters": {
+        "selectedGeneric": 0,
+        "selectedElided": 89091939,
+        "selectedFallback": 194547
+      }
+    }
+  ],
+  "checkActivation": {
+    "baseline": {
+      "selectedGeneric": 75565159,
+      "selectedElided": 0,
+      "selectedFallback": 108851
+    },
+    "candidate": {
+      "selectedGeneric": 0,
+      "selectedElided": 75565159,
+      "selectedFallback": 108851
+    },
+    "exactGenericEqualsElided": true,
+    "exactFallbackEqual": true
+  },
+  "semanticReport": {
+    "command": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+      "--memory-mib=8192",
+      "--rss-mib=8192",
+      "--poll-ms=10",
+      "--timeout-ms=600000",
+      "--",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "--experimental-strip-types",
+      "--max-old-space-size=6144",
+      "--max-semi-space-size=128",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/projection-semantics.mjs",
+      "run",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/projection-semantics-r2.request.json",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/projection-semantics.run-r2-report.json"
+    ],
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 1148682240,
+      "peakFootprintBytes": 1011281640,
+      "elapsedMs": 24552,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 0,
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=6144",
+        "--max-semi-space-size=128",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/projection-semantics.mjs",
+        "run",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/projection-semantics-r2.request.json",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/projection-semantics.run-r2-report.json"
+      ],
+      "label": "heavy command",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793906441712-be16dcc3b782acb7.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    },
+    "ref": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/projection-semantics.run-r2-report.json",
+      "sha256": "f6704b1746f743aaddf1d4f1881ed6807d550068eb43b178fff53ba8375adae9"
+    },
+    "status": "PASS_EXECUTED_SEMANTICS_AND_ACTIVATION",
+    "assertionRows": 625,
+    "allAssertionRowsPassed": true,
+    "scope": "Rowsincludeprotocol/snapshot/digest/metadataassertions,NOT625distinctconsumerbugsorindependenttestcases. Fullnamedbehavior/negative/controlmatrixexercised."
+  },
+  "structuralCounts": {
+    "A": {
+      "calleeBodies": 24625,
+      "eligibleCallees": 255,
+      "rejectedCallees": 24370,
+      "eagerEntries": 15042,
+      "selectedSites": 9096,
+      "rejectedSites": 5946,
+      "costEdits": 18192,
+      "affectedOwners": 9060,
+      "continuations": 9096
+    },
+    "public": {
+      "calleeBodies": 337,
+      "eligibleCallees": 24,
+      "rejectedCallees": 313,
+      "eagerEntries": 153,
+      "selectedSites": 16,
+      "rejectedSites": 137,
+      "costEdits": 32,
+      "affectedOwners": 16,
+      "continuations": 16
+    },
+    "private": {
+      "calleeBodies": 375,
+      "eligibleCallees": 30,
+      "rejectedCallees": 345,
+      "eagerEntries": 173,
+      "selectedSites": 24,
+      "rejectedSites": 149,
+      "costEdits": 48,
+      "affectedOwners": 24,
+      "continuations": 24
+    }
+  },
+  "sourceConnectedExamples": [
+    {
+      "callee": "$b1210",
+      "selectedSites": 2588,
+      "selectionByName": false
+    },
+    {
+      "callee": "$b81",
+      "selectedSites": 241,
+      "selectionByName": false
+    },
+    {
+      "callee": "$b1254",
+      "selectedSites": 91,
+      "selectionByName": false
+    }
+  ],
+  "artifactProof": {
+    "schemaVersion": 1,
+    "status": "PASS_EXACT_FRAME_RESULT_SPANS_AND_ORIGINAL_PLUS_ASCII_SPACE_NEUTRAL",
+    "input": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs",
+      "sha256": "4636c05aa8c75e72212cb03949937e25561942bc00da250f876f37f001b9fc18",
+      "bytes": 31758525,
+      "originalA": true,
+      "frozenOriginalSha256": "4636c05aa8c75e72212cb03949937e25561942bc00da250f876f37f001b9fc18"
+    },
+    "selectedSites": 9096,
+    "candidateFrameResultEdits": 18192,
+    "allOtherOriginalBytesBound": true,
+    "originalSpanStringsAndHashesVerified": true,
+    "candidate": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/A-projection.candidate.mjs",
+      "sha256": "4b2763cfc25e2cd6c3299ab15062b4ea838ee3d37f56adeb5700838b57ba938d",
+      "bytes": 31998719
+    },
+    "neutral": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/A-projection.neutral.mjs",
+      "sha256": "d0e146649057fef3a294672fed06e155a95bbd3b2fcbe854526f6dc6f518ad58",
+      "bytes": 31998719,
+      "insertedAsciiSpaces": 240194,
+      "stripInsertionsReproducesOriginalSha256": true
+    },
+    "costImagesHaveNoCounterStateOrExports": true,
+    "scope": "Independentstreamedhashreconstruction,notnewsemantic/BIR/ownershipprooforperformanceevidence."
+  },
+  "imageRefs": {
+    "C": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/A-projection.candidate.mjs",
+      "sha256": "4b2763cfc25e2cd6c3299ab15062b4ea838ee3d37f56adeb5700838b57ba938d"
+    },
+    "N": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/A-projection.neutral.mjs",
+      "sha256": "d0e146649057fef3a294672fed06e155a95bbd3b2fcbe854526f6dc6f518ad58"
+    },
+    "BC": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/A-projection.baseline-counters.mjs",
+      "sha256": "89a66d35c5d9261c5a142dc6ad20b0be5a2a149cf0b19f21400e18bebe120b7a"
+    },
+    "CC": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/A-projection.candidate-counters.mjs",
+      "sha256": "68d886dc28b4594999078e2c41f9fc3c874d1d994c75ae47c5c2f77951f51fa2"
+    }
+  },
+  "allFrozenWorkEveryRuntimeCheck": {
+    "files": 52,
+    "modules": 17,
+    "declarations": 2954,
+    "expand": 263032,
+    "check": 1975761
+  },
+  "allSixOriginalWorkRunsRetained": true,
+  "sourceCompilerChanged": false,
+  "newCompilerC1C2Builds": 0,
+  "fixedpoint": "NOT_APPLICABLE_DIAGNOSTIC_ONLY",
+  "scope": "C/Npatched-JSdiagnosticonly;Noriginaltokens+spaces,equalbytes,fixedURL. Twopairsnotpreciseorstatisticalbenefitproof. OriginalAartifactauthoritynottimedhere. NodeprocessCPUincludeshelpers,guardphysicalwholetreeincludespost-pin-verification. ActivationrowsNOTpooledincost. ASTmembershipconditionaltypedABI,notauthenticBIRsourcecertification/promotion."
+}

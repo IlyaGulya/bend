@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 1,
+  "version": "local2039g79d1",
+  "status": "COMPLETED_DIAGNOSTIC_CPU_POINT_PASS_MEMORY_POINT_FAIL_SOURCE_IMPLEMENTATION_NOT_EARNED",
+  "experimentalBranch": "selfhost/g79-projection-e3afg2vc",
+  "protocolCheckpoint": "b87658d1",
+  "semanticSourcesCheckpoint": "8512e47e",
+  "fixtureCorrectionCheckpoint": "653329d5",
+  "activationPreflightCheckpoint": "56de7b31",
+  "screenPreflightCheckpoint": "a9cacef1",
+  "sourceReceipts": [
+    {
+      "repositoryPath": "checkpoints/local2039g79d1-protocol.json",
+      "sha256": "0e846702e4e015ba59e5ecf9ef7dad3d378da6af99066927e281196953a06b84"
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g79d1-semantic-preflight.json",
+      "sha256": "20f5fe27ebd07d3357957848f85be7574ea310e2638a321fd7b25b7c090e0e54"
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g79d1-fixture-correction.json",
+      "sha256": "3900fc71b87f210da550da8579fda82b7085776455c8ebc5d184a60411425a5a"
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g79d1-activation-preflight.json",
+      "sha256": "930063922512393bd5f53e6aa3f8016960146a4ad6389857f0dfdaad2161e887"
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g79d1-screen-preflight.json",
+      "sha256": "e7730ea2df12a7db41e5ab1c490f581a7f8f522a5c479091c9532bf27ddd5d93"
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g79d1-results.json",
+      "sha256": "82fc32159f38659ea76ebd13a6d8d3c23dd74e668abe553d41545838445d19d3"
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g79d1-closing-hashes.json",
+      "sha256": "82e845252109fb4e210813bf222487c09a9759c538883e797bf62f15fb7cf69a"
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g79d1-decision.json",
+      "sha256": "598516a2ce263db7af9f12097035dd8c83ab82848ea0b67ba2d3253cc2a84b80"
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g79d1-cleanup.json",
+      "sha256": "0d60eed46b2c558b2acf0f72a8f20ecb367f73649e929087c7a29256d5c1e3a2"
+    }
+  ],
+  "sourceConnectedClass": "255eligiblecallees/9096sites,structureonlynotnames",
+  "actualSemanticMatrixPassed": true,
+  "allTwelveOutputSyntaxChecksPassed": true,
+  "realFullWorkActivationRuns": 2,
+  "checkFrameRegistrationsReplacedExactly": 75565159,
+  "checkFallbacksIdentical": 108851,
+  "costRuns": 4,
+  "allSixFullWorkRunsPassed": true,
+  "allFourFreshCostRowsRetained": true,
+  "cpuCandidateOverNeutral": 0.9118002219179218,
+  "cpuPairedCI95": [
+    0.5045182661884677,
+    1.6478682743649193
+  ],
+  "medianPhysicalCandidateOverNeutral": 1.0149794478822352,
+  "pointGate": {
+    "everyCheckerCpuBelow1": true,
+    "geometricCheckerCpuAtMost095": true,
+    "medianWholeTreePhysicalAtMost1": false,
+    "everyPairedPhysicalAtMost105": false
+  },
+  "screenPassed": false,
+  "sourceImplementationEarned": false,
+  "sourceBIRClassCertified": false,
+  "mainCompilerAndHelpersChanged": false,
+  "acceptedOptimization": false,
+  "defaultCutover": false,
+  "newC1C2C3": false,
+  "fixedpoint": "NOT_APPLICABLE_DIAGNOSTIC_ONLY",
+  "originalRequiredSourceInputsUnchanged": 158,
+  "originalAImmutable": true,
+  "oldG73_G78ResultsNotRescored": true,
+  "ownedNineScaffoldsRemoved": true,
+  "exactSourcesArchived": true,
+  "rawArtifactsOutsideGit": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc",
+  "nextVersionStarted": false,
+  "scope": "CandidateispatchedJSdiagnosticonly,NmatchedbytesoriginaltokensplusASCIIpadding,onefixedURLandunmodifiedproductiondriver. OriginalAnottimedinthescreen. CPUpositivepointsNOTacceptedcompileracceleration,only2pairswideCI,physicalnotcausalRAMtax/rootproof. No sourcebuildingonfailedmemoryadmission."
+}

@@ -1,0 +1,95 @@
+{
+  "schemaVersion": 1,
+  "version": "local2039g79d1",
+  "status": "PROSPECTIVE_NARROW_STRUCTURAL_PROJECTION_FRAME_DIAGNOSTIC_BEFORE_CODE_OR_RUNTIME",
+  "baseCheckpoint": "36cfb7b9",
+  "image": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs",
+    "sha256": "4636c05aa8c75e72212cb03949937e25561942bc00da250f876f37f001b9fc18"
+  },
+  "workload": {
+    "manifest": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/main-complete.corpus.json",
+      "sha256": "1a269e15bf70257b019ab572c003b6eb130b4e3f63ad507783525e28d307b0e4"
+    },
+    "expected": {
+      "files": 52,
+      "modules": 17,
+      "declarations": 2954,
+      "expand": 263032,
+      "check": 1975761
+    }
+  },
+  "runtime": {
+    "node": "23.11.0",
+    "v8": "12.9.202.28-node.14",
+    "nodeBinary": {
+      "path": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "sha256": "ead5889f15f4e17b37f941c7d9e92b624396786bd74d8155ef470f6381f032c5"
+    },
+    "execArgv": [
+      "--experimental-strip-types",
+      "--max-old-space-size=6144",
+      "--max-semi-space-size=128"
+    ],
+    "workerPolicy": {
+      "stackMiB": 256,
+      "oldGenerationMiB": 6144,
+      "youngGenerationMiB": 128
+    },
+    "ABIExports": [
+      "parsed_module",
+      "parse_with_fuel",
+      "expand_modules_start",
+      "template_step",
+      "check_expanded_start",
+      "inspect_checked_start",
+      "checker_step",
+      "emit_modules_start",
+      "emit_library_start",
+      "emitter_step",
+      "emit_c_modules_start",
+      "emit_c_library_start",
+      "c_emitter_step"
+    ],
+    "schedulerQuantum": 64
+  },
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000
+  },
+  "goal": "Omitcallercontinuationregistration/popONLYforclosedtag-guardedprojection/Boolselectioncompleted-valuecallees;notgeneralG72/G73leaves,nofunctionnamespecialcases,noinlining/bodyrewrite,notalreadyabsentprivateRegionframes.",
+  "authority": "G75exactA/source/body/sitecrosswalkandconditionaltypedlexicalregionproof;originalG72reviewedexactsite/catch/depth/continuationguards. ActualBIRmembershipnotcaptured:emission-backedsourceinference,typedplain-valueABIremainspremise.",
+  "calleeGrammar": "Whole$bCode:typedparameters/immutablelocalbindings;noncomputedstaticfield/tagprojections,primitiveBoolean/tagcomparisonsandlogicalselection;literal/parameter/projectionreturns;well-scopedsamefunctionlexicallabels/breaks/if/switch;literalfail-stopthrow. Onlyexactcall-free$p_is_true/$p_is_falsehelpersasneededforBooleanselection. Noobjects/arrays/allocatingops/assignment/loops/functions/classes/opaque/member/foreign/runtime/scheduler calls,Symbol/$D/FloatBits/tail/framedregions/freeglobals. FailclosedunknownAST/controlflow.",
+  "callSiteGrammar": "Reviewedexacttd<64,canonicalbase/spill+split_enter,split_doneandcatchsplit_abort+rethrow,index3uses,3parametercontinuationsignature,originaldepth+1. Arity1..32,matchingcalleeparamsandcalleeDeptharg;callsitedeclaredarginitializerprovenanceconservativelycheckedagainstSymbol/$D/FloatBits/opaquecalls. Preservecapturestores/load/evalorder/exactlyonceandfallback. Noeligibilitylookup/allocationaddedtoruntime.",
+  "artifacts": "OneguardedASTpassproducescandidateCostC,original-token/ASCII-distributed-paddingequal-byteNeutralN,andcounter-onlybaseline/candidatevariantswithprimitivecounters. CostimagescontainNOcounters. OriginalAunchanged. Countersreturnprimitivesonly,noRun/Arena/book/closuretracking.",
+  "semanticGate": "Actualgeneratedprojection/Boolean/failednestedpatterns,same/outerlabelleaves,continuationreentry/throw,spillchains,depth63/64,arity1/32versus0/33,andnegativeSymbol/FloatBits/framed/tail/opaqueclasscontrols. Actualcandidatesiteselided>0,baselinegenericpresent,candidateelidedpresent,depthfallbackpreserved. Realfrozen52filecheckcountsidenticalandtypedconsumercontracts,notjustsource-textassertions.",
+  "noRebuild": "No compilerC1/C2/C3;smallsemanticcomponentemissionbyimmutableAallowed,notrebuildingthecompiler. No canonicalcompiler/emitter/lowering/source/runtimehelperchanges or permanenttests/docs. DiagnosticartifactsoutsideGit;compactprotocol/source/evidencecheckpointsonly.",
+  "screenDesign": {
+    "order": [
+      "C",
+      "N",
+      "N",
+      "C"
+    ],
+    "pairs": [
+      "1C/2N",
+      "4C/3N"
+    ],
+    "screenOnly": "Candidateversusmatched-byteoriginal-tokenneutral,samefixedownedimageURLandROOTproductiondriverURL,originalunmodifiedhashimplementation. OriginalAisartifactauthoritybutNOTtimedinthese4cells;noC/Aorproductiongainclaim.",
+    "gate": {
+      "everyCheckerCpuC_over_N_below": 1,
+      "geometricCheckerCpuC_over_N_atMost": 0.95,
+      "medianWholeTreePhysicalC_over_N_atMost": 1,
+      "everyPairedPhysicalC_over_N_atMost": 1.05
+    },
+    "ifFail": "Stop;retainall4rows,noretries/outlierexclusion/oldpooling/tuning. No sourceimplementation/performancepromotionearned.",
+    "ifPass": "OnlyearnsnarrowtypedBIRsourceclassifierinvestigationwithactualsource-producedactivationandfullconsumer/CPU/memoryconfirmation;NOTacceptedoptimization.",
+    "precision": "Two diagnostic pairs,pointscreenonly,CIreportednotprecision/equivalenceclaim. C/Ntoken/layoutcontrolcannotproveexclusiveframe-costcausality."
+  },
+  "heavyLane": "One8GiBRSS/physicalguardedfiniteprocessatonce;AST+semantics+activationbeforecost;agentsNOcommands/build/tests/parsing/formatters. Parentownsallruntime.",
+  "byteFixedpoint": "NOT_APPLICABLE_DIAGNOSTIC_ONLY",
+  "oldG73_G78DecisionsUntouched": true
+}

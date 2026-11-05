@@ -1,0 +1,369 @@
+{
+  "schemaVersion": 1,
+  "version": "local2039g79d1",
+  "status": "SEMANTICS_FULL_WORK_FRAME_ACTIVATION_AND_EXACT_ARTIFACT_PROOF_PASS_FOUR_COST_CELLS_FROZEN_BEFORE_TIMING",
+  "activationPreflightCheckpoint": "56de7b31",
+  "activation": {
+    "command": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun --smol /private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/projection-controller.mjs /private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/full-activation-plan.json",
+    "execution": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/full-activation-execution.json",
+      "sha256": "477824d32ed84ac19b79f6799dd1ba5264432275c697cd0c212f8ccfcae1c74f"
+    },
+    "rows": [
+      {
+        "id": "activation-BC",
+        "sequence": 1,
+        "role": "BC",
+        "request": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/activation-BC-request.json",
+          "sha256": "95160a2b3103d8a8e2410c92103accf0118052bc4c659ee1d66f2a379d5de26b"
+        },
+        "report": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/activation-BC-report.json",
+          "sha256": "533ea038c0e2d926511a3dfe6909ae13722bb4f36fa6da70eadd5c6d9a76329f"
+        },
+        "image": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/A-projection.baseline-counters.mjs",
+          "sha256": "89a66d35c5d9261c5a142dc6ad20b0be5a2a149cf0b19f21400e18bebe120b7a"
+        },
+        "activation": {
+          "before": null,
+          "active": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/fixed-counter-image/compiler.mjs",
+            "sha256": "89a66d35c5d9261c5a142dc6ad20b0be5a2a149cf0b19f21400e18bebe120b7a"
+          },
+          "post": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/fixed-counter-image/compiler.mjs",
+            "sha256": "89a66d35c5d9261c5a142dc6ad20b0be5a2a149cf0b19f21400e18bebe120b7a"
+          },
+          "postPinsVerified": true
+        },
+        "checkerCpuMs": 63645.017,
+        "checkerWallMs": 53552.875708,
+        "footprintBytes": 1348507312,
+        "rssBytes": 1184104448,
+        "guardElapsedMs": 58781,
+        "checkCounters": {
+          "selectedGeneric": 75565159,
+          "selectedElided": 0,
+          "selectedFallback": 108851
+        },
+        "finalCounters": {
+          "selectedGeneric": 89091939,
+          "selectedElided": 0,
+          "selectedFallback": 194547
+        }
+      },
+      {
+        "id": "activation-CC",
+        "sequence": 2,
+        "role": "CC",
+        "request": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/activation-CC-request.json",
+          "sha256": "368118895d9455dad96f7ca2462b84e46437ab19ea612b2c9f05526012c1866b"
+        },
+        "report": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/activation-CC-report.json",
+          "sha256": "fa2c9dd2c0aa4556de7c7cbe405e95961d9eaf9fd17e8d578a6ce47bf71c830f"
+        },
+        "image": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/A-projection.candidate-counters.mjs",
+          "sha256": "68d886dc28b4594999078e2c41f9fc3c874d1d994c75ae47c5c2f77951f51fa2"
+        },
+        "activation": {
+          "before": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/fixed-counter-image/compiler.mjs",
+            "sha256": "89a66d35c5d9261c5a142dc6ad20b0be5a2a149cf0b19f21400e18bebe120b7a"
+          },
+          "active": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/fixed-counter-image/compiler.mjs",
+            "sha256": "68d886dc28b4594999078e2c41f9fc3c874d1d994c75ae47c5c2f77951f51fa2"
+          },
+          "post": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/fixed-counter-image/compiler.mjs",
+            "sha256": "68d886dc28b4594999078e2c41f9fc3c874d1d994c75ae47c5c2f77951f51fa2"
+          },
+          "postPinsVerified": true
+        },
+        "checkerCpuMs": 59241.078,
+        "checkerWallMs": 49713.815375,
+        "footprintBytes": 1336923128,
+        "rssBytes": 1130332160,
+        "guardElapsedMs": 54605,
+        "checkCounters": {
+          "selectedGeneric": 0,
+          "selectedElided": 75565159,
+          "selectedFallback": 108851
+        },
+        "finalCounters": {
+          "selectedGeneric": 0,
+          "selectedElided": 89091939,
+          "selectedFallback": 194547
+        }
+      }
+    ],
+    "exactCheckGenericToElided": 75565159,
+    "exactCheckFallbackBoth": 108851,
+    "counterOnlyNotTimingEvidence": true
+  },
+  "artifactProof": {
+    "command": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+      "--memory-mib=8192",
+      "--rss-mib=8192",
+      "--poll-ms=10",
+      "--timeout-ms=120000",
+      "--",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/projection-artifact-proof.mjs",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/A-projection.census.json",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/projection-artifact-proof.json"
+    ],
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 430309376,
+      "peakFootprintBytes": 402324192,
+      "elapsedMs": 390,
+      "timeoutMs": 120000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 0,
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/projection-artifact-proof.mjs",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/A-projection.census.json",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/projection-artifact-proof.json"
+      ],
+      "label": "heavy command",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793906695501-7c1fa67bf9a7f853.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    },
+    "report": {
+      "schemaVersion": 1,
+      "status": "PASS_EXACT_FRAME_RESULT_SPANS_AND_ORIGINAL_PLUS_ASCII_SPACE_NEUTRAL",
+      "input": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs",
+        "sha256": "4636c05aa8c75e72212cb03949937e25561942bc00da250f876f37f001b9fc18",
+        "bytes": 31758525,
+        "originalA": true,
+        "frozenOriginalSha256": "4636c05aa8c75e72212cb03949937e25561942bc00da250f876f37f001b9fc18"
+      },
+      "selectedSites": 9096,
+      "candidateFrameResultEdits": 18192,
+      "allOtherOriginalBytesBound": true,
+      "originalSpanStringsAndHashesVerified": true,
+      "candidate": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/A-projection.candidate.mjs",
+        "sha256": "4b2763cfc25e2cd6c3299ab15062b4ea838ee3d37f56adeb5700838b57ba938d",
+        "bytes": 31998719
+      },
+      "neutral": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/A-projection.neutral.mjs",
+        "sha256": "d0e146649057fef3a294672fed06e155a95bbd3b2fcbe854526f6dc6f518ad58",
+        "bytes": 31998719,
+        "insertedAsciiSpaces": 240194,
+        "stripInsertionsReproducesOriginalSha256": true
+      },
+      "costImagesHaveNoCounterStateOrExports": true,
+      "scope": "Independentstreamedhashreconstruction,notnewsemantic/BIR/ownershipprooforperformanceevidence."
+    },
+    "source": "import{readFileSync,writeFileSync,existsSync}from'node:fs';import{createHash}from'node:crypto';\nconst[censusPath,reportPath]=process.argv.slice(2);if(!censusPath||!reportPath||existsSync(reportPath))throw Error('NeedCENSUS_FRESH_REPORT');const c=JSON.parse(readFileSync(censusPath,'utf8')),original=readFileSync(c.input.path),a=original.toString('utf8'),hash=x=>createHash('sha256').update(x).digest('hex');if(hash(original)!==c.input.sha256)throw Error('Originaldrift');const selected=c.sites.filter(s=>s.selected),patches=[];\nfor(const s of selected){const f=a.slice(...s.frameRange),r=a.slice(...s.returnRange);if(f!==s.originalFrame||r!==s.originalReturn||hash(f)!==s.frameSha256||hash(r)!==s.returnSha256)throw Error('Originalspanproofdiffers');patches.push({start:s.frameRange[0],end:s.frameRange[1],text:'$ksp'},{start:s.returnRange[0],end:s.returnRange[1],text:s.replacement});}\npatches.sort((a,b)=>a.start-b.start);const ch=createHash('sha256');let cursor=0;for(const p of patches){if(p.start<cursor)throw Error('Overlappingchanges');ch.update(a.slice(cursor,p.start));ch.update(p.text);cursor=p.end;}ch.update(a.slice(cursor));const candidate=readFileSync(c.outputs.candidate.path),candidateSha=hash(candidate);if(ch.digest('hex')!==candidateSha||candidateSha!==c.outputs.candidate.sha256)throw Error('Candidatechangesoutsideexactframe/resultspans');\nconst n=readFileSync(c.outputs.neutral.path),neutral=n.toString('utf8'),nh=createHash('sha256');cursor=0;let inserted=0;for(const[at,count]of c.outputs.neutral.insertionRanges){const pos=at+inserted;if(pos<cursor)throw Error('Neutralinsertionorder');nh.update(neutral.slice(cursor,pos));const pad=neutral.slice(pos,pos+count);if(pad.length!==count||pad.split(' ').join('')!=='')throw Error('NeutralnotASCIIspaces');cursor=pos+count;inserted+=count;}nh.update(neutral.slice(cursor));if(nh.digest('hex')!==c.input.sha256||hash(n)!==c.outputs.neutral.sha256||n.length!==candidate.length||inserted!==n.length-original.length)throw Error('Neutralbytes/tokensnotoriginal');\nif(candidate.includes(Buffer.from('__g79Snapshot'))||candidate.includes(Buffer.from('$g79Selected'))||n.includes(Buffer.from('__g79Snapshot'))||n.includes(Buffer.from('$g79Selected')))throw Error('Countersincostimage');const report={schemaVersion:1,status:'PASS_EXACT_FRAME_RESULT_SPANS_AND_ORIGINAL_PLUS_ASCII_SPACE_NEUTRAL',input:c.input,selectedSites:selected.length,candidateFrameResultEdits:patches.length,allOtherOriginalBytesBound:true,originalSpanStringsAndHashesVerified:true,candidate:{path:c.outputs.candidate.path,sha256:candidateSha,bytes:candidate.length},neutral:{path:c.outputs.neutral.path,sha256:hash(n),bytes:n.length,insertedAsciiSpaces:inserted,stripInsertionsReproducesOriginalSha256:true},costImagesHaveNoCounterStateOrExports:true,scope:'Independentstreamedhashreconstruction,notnewsemantic/BIR/ownershipprooforperformanceevidence.'};writeFileSync(reportPath,JSON.stringify(report,null,2)+'\\n',{flag:'wx'});console.log(JSON.stringify(report));\n"
+  },
+  "command": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun --smol /private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/projection-controller.mjs /private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/screen-plan.json",
+  "plan": {
+    "schemaVersion": 1,
+    "slot": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/fixed-image/compiler.mjs",
+    "immutablePins": {
+      "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs": "1a806befee02216a9499f6b4dcde7e2326e01f0a5b96bbd36b75295344c50317",
+      "/Users/ilyagulya/Projects/My/bend/evals/checker_core_step_runtime.mjs": "00cd400ac0452a3681bf6491db08be51f9ae3a33ff2baf88654a9763eb5073ed",
+      "/Users/ilyagulya/Projects/My/bend/evals/selfhost_cpu_profile.mjs": "5d5fc8d329a3b600522c58eeac59c49c515109bc7f48845d8177cb520129a1c0",
+      "/Users/ilyagulya/Projects/My/bend/evals/native_seed_runtime.mjs": "7f81a9b9013853355910b93bf59586b2acbcda4de7bcaa08d7942ebf45c0147a",
+      "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts": "e72f2b81970be76734df918e35b1a4289d0fb194039e5ca20e9785e5ac0ee015",
+      "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate_native.c": "1ff233edacdbf13c6ffd4a8bf38cbf153629e8c76be4860deec8a5b591d3fa8b",
+      "/Users/ilyagulya/Projects/My/bend/evals/selfhost_corpus_calibration.ts": "1c1eb7f5cdf2bffa338b9cdf0c7ca86ace856348522f0add27631005543e10a9",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node": "ead5889f15f4e17b37f941c7d9e92b624396786bd74d8155ef470f6381f032c5",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/repository/checkpoints/local2039g79d1-protocol.json": "0e846702e4e015ba59e5ecf9ef7dad3d378da6af99066927e281196953a06b84",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/projection-controller.mjs": "c2a4b3a7e1a3508c163db7b2129710fa4314db7f96bf3b312c344b92ef97f5ed",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/projection-generator.mjs": "0117903c8ca895e5c13afbd1b06351106ae23200e8319372834679c670914308",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g56-representative-p3scr06z/main-complete.corpus.json": "1a269e15bf70257b019ab572c003b6eb130b4e3f63ad507783525e28d307b0e4",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/projection-screen.ts": "40545b20b41019ac31ec9ccbea80df5613fb079e891f640c982bc8aee0fe60d3",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/A-projection.candidate.mjs": "4b2763cfc25e2cd6c3299ab15062b4ea838ee3d37f56adeb5700838b57ba938d",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/A-projection.neutral.mjs": "d0e146649057fef3a294672fed06e155a95bbd3b2fcbe854526f6dc6f518ad58",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/A-projection.baseline-counters.mjs": "89a66d35c5d9261c5a142dc6ad20b0be5a2a149cf0b19f21400e18bebe120b7a",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/A-projection.candidate-counters.mjs": "68d886dc28b4594999078e2c41f9fc3c874d1d994c75ae47c5c2f77951f51fa2",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs": "4636c05aa8c75e72212cb03949937e25561942bc00da250f876f37f001b9fc18"
+    },
+    "cells": [
+      {
+        "id": "screen-1-C",
+        "sequence": 1,
+        "role": "C",
+        "source": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/A-projection.candidate.mjs",
+          "sha256": "4b2763cfc25e2cd6c3299ab15062b4ea838ee3d37f56adeb5700838b57ba938d"
+        },
+        "request": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/screen-1-C-request.json",
+          "sha256": "6f120a619deec3f6c716ed4771d29810b5a0bf48e665dd4a46192bc4e1dd3f4c"
+        },
+        "report": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/screen-1-C-report.json",
+        "cwd": "/Users/ilyagulya/Projects/My/bend",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=600000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--experimental-strip-types",
+          "--max-old-space-size=6144",
+          "--max-semi-space-size=128",
+          "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+          "--worker",
+          "js",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/screen-1-C-request.json",
+          "6f120a619deec3f6c716ed4771d29810b5a0bf48e665dd4a46192bc4e1dd3f4c",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/screen-1-C-report.json"
+        ]
+      },
+      {
+        "id": "screen-2-N",
+        "sequence": 2,
+        "role": "N",
+        "source": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/A-projection.neutral.mjs",
+          "sha256": "d0e146649057fef3a294672fed06e155a95bbd3b2fcbe854526f6dc6f518ad58"
+        },
+        "request": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/screen-2-N-request.json",
+          "sha256": "9124e4bc5e754c60c064a63ba5cf324e7a66b0434283a6770f731fb2b8056eee"
+        },
+        "report": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/screen-2-N-report.json",
+        "cwd": "/Users/ilyagulya/Projects/My/bend",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=600000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--experimental-strip-types",
+          "--max-old-space-size=6144",
+          "--max-semi-space-size=128",
+          "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+          "--worker",
+          "js",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/screen-2-N-request.json",
+          "9124e4bc5e754c60c064a63ba5cf324e7a66b0434283a6770f731fb2b8056eee",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/screen-2-N-report.json"
+        ]
+      },
+      {
+        "id": "screen-3-N",
+        "sequence": 3,
+        "role": "N",
+        "source": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/A-projection.neutral.mjs",
+          "sha256": "d0e146649057fef3a294672fed06e155a95bbd3b2fcbe854526f6dc6f518ad58"
+        },
+        "request": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/screen-3-N-request.json",
+          "sha256": "9124e4bc5e754c60c064a63ba5cf324e7a66b0434283a6770f731fb2b8056eee"
+        },
+        "report": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/screen-3-N-report.json",
+        "cwd": "/Users/ilyagulya/Projects/My/bend",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=600000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--experimental-strip-types",
+          "--max-old-space-size=6144",
+          "--max-semi-space-size=128",
+          "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+          "--worker",
+          "js",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/screen-3-N-request.json",
+          "9124e4bc5e754c60c064a63ba5cf324e7a66b0434283a6770f731fb2b8056eee",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/screen-3-N-report.json"
+        ]
+      },
+      {
+        "id": "screen-4-C",
+        "sequence": 4,
+        "role": "C",
+        "source": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/A-projection.candidate.mjs",
+          "sha256": "4b2763cfc25e2cd6c3299ab15062b4ea838ee3d37f56adeb5700838b57ba938d"
+        },
+        "request": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/screen-4-C-request.json",
+          "sha256": "6f120a619deec3f6c716ed4771d29810b5a0bf48e665dd4a46192bc4e1dd3f4c"
+        },
+        "report": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/screen-4-C-report.json",
+        "cwd": "/Users/ilyagulya/Projects/My/bend",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=600000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--experimental-strip-types",
+          "--max-old-space-size=6144",
+          "--max-semi-space-size=128",
+          "/Users/ilyagulya/Projects/My/bend/evals/selfhost_throughput.mjs",
+          "--worker",
+          "js",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/screen-4-C-request.json",
+          "6f120a619deec3f6c716ed4771d29810b5a0bf48e665dd4a46192bc4e1dd3f4c",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/screen-4-C-report.json"
+        ]
+      }
+    ],
+    "output": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/screen-execution.json"
+  },
+  "analysisCommand": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/projection-screen.ts",
+    "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g79-closed-projection-e3afg2vc/screen-rows.json"
+  ],
+  "analysisSource": "import{readFileSync}from'node:fs';import{pairedStats,median,classifyRatio}from'/Users/ilyagulya/Projects/My/bend/evals/selfhost_corpus_calibration.ts';\nconst rows=JSON.parse(readFileSync(process.argv[2]!,'utf8'));if(rows.length!==4)throw Error('Requireall4originalscreenrows');const find=(n:number)=>rows.find((r:any)=>r.sequence===n),pairs=[[1,2],[4,3]].map(([c,n])=>({candidate:find(c!),neutral:find(n!)}));for(const p of pairs)if(p.candidate.role!=='C'||p.neutral.role!=='N')throw Error('Frozenpairmappingdiffers');\nconst statistics:any={};for(const key of['checkerCpuMs','checkerWallMs','footprintBytes','rssBytes','guardElapsedMs']){const s=pairedStats(pairs.map(p=>p.neutral[key]),pairs.map(p=>p.candidate[key]));statistics[key]={...s,direction:classifyRatio(s.ci95,.02),pairedRatios:pairs.map(p=>p.candidate[key]/p.neutral[key])};}const medianFootprintRatio=median(pairs.map(p=>p.candidate.footprintBytes))!/median(pairs.map(p=>p.neutral.footprintBytes))!,gate={everyCheckerCpuBelow1:statistics.checkerCpuMs.pairedRatios.every((x:number)=>x<1),geometricCheckerCpuAtMost095:statistics.checkerCpuMs.geometricMeanRatio<=.95,medianWholeTreePhysicalAtMost1:medianFootprintRatio<=1,everyPairedPhysicalAtMost105:statistics.footprintBytes.pairedRatios.every((x:number)=>x<=1.05)};\nconsole.log(JSON.stringify({schemaVersion:1,status:Object.values(gate).every(Boolean)?'POINT_SCREEN_EARNS_NARROW_SOURCE_INVESTIGATION_ONLY':'POINT_SCREEN_FAILS_NO_SOURCE_IMPLEMENTATION_EARNED',pairs:pairs.map(p=>({candidate:p.candidate.id,neutral:p.neutral.id})),statistics,medianFootprintRatio,gate,passed:Object.values(gate).every(Boolean),acceptedOptimization:false,sourceRebuildExecuted:false,scope:'TwofreshC/Npairs,fixedimageURL,fixedunmodifiedROOTproductiondriver,identical52files17modules2954decl263032expand1975761checkand8GiB600sguards. OriginalAonlyartifactauthority,NOTtimedhere. CandidateispatchedJSdiagnosticonly,Nexactoriginaltokensandcandidatebytes. Pointscreenonly,notcausalframetime/precision/equivalence/performancequalification/promotion. Nooldpooling,resampling,outlierexclusion,relaxedgates,changedhashdriverorheap/GCflags.'},null,2));\n",
+  "collectorSource": "def g79_collect_actual_rows_acc(plan,executionPath,activation=False):\n    execution=json.loads(read(str(executionPath)))\n    assert execution['status']=='ALL_CELLS_FINISHED' and len(execution['cells'])==len(plan['cells']) and all(c['passed'] for c in execution['cells'])\n    assert [x['id'] for x in execution['cells']]==[x['id'] for x in plan['cells']]\n    rows=[]\n    for cell,actual in zip(plan['cells'],execution['cells']):\n        req=json.loads(read(cell['request']['path']));r=json.loads(read(cell['report']));guard=actual['guardian'];slot=plan['slot']\n        assert r['status']=='PASS' and r['mode']=='js' and r['stopAfter']=='check' and r['checksExcluded']==r['outputPatches']==0 and r['acceptanceEvidence']is False\n        assert r['requestSha256']==cell['request']['sha256']==g56_ref_acc(cell['request']['path'])['sha256']\n        assert r['moduleCount']==17 and r['sourceDeclarations']==2954 and r['stepCounts']=={'expand':263032,'check':1975761}\n        assert r['exports']==req['exports']==g79_protocol_acc['runtime']['ABIExports'] and r['limits']==g79_protocol_acc['limits'] and r['workerPolicy']==g79_protocol_acc['runtime']['workerPolicy']\n        assert r['runtime']['versions']['node']=='23.11.0' and r['runtime']['versions']['v8']=='12.9.202.28-node.14' and r['runtime']['execArgv']==g79_protocol_acc['runtime']['execArgv'] and Path(r['runtime']['execPath']).resolve()==Path(g43_tools_acc['node']).resolve()\n        assert [p['phase'] for p in r['phases']]==['startup','load-parse','expand','check'] and len(req['inputs'])==52 and all(g56_ref_acc(p)['sha256']==h for p,h in req['inputs'].items())\n        assert all(g56_ref_acc(p)['sha256']==h for p,h in req['pins'].items()if p!=slot)\n        a=actual['activation'];assert a['postPinsVerified']is True and a['active']['sha256']==a['post']['sha256']==cell['source']['sha256']==req['pins'][slot]\n        assert req['image']==slot and r['source']==req['root'] and r['sourceSha256']==g56_ref_acc(req['root'])['sha256']\n        assert guard['status']=='PASS' and guard['ownedTreeStopped'] and guard['timeoutMs']==600000 and guard['memoryLimitBytes']==guard['rssLimitBytes']==8589934592\n        check=r['phases'][-1];row={k:cell[k]for k in ['id','sequence','role']};row.update({'request':cell['request'],'report':g56_ref_acc(cell['report']),'image':cell['source'],'activation':a,'checkerCpuMs':check['userCpuMs']+check['systemCpuMs'],'checkerWallMs':check['elapsedMs'],'footprintBytes':guard['peakFootprintBytes'],'rssBytes':guard['peakRssBytes'],'guardElapsedMs':guard['elapsedMs']})\n        if activation:\n            keys=['selectedGeneric','selectedElided','selectedFallback'];before=check['beforeCounters'];after=check['afterCounters'];final=r['g79Counters'];assert all(isinstance(x.get(k),int)and x[k]>=0 for x in [before,after,final]for k in keys)\n            assert all(before[k]<=after[k]<=final[k]for k in keys);row['checkCounters']={k:after[k]-before[k]for k in keys};row['finalCounters']=final\n        rows.append(row)\n    return rows\n",
+  "controllerSource": "import{readFileSync,writeFileSync,existsSync,realpathSync,openSync,readSync,closeSync}from'node:fs';import{createHash}from'node:crypto';\n// Bound pin verification's temporary memory without omitting pre/post checks.\nconst hashBuffer=Buffer.allocUnsafe(65536);\nfunction hash(path){\n  const digest=createHash('sha256'),fd=openSync(path,'r');\n  try{\n    for(let size;(size=readSync(fd,hashBuffer,0,hashBuffer.length,null))!==0;){\n      digest.update(size===hashBuffer.length?hashBuffer:hashBuffer.subarray(0,size));\n    }\n  }finally{closeSync(fd);}\n  return digest.digest('hex');\n}\nconst plan=JSON.parse(readFileSync(process.argv[2],'utf8')),result={schemaVersion:1,status:'RUNNING',cells:[]};\nconst ref=path=>({path:realpathSync(path),sha256:hash(path)}),save=()=>writeFileSync(plan.output,JSON.stringify(result,null,2)+'\\n');\nfor(const cell of plan.cells){\n if(existsSync(cell.report)||existsSync(cell.report+'.physical.json'))throw Error('Existingactualreport '+cell.id);\n for(const[path,sha256]of Object.entries(plan.immutablePins))if(realpathSync(path)!==path||hash(path)!==sha256)throw Error('Immutablepreactivationdrift '+path);\n const beforeActivation=existsSync(plan.slot)?ref(plan.slot):null;writeFileSync(plan.slot,readFileSync(cell.source.path));const activated=ref(plan.slot);if(activated.sha256!==cell.source.sha256)throw Error('Activationbytesdiffer');\n const request=JSON.parse(readFileSync(cell.request.path,'utf8'));if(hash(cell.request.path)!==cell.request.sha256)throw Error('Requestdrift');for(const[path,sha256]of Object.entries({...request.pins,...request.inputs}))if(realpathSync(path)!==path||hash(path)!==sha256)throw Error('Activepre-rundrift '+path);\n console.log('START '+cell.id+' '+new Date().toISOString());const start=performance.now(),child=Bun.spawn(cell.command,{cwd:cell.cwd,stdout:'pipe',stderr:'pipe'}),[exitCode,stdout,stderr]=await Promise.all([child.exited,new Response(child.stdout).text(),new Response(child.stderr).text()]);\n const line=stderr.split('\\n').find(x=>x.startsWith('HEAVY_GATE ')),guardian=line?JSON.parse(line.slice(11)):null,postActive=ref(plan.slot);let postPinsVerified=true;for(const[path,sha256]of Object.entries({...request.pins,...request.inputs}))if(realpathSync(path)!==path||hash(path)!==sha256)postPinsVerified=false;\n const passed=exitCode===0&&guardian?.status==='PASS'&&guardian.ownedTreeStopped&&postPinsVerified&&postActive.sha256===activated.sha256;result.cells.push({...cell,exitCode,elapsedMs:performance.now()-start,stdout,stderr,guardian,activation:{before:beforeActivation,active:activated,post:postActive,postPinsVerified},passed});save();console.log('FINISH '+cell.id+' '+(passed?'PASS':'FAIL')+' '+new Date().toISOString());if(!passed){result.status='FAILED_CELL_RETAINED';save();process.exit(exitCode||1);}\n}\nresult.status='ALL_CELLS_FINISHED';save();console.log(JSON.stringify({status:result.status,cells:result.cells.length,output:plan.output}));\n",
+  "pointScreenGate": {
+    "everyCheckerCpuC_over_N_below": 1,
+    "geometricCheckerCpuC_over_N_atMost": 0.95,
+    "medianWholeTreePhysicalC_over_N_atMost": 1,
+    "everyPairedPhysicalC_over_N_atMost": 1.05
+  },
+  "environment": {
+    "NODE_OPTIONS": null,
+    "NODE_COMPILE_CACHE": null,
+    "NODE_DISABLE_COMPILE_CACHE": null,
+    "SELFHOST_CPU_PROFILE_DIR": null
+  },
+  "scope": "No compilerC1/C2rebuild,main source/helper/hashunchanged,nocounter/profiler/GCownerprobesinperformanceimages,onequietheavylane;fourfreshrowsretained. Conditionaltyped-valueABIandASTnotactualBIRremainlimits. Pointscreenonlyearnsnarrowfuturesourceinvestigation,notqualification."
+}
