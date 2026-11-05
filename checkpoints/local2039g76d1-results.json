@@ -1,0 +1,1495 @@
+{
+  "schemaVersion": 1,
+  "version": "local2039g76d1",
+  "status": "COMPLETE_ALL_EIGHT_CROSSOVERS_WITH_VERIFIED_MUTABLE_SLOT_PROVENANCE",
+  "preflightCheckpoint": "30cb1a09",
+  "command": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun --smol /private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g76-content-origin-bevhx8ec/content-origin-controller.mjs /private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g76-content-origin-bevhx8ec/content-origin-plan.json",
+  "execution": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g76-content-origin-bevhx8ec/content-origin-execution.json",
+    "sha256": "b2bb156239655f7bcf7554c6ad071cd8bf6e1f40e2ed77320a95e804624dbf04"
+  },
+  "allEightRows": [
+    {
+      "id": "cross-1-U-A",
+      "sequence": 1,
+      "block": 1,
+      "slot": "U",
+      "content": "A",
+      "request": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g76-content-origin-bevhx8ec/cross-1-U-A-request.json",
+        "sha256": "c8fac826e45e23d47ea565a9628b4cdd2fce87960b00ff2261e6e6833be9151e"
+      },
+      "report": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g76-content-origin-bevhx8ec/cross-1-U-A-report.json",
+        "sha256": "60a6694bb3c95a2a1d99dcbc6f7b11ed4bdc5fba7977bb924ead910c6ef44b19"
+      },
+      "immutableSource": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs",
+        "sha256": "4636c05aa8c75e72212cb03949937e25561942bc00da250f876f37f001b9fc18"
+      },
+      "slotPreRun": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g76-content-origin-bevhx8ec/U/compiler.mjs",
+        "sha256": "4636c05aa8c75e72212cb03949937e25561942bc00da250f876f37f001b9fc18",
+        "bytes": 31758525,
+        "sourceSha256": "4636c05aa8c75e72212cb03949937e25561942bc00da250f876f37f001b9fc18",
+        "requestSha256": "c8fac826e45e23d47ea565a9628b4cdd2fce87960b00ff2261e6e6833be9151e",
+        "preparedAt": "2026-11-05T16:46:24.250Z"
+      },
+      "slotPostRun": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g76-content-origin-bevhx8ec/U/compiler.mjs",
+        "sha256": "4636c05aa8c75e72212cb03949937e25561942bc00da250f876f37f001b9fc18",
+        "bytes": 31758525,
+        "sourceSha256": "4636c05aa8c75e72212cb03949937e25561942bc00da250f876f37f001b9fc18",
+        "requestSha256": "c8fac826e45e23d47ea565a9628b4cdd2fce87960b00ff2261e6e6833be9151e",
+        "finishedAt": "2026-11-05T16:47:39.281Z"
+      },
+      "checkerCpuMs": 75663.78,
+      "checkerWallMs": 68388.502084,
+      "footprintBytes": 1256846720,
+      "rssBytes": 1166786560,
+      "phaseMemory": [
+        {
+          "phase": "startup",
+          "rss": 512851968,
+          "heapTotal": 94912512,
+          "heapUsed": 84573936,
+          "external": 42253560,
+          "arrayBuffers": 31785508
+        },
+        {
+          "phase": "load-parse",
+          "rss": 967868416,
+          "heapTotal": 528384000,
+          "heapUsed": 451021000,
+          "external": 10493131,
+          "arrayBuffers": 25039
+        },
+        {
+          "phase": "expand",
+          "rss": 1026310144,
+          "heapTotal": 747798528,
+          "heapUsed": 575209552,
+          "external": 10493131,
+          "arrayBuffers": 25039
+        },
+        {
+          "phase": "check",
+          "rss": 884162560,
+          "heapTotal": 857800704,
+          "heapUsed": 604989016,
+          "external": 10487506,
+          "arrayBuffers": 25039
+        }
+      ],
+      "modules": 17,
+      "declarations": 2954,
+      "steps": {
+        "expand": 263032,
+        "check": 1975761
+      }
+    },
+    {
+      "id": "cross-2-U-C",
+      "sequence": 2,
+      "block": 1,
+      "slot": "U",
+      "content": "C",
+      "request": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g76-content-origin-bevhx8ec/cross-2-U-C-request.json",
+        "sha256": "d6394eec4ada04ff3c90e4c02265db93ac3d26925af36e1e7610af629f0b1293"
+      },
+      "report": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g76-content-origin-bevhx8ec/cross-2-U-C-report.json",
+        "sha256": "74e73dbfb337d6e6bde9a4185c73230aa76643846f021b9a0b61290ffb5657d5"
+      },
+      "immutableSource": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/real-own-c2.json.output.mjs",
+        "sha256": "505d4c08336e6f6312346806d97e2d189b6e0bd5783f829ead6723e62c24edaa"
+      },
+      "slotPreRun": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g76-content-origin-bevhx8ec/U/compiler.mjs",
+        "sha256": "505d4c08336e6f6312346806d97e2d189b6e0bd5783f829ead6723e62c24edaa",
+        "bytes": 31801158,
+        "sourceSha256": "505d4c08336e6f6312346806d97e2d189b6e0bd5783f829ead6723e62c24edaa",
+        "requestSha256": "d6394eec4ada04ff3c90e4c02265db93ac3d26925af36e1e7610af629f0b1293",
+        "preparedAt": "2026-11-05T16:47:39.380Z"
+      },
+      "slotPostRun": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g76-content-origin-bevhx8ec/U/compiler.mjs",
+        "sha256": "505d4c08336e6f6312346806d97e2d189b6e0bd5783f829ead6723e62c24edaa",
+        "bytes": 31801158,
+        "sourceSha256": "505d4c08336e6f6312346806d97e2d189b6e0bd5783f829ead6723e62c24edaa",
+        "requestSha256": "d6394eec4ada04ff3c90e4c02265db93ac3d26925af36e1e7610af629f0b1293",
+        "finishedAt": "2026-11-05T16:48:47.010Z"
+      },
+      "checkerCpuMs": 68808.153,
+      "checkerWallMs": 61481.144541999995,
+      "footprintBytes": 1407277752,
+      "rssBytes": 1144324096,
+      "phaseMemory": [
+        {
+          "phase": "startup",
+          "rss": 509100032,
+          "heapTotal": 102563840,
+          "heapUsed": 80262152,
+          "external": 42295193,
+          "arrayBuffers": 25039
+        },
+        {
+          "phase": "load-parse",
+          "rss": 842727424,
+          "heapTotal": 409174016,
+          "heapUsed": 304491016,
+          "external": 10493131,
+          "arrayBuffers": 25039
+        },
+        {
+          "phase": "expand",
+          "rss": 988381184,
+          "heapTotal": 507625472,
+          "heapUsed": 289984976,
+          "external": 10493131,
+          "arrayBuffers": 25039
+        },
+        {
+          "phase": "check",
+          "rss": 772227072,
+          "heapTotal": 1021739008,
+          "heapUsed": 783926528,
+          "external": 10493131,
+          "arrayBuffers": 25039
+        }
+      ],
+      "modules": 17,
+      "declarations": 2954,
+      "steps": {
+        "expand": 263032,
+        "check": 1975761
+      }
+    },
+    {
+      "id": "cross-3-V-C",
+      "sequence": 3,
+      "block": 1,
+      "slot": "V",
+      "content": "C",
+      "request": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g76-content-origin-bevhx8ec/cross-3-V-C-request.json",
+        "sha256": "a315c9adfb282e29109d5d7c867e2448a9c61df2a390842e6df37936307ee312"
+      },
+      "report": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g76-content-origin-bevhx8ec/cross-3-V-C-report.json",
+        "sha256": "73a34c9dab9274baa5f10878dc5eb10a28659861572a06eb606df99b12dd4c06"
+      },
+      "immutableSource": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/real-own-c2.json.output.mjs",
+        "sha256": "505d4c08336e6f6312346806d97e2d189b6e0bd5783f829ead6723e62c24edaa"
+      },
+      "slotPreRun": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g76-content-origin-bevhx8ec/V/compiler.mjs",
+        "sha256": "505d4c08336e6f6312346806d97e2d189b6e0bd5783f829ead6723e62c24edaa",
+        "bytes": 31801158,
+        "sourceSha256": "505d4c08336e6f6312346806d97e2d189b6e0bd5783f829ead6723e62c24edaa",
+        "requestSha256": "a315c9adfb282e29109d5d7c867e2448a9c61df2a390842e6df37936307ee312",
+        "preparedAt": "2026-11-05T16:48:47.084Z"
+      },
+      "slotPostRun": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g76-content-origin-bevhx8ec/V/compiler.mjs",
+        "sha256": "505d4c08336e6f6312346806d97e2d189b6e0bd5783f829ead6723e62c24edaa",
+        "bytes": 31801158,
+        "sourceSha256": "505d4c08336e6f6312346806d97e2d189b6e0bd5783f829ead6723e62c24edaa",
+        "requestSha256": "a315c9adfb282e29109d5d7c867e2448a9c61df2a390842e6df37936307ee312",
+        "finishedAt": "2026-11-05T16:50:01.892Z"
+      },
+      "checkerCpuMs": 75136.323,
+      "checkerWallMs": 67817.980333,
+      "footprintBytes": 1170399072,
+      "rssBytes": 1076346880,
+      "phaseMemory": [
+        {
+          "phase": "startup",
+          "rss": 544309248,
+          "heapTotal": 95010816,
+          "heapUsed": 82548392,
+          "external": 42294249,
+          "arrayBuffers": 31826197
+        },
+        {
+          "phase": "load-parse",
+          "rss": 931987456,
+          "heapTotal": 471875584,
+          "heapUsed": 220293912,
+          "external": 10487506,
+          "arrayBuffers": 25039
+        },
+        {
+          "phase": "expand",
+          "rss": 637206528,
+          "heapTotal": 493797376,
+          "heapUsed": 273409816,
+          "external": 10487433,
+          "arrayBuffers": 25039
+        },
+        {
+          "phase": "check",
+          "rss": 820985856,
+          "heapTotal": 833978368,
+          "heapUsed": 578789288,
+          "external": 10486368,
+          "arrayBuffers": 25039
+        }
+      ],
+      "modules": 17,
+      "declarations": 2954,
+      "steps": {
+        "expand": 263032,
+        "check": 1975761
+      }
+    },
+    {
+      "id": "cross-4-V-A",
+      "sequence": 4,
+      "block": 1,
+      "slot": "V",
+      "content": "A",
+      "request": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g76-content-origin-bevhx8ec/cross-4-V-A-request.json",
+        "sha256": "88e445c800666ef797dfd1b3595243d2f97bd02634717777df0985bd4d4e9593"
+      },
+      "report": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g76-content-origin-bevhx8ec/cross-4-V-A-report.json",
+        "sha256": "1a846205daa99e6873f6278ee4cc56cbcd186faa849a3876598765b91af86065"
+      },
+      "immutableSource": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs",
+        "sha256": "4636c05aa8c75e72212cb03949937e25561942bc00da250f876f37f001b9fc18"
+      },
+      "slotPreRun": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g76-content-origin-bevhx8ec/V/compiler.mjs",
+        "sha256": "4636c05aa8c75e72212cb03949937e25561942bc00da250f876f37f001b9fc18",
+        "bytes": 31758525,
+        "sourceSha256": "4636c05aa8c75e72212cb03949937e25561942bc00da250f876f37f001b9fc18",
+        "requestSha256": "88e445c800666ef797dfd1b3595243d2f97bd02634717777df0985bd4d4e9593",
+        "preparedAt": "2026-11-05T16:50:02.042Z"
+      },
+      "slotPostRun": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g76-content-origin-bevhx8ec/V/compiler.mjs",
+        "sha256": "4636c05aa8c75e72212cb03949937e25561942bc00da250f876f37f001b9fc18",
+        "bytes": 31758525,
+        "sourceSha256": "4636c05aa8c75e72212cb03949937e25561942bc00da250f876f37f001b9fc18",
+        "requestSha256": "88e445c800666ef797dfd1b3595243d2f97bd02634717777df0985bd4d4e9593",
+        "finishedAt": "2026-11-05T16:51:21.197Z"
+      },
+      "checkerCpuMs": 77825.185,
+      "checkerWallMs": 72158.465708,
+      "footprintBytes": 1198202696,
+      "rssBytes": 1090437120,
+      "phaseMemory": [
+        {
+          "phase": "startup",
+          "rss": 509067264,
+          "heapTotal": 90767360,
+          "heapUsed": 79467528,
+          "external": 42251616,
+          "arrayBuffers": 31783564
+        },
+        {
+          "phase": "load-parse",
+          "rss": 861503488,
+          "heapTotal": 481263616,
+          "heapUsed": 256490640,
+          "external": 10493131,
+          "arrayBuffers": 25039
+        },
+        {
+          "phase": "expand",
+          "rss": 948109312,
+          "heapTotal": 489291776,
+          "heapUsed": 234546112,
+          "external": 10487506,
+          "arrayBuffers": 25039
+        },
+        {
+          "phase": "check",
+          "rss": 887472128,
+          "heapTotal": 835502080,
+          "heapUsed": 640369016,
+          "external": 10486368,
+          "arrayBuffers": 25039
+        }
+      ],
+      "modules": 17,
+      "declarations": 2954,
+      "steps": {
+        "expand": 263032,
+        "check": 1975761
+      }
+    },
+    {
+      "id": "cross-5-V-A",
+      "sequence": 5,
+      "block": 2,
+      "slot": "V",
+      "content": "A",
+      "request": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g76-content-origin-bevhx8ec/cross-5-V-A-request.json",
+        "sha256": "88e445c800666ef797dfd1b3595243d2f97bd02634717777df0985bd4d4e9593"
+      },
+      "report": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g76-content-origin-bevhx8ec/cross-5-V-A-report.json",
+        "sha256": "9c94e65682d0de75172cce7ac5594597441ee1d94944343e5d40a2ed3dd6beb7"
+      },
+      "immutableSource": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs",
+        "sha256": "4636c05aa8c75e72212cb03949937e25561942bc00da250f876f37f001b9fc18"
+      },
+      "slotPreRun": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g76-content-origin-bevhx8ec/V/compiler.mjs",
+        "sha256": "4636c05aa8c75e72212cb03949937e25561942bc00da250f876f37f001b9fc18",
+        "bytes": 31758525,
+        "sourceSha256": "4636c05aa8c75e72212cb03949937e25561942bc00da250f876f37f001b9fc18",
+        "requestSha256": "88e445c800666ef797dfd1b3595243d2f97bd02634717777df0985bd4d4e9593",
+        "preparedAt": "2026-11-05T16:51:21.290Z"
+      },
+      "slotPostRun": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g76-content-origin-bevhx8ec/V/compiler.mjs",
+        "sha256": "4636c05aa8c75e72212cb03949937e25561942bc00da250f876f37f001b9fc18",
+        "bytes": 31758525,
+        "sourceSha256": "4636c05aa8c75e72212cb03949937e25561942bc00da250f876f37f001b9fc18",
+        "requestSha256": "88e445c800666ef797dfd1b3595243d2f97bd02634717777df0985bd4d4e9593",
+        "finishedAt": "2026-11-05T16:52:35.430Z"
+      },
+      "checkerCpuMs": 75143.564,
+      "checkerWallMs": 67566.593791,
+      "footprintBytes": 1267233936,
+      "rssBytes": 1086865408,
+      "phaseMemory": [
+        {
+          "phase": "startup",
+          "rss": 525074432,
+          "heapTotal": 94027776,
+          "heapUsed": 82015896,
+          "external": 42251616,
+          "arrayBuffers": 31783564
+        },
+        {
+          "phase": "load-parse",
+          "rss": 848150528,
+          "heapTotal": 347668480,
+          "heapUsed": 178504800,
+          "external": 42251656,
+          "arrayBuffers": 25039
+        },
+        {
+          "phase": "expand",
+          "rss": 922189824,
+          "heapTotal": 510197760,
+          "heapUsed": 366676640,
+          "external": 10493131,
+          "arrayBuffers": 25039
+        },
+        {
+          "phase": "check",
+          "rss": 906035200,
+          "heapTotal": 836403200,
+          "heapUsed": 490836168,
+          "external": 10487506,
+          "arrayBuffers": 25039
+        }
+      ],
+      "modules": 17,
+      "declarations": 2954,
+      "steps": {
+        "expand": 263032,
+        "check": 1975761
+      }
+    },
+    {
+      "id": "cross-6-V-C",
+      "sequence": 6,
+      "block": 2,
+      "slot": "V",
+      "content": "C",
+      "request": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g76-content-origin-bevhx8ec/cross-6-V-C-request.json",
+        "sha256": "a315c9adfb282e29109d5d7c867e2448a9c61df2a390842e6df37936307ee312"
+      },
+      "report": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g76-content-origin-bevhx8ec/cross-6-V-C-report.json",
+        "sha256": "7895dc25184fb3d966a156e2310e30d41b35edfceca7ce16ff18fc758827b15b"
+      },
+      "immutableSource": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/real-own-c2.json.output.mjs",
+        "sha256": "505d4c08336e6f6312346806d97e2d189b6e0bd5783f829ead6723e62c24edaa"
+      },
+      "slotPreRun": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g76-content-origin-bevhx8ec/V/compiler.mjs",
+        "sha256": "505d4c08336e6f6312346806d97e2d189b6e0bd5783f829ead6723e62c24edaa",
+        "bytes": 31801158,
+        "sourceSha256": "505d4c08336e6f6312346806d97e2d189b6e0bd5783f829ead6723e62c24edaa",
+        "requestSha256": "a315c9adfb282e29109d5d7c867e2448a9c61df2a390842e6df37936307ee312",
+        "preparedAt": "2026-11-05T16:52:35.523Z"
+      },
+      "slotPostRun": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g76-content-origin-bevhx8ec/V/compiler.mjs",
+        "sha256": "505d4c08336e6f6312346806d97e2d189b6e0bd5783f829ead6723e62c24edaa",
+        "bytes": 31801158,
+        "sourceSha256": "505d4c08336e6f6312346806d97e2d189b6e0bd5783f829ead6723e62c24edaa",
+        "requestSha256": "a315c9adfb282e29109d5d7c867e2448a9c61df2a390842e6df37936307ee312",
+        "finishedAt": "2026-11-05T16:53:43.102Z"
+      },
+      "checkerCpuMs": 70023.572,
+      "checkerWallMs": 61378.267333,
+      "footprintBytes": 1392255832,
+      "rssBytes": 1151483904,
+      "phaseMemory": [
+        {
+          "phase": "startup",
+          "rss": 508968960,
+          "heapTotal": 101777408,
+          "heapUsed": 80279792,
+          "external": 42296193,
+          "arrayBuffers": 25039
+        },
+        {
+          "phase": "load-parse",
+          "rss": 845676544,
+          "heapTotal": 408551424,
+          "heapUsed": 302166568,
+          "external": 10493131,
+          "arrayBuffers": 25039
+        },
+        {
+          "phase": "expand",
+          "rss": 785973248,
+          "heapTotal": 525975552,
+          "heapUsed": 370018000,
+          "external": 10493131,
+          "arrayBuffers": 25039
+        },
+        {
+          "phase": "check",
+          "rss": 932659200,
+          "heapTotal": 1009041408,
+          "heapUsed": 542507328,
+          "external": 10493131,
+          "arrayBuffers": 25039
+        }
+      ],
+      "modules": 17,
+      "declarations": 2954,
+      "steps": {
+        "expand": 263032,
+        "check": 1975761
+      }
+    },
+    {
+      "id": "cross-7-U-C",
+      "sequence": 7,
+      "block": 2,
+      "slot": "U",
+      "content": "C",
+      "request": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g76-content-origin-bevhx8ec/cross-7-U-C-request.json",
+        "sha256": "d6394eec4ada04ff3c90e4c02265db93ac3d26925af36e1e7610af629f0b1293"
+      },
+      "report": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g76-content-origin-bevhx8ec/cross-7-U-C-report.json",
+        "sha256": "ce68c321c3398d19392c277e8882001a97b6bd084ee9acd49b7136ece4ae891c"
+      },
+      "immutableSource": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/real-own-c2.json.output.mjs",
+        "sha256": "505d4c08336e6f6312346806d97e2d189b6e0bd5783f829ead6723e62c24edaa"
+      },
+      "slotPreRun": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g76-content-origin-bevhx8ec/U/compiler.mjs",
+        "sha256": "505d4c08336e6f6312346806d97e2d189b6e0bd5783f829ead6723e62c24edaa",
+        "bytes": 31801158,
+        "sourceSha256": "505d4c08336e6f6312346806d97e2d189b6e0bd5783f829ead6723e62c24edaa",
+        "requestSha256": "d6394eec4ada04ff3c90e4c02265db93ac3d26925af36e1e7610af629f0b1293",
+        "preparedAt": "2026-11-05T16:53:43.237Z"
+      },
+      "slotPostRun": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g76-content-origin-bevhx8ec/U/compiler.mjs",
+        "sha256": "505d4c08336e6f6312346806d97e2d189b6e0bd5783f829ead6723e62c24edaa",
+        "bytes": 31801158,
+        "sourceSha256": "505d4c08336e6f6312346806d97e2d189b6e0bd5783f829ead6723e62c24edaa",
+        "requestSha256": "d6394eec4ada04ff3c90e4c02265db93ac3d26925af36e1e7610af629f0b1293",
+        "finishedAt": "2026-11-05T16:54:52.050Z"
+      },
+      "checkerCpuMs": 74307.57500000001,
+      "checkerWallMs": 63082.05475,
+      "footprintBytes": 1179328616,
+      "rssBytes": 1117503488,
+      "phaseMemory": [
+        {
+          "phase": "startup",
+          "rss": 512983040,
+          "heapTotal": 94601216,
+          "heapUsed": 82122616,
+          "external": 42294249,
+          "arrayBuffers": 31826197
+        },
+        {
+          "phase": "load-parse",
+          "rss": 802111488,
+          "heapTotal": 487014400,
+          "heapUsed": 257512320,
+          "external": 10493131,
+          "arrayBuffers": 25039
+        },
+        {
+          "phase": "expand",
+          "rss": 940638208,
+          "heapTotal": 495894528,
+          "heapUsed": 217877672,
+          "external": 10493131,
+          "arrayBuffers": 25039
+        },
+        {
+          "phase": "check",
+          "rss": 935346176,
+          "heapTotal": 835764224,
+          "heapUsed": 603567640,
+          "external": 10486368,
+          "arrayBuffers": 25039
+        }
+      ],
+      "modules": 17,
+      "declarations": 2954,
+      "steps": {
+        "expand": 263032,
+        "check": 1975761
+      }
+    },
+    {
+      "id": "cross-8-U-A",
+      "sequence": 8,
+      "block": 2,
+      "slot": "U",
+      "content": "A",
+      "request": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g76-content-origin-bevhx8ec/cross-8-U-A-request.json",
+        "sha256": "c8fac826e45e23d47ea565a9628b4cdd2fce87960b00ff2261e6e6833be9151e"
+      },
+      "report": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g76-content-origin-bevhx8ec/cross-8-U-A-report.json",
+        "sha256": "19d28955a0224e4cb2c7a4a1d79563743049cfb44d1a598c26b6f168ac25883b"
+      },
+      "immutableSource": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs",
+        "sha256": "4636c05aa8c75e72212cb03949937e25561942bc00da250f876f37f001b9fc18"
+      },
+      "slotPreRun": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g76-content-origin-bevhx8ec/U/compiler.mjs",
+        "sha256": "4636c05aa8c75e72212cb03949937e25561942bc00da250f876f37f001b9fc18",
+        "bytes": 31758525,
+        "sourceSha256": "4636c05aa8c75e72212cb03949937e25561942bc00da250f876f37f001b9fc18",
+        "requestSha256": "c8fac826e45e23d47ea565a9628b4cdd2fce87960b00ff2261e6e6833be9151e",
+        "preparedAt": "2026-11-05T16:54:52.146Z"
+      },
+      "slotPostRun": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g76-content-origin-bevhx8ec/U/compiler.mjs",
+        "sha256": "4636c05aa8c75e72212cb03949937e25561942bc00da250f876f37f001b9fc18",
+        "bytes": 31758525,
+        "sourceSha256": "4636c05aa8c75e72212cb03949937e25561942bc00da250f876f37f001b9fc18",
+        "requestSha256": "c8fac826e45e23d47ea565a9628b4cdd2fce87960b00ff2261e6e6833be9151e",
+        "finishedAt": "2026-11-05T16:55:55.871Z"
+      },
+      "checkerCpuMs": 67869.67,
+      "checkerWallMs": 58139.914417,
+      "footprintBytes": 1404380808,
+      "rssBytes": 1373470720,
+      "phaseMemory": [
+        {
+          "phase": "startup",
+          "rss": 514064384,
+          "heapTotal": 96387072,
+          "heapUsed": 83759408,
+          "external": 42253960,
+          "arrayBuffers": 31785908
+        },
+        {
+          "phase": "load-parse",
+          "rss": 844627968,
+          "heapTotal": 407715840,
+          "heapUsed": 278014608,
+          "external": 10493131,
+          "arrayBuffers": 25039
+        },
+        {
+          "phase": "expand",
+          "rss": 1009942528,
+          "heapTotal": 514916352,
+          "heapUsed": 318701296,
+          "external": 10493131,
+          "arrayBuffers": 25039
+        },
+        {
+          "phase": "check",
+          "rss": 1166213120,
+          "heapTotal": 1054277632,
+          "heapUsed": 857750960,
+          "external": 10493131,
+          "arrayBuffers": 25039
+        }
+      ],
+      "modules": 17,
+      "declarations": 2954,
+      "steps": {
+        "expand": 263032,
+        "check": 1975761
+      }
+    }
+  ],
+  "statisticsCommand": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g76-content-origin-bevhx8ec/content-origin-statistics.ts",
+    "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g76-content-origin-bevhx8ec/actual-crossover-rows.json",
+    "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g76-content-origin-bevhx8ec/repository/checkpoints/local2039g76d1-protocol.json"
+  ],
+  "statistics": {
+    "schemaVersion": 1,
+    "content_C_over_A": {
+      "pairs": [
+        {
+          "baseline": "cross-1-U-A",
+          "variant": "cross-2-U-C"
+        },
+        {
+          "baseline": "cross-4-V-A",
+          "variant": "cross-3-V-C"
+        },
+        {
+          "baseline": "cross-8-U-A",
+          "variant": "cross-7-U-C"
+        },
+        {
+          "baseline": "cross-5-V-A",
+          "variant": "cross-6-V-C"
+        }
+      ],
+      "checkerCpuMs": {
+        "n": 4,
+        "logRatios": [
+          -0.09497733748047596,
+          -0.03516098982530225,
+          0.09062364960756965,
+          -0.07056854226090785
+        ],
+        "meanLog": -0.027520804989779102,
+        "varianceLog": 0.006806658678752842,
+        "geometricMeanRatio": 0.9728544421161789,
+        "ci95": [
+          0.8531664154282396,
+          1.109333124734078
+        ],
+        "baselineMedian": 75403.67199999999,
+        "variantMedian": 72165.5735,
+        "direction": "inconclusive"
+      },
+      "checkerWallMs": {
+        "n": 4,
+        "logRatios": [
+          -0.10647417732100783,
+          -0.06203725672705102,
+          0.08158391216641954,
+          -0.09605786594906518
+        ],
+        "meanLog": -0.045746346957676126,
+        "varianceLog": 0.007565835651193919,
+        "geometricMeanRatio": 0.955284242216205,
+        "ci95": [
+          0.8318078449975216,
+          1.0970898975223156
+        ],
+        "baselineMedian": 67977.5479375,
+        "variantMedian": 62281.599646,
+        "direction": "inconclusive"
+      },
+      "footprintBytes": {
+        "n": 4,
+        "logRatios": [
+          0.11305118485645929,
+          -0.023477902874741493,
+          -0.17465119253495096,
+          0.09408881035925386
+        ],
+        "meanLog": 0.0022527249515051744,
+        "varianceLog": 0.017555742176905576,
+        "geometricMeanRatio": 1.0022552642427758,
+        "ci95": [
+          0.811735043262685,
+          1.2374919908161284
+        ],
+        "baselineMedian": 1262040328,
+        "variantMedian": 1285792224,
+        "direction": "inconclusive"
+      },
+      "rssBytes": {
+        "n": 4,
+        "logRatios": [
+          -0.019439286726668437,
+          -0.013005854405197052,
+          -0.2062437397712141,
+          0.05775368110614807
+        ],
+        "meanLog": -0.045233799949232885,
+        "varianceLog": 0.01274487312066295,
+        "geometricMeanRatio": 0.9557739957969106,
+        "ci95": [
+          0.7986183849878756,
+          1.1438553734966435
+        ],
+        "baselineMedian": 1128611840,
+        "variantMedian": 1130913792,
+        "direction": "inconclusive"
+      },
+      "medianFootprintRatio": 1.0188202353546345,
+      "medianRSSRatio": 1.0020396312695072
+    },
+    "contentBySlot": {
+      "U": {
+        "pairs": [
+          {
+            "baseline": "cross-1-U-A",
+            "variant": "cross-2-U-C"
+          },
+          {
+            "baseline": "cross-8-U-A",
+            "variant": "cross-7-U-C"
+          }
+        ],
+        "checkerCpuMs": {
+          "n": 2,
+          "logRatios": [
+            -0.09497733748047596,
+            0.09062364960756965
+          ],
+          "meanLog": -0.002176843936453156,
+          "varianceLog": 0.01722386320402844,
+          "geometricMeanRatio": 0.9978255236700272,
+          "ci95": [
+            0.30687373135329005,
+            3.244512885793766
+          ],
+          "baselineMedian": 71766.725,
+          "variantMedian": 71557.864,
+          "direction": "inconclusive"
+        },
+        "checkerWallMs": {
+          "n": 2,
+          "logRatios": [
+            -0.10647417732100783,
+            0.08158391216641954
+          ],
+          "meanLog": -0.012445132577294148,
+          "varianceLog": 0.017682922510830618,
+          "geometricMeanRatio": 0.9876319878290621,
+          "ci95": [
+            0.29903417147923705,
+            3.2618912365703037
+          ],
+          "baselineMedian": 63264.2082505,
+          "variantMedian": 62281.599646,
+          "direction": "inconclusive"
+        },
+        "footprintBytes": {
+          "n": 2,
+          "logRatios": [
+            0.11305118485645929,
+            -0.17465119253495096
+          ],
+          "meanLog": -0.030800003839245832,
+          "varianceLog": 0.041386328978334726,
+          "geometricMeanRatio": 0.9696694838586458,
+          "ci95": [
+            0.1558903101759787,
+            6.031541709457565
+          ],
+          "baselineMedian": 1330613764,
+          "variantMedian": 1293303184,
+          "direction": "inconclusive"
+        },
+        "rssBytes": {
+          "n": 2,
+          "logRatios": [
+            -0.019439286726668437,
+            -0.2062437397712141
+          ],
+          "meanLog": -0.11284151324894127,
+          "varianceLog": 0.017447951838635935,
+          "geometricMeanRatio": 0.8932922238800375,
+          "ci95": [
+            0.27263283213934564,
+            2.9269071922955017
+          ],
+          "baselineMedian": 1270128640,
+          "variantMedian": 1130913792,
+          "direction": "inconclusive"
+        },
+        "medianFootprintRatio": 0.9719598721962416,
+        "medianRSSRatio": 0.890393111677255
+      },
+      "V": {
+        "pairs": [
+          {
+            "baseline": "cross-4-V-A",
+            "variant": "cross-3-V-C"
+          },
+          {
+            "baseline": "cross-5-V-A",
+            "variant": "cross-6-V-C"
+          }
+        ],
+        "checkerCpuMs": {
+          "n": 2,
+          "logRatios": [
+            -0.03516098982530225,
+            -0.07056854226090785
+          ],
+          "meanLog": -0.05286476604310505,
+          "varianceLog": 0.0006268473847400801,
+          "geometricMeanRatio": 0.9485082743365099,
+          "ci95": [
+            0.7574387739984513,
+            1.1877764611066284
+          ],
+          "baselineMedian": 76484.3745,
+          "variantMedian": 72579.94750000001,
+          "direction": "inconclusive"
+        },
+        "checkerWallMs": {
+          "n": 2,
+          "logRatios": [
+            -0.06203725672705102,
+            -0.09605786594906518
+          ],
+          "meanLog": -0.0790475613380581,
+          "varianceLog": 0.0005787009259184974,
+          "geometricMeanRatio": 0.923995976914971,
+          "ci95": [
+            0.7443946253500389,
+            1.1469300506483124
+          ],
+          "baselineMedian": 69862.52974950001,
+          "variantMedian": 64598.123833000005,
+          "direction": "inconclusive"
+        },
+        "footprintBytes": {
+          "n": 2,
+          "logRatios": [
+            -0.023477902874741493,
+            0.09408881035925386
+          ],
+          "meanLog": 0.03530545374225618,
+          "varianceLog": 0.006910966030322248,
+          "geometricMeanRatio": 1.035936091032839,
+          "ci95": [
+            0.49085431278938185,
+            2.186317929256693
+          ],
+          "baselineMedian": 1232718316,
+          "variantMedian": 1281327452,
+          "direction": "inconclusive"
+        },
+        "rssBytes": {
+          "n": 2,
+          "logRatios": [
+            -0.013005854405197052,
+            0.05775368110614807
+          ],
+          "meanLog": 0.02237391335047551,
+          "varianceLog": 0.0025034559328906553,
+          "geometricMeanRatio": 1.0226260865383616,
+          "ci95": [
+            0.6523535174800105,
+            1.6030634998466293
+          ],
+          "baselineMedian": 1088651264,
+          "variantMedian": 1113915392,
+          "direction": "inconclusive"
+        },
+        "medianFootprintRatio": 1.0394324764782679,
+        "medianRSSRatio": 1.023206814556181
+      }
+    },
+    "url_V_over_U": {
+      "pairs": [
+        {
+          "baseline": "cross-1-U-A",
+          "variant": "cross-4-V-A"
+        },
+        {
+          "baseline": "cross-2-U-C",
+          "variant": "cross-3-V-C"
+        },
+        {
+          "baseline": "cross-8-U-A",
+          "variant": "cross-5-V-A"
+        },
+        {
+          "baseline": "cross-7-U-C",
+          "variant": "cross-6-V-C"
+        }
+      ],
+      "checkerCpuMs": {
+        "n": 4,
+        "logRatios": [
+          0.02816551514718277,
+          0.0879818628023564,
+          0.10181122201504143,
+          -0.059380969853436
+        ],
+        "meanLog": 0.039644407527786155,
+        "varianceLog": 0.005379670913897611,
+        "geometricMeanRatio": 1.0404407355114702,
+        "ci95": [
+          0.9258289064777624,
+          1.1692407922647317
+        ],
+        "baselineMedian": 71557.864,
+        "variantMedian": 75139.9435,
+        "direction": "inconclusive"
+      },
+      "checkerWallMs": {
+        "n": 4,
+        "logRatios": [
+          0.053659900855615415,
+          0.09809682144957224,
+          0.15026126310119278,
+          -0.027380515014291815
+        ],
+        "meanLog": 0.06865936759802216,
+        "varianceLog": 0.005658025364572043,
+        "geometricMeanRatio": 1.0710713054114045,
+        "ci95": [
+          0.9502480774732507,
+          1.2072571031410304
+        ],
+        "baselineMedian": 62281.599646,
+        "variantMedian": 67692.287062,
+        "direction": "inconclusive"
+      },
+      "footprintBytes": {
+        "n": 4,
+        "logRatios": [
+          -0.047783300336127134,
+          -0.18431238806732786,
+          -0.10275997757396609,
+          0.16598002532023887
+        ],
+        "meanLog": -0.04221891016429555,
+        "varianceLog": 0.02241117882685317,
+        "geometricMeanRatio": 0.9586598972049208,
+        "ci95": [
+          0.7554582177969675,
+          1.2165183684002787
+        ],
+        "baselineMedian": 1330613764,
+        "variantMedian": 1232718316,
+        "direction": "inconclusive"
+      },
+      "rssBytes": {
+        "n": 4,
+        "logRatios": [
+          -0.067674796887567,
+          -0.0612413645660956,
+          -0.2340431277391567,
+          0.029954293138205385
+        ],
+        "meanLog": -0.08325124901365347,
+        "varianceLog": 0.01209358211256476,
+        "geometricMeanRatio": 0.9201199389488122,
+        "ci95": [
+          0.7724103180085005,
+          1.0960763758749383
+        ],
+        "baselineMedian": 1155555328,
+        "variantMedian": 1088651264,
+        "direction": "inconclusive"
+      },
+      "medianFootprintRatio": 0.9264283516009083,
+      "medianRSSRatio": 0.9421022409062875
+    },
+    "urlByContent": {
+      "A": {
+        "pairs": [
+          {
+            "baseline": "cross-1-U-A",
+            "variant": "cross-4-V-A"
+          },
+          {
+            "baseline": "cross-8-U-A",
+            "variant": "cross-5-V-A"
+          }
+        ],
+        "checkerCpuMs": {
+          "n": 2,
+          "logRatios": [
+            0.02816551514718277,
+            0.10181122201504143
+          ],
+          "meanLog": 0.06498836858111211,
+          "varianceLog": 0.002711845070033282,
+          "geometricMeanRatio": 1.0671466118827477,
+          "ci95": [
+            0.6683853863559671,
+            1.7038102784705815
+          ],
+          "baselineMedian": 71766.725,
+          "variantMedian": 76484.3745,
+          "direction": "inconclusive"
+        },
+        "checkerWallMs": {
+          "n": 2,
+          "logRatios": [
+            0.053659900855615415,
+            0.15026126310119278
+          ],
+          "meanLog": 0.1019605819784041,
+          "varianceLog": 0.00466591159385063,
+          "geometricMeanRatio": 1.107339821722634,
+          "ci95": [
+            0.5994409780840549,
+            2.0455750033838593
+          ],
+          "baselineMedian": 63264.2082505,
+          "variantMedian": 69862.52974950001,
+          "direction": "inconclusive"
+        },
+        "footprintBytes": {
+          "n": 2,
+          "logRatios": [
+            -0.047783300336127134,
+            -0.10275997757396609
+          ],
+          "meanLog": -0.07527163895504661,
+          "varianceLog": 0.0015112175200567598,
+          "geometricMeanRatio": 0.9274915092823155,
+          "ci95": [
+            0.6540679084896908,
+            1.3152158799186007
+          ],
+          "baselineMedian": 1330613764,
+          "variantMedian": 1232718316,
+          "direction": "inconclusive"
+        },
+        "rssBytes": {
+          "n": 2,
+          "logRatios": [
+            -0.067674796887567,
+            -0.2340431277391567
+          ],
+          "meanLog": -0.15085896231336185,
+          "varianceLog": 0.013839210755172006,
+          "geometricMeanRatio": 0.8599689781417733,
+          "ci95": [
+            0.29884985197680464,
+            2.474642829749857
+          ],
+          "baselineMedian": 1270128640,
+          "variantMedian": 1088651264,
+          "direction": "inconclusive"
+        },
+        "medianFootprintRatio": 0.9264283516009083,
+        "medianRSSRatio": 0.8571189009642362
+      },
+      "C": {
+        "pairs": [
+          {
+            "baseline": "cross-2-U-C",
+            "variant": "cross-3-V-C"
+          },
+          {
+            "baseline": "cross-7-U-C",
+            "variant": "cross-6-V-C"
+          }
+        ],
+        "checkerCpuMs": {
+          "n": 2,
+          "logRatios": [
+            0.0879818628023564,
+            -0.059380969853436
+          ],
+          "meanLog": 0.014300446474460198,
+          "varianceLog": 0.010857902224169536,
+          "geometricMeanRatio": 1.0144031870201826,
+          "ci95": [
+            0.39775831191836725,
+            2.587032866450545
+          ],
+          "baselineMedian": 71557.864,
+          "variantMedian": 72579.94750000001,
+          "direction": "inconclusive"
+        },
+        "checkerWallMs": {
+          "n": 2,
+          "logRatios": [
+            0.09809682144957224,
+            -0.027380515014291815
+          ],
+          "meanLog": 0.035358153217640215,
+          "varianceLog": 0.007872280983032874,
+          "geometricMeanRatio": 1.035990685759912,
+          "ci95": [
+            0.4668196846043166,
+            2.29912477210771
+          ],
+          "baselineMedian": 62281.599646,
+          "variantMedian": 64598.123833000005,
+          "direction": "inconclusive"
+        },
+        "footprintBytes": {
+          "n": 2,
+          "logRatios": [
+            -0.18431238806732786,
+            0.16598002532023887
+          ],
+          "meanLog": -0.009166181373544496,
+          "varianceLog": 0.06135238743844297,
+          "geometricMeanRatio": 0.990875700005152,
+          "ci95": [
+            0.10703389249465796,
+            9.173119186613745
+          ],
+          "baselineMedian": 1293303184,
+          "variantMedian": 1281327452,
+          "direction": "inconclusive"
+        },
+        "rssBytes": {
+          "n": 2,
+          "logRatios": [
+            -0.0612413645660956,
+            0.029954293138205385
+          ],
+          "meanLog": -0.015643535713945108,
+          "varianceLog": 0.004158323992060017,
+          "geometricMeanRatio": 0.9844781888301941,
+          "ci95": [
+            0.5515521499087638,
+            1.7572178885400072
+          ],
+          "baselineMedian": 1130913792,
+          "variantMedian": 1113915392,
+          "direction": "inconclusive"
+        },
+        "medianFootprintRatio": 0.9907401975436566,
+        "medianRSSRatio": 0.9849693229313804
+      }
+    },
+    "block2_over_block1": {
+      "pairs": [
+        {
+          "baseline": "cross-1-U-A",
+          "variant": "cross-8-U-A"
+        },
+        {
+          "baseline": "cross-2-U-C",
+          "variant": "cross-7-U-C"
+        },
+        {
+          "baseline": "cross-4-V-A",
+          "variant": "cross-5-V-A"
+        },
+        {
+          "baseline": "cross-3-V-C",
+          "variant": "cross-6-V-C"
+        }
+      ],
+      "checkerCpuMs": {
+        "n": 4,
+        "logRatios": [
+          -0.10871032983861847,
+          0.07689065724942719,
+          -0.03506462297075974,
+          -0.07047217540636522
+        ],
+        "meanLog": -0.034339117741579064,
+        "varianceLog": 0.0064030880824590105,
+        "geometricMeanRatio": 0.9662437786637661,
+        "ci95": [
+          0.850723872103462,
+          1.0974501485399584
+        ],
+        "baselineMedian": 75400.0515,
+        "variantMedian": 72165.5735,
+        "direction": "inconclusive"
+      },
+      "checkerWallMs": {
+        "n": 4,
+        "logRatios": [
+          -0.16235228919746397,
+          0.025705800289963214,
+          -0.06575092695188656,
+          -0.0997715361739008
+        ],
+        "meanLog": -0.07554223800832202,
+        "varianceLog": 0.006156692969504292,
+        "geometricMeanRatio": 0.9272405649121684,
+        "ci95": [
+          0.818405845899354,
+          1.0505485383890707
+        ],
+        "baselineMedian": 68103.2412085,
+        "variantMedian": 62230.1610415,
+        "direction": "inconclusive"
+      },
+      "footprintBytes": {
+        "n": 4,
+        "logRatios": [
+          0.1109905185534224,
+          -0.17671185883798804,
+          0.05601384131558329,
+          0.1735805545495786
+        ],
+        "meanLog": 0.040968263895149064,
+        "varianceLog": 0.023366713671023633,
+        "geometricMeanRatio": 1.0418190417424797,
+        "ci95": [
+          0.8168752513104502,
+          1.3287058384937183
+        ],
+        "baselineMedian": 1227524708,
+        "variantMedian": 1329744884,
+        "direction": "inconclusive"
+      },
+      "rssBytes": {
+        "n": 4,
+        "logRatios": [
+          0.16308746826321655,
+          -0.02371698478132909,
+          -0.003280862588373102,
+          0.067478672922972
+        ],
+        "meanLog": 0.05089207345412159,
+        "varianceLog": 0.007121380156184617,
+        "geometricMeanRatio": 1.0522093258367644,
+        "ci95": [
+          0.9199936639415468,
+          1.2034261851701213
+        ],
+        "baselineMedian": 1117380608,
+        "variantMedian": 1134493696,
+        "direction": "inconclusive"
+      },
+      "medianFootprintRatio": 1.0832734162773365,
+      "medianRSSRatio": 1.0153153615495716
+    },
+    "interaction": {
+      "checkerCpuMs": {
+        "n": 2,
+        "logRatios": [
+          0.05981634765517377,
+          -0.16119219186847752
+        ],
+        "meanLog": -0.05068792210665188,
+        "varianceLog": 0.02442238727118867,
+        "geometricMeanRatio": 0.9505752777778952,
+        "ci95": [
+          0.23345223170939716,
+          3.8705706606708374
+        ],
+        "baselineMedian": 1.0021252106395844,
+        "variantMedian": 0.9486569207016831,
+        "direction": "inconclusive",
+        "definition": "(C/A at V)/(C/A at U), paired within mirrored block"
+      },
+      "checkerWallMs": {
+        "n": 2,
+        "logRatios": [
+          0.044436920593956895,
+          -0.1776417781154847
+        ],
+        "meanLog": -0.0666024287607639,
+        "varianceLog": 0.02465947421023947,
+        "geometricMeanRatio": 0.9355670819715237,
+        "ci95": [
+          0.22820951753521,
+          3.8354481194399166
+        ],
+        "baselineMedian": 0.9920012606135962,
+        "variantMedian": 0.9241296594701967,
+        "direction": "inconclusive",
+        "definition": "(C/A at V)/(C/A at U), paired within mirrored block"
+      },
+      "footprintBytes": {
+        "n": 2,
+        "logRatios": [
+          -0.1365290877312008,
+          0.26874000289420485
+        ],
+        "meanLog": 0.06610545758150203,
+        "varianceLog": 0.08212151790817161,
+        "geometricMeanRatio": 1.068339375712326,
+        "ci95": [
+          0.08138123492037094,
+          14.024719860962756
+        ],
+        "baselineMedian": 0.9797195616662903,
+        "variantMedian": 1.0377264362697534,
+        "direction": "inconclusive",
+        "definition": "(C/A at V)/(C/A at U), paired within mirrored block"
+      },
+      "rssBytes": {
+        "n": 2,
+        "logRatios": [
+          0.006433432321471428,
+          0.2639974208773622
+        ],
+        "meanLog": 0.13521542659941682,
+        "varianceLog": 0.033169604100409526,
+        "geometricMeanRatio": 1.144783374578768,
+        "ci95": [
+          0.2228815178004963,
+          5.879935616218393
+        ],
+        "baselineMedian": 0.8971915873983909,
+        "variantMedian": 1.0232661781384311,
+        "direction": "inconclusive",
+        "definition": "(C/A at V)/(C/A at U), paired within mirrored block"
+      }
+    },
+    "contentPointScreen": {
+      "cpu": false,
+      "everyCPU": false,
+      "wall": true,
+      "medianFootprint": true,
+      "cpuBothSlots": true,
+      "footprintBothSlots": false
+    },
+    "contentPointScreenPassed": false,
+    "contentCPUUpper95Pass": false,
+    "sourceQualificationEarned": false,
+    "diagnosticTriggers": {
+      "urlCPU": true,
+      "urlFootprint": true,
+      "contentURLInteractionCPU": true,
+      "contentURLInteractionFootprint": true,
+      "blockCPU": true,
+      "blockFootprint": true
+    },
+    "acceptanceEvidence": false,
+    "scope": "Two mirrored full-factorial blocks,8freshprocesses. Each contrast uses4disjoint within-contrast pairs; different contrasts reuse observations and are not independent. Mirroring cancelsfirst-order linear position trend,notarbitrarycohort/thermal/nonlinearity. FixedslotsarenewURLs:notreplayofG75URLs. OriginalG73/G74/G75decisionsunchanged,notimingpooling. Passing diagnosticonlyearnsseparatelycheckpointedfull/C3sourcequalification,notproductiongain."
+  },
+  "sameContentSameURLSameRequestRepeats": [
+    {
+      "slot": "U",
+      "content": "A",
+      "early": "cross-1-U-A",
+      "late": "cross-8-U-A",
+      "sameRequestHash": "c8fac826e45e23d47ea565a9628b4cdd2fce87960b00ff2261e6e6833be9151e",
+      "sameURL": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g76-content-origin-bevhx8ec/U/compiler.mjs",
+      "sameImageSHA256": "4636c05aa8c75e72212cb03949937e25561942bc00da250f876f37f001b9fc18",
+      "cpuLaterEarlier": 0.8969902111684085,
+      "footprintLaterEarlier": 1.1173843123845684,
+      "earlyFootprintBytes": 1256846720,
+      "lateFootprintBytes": 1404380808,
+      "earlyCheckMemory": {
+        "phase": "check",
+        "rss": 884162560,
+        "heapTotal": 857800704,
+        "heapUsed": 604989016,
+        "external": 10487506,
+        "arrayBuffers": 25039
+      },
+      "lateCheckMemory": {
+        "phase": "check",
+        "rss": 1166213120,
+        "heapTotal": 1054277632,
+        "heapUsed": 857750960,
+        "external": 10493131,
+        "arrayBuffers": 25039
+      }
+    },
+    {
+      "slot": "U",
+      "content": "C",
+      "early": "cross-2-U-C",
+      "late": "cross-7-U-C",
+      "sameRequestHash": "d6394eec4ada04ff3c90e4c02265db93ac3d26925af36e1e7610af629f0b1293",
+      "sameURL": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g76-content-origin-bevhx8ec/U/compiler.mjs",
+      "sameImageSHA256": "505d4c08336e6f6312346806d97e2d189b6e0bd5783f829ead6723e62c24edaa",
+      "cpuLaterEarlier": 1.0799239880774014,
+      "footprintLaterEarlier": 0.8380212181454283,
+      "earlyFootprintBytes": 1407277752,
+      "lateFootprintBytes": 1179328616,
+      "earlyCheckMemory": {
+        "phase": "check",
+        "rss": 772227072,
+        "heapTotal": 1021739008,
+        "heapUsed": 783926528,
+        "external": 10493131,
+        "arrayBuffers": 25039
+      },
+      "lateCheckMemory": {
+        "phase": "check",
+        "rss": 935346176,
+        "heapTotal": 835764224,
+        "heapUsed": 603567640,
+        "external": 10486368,
+        "arrayBuffers": 25039
+      }
+    },
+    {
+      "slot": "V",
+      "content": "A",
+      "early": "cross-4-V-A",
+      "late": "cross-5-V-A",
+      "sameRequestHash": "88e445c800666ef797dfd1b3595243d2f97bd02634717777df0985bd4d4e9593",
+      "sameURL": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g76-content-origin-bevhx8ec/V/compiler.mjs",
+      "sameImageSHA256": "4636c05aa8c75e72212cb03949937e25561942bc00da250f876f37f001b9fc18",
+      "cpuLaterEarlier": 0.9655430179831889,
+      "footprintLaterEarlier": 1.0576123223812208,
+      "earlyFootprintBytes": 1198202696,
+      "lateFootprintBytes": 1267233936,
+      "earlyCheckMemory": {
+        "phase": "check",
+        "rss": 887472128,
+        "heapTotal": 835502080,
+        "heapUsed": 640369016,
+        "external": 10486368,
+        "arrayBuffers": 25039
+      },
+      "lateCheckMemory": {
+        "phase": "check",
+        "rss": 906035200,
+        "heapTotal": 836403200,
+        "heapUsed": 490836168,
+        "external": 10487506,
+        "arrayBuffers": 25039
+      }
+    },
+    {
+      "slot": "V",
+      "content": "C",
+      "early": "cross-3-V-C",
+      "late": "cross-6-V-C",
+      "sameRequestHash": "a315c9adfb282e29109d5d7c867e2448a9c61df2a390842e6df37936307ee312",
+      "sameURL": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g76-content-origin-bevhx8ec/V/compiler.mjs",
+      "sameImageSHA256": "505d4c08336e6f6312346806d97e2d189b6e0bd5783f829ead6723e62c24edaa",
+      "cpuLaterEarlier": 0.9319536703972059,
+      "footprintLaterEarlier": 1.1895565070988026,
+      "earlyFootprintBytes": 1170399072,
+      "lateFootprintBytes": 1392255832,
+      "earlyCheckMemory": {
+        "phase": "check",
+        "rss": 820985856,
+        "heapTotal": 833978368,
+        "heapUsed": 578789288,
+        "external": 10486368,
+        "arrayBuffers": 25039
+      },
+      "lateCheckMemory": {
+        "phase": "check",
+        "rss": 932659200,
+        "heapTotal": 1009041408,
+        "heapUsed": 542507328,
+        "external": 10493131,
+        "arrayBuffers": 25039
+      }
+    }
+  ],
+  "scope": "All8freshcompletefullselectedrowsretained,originalABI/flags/runtime/guards/countsverified;everymutableimagehashvalidatedbefore/afterunchangeddriverandcontroller. Noimagepatch,newcompilerbuild,oldtimingpool,exclusion,retryorcachepolicychange."
+}
