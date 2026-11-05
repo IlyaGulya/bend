@@ -1,0 +1,846 @@
+{
+  "schemaVersion": 1,
+  "version": "local2039g74d1",
+  "status": "REJECTED_MEMORY_SAVING_HYPOTHESIS_FOR_SOURCE_PROMOTION",
+  "protocolCheckpoint": "ba4ef54a",
+  "executionPreflightCheckpoint": "ef4f5c6c",
+  "command": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun --smol /private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g74-temporary-lifetime-79d4eqxd/experiment-controller.mjs /private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g74-temporary-lifetime-79d4eqxd/actual-probe-plan.json",
+  "actualExecution": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g74-temporary-lifetime-79d4eqxd/actual-probe-execution.json",
+    "sha256": "178d000e46d73e6c7e5c9914deb885a648386daa8c8d4360797dbfb5353ab7f8"
+  },
+  "actualAllFourPairs": [
+    {
+      "N": {
+        "id": "selected-1-N",
+        "report": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g74-temporary-lifetime-79d4eqxd/selected-1-N-report.json",
+          "sha256": "931a59360242068dcc2237fa009d35881c81a621beb0a71eef6a8d54222f0f1c"
+        },
+        "request": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g74-temporary-lifetime-79d4eqxd/selected-1-N-request.json",
+          "sha256": "20741bc05142b001b3f978c5c148f0b78d5f89d0052f5967243e2c7c419bea37"
+        },
+        "image": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g74-temporary-lifetime-79d4eqxd/control.mjs",
+          "sha256": "505d4c08336e6f6312346806d97e2d189b6e0bd5783f829ead6723e62c24edaa"
+        },
+        "checkerCpuMs": 69541.54,
+        "checkerWallMs": 60268.505459,
+        "footprintBytes": 1142682016,
+        "rssBytes": 1069301760,
+        "modules": 17,
+        "declarations": 2954,
+        "steps": {
+          "expand": 263032,
+          "check": 1975761
+        },
+        "guardianElapsedMs": 65594
+      },
+      "T": {
+        "id": "selected-1-T",
+        "report": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g74-temporary-lifetime-79d4eqxd/selected-1-T-report.json",
+          "sha256": "d1e45c3dec33eed7ca59f652f13d825120d71943e55195b8ba1e77e46a859917"
+        },
+        "request": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g74-temporary-lifetime-79d4eqxd/selected-1-T-request.json",
+          "sha256": "483a89938de7c7b04187a30524e5318053ef06f761bff509772b2b1984df5904"
+        },
+        "image": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g74-temporary-lifetime-79d4eqxd/variant.mjs",
+          "sha256": "0a810b0ed64aaf958ea78f458141a53f8bbfa7bd746234f5cf7e4f107881bffa"
+        },
+        "checkerCpuMs": 69552.888,
+        "checkerWallMs": 62067.066957999996,
+        "footprintBytes": 1296502984,
+        "rssBytes": 1139261440,
+        "modules": 17,
+        "declarations": 2954,
+        "steps": {
+          "expand": 263032,
+          "check": 1975761
+        },
+        "guardianElapsedMs": 68065
+      }
+    },
+    {
+      "N": {
+        "id": "selected-2-N",
+        "report": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g74-temporary-lifetime-79d4eqxd/selected-2-N-report.json",
+          "sha256": "c9307849cf6a1042dc8a462b86f70e45835905d60cb95fab1d3f7827844dd597"
+        },
+        "request": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g74-temporary-lifetime-79d4eqxd/selected-2-N-request.json",
+          "sha256": "a4928911ffd4271199e113df43bfac5cad3d0a68d5784996163b7bd8852cedae"
+        },
+        "image": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g74-temporary-lifetime-79d4eqxd/control.mjs",
+          "sha256": "505d4c08336e6f6312346806d97e2d189b6e0bd5783f829ead6723e62c24edaa"
+        },
+        "checkerCpuMs": 67780.87700000001,
+        "checkerWallMs": 57222.335042,
+        "footprintBytes": 1109646984,
+        "rssBytes": 1114128384,
+        "modules": 17,
+        "declarations": 2954,
+        "steps": {
+          "expand": 263032,
+          "check": 1975761
+        },
+        "guardianElapsedMs": 62535
+      },
+      "T": {
+        "id": "selected-2-T",
+        "report": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g74-temporary-lifetime-79d4eqxd/selected-2-T-report.json",
+          "sha256": "c7d4b6720d32acd8216f9ebe97ee994853ed8f6567c95b8a66e88b4a9347e60f"
+        },
+        "request": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g74-temporary-lifetime-79d4eqxd/selected-2-T-request.json",
+          "sha256": "d7a3bd1500f3f4189b445e17a56161707f23aeff56db3540c508d8a8d453dfd4"
+        },
+        "image": {
+          "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g74-temporary-lifetime-79d4eqxd/variant.mjs",
+          "sha256": "0a810b0ed64aaf958ea78f458141a53f8bbfa7bd746234f5cf7e4f107881bffa"
+        },
+        "checkerCpuMs": 67277.769,
+        "checkerWallMs": 57435.174625,
+        "footprintBytes": 1241055016,
+        "rssBytes": 1232371712,
+        "modules": 17,
+        "declarations": 2954,
+        "steps": {
+          "expand": 263032,
+          "check": 1975761
+        },
+        "guardianElapsedMs": 63254
+      }
+    }
+  ],
+  "statisticsCommand": [
+    "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+    "--smol",
+    "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g74-temporary-lifetime-79d4eqxd/paired-statistics.ts",
+    "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g74-temporary-lifetime-79d4eqxd/actual-pairs.json",
+    "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g74-temporary-lifetime-79d4eqxd/repository/checkpoints/local2039g74d1-protocol.json"
+  ],
+  "statistics": {
+    "schemaVersion": 1,
+    "pairs": [
+      {
+        "N": {
+          "id": "selected-1-N",
+          "report": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g74-temporary-lifetime-79d4eqxd/selected-1-N-report.json",
+            "sha256": "931a59360242068dcc2237fa009d35881c81a621beb0a71eef6a8d54222f0f1c"
+          },
+          "request": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g74-temporary-lifetime-79d4eqxd/selected-1-N-request.json",
+            "sha256": "20741bc05142b001b3f978c5c148f0b78d5f89d0052f5967243e2c7c419bea37"
+          },
+          "image": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g74-temporary-lifetime-79d4eqxd/control.mjs",
+            "sha256": "505d4c08336e6f6312346806d97e2d189b6e0bd5783f829ead6723e62c24edaa"
+          },
+          "checkerCpuMs": 69541.54,
+          "checkerWallMs": 60268.505459,
+          "footprintBytes": 1142682016,
+          "rssBytes": 1069301760,
+          "modules": 17,
+          "declarations": 2954,
+          "steps": {
+            "expand": 263032,
+            "check": 1975761
+          },
+          "guardianElapsedMs": 65594
+        },
+        "T": {
+          "id": "selected-1-T",
+          "report": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g74-temporary-lifetime-79d4eqxd/selected-1-T-report.json",
+            "sha256": "d1e45c3dec33eed7ca59f652f13d825120d71943e55195b8ba1e77e46a859917"
+          },
+          "request": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g74-temporary-lifetime-79d4eqxd/selected-1-T-request.json",
+            "sha256": "483a89938de7c7b04187a30524e5318053ef06f761bff509772b2b1984df5904"
+          },
+          "image": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g74-temporary-lifetime-79d4eqxd/variant.mjs",
+            "sha256": "0a810b0ed64aaf958ea78f458141a53f8bbfa7bd746234f5cf7e4f107881bffa"
+          },
+          "checkerCpuMs": 69552.888,
+          "checkerWallMs": 62067.066957999996,
+          "footprintBytes": 1296502984,
+          "rssBytes": 1139261440,
+          "modules": 17,
+          "declarations": 2954,
+          "steps": {
+            "expand": 263032,
+            "check": 1975761
+          },
+          "guardianElapsedMs": 68065
+        }
+      },
+      {
+        "N": {
+          "id": "selected-2-N",
+          "report": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g74-temporary-lifetime-79d4eqxd/selected-2-N-report.json",
+            "sha256": "c9307849cf6a1042dc8a462b86f70e45835905d60cb95fab1d3f7827844dd597"
+          },
+          "request": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g74-temporary-lifetime-79d4eqxd/selected-2-N-request.json",
+            "sha256": "a4928911ffd4271199e113df43bfac5cad3d0a68d5784996163b7bd8852cedae"
+          },
+          "image": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g74-temporary-lifetime-79d4eqxd/control.mjs",
+            "sha256": "505d4c08336e6f6312346806d97e2d189b6e0bd5783f829ead6723e62c24edaa"
+          },
+          "checkerCpuMs": 67780.87700000001,
+          "checkerWallMs": 57222.335042,
+          "footprintBytes": 1109646984,
+          "rssBytes": 1114128384,
+          "modules": 17,
+          "declarations": 2954,
+          "steps": {
+            "expand": 263032,
+            "check": 1975761
+          },
+          "guardianElapsedMs": 62535
+        },
+        "T": {
+          "id": "selected-2-T",
+          "report": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g74-temporary-lifetime-79d4eqxd/selected-2-T-report.json",
+            "sha256": "c7d4b6720d32acd8216f9ebe97ee994853ed8f6567c95b8a66e88b4a9347e60f"
+          },
+          "request": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g74-temporary-lifetime-79d4eqxd/selected-2-T-request.json",
+            "sha256": "d7a3bd1500f3f4189b445e17a56161707f23aeff56db3540c508d8a8d453dfd4"
+          },
+          "image": {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g74-temporary-lifetime-79d4eqxd/variant.mjs",
+            "sha256": "0a810b0ed64aaf958ea78f458141a53f8bbfa7bd746234f5cf7e4f107881bffa"
+          },
+          "checkerCpuMs": 67277.769,
+          "checkerWallMs": 57435.174625,
+          "footprintBytes": 1241055016,
+          "rssBytes": 1232371712,
+          "modules": 17,
+          "declarations": 2954,
+          "steps": {
+            "expand": 263032,
+            "check": 1975761
+          },
+          "guardianElapsedMs": 63254
+        }
+      }
+    ],
+    "T_over_N": {
+      "checkerCpuMs": {
+        "n": 2,
+        "logRatios": [
+          0.00016316972848395728,
+          -0.007450249829000022
+        ],
+        "meanLog": -0.0036435400502580323,
+        "varianceLog": 2.8982078679139777e-05,
+        "geometricMeanRatio": 0.9963630895875631,
+        "ci95": [
+          0.9493171200434366,
+          1.0457405490033203
+        ],
+        "baselineMedian": 68661.20850000001,
+        "variantMedian": 68415.3285,
+        "direction": "inconclusive"
+      },
+      "checkerWallMs": {
+        "n": 2,
+        "logRatios": [
+          0.029405855771821938,
+          0.003712619052893619
+        ],
+        "meanLog": 0.016559237412357777,
+        "varianceLog": 0.00033007120654744324,
+        "geometricMeanRatio": 1.0166971015077046,
+        "ci95": [
+          0.8635767303619164,
+          1.196967171383793
+        ],
+        "baselineMedian": 58745.4202505,
+        "variantMedian": 59751.1207915,
+        "direction": "inconclusive"
+      },
+      "footprintBytes": {
+        "n": 2,
+        "logRatios": [
+          0.12629248269242632,
+          0.11191990492139563
+        ],
+        "meanLog": 0.11910619380691098,
+        "varianceLog": 0.00010328549589216283,
+        "geometricMeanRatio": 1.1264895381492979,
+        "ci95": [
+          1.0281856415905637,
+          1.2341921810897465
+        ],
+        "baselineMedian": 1126164500,
+        "variantMedian": 1268779000,
+        "direction": "regression"
+      },
+      "rssBytes": {
+        "n": 2,
+        "logRatios": [
+          0.06337431808982108,
+          0.10086815306515093
+        ],
+        "meanLog": 0.082121235577486,
+        "varianceLog": 0.0007028938305786339,
+        "geometricMeanRatio": 1.085587413668862,
+        "ci95": [
+          0.855489947469466,
+          1.3775732096002347
+        ],
+        "baselineMedian": 1091715072,
+        "variantMedian": 1185816576,
+        "direction": "inconclusive"
+      },
+      "medianFootprintRatio": 1.1266373607052966,
+      "medianRSSRatio": 1.0861960289946424
+    },
+    "pointScreen": {
+      "cpu": true,
+      "everyCPU": true,
+      "medianFootprint": false,
+      "everyFootprint": false
+    },
+    "pointScreenPassed": false,
+    "acceptanceEvidence": false,
+    "scope": "TwofreshNT/TNpairs;exactbytecontrolandAST-onlycounterfactual;originalCPU/RAMfilters;pairedStudent95diagnosticnotproductionqualificationorlive-rootproof"
+  },
+  "consumerReports": {
+    "N": {
+      "identity": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g74-temporary-lifetime-79d4eqxd/N-readback-report.json",
+        "sha256": "4876de3f3ba3fc2e686507c7e28372c95de8f2907935855d37ddd24e47290746"
+      },
+      "status": "PASS_ACTUAL_INSPECTION_RECHECK_AND_LIBRARY_CONSUMERS",
+      "runtimeRows": [
+        {
+          "name": "zero-nullary",
+          "observed": "BitZero",
+          "expected": "BitZero",
+          "passed": true
+        },
+        {
+          "name": "one-nullary",
+          "observed": "BitOne",
+          "expected": "BitOne",
+          "passed": true
+        },
+        {
+          "name": "positional-noncommutative",
+          "observed": [
+            "BitOne",
+            "BitZero"
+          ],
+          "expected": [
+            "BitOne",
+            "BitZero"
+          ],
+          "passed": true
+        },
+        {
+          "name": "positional-reversed-input",
+          "observed": [
+            "BitZero",
+            "BitOne"
+          ],
+          "expected": [
+            "BitZero",
+            "BitOne"
+          ],
+          "passed": true
+        },
+        {
+          "name": "pack-one-argument-is-curried-function",
+          "observed": "function",
+          "expected": "function",
+          "passed": true
+        },
+        {
+          "name": "pack-curried-second-argument",
+          "observed": [
+            "BitOne",
+            "BitZero"
+          ],
+          "expected": [
+            "BitOne",
+            "BitZero"
+          ],
+          "passed": true
+        },
+        {
+          "name": "returned-curried-function",
+          "observed": "function",
+          "expected": "function",
+          "passed": true
+        },
+        {
+          "name": "higher-order-positional-call",
+          "observed": [
+            "BitOne",
+            "BitZero"
+          ],
+          "expected": [
+            "BitOne",
+            "BitZero"
+          ],
+          "passed": true
+        },
+        {
+          "name": "over-applied-returned-function",
+          "observed": [
+            "BitOne",
+            "BitZero"
+          ],
+          "expected": [
+            "BitOne",
+            "BitZero"
+          ],
+          "passed": true
+        },
+        {
+          "name": "live-host-callback",
+          "observed": [
+            "BitZero",
+            "BitOne"
+          ],
+          "expected": [
+            "BitZero",
+            "BitOne"
+          ],
+          "passed": true
+        },
+        {
+          "name": "live-host-callback-evaluated-once",
+          "observed": 1,
+          "expected": 1,
+          "passed": true
+        },
+        {
+          "name": "erased-kind-and-type-effective-one-argument",
+          "observed": "BitOne",
+          "expected": "BitOne",
+          "passed": true
+        },
+        {
+          "name": "ordinary-type-reference-erasure-in-bend-application",
+          "observed": "BitZero",
+          "expected": "BitZero",
+          "passed": true
+        },
+        {
+          "name": "actual-template-specialization",
+          "observed": "BitOne",
+          "expected": "BitOne",
+          "passed": true
+        },
+        {
+          "name": "erased-expression-keeps-second-live-argument",
+          "observed": "BitOne",
+          "expected": "BitOne",
+          "passed": true
+        },
+        {
+          "name": "erased-expression-not-evaluated",
+          "observed": 0,
+          "expected": 0,
+          "passed": true
+        },
+        {
+          "name": "shared-local-value",
+          "observed": [
+            "BitOne",
+            "BitOne"
+          ],
+          "expected": [
+            "BitOne",
+            "BitOne"
+          ],
+          "passed": true
+        },
+        {
+          "name": "shared-local-evaluated-once",
+          "observed": 1,
+          "expected": 1,
+          "passed": true
+        },
+        {
+          "name": "unused-local-result",
+          "observed": "BitZero",
+          "expected": "BitZero",
+          "passed": true
+        },
+        {
+          "name": "unused-live-local-still-evaluated",
+          "observed": 1,
+          "expected": 1,
+          "passed": true
+        },
+        {
+          "name": "ordered-local-values",
+          "observed": [
+            "BitOne",
+            "BitZero"
+          ],
+          "expected": [
+            "BitOne",
+            "BitZero"
+          ],
+          "passed": true
+        },
+        {
+          "name": "local-evaluation-order",
+          "observed": [
+            "first",
+            "second"
+          ],
+          "expected": [
+            "first",
+            "second"
+          ],
+          "passed": true
+        },
+        {
+          "name": "named-over-application-value",
+          "observed": [
+            "BitOne",
+            "BitZero"
+          ],
+          "expected": [
+            "BitOne",
+            "BitZero"
+          ],
+          "passed": true
+        },
+        {
+          "name": "named-over-application-order",
+          "observed": [
+            "callee",
+            "argument"
+          ],
+          "expected": [
+            "callee",
+            "argument"
+          ],
+          "passed": true
+        },
+        {
+          "name": "generic-over-application-value",
+          "observed": [
+            "BitOne",
+            "BitZero"
+          ],
+          "expected": [
+            "BitOne",
+            "BitZero"
+          ],
+          "passed": true
+        },
+        {
+          "name": "generic-over-application-order",
+          "observed": [
+            "callee",
+            "argument",
+            "apply"
+          ],
+          "expected": [
+            "callee",
+            "argument",
+            "apply"
+          ],
+          "passed": true
+        },
+        {
+          "name": "constructor-eliminator-first-arm",
+          "observed": "BitOne",
+          "expected": "BitOne",
+          "passed": true
+        },
+        {
+          "name": "constructor-eliminator-default-chain",
+          "observed": "BitZero",
+          "expected": "BitZero",
+          "passed": true
+        }
+      ]
+    },
+    "T": {
+      "identity": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g74-temporary-lifetime-79d4eqxd/T-readback-report.json",
+        "sha256": "07f8dd1a1496d2e3323448029d6d687d59e807465505df3dde604eb0e52270ec"
+      },
+      "status": "PASS_ACTUAL_INSPECTION_RECHECK_AND_LIBRARY_CONSUMERS",
+      "runtimeRows": [
+        {
+          "name": "zero-nullary",
+          "observed": "BitZero",
+          "expected": "BitZero",
+          "passed": true
+        },
+        {
+          "name": "one-nullary",
+          "observed": "BitOne",
+          "expected": "BitOne",
+          "passed": true
+        },
+        {
+          "name": "positional-noncommutative",
+          "observed": [
+            "BitOne",
+            "BitZero"
+          ],
+          "expected": [
+            "BitOne",
+            "BitZero"
+          ],
+          "passed": true
+        },
+        {
+          "name": "positional-reversed-input",
+          "observed": [
+            "BitZero",
+            "BitOne"
+          ],
+          "expected": [
+            "BitZero",
+            "BitOne"
+          ],
+          "passed": true
+        },
+        {
+          "name": "pack-one-argument-is-curried-function",
+          "observed": "function",
+          "expected": "function",
+          "passed": true
+        },
+        {
+          "name": "pack-curried-second-argument",
+          "observed": [
+            "BitOne",
+            "BitZero"
+          ],
+          "expected": [
+            "BitOne",
+            "BitZero"
+          ],
+          "passed": true
+        },
+        {
+          "name": "returned-curried-function",
+          "observed": "function",
+          "expected": "function",
+          "passed": true
+        },
+        {
+          "name": "higher-order-positional-call",
+          "observed": [
+            "BitOne",
+            "BitZero"
+          ],
+          "expected": [
+            "BitOne",
+            "BitZero"
+          ],
+          "passed": true
+        },
+        {
+          "name": "over-applied-returned-function",
+          "observed": [
+            "BitOne",
+            "BitZero"
+          ],
+          "expected": [
+            "BitOne",
+            "BitZero"
+          ],
+          "passed": true
+        },
+        {
+          "name": "live-host-callback",
+          "observed": [
+            "BitZero",
+            "BitOne"
+          ],
+          "expected": [
+            "BitZero",
+            "BitOne"
+          ],
+          "passed": true
+        },
+        {
+          "name": "live-host-callback-evaluated-once",
+          "observed": 1,
+          "expected": 1,
+          "passed": true
+        },
+        {
+          "name": "erased-kind-and-type-effective-one-argument",
+          "observed": "BitOne",
+          "expected": "BitOne",
+          "passed": true
+        },
+        {
+          "name": "ordinary-type-reference-erasure-in-bend-application",
+          "observed": "BitZero",
+          "expected": "BitZero",
+          "passed": true
+        },
+        {
+          "name": "actual-template-specialization",
+          "observed": "BitOne",
+          "expected": "BitOne",
+          "passed": true
+        },
+        {
+          "name": "erased-expression-keeps-second-live-argument",
+          "observed": "BitOne",
+          "expected": "BitOne",
+          "passed": true
+        },
+        {
+          "name": "erased-expression-not-evaluated",
+          "observed": 0,
+          "expected": 0,
+          "passed": true
+        },
+        {
+          "name": "shared-local-value",
+          "observed": [
+            "BitOne",
+            "BitOne"
+          ],
+          "expected": [
+            "BitOne",
+            "BitOne"
+          ],
+          "passed": true
+        },
+        {
+          "name": "shared-local-evaluated-once",
+          "observed": 1,
+          "expected": 1,
+          "passed": true
+        },
+        {
+          "name": "unused-local-result",
+          "observed": "BitZero",
+          "expected": "BitZero",
+          "passed": true
+        },
+        {
+          "name": "unused-live-local-still-evaluated",
+          "observed": 1,
+          "expected": 1,
+          "passed": true
+        },
+        {
+          "name": "ordered-local-values",
+          "observed": [
+            "BitOne",
+            "BitZero"
+          ],
+          "expected": [
+            "BitOne",
+            "BitZero"
+          ],
+          "passed": true
+        },
+        {
+          "name": "local-evaluation-order",
+          "observed": [
+            "first",
+            "second"
+          ],
+          "expected": [
+            "first",
+            "second"
+          ],
+          "passed": true
+        },
+        {
+          "name": "named-over-application-value",
+          "observed": [
+            "BitOne",
+            "BitZero"
+          ],
+          "expected": [
+            "BitOne",
+            "BitZero"
+          ],
+          "passed": true
+        },
+        {
+          "name": "named-over-application-order",
+          "observed": [
+            "callee",
+            "argument"
+          ],
+          "expected": [
+            "callee",
+            "argument"
+          ],
+          "passed": true
+        },
+        {
+          "name": "generic-over-application-value",
+          "observed": [
+            "BitOne",
+            "BitZero"
+          ],
+          "expected": [
+            "BitOne",
+            "BitZero"
+          ],
+          "passed": true
+        },
+        {
+          "name": "generic-over-application-order",
+          "observed": [
+            "callee",
+            "argument",
+            "apply"
+          ],
+          "expected": [
+            "callee",
+            "argument",
+            "apply"
+          ],
+          "passed": true
+        },
+        {
+          "name": "constructor-eliminator-first-arm",
+          "observed": "BitOne",
+          "expected": "BitOne",
+          "passed": true
+        },
+        {
+          "name": "constructor-eliminator-default-chain",
+          "observed": "BitZero",
+          "expected": "BitZero",
+          "passed": true
+        }
+      ]
+    }
+  },
+  "allSixProcessesPassed": true,
+  "collectorSource": "def g73_collect_actual_rows_acc(cells, expected):\n    import math\n    pairs={}\n    for cell in cells:\n        report=json.loads(read(cell['report']))\n        request=json.loads(read(cell['command'][-2]))\n        assert report['status']=='PASS' and report['mode']=='js' and report['stopAfter']=='check'\n        assert report['requestSha256']==g56_ref_acc(cell['command'][-2])['sha256']\n        assert report['exports']==request['exports']==g73_c2_acc['exports']\n        assert report['moduleCount']==expected['modules'] and report['sourceDeclarations']==expected['declarations']\n        assert report['stepCounts']['expand']==expected['expand'] and report['stepCounts']['check']==expected['check']\n        assert report['checksExcluded']==0 and report['outputPatches']==0 and report.get('output') is None\n        assert len(request['inputs'])==expected['files']\n        assert report['workerPolicy']=={'stackMiB':256,'oldGenerationMiB':6144,'youngGenerationMiB':128}\n        assert report['runtime']['versions']['node']=='23.11.0' and report['runtime']['versions']['v8']=='12.9.202.28-node.14'\n        assert report['runtime']['execArgv']==['--experimental-strip-types','--max-old-space-size=6144','--max-semi-space-size=128']\n        assert Path(report['runtime']['execPath']).resolve()==Path(g43_tools_acc['node']).resolve()\n        assert report['limits']=={'memoryMiB':8192,'rssMiB':8192,'pollMs':10,'timeoutMs':600000}\n        guard=report['guardian']\n        assert guard['status']=='PASS' and guard['ownedTreeStopped']is True and guard['timeoutMs']==600000\n        assert guard['memoryLimitBytes']==8589934592 and guard['rssLimitBytes']==8589934592\n        assert all(Path(p).resolve().as_posix()==p and g56_ref_acc(p)['sha256']==h for p,h in request['pins'].items())\n        assert all(g56_ref_acc(p)['sha256']==h for p,h in request['inputs'].items())\n        image=g56_ref_acc(request['image'])\n        assert request['pins'][image['path']]==image['sha256']\n        phase=next(p for p in report['phases']if p['phase']=='check')\n        row={'id':cell['id'],'report':g56_ref_acc(cell['report']),'request':g56_ref_acc(cell['command'][-2]),'image':image,'checkerCpuMs':phase['userCpuMs']+phase['systemCpuMs'],'checkerWallMs':phase['elapsedMs'],'footprintBytes':guard['peakFootprintBytes'],'rssBytes':guard['peakRssBytes'],'modules':report['moduleCount'],'declarations':report['sourceDeclarations'],'steps':report['stepCounts'],'guardianElapsedMs':guard['elapsedMs']}\n        assert all(math.isfinite(row[m])and row[m]>0 for m in ['checkerCpuMs','checkerWallMs','footprintBytes','rssBytes'])\n        pairs.setdefault(cell['pair'],{})[cell['role']]=row\n    assert all(set(pair)=={'A','C'}for pair in pairs.values())\n    return [pairs[i]for i in sorted(pairs)]\n",
+  "collectorRoleOnlyMapping": {
+    "N": "A",
+    "T": "C"
+  },
+  "scope": "Twoactual28contractconsumersandfourfreshsame52file17module2954declaration/263032expand/1975761checkrows. Everyrowretained;noC2production/fullconfirmation/sourcechanges. Counterfactualwasnotacceptanceandisnotpromoted."
+}
