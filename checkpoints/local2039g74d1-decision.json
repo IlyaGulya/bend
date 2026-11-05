@@ -1,0 +1,121 @@
+{
+  "schemaVersion": 1,
+  "version": "local2039g74d1",
+  "status": "REJECTED_FOR_MEMORY_IMPROVEMENT_NO_NEW_SOURCE_BUILD_EARNED",
+  "sourceCheckpointAlreadyClosed": "1e975550",
+  "inputSourceC2": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/real-own-c2.json.output.mjs",
+    "sha256": "505d4c08336e6f6312346806d97e2d189b6e0bd5783f829ead6723e62c24edaa"
+  },
+  "ASTGeneration": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g74-temporary-lifetime-79d4eqxd/repository/checkpoints/local2039g74d1-generation.json",
+    "sha256": "d884ea7898162f960ccebdba6ec172de8fce71f486313f3ecdae5cab2662fa91"
+  },
+  "actualResults": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g74-temporary-lifetime-79d4eqxd/repository/checkpoints/local2039g74d1-results.json",
+    "sha256": "ef0697eecc46e61ee90eb9a5be2f91d304b60e3839acba5634b2ed2212a07379"
+  },
+  "controls": {
+    "actualSites": 1268,
+    "imageBytesEach": 31801158,
+    "NByteExactlyRealC2": true,
+    "allUnpatchedSourceSpansUnchanged": true,
+    "capturesDepthFallbackAndExceptionCodeUnchanged": true
+  },
+  "result": {
+    "schemaVersion": 1,
+    "T_over_N": {
+      "checkerCpuMs": {
+        "n": 2,
+        "logRatios": [
+          0.00016316972848395728,
+          -0.007450249829000022
+        ],
+        "meanLog": -0.0036435400502580323,
+        "varianceLog": 2.8982078679139777e-05,
+        "geometricMeanRatio": 0.9963630895875631,
+        "ci95": [
+          0.9493171200434366,
+          1.0457405490033203
+        ],
+        "baselineMedian": 68661.20850000001,
+        "variantMedian": 68415.3285,
+        "direction": "inconclusive"
+      },
+      "checkerWallMs": {
+        "n": 2,
+        "logRatios": [
+          0.029405855771821938,
+          0.003712619052893619
+        ],
+        "meanLog": 0.016559237412357777,
+        "varianceLog": 0.00033007120654744324,
+        "geometricMeanRatio": 1.0166971015077046,
+        "ci95": [
+          0.8635767303619164,
+          1.196967171383793
+        ],
+        "baselineMedian": 58745.4202505,
+        "variantMedian": 59751.1207915,
+        "direction": "inconclusive"
+      },
+      "footprintBytes": {
+        "n": 2,
+        "logRatios": [
+          0.12629248269242632,
+          0.11191990492139563
+        ],
+        "meanLog": 0.11910619380691098,
+        "varianceLog": 0.00010328549589216283,
+        "geometricMeanRatio": 1.1264895381492979,
+        "ci95": [
+          1.0281856415905637,
+          1.2341921810897465
+        ],
+        "baselineMedian": 1126164500,
+        "variantMedian": 1268779000,
+        "direction": "regression"
+      },
+      "rssBytes": {
+        "n": 2,
+        "logRatios": [
+          0.06337431808982108,
+          0.10086815306515093
+        ],
+        "meanLog": 0.082121235577486,
+        "varianceLog": 0.0007028938305786339,
+        "geometricMeanRatio": 1.085587413668862,
+        "ci95": [
+          0.855489947469466,
+          1.3775732096002347
+        ],
+        "baselineMedian": 1091715072,
+        "variantMedian": 1185816576,
+        "direction": "inconclusive"
+      },
+      "medianFootprintRatio": 1.1266373607052966,
+      "medianRSSRatio": 1.0861960289946424
+    },
+    "pointScreen": {
+      "cpu": true,
+      "everyCPU": true,
+      "medianFootprint": false,
+      "everyFootprint": false
+    },
+    "pointScreenPassed": false,
+    "acceptanceEvidence": false,
+    "scope": "TwofreshNT/TNpairs;exactbytecontrolandAST-onlycounterfactual;originalCPU/RAMfilters;pairedStudent95diagnosticnotproductionqualificationorlive-rootproof"
+  },
+  "naturalControlCohortObservation": {
+    "originalG73C2MedianFootprintBytes": 1322964368,
+    "G74ByteExactNMedianFootprintBytes": 1126164500,
+    "physicalImageBytesAreEqualButModuleURLAndMeasurementCohortDiffer": true,
+    "notPooledOrCalledMemoryGain": true
+  },
+  "sourceCompilerUnchanged": true,
+  "newNativeC1OrOwnC2Build": "NOT_RUN_NOT_EARNED",
+  "qualifiedSpeedOrMemoryGain": false,
+  "defaultCutover": false,
+  "selfhostGreen": false,
+  "scope": "Removingthelocaldidnotmeetmemorytargetandmadeactualselectedphysicalpeakworseonbothmatchedpairs. Thisrejectsthetestedformforpromotion\u2014notproofofglobalVMrootcause. Endphaseheapandcrosscohortimagepeaksdonotidentifyliveobjects. Nextarchitecturedecisionneedsnaturallyobservedallocation/GC/retentionevidence,notanotherArenaorframe-countrewrite."
+}

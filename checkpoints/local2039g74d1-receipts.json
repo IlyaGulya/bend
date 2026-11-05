@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "version": "local2039g74d1",
+  "status": "REJECTED_FOR_MEMORY_IMPROVEMENT_NO_NEW_SOURCE_BUILD_EARNED",
+  "experimentalBranch": "selfhost/g74-lifetime-79d4eqxd",
+  "originalSourceClosingCheckpoint": "1e975550",
+  "protocolCheckpoint": "ba4ef54a",
+  "executionPreflightCheckpoint": "ef4f5c6c",
+  "sourceReceiptFiles": [
+    {
+      "repositoryPath": "checkpoints/local2039g74d1-protocol.json",
+      "sha256": "102dd0f46b7d759459eac225ca7ddbafc675b070cdd5b1aff24f202a8b2e0b63"
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g74d1-generation.json",
+      "sha256": "d884ea7898162f960ccebdba6ec172de8fce71f486313f3ecdae5cab2662fa91"
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g74d1-execution-plan.json",
+      "sha256": "9960c6288f826385ec43557d1e1a6606478d47152279d3692d2ef60fd7adce2f"
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g74d1-results.json",
+      "sha256": "ef0697eecc46e61ee90eb9a5be2f91d304b60e3839acba5634b2ed2212a07379"
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g74d1-decision.json",
+      "sha256": "4517792d159ed8cfafec78aabec43d4c934874b7279da52aaf7dc0d3dae768ba"
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g74d1-closing-hashes.json",
+      "sha256": "0136ca533dddda65094aaa3bc4c29e330446eaa41b80896c9f042a41e2768d0b"
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g74d1-cleanup.json",
+      "sha256": "b500788ce353fdf3f4de059de626ca6662c4cbc865c40241da7c45789eb70b1f"
+    }
+  ],
+  "originalSourceAndC2Unchanged": true,
+  "newCanonicalOrGeneratedCompilerChange": false,
+  "equalImageByteBudget": 31801158,
+  "ASTSitesChangedOnlyInCounterfactual": 1268,
+  "actualReadbackRuntimeContracts": 56,
+  "actualFreshCostRows": 4,
+  "allActualRowsRetained": true,
+  "ownedScriptsRemoved": 4,
+  "exactOwnedScriptSourcesPreservedIn": "checkpoints/local2039g74d1-cleanup.json",
+  "newCompilerBuild": "NOT_RUN_NOT_EARNED",
+  "acceptedPerformanceGain": false,
+  "defaultCutover": false,
+  "scope": "Completecheapdiagnostic,notacceptedsourcecompiler. Rawimages/libraryartifacts/ASTs/logsoutsideGit;originalG73sourcealreadycheckpointedbeforethisinvestigation. NaturalGC/liveownersarenotidentifiedbythisnegativeformtest.",
+  "experimentalClosingCheckpoint": "ec7ae131",
+  "mainCopiedReceiptFiles": [
+    "checkpoints/local2039g74d1-protocol.json",
+    "checkpoints/local2039g74d1-generation.json",
+    "checkpoints/local2039g74d1-results.json",
+    "checkpoints/local2039g74d1-decision.json",
+    "checkpoints/local2039g74d1-closing-hashes.json",
+    "checkpoints/local2039g74d1-cleanup.json"
+  ]
+}
