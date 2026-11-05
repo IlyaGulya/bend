@@ -1,0 +1,971 @@
+{
+  "schemaVersion": 1,
+  "version": "local2039g75d1",
+  "status": "COMPLETE_SOURCE_ONLY_EXCLUSION_AND_CONDITIONAL_SAFETY_PROOF",
+  "protocolCheckpoint": "87e77b0f",
+  "agent": "G75LeafProof",
+  "fullProof": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g75-crosswalk-url-y5s4_64z/e1-leaf-proof.json",
+    "sha256": "fa95be83ccefdd926b363df8c8aa3761902b8384cbc9e5ec225ec25fde136292"
+  },
+  "sourceReport": "local://g75-e1-leaf-proof.md",
+  "proof": {
+    "schemaVersion": 1,
+    "version": "G75D1-E1-LEAF-PROOF",
+    "status": "COMPLETE_SOURCE_ONLY_ADMISSION_AND_EXCLUSION_AUDIT",
+    "scope": "Source/receipt inspection only; no image parsing, new classifier, source edits, compiler, runtime, Git, test, build, lint, formatter or measurement commands.",
+    "evidenceLevels": {
+      "DIRECT_SOURCE": "Read source implements the cited predicate or emission; not a measured instance or independently machine-checked semantic theorem.",
+      "RECEIPT_OBSERVATION": "Previously recorded output/hash/count, read here but not rerun or rehashed.",
+      "INFERENCE": "Reasoned consequence with explicit prerequisites; emission-to-BIR attribution requires a proven generated-source binding.",
+      "UNKNOWN": "Not established by this source-only slice."
+    },
+    "sources": {
+      "J": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/repository/bend2/selfhost/js_backend.bend",
+        "receiptSha256": "64fb208dbfa771f9f784ad6503aab77de99be7c89324fcabd829dabf66ebf0df",
+        "hashSource": "checkpoints/local2039g73r1-source.json:sourceDelta[0].afterSha256",
+        "hashIndependentlyRecomputed": false
+      },
+      "L": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/repository/bend2/selfhost/backend_lower.bend",
+        "inspectedLines": [
+          [
+            1220,
+            1259
+          ]
+        ],
+        "sha256": null
+      },
+      "LM": {
+        "path": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/backend_lower.bend",
+        "inspectedLines": [
+          [
+            40,
+            55
+          ],
+          [
+            1030,
+            1055
+          ],
+          [
+            1218,
+            1275
+          ]
+        ],
+        "sha256": null
+      },
+      "B": {
+        "path": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/backend_ir.bend",
+        "inspectedLines": [
+          [
+            1,
+            203
+          ]
+        ],
+        "candidateInputReceiptSha256": "c0286db6b192bf5cc917774b7ea5e393d4416263432eb130fb8393b1dffc1cb3",
+        "hashSource": "checkpoints/local2039g73r1-compiler-source.corpus.json entry path=bend2/selfhost/backend_ir.bend",
+        "hashIndependentlyRecomputed": false
+      },
+      "G72_ORIGINAL": {
+        "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g72d1-leaf-protocol.json",
+        "selector": ".analyzer.source",
+        "receiptSha256": "bb14f3ff749a6ee4294053cd04e73fccebe74b30d0ad76e98652ce617bc4012e"
+      },
+      "G72_REVIEWED": {
+        "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g72d1-reviewed-protocol.json",
+        "selector": ".generator.source",
+        "receiptSha256": "3901137c1ecc7b9cb8bffd3f04329c18a96fb66a149ac60057223bc4f67e2db9",
+        "cleanupCopy": "checkpoints/local2039g72-cleanup.json:files[2]"
+      },
+      "G72_CENSUS": {
+        "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g72d1-leaf-census.json",
+        "selectors": [
+          ".result",
+          ".fullCensus"
+        ],
+        "fullCensusReceiptSha256": "0f37a742fed94857709fc18d3194f31ba1f53056c502b757b8e0c3449513a8b7"
+      },
+      "G73_ACTIVATION": {
+        "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g73r1-own-c2.json",
+        "selector": ".activation"
+      },
+      "G73_CONSUMERS": {
+        "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/local2039g73r1-c2-consumers.json",
+        "selectors": [
+          ".status",
+          ".scope"
+        ]
+      }
+    },
+    "inputImageReceiptHashes": {
+      "A": "4636c05aa8c75e72212cb03949937e25561942bc00da250f876f37f001b9fc18",
+      "C1": "43e50f4f5cc90f0f674e437ecd7479ce6853d032546267d8a7b46dca85df2896",
+      "C2": "505d4c08336e6f6312346806d97e2d189b6e0bd5783f829ead6723e62c24edaa",
+      "level": "RECEIPT_OBSERVATION"
+    },
+    "g72ActualPredicate": {
+      "level": "DIRECT_SOURCE",
+      "citations": [
+        "G72_ORIGINAL:.analyzer.source:noSuspensionSyntax",
+        "G72_REVIEWED:.generator.source:noSuspensionSyntax"
+      ],
+      "candidateFunctionNameRegex": "^\\$b[0-9]+$",
+      "scanRoot": "FunctionDeclaration.body; scans all descendant syntax, not reachability",
+      "forbiddenNodeTypes": [
+        "FunctionExpression",
+        "ArrowFunctionExpression",
+        "FunctionDeclaration",
+        "ClassExpression",
+        "ClassDeclaration",
+        "AwaitExpression",
+        "YieldExpression",
+        "NewExpression",
+        "ImportExpression",
+        "WithStatement"
+      ],
+      "forbiddenIdentifiers": [
+        "$TAIL_PENDING",
+        "$CALL_PENDING",
+        "$LEAVE_PENDING",
+        "$BEND_TAIL",
+        "$sp",
+        "$ksp",
+        "$tailFn",
+        "$tailCount",
+        "$stArgs",
+        "$kFn",
+        "$kBase",
+        "$kKind",
+        "$tailArgs",
+        "$tailRest",
+        "$tailUnary",
+        "$leaveThunk"
+      ],
+      "callRule": "Every CallExpression must have Identifier callee in terminalPrimitives. terminalPrimitives are top-level $p_ function/arrow bodies passing the same scan with EMPTY allowedCalls. This is one-level call-free helper recognition, not transitive purity.",
+      "notRejectedByNodeKindAlone": [
+        "LabeledStatement",
+        "BreakStatement",
+        "SwitchStatement",
+        "MemberExpression",
+        "AssignmentExpression",
+        "ObjectExpression",
+        "ArrayExpression",
+        "ThrowStatement",
+        "ForStatement",
+        "WhileStatement"
+      ],
+      "notForbiddenIdentifier": "$D",
+      "caveat": "Call-free syntax is not proof of absence of getters, setters, proxies, coercion callbacks, marker-valued parameters or nontermination on arbitrary JavaScript. Original typed BIR/runtime ABI is an explicit premise. No claim that arbitrary AST admitted by this negative-list predicate is safe.",
+      "originalSiteGuard": "Adjacent two-binding declaration and try-return split_done shape; nonnegative integer spill count, split_enter(k,kb), known leaf callee, matching ki, td+1, call args only Identifier/Literal/BinaryExpression. It does not itself insist on enclosing td<64 or validate canonical catch content.",
+      "reviewedSiteGuard": "Adds exact IfStatement td<64 consequent, canonical two-statement catch split_abort(ki,kb);throw e, no finalizer, recursive safeArgument Literal/Identifier or +/- of safe operands, no self callee, exactly three ki identifier uses, three-parameter continuation (result,$base,$td=0), duplicate declaration rejection. Leaf predicate unchanged.",
+      "baselineCounts": {
+        "level": "RECEIPT_OBSERVATION",
+        "terminalPrimitives": 50,
+        "leafBodies": 1423,
+        "sites": 10739
+      },
+      "doNotConflate": "The original census and reviewed diagnostic generators have different hashes/site-validation guards; preserve exact provenance even though their noSuspensionSyntax leaf predicate is identical."
+    },
+    "g73ActualPredicate": {
+      "level": "DIRECT_SOURCE",
+      "citations": [
+        "J:869-970",
+        "J:1444-1452",
+        "J:1461-1495",
+        "J:2201-2206"
+      ],
+      "phase": "js_scalar_program first; js_leaf_codes once over scalarized BIR.Code bodies; compile-time Map keyed by U32.show(Code.id)",
+      "allowedAtoms": [
+        "Local",
+        "Capture",
+        "Word",
+        "Natural",
+        "TextValue",
+        "Boolean",
+        "Null",
+        "Undefined"
+      ],
+      "excludedKnownAtoms": [
+        "Symbol",
+        "FloatBits"
+      ],
+      "allowedOperations": [
+        "Copy(value eligible)",
+        "PrimitiveCall(whitelisted primitive and all arguments eligible)",
+        "Construct(all field values eligible)",
+        "Project(value eligible)",
+        "HasTag(value eligible)"
+      ],
+      "excludedKnownOperations": [
+        "Closure",
+        "Direct",
+        "Apply",
+        "LoadSymbol"
+      ],
+      "allowedBlocks": [
+        "Return(eligible atom)",
+        "Let(eligible operation and recursively eligible next)",
+        "Branch(eligible condition and both recursively eligible arms)",
+        "Failure"
+      ],
+      "excludedKnownBlocks": [
+        "Region",
+        "LeaveRegion",
+        "TailDirect",
+        "TailApply"
+      ],
+      "unknownVariants": "default false",
+      "callSiteRequirements": [
+        "BIR.Let Direct",
+        "callee Code.id in leaves",
+        "all Direct arguments satisfy js_leaf_atom",
+        "argument count in [1,32]",
+        "only runtime td<64 arm uses elision"
+      ],
+      "callSiteFallback": "Zero or >32 arguments use split_direct_many. td>=64 retains original argument moves and $split. Apply retains $split1.",
+      "useAnnotationHandling": "Leaf eligibility ignores Arg.use and Field.use; this is not new ownership certification. Checked BIR use/quantity obligations are inherited and the transform preserves values, order, capture stores and continuation.",
+      "actualActivation": {
+        "level": "RECEIPT_OBSERVATION",
+        "C1Generic": 15082,
+        "C1Elided": 0,
+        "C2Generic": 13814,
+        "C2Elided": 1268
+      },
+      "whitelistedPrimitiveToHelper": {
+        "PrimU32Add": "$p_u32_add",
+        "PrimU32Sub": "$p_u32_sub",
+        "PrimU32Div": "$p_u32_div",
+        "PrimNatSub": "$p_nat_sub",
+        "PrimNatMin": "$p_nat_min",
+        "PrimNatMax": "$p_nat_max",
+        "PrimStringAppend": "$p_string_append",
+        "PrimBoolOr": "$p_bool_or",
+        "PrimBoolXor": "$p_bool_xor",
+        "PrimU32IsZero": "$p_u32_is_zero",
+        "PrimU32Mod": "$p_u32_mod",
+        "PrimU32And": "$p_u32_and",
+        "PrimU32Or": "$p_u32_or",
+        "PrimU32Xor": "$p_u32_xor",
+        "PrimU32IsEq": "$p_u32_is_eq",
+        "PrimU32IsNe": "$p_u32_is_ne",
+        "PrimU32IsLt": "$p_u32_is_lt",
+        "PrimU32IsLe": "$p_u32_is_le",
+        "PrimU32IsGt": "$p_u32_is_gt",
+        "PrimU32IsGe": "$p_u32_is_ge",
+        "PrimU32Inc": "$p_u32_inc",
+        "PrimU32Not": "$p_u32_not",
+        "PrimU32Shl": "$p_u32_shl",
+        "PrimU32Shr": "$p_u32_shr",
+        "PrimU32Shln": "$p_u32_shln",
+        "PrimU32Shrn": "$p_u32_shrn",
+        "PrimU32ToNat": "$p_u32_to_nat",
+        "PrimU32FromNat": "$p_u32_from_nat",
+        "PrimF32Neg": "$p_f32_neg",
+        "PrimF32IsEq": "$p_f32_is_eq",
+        "PrimF32IsNe": "$p_f32_is_ne",
+        "PrimF32IsLt": "$p_f32_is_lt",
+        "PrimF32IsLe": "$p_f32_is_le",
+        "PrimF32IsGt": "$p_f32_is_gt",
+        "PrimF32IsGe": "$p_f32_is_ge",
+        "PrimNatIsLt": "$p_nat_is_lt",
+        "PrimStringEq": "$p_string_eq",
+        "PrimArraySet": "$p_array_set",
+        "PrimNatPredecessor": "$p_nat_predecessor",
+        "PrimArrayLeaf": "$p_array_leaf",
+        "PrimArrayLeafValue": "$p_array_leaf_value",
+        "PrimIsArrayLeaf": "$p_is_array_leaf",
+        "PrimIsArrayNode": "$p_is_array_node",
+        "PrimIsNatZero": "$p_is_nat_zero",
+        "PrimIsNatSuccessor": "$p_is_nat_successor",
+        "PrimIsStringEmpty": "$p_is_string_empty",
+        "PrimIsStringNonempty": "$p_is_string_nonempty",
+        "PrimIsTrue": "$p_is_true",
+        "PrimIsFalse": "$p_is_false",
+        "PrimSameValue": "$p_same_value"
+      },
+      "helperCitation": "J:892-944 and primitive_runtime J:1879-1880; mappings visible in emitted runtime names, not inferred from a source alias."
+    },
+    "featureRules": [
+      {
+        "id": "LEXICAL_REGION",
+        "ast": {
+          "nodeType": "LabeledStatement",
+          "labelRegex": "^\\$case[0-9]+$"
+        },
+        "bir": [
+          "Region"
+        ],
+        "g72": "not excluded by label; all descendants still checked",
+        "g73": "excluded by js_leaf_block default false",
+        "sourceLevel": "DIRECT_SOURCE",
+        "attributionLevel": "INFERENCE",
+        "attributionCondition": "Feature belongs to a bound canonical generated Code body; a same-spelled label in arbitrary JS is not BIR provenance",
+        "citations": [
+          "J:817-818",
+          "J:833-843",
+          "J:953-959",
+          "L:1224-1259"
+        ],
+        "safetyMeaning": "Conservative classifier gap, not proof of suspension. A region may render lexically because its plan needs no frame."
+      },
+      {
+        "id": "LEXICAL_LEAVE",
+        "ast": {
+          "nodeType": "BreakStatement",
+          "labelRegex": "^\\$case[0-9]+$"
+        },
+        "bir": [
+          "LeaveRegion"
+        ],
+        "g72": "not excluded by break",
+        "g73": "excluded",
+        "sourceLevel": "DIRECT_SOURCE",
+        "attributionLevel": "INFERENCE",
+        "citations": [
+          "J:1542-1545",
+          "J:953-959",
+          "B:199-203"
+        ],
+        "safetyMeaning": "Only same-function enclosing lexical labels are candidates. Bare switch break is renderer control and must not be counted as an additional BIR LeaveRegion."
+      },
+      {
+        "id": "TAG_SWITCH",
+        "ast": {
+          "nodeType": "SwitchStatement",
+          "discriminantShape": "subject?.$",
+          "armShape": "case tag:{$caseN:{const condition=true;...}break;}"
+        },
+        "bir": [
+          "grouped Region/HasTag/Branch/LeaveRegion"
+        ],
+        "g72": "switch and lexical labels allowed subject to descendant scan",
+        "g73": "underlying Region rejected even though rendered switch is synchronous",
+        "sourceLevel": "DIRECT_SOURCE",
+        "attributionLevel": "INFERENCE",
+        "citations": [
+          "J:769-836"
+        ],
+        "safetyMeaning": "Existing optimization groups >2 distinct tags on identical Local/Capture subject and refuses frame-form regions. Preserve fallback to remaining cases and nested-pattern failure; do not rewrite switch independently."
+      },
+      {
+        "id": "FRAMED_REGION",
+        "ast": {
+          "calleeNames": [
+            "$frame"
+          ],
+          "identifierNames": [
+            "$leaveThunk",
+            "$LEAVE_PENDING"
+          ],
+          "shape": "frame/thunk plus pending leave"
+        },
+        "bir": [
+          "Region needing private frame",
+          "LeaveRegion of active framed region"
+        ],
+        "g72": "rejected by unproved call or scheduler identifier",
+        "g73": "rejected",
+        "sourceLevel": "DIRECT_SOURCE",
+        "attributionLevel": "INFERENCE",
+        "citations": [
+          "J:1182-1282",
+          "J:1539-1545",
+          "J:2217"
+        ],
+        "safetyMeaning": "A syntactically balanced region containing a split is not sufficient. The private frame owns next; skipping it can lose the leave target or resume wrong continuation."
+      },
+      {
+        "id": "SYMBOL_OR_LOAD",
+        "ast": {
+          "nodeType": "MemberExpression",
+          "objectIdentifier": "$D",
+          "property": "canonical key"
+        },
+        "bir": [
+          "Symbol",
+          "LoadSymbol"
+        ],
+        "g72": "NOT excluded by this feature; $D is absent from forbidden set",
+        "g73": "both excluded; Symbol rejected recursively in returns/fields/primitive args/conditions/Direct site args",
+        "sourceLevel": "DIRECT_SOURCE",
+        "attributionLevel": "INFERENCE",
+        "citations": [
+          "J:502-509",
+          "J:753-766",
+          "J:865-887",
+          "J:945-959",
+          "J:1936-1945"
+        ],
+        "safetyMeaning": "Cannot distinguish Symbol versus LoadSymbol from $D read alone. Deferred getter executes run_base and can reenter/throw; syntactic call-freedom is insufficient. Not proof that every such getter is unsafe, only that existing leaf argument does not cover it."
+      },
+      {
+        "id": "FLOAT_BITS_OPERAND",
+        "ast": {
+          "nodeType": "CallExpression",
+          "calleeIdentifier": "f32_from_bits"
+        },
+        "bir": [
+          "FloatBits"
+        ],
+        "g72": "unproved-call when directly in body; wrapper primitive also nonterminal if helper call",
+        "g73": "FloatBits and helper-backed primitive variants excluded",
+        "sourceLevel": "DIRECT_SOURCE",
+        "attributionLevel": "INFERENCE",
+        "citations": [
+          "J:502-509",
+          "J:865-879",
+          "J:1880",
+          "J:2219"
+        ],
+        "safetyMeaning": "Helper allocates typed-array views. Neither allocation alone nor numeric type proves inclusion; current boundary is explicit helper exclusion."
+      },
+      {
+        "id": "TERMINAL_PRIMITIVE",
+        "ast": {
+          "nodeType": "CallExpression",
+          "calleeMembership": "g73ActualPredicate.whitelistedPrimitiveToHelper values"
+        },
+        "bir": [
+          "PrimitiveCall"
+        ],
+        "g72": "allowed only when this image's actual $p_ helper independently passes empty-call scan",
+        "g73": "allowed only for exact catalog tag plus all eligible operand atoms",
+        "sourceLevel": "DIRECT_SOURCE",
+        "attributionLevel": "INFERENCE",
+        "citations": [
+          "J:892-951",
+          "J:756",
+          "J:1880",
+          "B:31-33"
+        ],
+        "safetyMeaning": "Same helper spelling across images does not certify same body; verify image/source binding. An allowed helper does not override forbidden operand or enclosing region."
+      },
+      {
+        "id": "NONTERMINAL_PRIMITIVE",
+        "ast": {
+          "nodeType": "CallExpression",
+          "calleeExamples": [
+            "$p_u32_mul",
+            "$p_nat_add",
+            "$p_array_get",
+            "$p_array_size",
+            "$p_array_clone",
+            "$p_array_left",
+            "$p_string_head",
+            "$p_map_bit",
+            "$p_map_find"
+          ]
+        },
+        "bir": [
+          "PrimitiveCall of nonwhitelisted tag"
+        ],
+        "g72": "helper scan rejects calls/member calls/nested closures; no transitive analysis",
+        "g73": "default false whitelist",
+        "sourceLevel": "DIRECT_SOURCE",
+        "attributionLevel": "INFERENCE",
+        "citations": [
+          "J:888-944",
+          "J:1870-1880",
+          "LM:1030-1049"
+        ],
+        "examples": {
+          "$p_u32_mul": "Math.imul",
+          "$p_nat_add": "nat_chk",
+          "$p_array_get": "tuple",
+          "$p_array_size": "tuple",
+          "$p_array_clone": "tuple and a.slice",
+          "$p_array_left": "a.slice",
+          "$p_string_head": "a.slice and char_len",
+          "$p_map_bit": "Math.floor, tuple, char_len, char_code_at",
+          "$p_map_find": "layout-specialized helper including Math.floor and char_len"
+        },
+        "safetyMeaning": "Synchronous helper exclusion is conservative; it is not evidence the helper suspends. No new whitelist additions earned from name alone."
+      },
+      {
+        "id": "DIRECT_APPLY_TAIL",
+        "ast": {
+          "calleeExamples": [
+            "$bNNN",
+            "$split",
+            "$splitm",
+            "$split1",
+            "$split_enter",
+            "$split_done",
+            "run_tail",
+            "run_many",
+            "run_namedN"
+          ]
+        },
+        "bir": [
+          "Direct",
+          "Apply",
+          "TailDirect",
+          "TailApply"
+        ],
+        "g72": "calls not in terminal primitives and/or scheduler state reject body",
+        "g73": "all excluded from leaf body; only external caller's eligible Direct eager window changes",
+        "sourceLevel": "DIRECT_SOURCE",
+        "attributionLevel": "INFERENCE",
+        "citations": [
+          "J:532-549",
+          "J:837-846",
+          "J:945-959",
+          "J:1461-1495",
+          "J:2217"
+        ],
+        "safetyMeaning": "Do not treat a tail call to a known leaf as a leaf without separate transitive/depth proof. Tail fallback may return pending marker."
+      },
+      {
+        "id": "CLOSURE",
+        "ast": {
+          "nodeTypes": [
+            "ArrowFunctionExpression",
+            "FunctionExpression"
+          ],
+          "calleeExamples": [
+            "run_clo",
+            "run_force"
+          ]
+        },
+        "bir": [
+          "Closure"
+        ],
+        "g72": "nested function syntax rejected",
+        "g73": "Closure rejected",
+        "sourceLevel": "DIRECT_SOURCE",
+        "attributionLevel": "INFERENCE",
+        "citations": [
+          "J:550-563",
+          "J:945-952"
+        ],
+        "safetyMeaning": "Closure construction may be synchronous but captures/ABI are outside current closed class; returned existing closure values are not invoked by a leaf."
+      },
+      {
+        "id": "ALLOCATION_NOT_BLANKET_EXCLUSION",
+        "ast": {
+          "nodeTypes": [
+            "ObjectExpression",
+            "ArrayExpression"
+          ],
+          "calleeExamples": [
+            "$p_array_leaf"
+          ]
+        },
+        "bir": [
+          "Construct",
+          "PrimArrayLeaf"
+        ],
+        "g72": "allowed absent forbidden descendants",
+        "g73": "Construct with eligible fields and PrimArrayLeaf with eligible args allowed",
+        "sourceLevel": "DIRECT_SOURCE",
+        "attributionLevel": "INFERENCE",
+        "citations": [
+          "J:764",
+          "J:933",
+          "J:949",
+          "J:1880",
+          "J:1284-1308"
+        ],
+        "safetyMeaning": "Leaf does not mean allocation-free. Array literal [a] and record literal remain possible; no total heap/GC or footprint conclusion follows."
+      },
+      {
+        "id": "MUTATION_NOT_BLANKET_EXCLUSION",
+        "ast": {
+          "calleeIdentifier": "$p_array_set",
+          "helperBody": "(a,i,v)=>(a[i%a.length]=v,a)"
+        },
+        "bir": [
+          "PrimArraySet"
+        ],
+        "g72": "call-free helper admitted",
+        "g73": "explicitly whitelisted",
+        "sourceLevel": "DIRECT_SOURCE",
+        "attributionLevel": "INFERENCE",
+        "citations": [
+          "J:931",
+          "J:1880",
+          "B:6-29",
+          "LM:48-55"
+        ],
+        "safetyMeaning": "Preserve exact once/order/alias ownership; do not reorder/deduplicate mutation or confuse no scheduler effects with purity. Host proxies/setters are outside the typed ordinary-value premise."
+      },
+      {
+        "id": "FAILURE",
+        "ast": {
+          "nodeType": "ThrowStatement",
+          "argument": "literal message in canonical Failure emission"
+        },
+        "bir": [
+          "Failure"
+        ],
+        "g72": "throw itself not excluded",
+        "g73": "Failure explicitly allowed",
+        "sourceLevel": "DIRECT_SOURCE",
+        "attributionLevel": "INFERENCE",
+        "citations": [
+          "J:846",
+          "J:958",
+          "J:1475-1491",
+          "J:2213"
+        ],
+        "safetyMeaning": "Leaf need not return normally. Callee and continuation exceptions must remain in same catch, with pre-frame ksp and capture base passed to split_abort."
+      },
+      {
+        "id": "CALL_SITE_OPERAND_EXCLUSION",
+        "ast": {
+          "shape": "argument temporary initializer contains $D[key] or f32_from_bits(bits); eager call itself uses $aN"
+        },
+        "bir": [
+          "Direct argument Symbol or FloatBits"
+        ],
+        "g72": "reviewed site safeArgument sees temporary Identifier, not necessarily initializer provenance; callee leaf scan separate",
+        "g73": "js_leaf_args(args) false even if callee is leaf",
+        "sourceLevel": "DIRECT_SOURCE",
+        "attributionLevel": "INFERENCE",
+        "citations": [
+          "G72_REVIEWED:.generator.source:safeArgument",
+          "J:1461-1474",
+          "J:1499-1510",
+          "J:869-883"
+        ],
+        "safetyMeaning": "Inspect original temp initializers for crosswalk; do not infer G73 site eligibility from callee body alone. This conservative site check is stronger than checking passed identifier syntax."
+      },
+      {
+        "id": "SCALARIZATION_AND_SHAPE",
+        "ast": {
+          "shape": "missing constructor/projection; substituted local/capture/scalar; grouped case switch; changed private function ids"
+        },
+        "bir": [
+          "js_scalar_program rewrite before classification",
+          "existing tag grouping"
+        ],
+        "g72": "classifies already-emitted AST",
+        "g73": "classifies scalarized BIR, not checked syntax or pre-scalarized BIR",
+        "sourceLevel": "DIRECT_SOURCE",
+        "attributionLevel": "INFERENCE",
+        "citations": [
+          "J:1284-1328",
+          "J:1444-1452",
+          "J:2201-2206",
+          "J:769-836"
+        ],
+        "safetyMeaning": "Shape differences require verified body/dependency/source mapping. Never numeric-ID join; unmatched/ambiguous/source-changed is not a semantic exclusion. Existing scalarization removes only nonescaping records used by own-field Project and retains Symbol/FloatBits field effects."
+      }
+    ],
+    "crosswalkClassificationContract": {
+      "level": "INFERENCE",
+      "featureMode": "multi-label sufficient-exclusion evidence; not mutually exclusive counts",
+      "bodyAndSiteReasonsSeparate": true,
+      "requiredMappingStatuses": [
+        "proven_mapped",
+        "unmatched",
+        "ambiguous",
+        "source_or_shape_changed"
+      ],
+      "requiredProofStatuses": [
+        "direct_BIR_rejection",
+        "emission_backed_rejection_candidate",
+        "not_excluded_by_this_feature",
+        "unknown"
+      ],
+      "priorityIfSingleReasonRequired": "Keep original mapping status first; use an explicitly declared deterministic rule priority only after proven mapping; retain all secondary features. A label does not prove Region was the only rejection.",
+      "absenceRule": "Absence of any one listed feature does not imply G73 admission. Requires complete exact scalarized-BIR predicate and call-site args/arity or independently certified equivalent evidence.",
+      "countWarning": "10739 A sites minus 1268 C2 sites is not a proven set subtraction across changed images. This slice assigns no per-class counts or CPU weights.",
+      "hotnessWarning": "A owner self time is neither C2 observed execution count nor removable scheduling cost. Canonical code-ID metadata is not runtime eligibility allocation."
+    },
+    "closedLexicalRegionClass": {
+      "id": "BALANCED_CALL_FREE_TYPED_REGION_CODE",
+      "status": "CONDITIONAL_SOURCE_SEMANTIC_ARGUMENT_COMPLETE_NOT_IMPLEMENTED_NOT_INSTANCE_CERTIFIED",
+      "level": "INFERENCE",
+      "definition": "Whole well-formed scalarized Code satisfying current G73 atom/op/block predicate except additionally Region(label,body,next) and LeaveRegion(label); every leave targets an enclosing region in that same Code; unique/well-scoped labels; body and next recursively closed. No other relaxation, including no Symbol/FloatBits, no direct/indirect/tail calls, no closures or opaque helpers. Valid typed ordinary-value ABI and ownership are premises, not inferred from JS syntax.",
+      "analysisOnlyJudgment": {
+        "initialLabelStack": [],
+        "RegionBody": "extend label stack with label and check body",
+        "RegionNext": "check next under original outer stack, not including completed region label",
+        "LeaveRegion": "label must be present in current stack",
+        "otherNodes": "exact existing G73 predicate recursively"
+      },
+      "proofSteps": [
+        {
+          "id": "FRAME_PLAN",
+          "level": "INFERENCE",
+          "argument": "By structural induction, terminal leaves have no after=true facts. LeaveRegion adds (label,false,true). Allowed Lets are not split_op, so cannot elevate facts. Branch concatenates facts. Every nested Region consequently has fact_after=false, so need=false and does not elevate its next. Thus every region is lexical, no thunk/frame is emitted, including nested regions and outer-label leaves.",
+          "citations": [
+            "J:1042-1046",
+            "J:1182-1206",
+            "J:1244-1282"
+          ]
+        },
+        {
+          "id": "LEXICAL_CONTROL",
+          "level": "INFERENCE",
+          "argument": "Empty frame context plus every plan need=false forces ordinary/grouped lexical rendering and labeled break; well-scoped leaves stay inside same JS function. Forward finite BIR tree adds no loop, recursion, call, private-stack effect or scheduler marker. Existing grouped-tag path preserves case failure and remaining-case ordering; it adds labels/switch/break, not private frames.",
+          "citations": [
+            "B:199-203",
+            "J:769-846",
+            "J:992-1002",
+            "J:1539-1562",
+            "L:1224-1259"
+          ]
+        },
+        {
+          "id": "MARKER_FREEDOM",
+          "level": "INFERENCE",
+          "argument": "Use unchanged G73 typed-value premise: literals cannot denote private sentinels; parameters/captures are completed ordinary source values; Copy/Construct/Project/whitelisted helpers preserve it. Region/leave only select control paths, never create/store a pending marker. Callee either returns ordinary value or throws. No claim for forged BIR or host access to private bindings.",
+          "citations": [
+            "J:852-863",
+            "J:869-959",
+            "J:2217"
+          ]
+        },
+        {
+          "id": "FRAME_ELISION",
+          "level": "INFERENCE",
+          "argument": "Let i be original pre-enter ksp and b=sp-captureCount after unchanged stores. Generic path pushes one continuation; closed callee leaves stacks unchanged and returns ordinary x; split_done pops exactly that frame, sets sp=b, then calls identical k(x,b,td+1). Elided path saves i, obtains same x, sets sp=b and calls identical k. The missing private frame is unobservable to this closed callee.",
+          "citations": [
+            "J:1473-1491",
+            "J:1517-1535",
+            "J:2213"
+          ]
+        },
+        {
+          "id": "EXCEPTION_REENTRY",
+          "level": "INFERENCE",
+          "argument": "Same try/catch surrounds both callee and k. On any throw split_abort(i,b) clears installed continuation functions above original i, restores sp and resets pending tail function/count. k may reenter or suspend after the leaf because original k and catch remain. On success both paths enter k with same logical stack depth/base. No removal of catch or conversion of k to a public wrapper is licensed.",
+          "citations": [
+            "J:1475-1491",
+            "J:2213",
+            "J:2217"
+          ]
+        },
+        {
+          "id": "DEPTH_AND_FALLBACK",
+          "level": "DIRECT_SOURCE",
+          "argument": "Existing emitter passes td+1 to both callee and k, uses exact td<64 guard, retains fallback argument moves and split. A prospective classifier-only admission must keep this unchanged; same arity gate [1,32], no ABI or quantum change.",
+          "citations": [
+            "J:1466-1495",
+            "J:1507-1515"
+          ]
+        },
+        {
+          "id": "OWNERSHIP_AND_EVALUATION",
+          "level": "INFERENCE",
+          "argument": "Do not alter body/region rendering, arguments, capture selection/store/load, value identity or number/order of operations. Region extension changes only eligibility metadata for same eager window. Therefore existing checked affine uses are neither copied nor dropped by the frame optimization; array mutation and construction still occur once on same selected path. This is preservation given well-formed ownership, not an independent affine checker.",
+          "citations": [
+            "B:6-29",
+            "J:880-887",
+            "J:931-951",
+            "J:1454-1474",
+            "J:1517-1535"
+          ]
+        }
+      ],
+      "counterexamplesAndBoundaryCases": [
+        {
+          "case": "Balanced Region contains Direct/Apply then LeaveRegion",
+          "level": "DIRECT_SOURCE",
+          "failure": "plan elevates leave facts and allocates a private frame; emitted leave is pending, not lexical. Balance alone is insufficient.",
+          "citations": [
+            "J:1259-1282",
+            "J:1539-1545"
+          ]
+        },
+        {
+          "case": "Region contains TailDirect even to apparently simple target",
+          "level": "DIRECT_SOURCE",
+          "failure": "Tail renderer retains depth-exhausted pending path; marker-free proof unavailable.",
+          "citations": [
+            "J:532-549",
+            "J:844-845"
+          ]
+        },
+        {
+          "case": "Region body looks call-free but reads $D[key]",
+          "level": "DIRECT_SOURCE",
+          "failure": "Getter can invoke run_base; negative AST call scan misses it. Retain Symbol/LoadSymbol exclusion.",
+          "citations": [
+            "J:506",
+            "J:763",
+            "J:1936-1945"
+          ]
+        },
+        {
+          "case": "Leave target not enclosing or crosses code/continuation boundary",
+          "level": "INFERENCE",
+          "failure": "JS labeled break is invalid or addresses wrong owner; syntactic label count/balance is not lexical scope proof.",
+          "citations": [
+            "B:199-203",
+            "J:983-991",
+            "J:1542-1545"
+          ]
+        },
+        {
+          "case": "Host proxy/getter/setter/coercion object masquerades as ordinary record/array/number",
+          "level": "INFERENCE",
+          "failure": "Member reads, assignment and arithmetic may execute host code without CallExpression. Existing typed ABI premise must hold; no arbitrary-JS safety claim.",
+          "citations": [
+            "J:852-863",
+            "J:765-768",
+            "J:1880"
+          ]
+        },
+        {
+          "case": "Continuation reenters then throws; catch saved after frame instead of before",
+          "level": "INFERENCE",
+          "failure": "Wrong unwind boundary leaks or removes frames. Keep pre-frame ksp and catch around continuation.",
+          "citations": [
+            "J:1475-1491",
+            "J:2213"
+          ]
+        },
+        {
+          "case": "Arity 0 or 33, depth 64, nested failed pattern, throw on default",
+          "level": "DIRECT_SOURCE",
+          "failure": "Arity/depth stay generic; nested failure must reach exact remaining cases; Failure remains throw, not value.",
+          "citations": [
+            "J:769-836",
+            "J:846",
+            "J:1466-1495"
+          ]
+        }
+      ],
+      "unproven": [
+        "No actual baseline/candidate body has been certified into this closed class by this slice.",
+        "No cross-image numeric identity, exact reason count, owner binding or hot-class weight is established here.",
+        "No new classifier implementation correctness or generated activation is tested.",
+        "Whole-program ABI/affinity soundness is inherited from accepted compiler contract, not re-proven for arbitrary foreign objects.",
+        "No performance, heap liveness, GC, footprint or byte-fixedpoint conclusion follows."
+      ]
+    },
+    "existingOptimizations": [
+      {
+        "level": "DIRECT_SOURCE",
+        "name": "Lexical region frame avoidance",
+        "citations": [
+          "J:1182-1282",
+          "J:817-836",
+          "J:1539-1545"
+        ],
+        "meaning": "Non-split region already avoids private region frame. New leaf eligibility would remove caller continuation frame, not a nonexistent region frame."
+      },
+      {
+        "level": "DIRECT_SOURCE",
+        "name": "Tag-switch grouping",
+        "citations": [
+          "J:769-836"
+        ],
+        "meaning": "Already groups >2 distinct immutable subject tags; do not claim switch lowering as new work."
+      },
+      {
+        "level": "DIRECT_SOURCE",
+        "name": "Non-escaping record scalarization before capture planning",
+        "citations": [
+          "J:1284-1328",
+          "J:1444-1452",
+          "J:2201-2206"
+        ],
+        "meaning": "Already eliminates projection-only local records; escaping/aliased or evaluated Symbol/FloatBits fields remain."
+      },
+      {
+        "level": "DIRECT_SOURCE",
+        "name": "Bounded eager direct and monomorphic tail paths",
+        "citations": [
+          "J:532-549",
+          "J:1466-1495"
+        ],
+        "meaning": "Caller already bypasses generic dispatcher below depth bound. Only logical frame publication/completion changes in G73; semantic leaf work is not removed."
+      },
+      {
+        "level": "DIRECT_SOURCE",
+        "name": "Compile-time shared leaf map",
+        "citations": [
+          "J:847-850",
+          "J:964-1014",
+          "J:2201-2206"
+        ],
+        "meaning": "No emitted per-call eligibility table or allocation exists to eliminate."
+      }
+    ],
+    "specificSourceConnectedCandidates": {
+      "level": "INFERENCE",
+      "peerEvidence": "G75Crosswalk message reports dependency-closed A/C1 mapping and exact C1/C2 reverse-window equality; counts and prior sample shares below belong to its independently owned crosswalk, not new analysis here.",
+      "imageSamplePath": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs",
+      "samplesReadWithoutParsing": [
+        {
+          "name": "checker_core_steps_v1.checker_unbox",
+          "AFunction": "$b1210",
+          "imageLine": 15351,
+          "source": "checkpoints/checker_core_steps_v1.bend:2584-2586",
+          "observedShape": "One enclosing $case24575, HasTag-shaped test, value projection and return, else matching break, literal fail-stop throw; no calls or scheduler globals.",
+          "ownership": "Generic Type carrier consumed by one pattern and value returned once; source does not copy value. The preexisting tag check/property projection retain ordinary-record ABI premise.",
+          "peerMappedRetainedSites": 2588,
+          "peerPriorASharesPercent": {
+            "parent": 2.6443,
+            "continuation": 5.2926,
+            "callee": 0.0482
+          }
+        },
+        {
+          "name": "Bool.and",
+          "AFunction": "$b81",
+          "imageLine": 11942,
+          "source": "bend2/base.bend:575-580",
+          "observedShape": "Two separate lexical regions; $p_is_false/$p_is_true tests, return false/input, matching breaks, literal fail-stop throw; both helpers explicitly G73-whitelisted.",
+          "ownership": "Bool operands are ordinary completed values; no allocation or mutation introduced.",
+          "peerMappedRetainedSites": 287
+        },
+        {
+          "name": "checker_pure_arena_words_count",
+          "AFunction": "$b1254",
+          "imageLine": 15395,
+          "source": "checkpoints/checker_core_steps_v1.bend:2923-2926",
+          "observedShape": "One enclosing lexical region; Words tag guard, start/count projections, count return, matching break and literal fail-stop throw. Retain even unused start projection; do not extend scope to dead-code removal.",
+          "peerMappedRetainedSites": 92,
+          "peerPriorASharesPercent": {
+            "parent": 0.263,
+            "callee": 0.00487
+          }
+        }
+      ],
+      "conclusion": "These exact small emitted examples and source definitions support a narrower concrete class than arbitrary balanced regions: local/capture tag-guarded projection or Boolean selection with lexical case exits and fail-stop. Their observed shapes satisfy the conditional no-suspension/stack argument. Full scalarized BIR was not supplied; BIR membership and source/image joins remain emission-backed inference plus Crosswalk-owned binding, not directly inspected BIR.",
+      "recommendation": "If parent accepts the completed crosswalk binding, prioritize checker_unbox and Bool.and as the first separately authorized semantic/activation diagnostic for closed lexical-region eligibility. Do not special-case names or relax atoms/helpers/call-site guards. Hot parent/continuation attribution justifies investigation, not a savings forecast or source-build/performance acceptance.",
+      "scope": "Only three small cited A function examples inspected; no new image AST parse or runtime execution."
+    },
+    "futureTestRecommendation": {
+      "level": "INFERENCE",
+      "decision": "CONDITIONAL_NARROW_SEMANTIC_DIAGNOSTIC_RECOMMENDED_NO_EXECUTION_AUTHORIZED",
+      "reason": "Source-only proof alone does not earn execution. Incoming Crosswalk binding plus three directly read source/image examples makes checker_unbox/Bool.and a concrete prioritized candidate, conditional on parent accepting the full mapping evidence. No broad classifier, compiler rebuild, performance run or source promotion is authorized by this report.",
+      "conditionalNextClass": "BALANCED_CALL_FREE_TYPED_REGION_CODE, initially exercised by tag-guarded projection and Boolean-selection examples; exact existing helper/atom/site exclusions unchanged",
+      "preconditions": [
+        "Parent accepts Crosswalk full body/site/source binding and prior-A hotness evidence for checker_unbox/Bool.and",
+        "All additional rejection features and call-site argument provenance are discharged; no ambiguous IDs",
+        "E2/module-URL/cohort interpretation resolved by parent before small-effect cost claims",
+        "Separately approved prospective semantic/cost protocol"
+      ],
+      "semanticCasesIfEarned": [
+        "nested lexical region leaves to inner and outer labels",
+        "three-plus tag-group switch and failed nested pattern falling through to later case",
+        "ordinary return, projected return, record/array return and Failure throw",
+        "affine array update exactly once with alias/ownership-preserving captures",
+        "nonzero local and capture-slot spills, continuation reentry and continuation throw",
+        "depth 63/64 boundary and long non-tail chain; arity 1/32 admitted versus 0/33 fallback",
+        "negative controls: split-containing framed region, Symbol getter, FloatBits, TailDirect, opaque helper remain generic"
+      ],
+      "oracle": "Compare actual values, mutations, exception order, capture survival, public/foreign ABI, scheduler fallback and source-produced activation; do not use a source-text-only assertion as semantic proof.",
+      "historicalEvidenceLimit": "G73 consumer receipt reports 69 own cases, 15 JS behaviors, 3 C behaviors and 28 inspection/recheck/library contracts, including reentry/throw/capture/extra-args/non-tail. It covers existing classifier, not proposed region admission. No tests run here."
+    },
+    "executionRecord": {
+      "commandsExecuted": [],
+      "heavyProcessesStarted": 0,
+      "imagesParsed": 0,
+      "sourceEdits": 0,
+      "receiptEdits": 0,
+      "newMeasurements": 0,
+      "toolsUsed": "read/grep/glob for source/receipt inspection; write for owned proof/report and peer coordination",
+      "hashes": "All SHA256 values above are source receipt observations, not new hash commands; no output-file SHA256 fabricated."
+    }
+  },
+  "execution": "Source/receiptonly;agentexplicitlynorancommands,compiler,parser,tests,measurementsorGit;hashesinsideproofareidentifiedreceiptreferences,notfabricatednewverification.",
+  "scope": "Fifteenfeature-rulesandconditionalclosedlexicalregionsafetyargumentdonotproveinstance-levelBIRmembershipordynamicC2cost. Sourceconnectedchecker_unbox/Bool.and/words_countarefuturediagnosticcandidatesonlyifcrosswalkbindingandE2stabilitysupportthem. Noeligibility/sourcechanged."
+}

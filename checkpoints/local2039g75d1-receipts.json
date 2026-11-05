@@ -1,0 +1,144 @@
+{
+  "schemaVersion": 1,
+  "version": "local2039g75d1",
+  "status": "COMPLETE_E1_HOT_CLOSED_CLASS_CANDIDATES_AND_E2_IDENTITY_INSTABILITY_TRIGGER",
+  "experimentalBranch": "selfhost/g75-crosswalk-y5s4_64z",
+  "protocolCheckpoint": "87e77b0f",
+  "runtimePreflightCheckpoint": "9f1a4b2f",
+  "sourceReceiptFiles": [
+    {
+      "repositoryPath": "checkpoints/local2039g75d1-protocol.json",
+      "sha256": "8d507dee23a7cde8e89299e60c54de40bfac179cf7893b810c5d26a4248968e1"
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g75d1-image-preparation.json",
+      "sha256": "a9f09341b90cf3fadd97cdfce6169550da4fe91902cdb0cce31d585b834c6357"
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g75d1-url-control-plan.json",
+      "sha256": "450bad08659aa6137a4d7ca771887de65f21758578a0e4afaf575fe9170911b2"
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g75d1-source-proof.json",
+      "sha256": "c0bf19b6c3b3f8ec94b12df5380dc0e63743c7b9f56c5b882e651ffaa1105a18"
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g75d1-crosswalk.json",
+      "sha256": "cad040f8f3afd9e6bd471d2baf06ee6ff229c01f067e9e5e0410ff8303b2f9bf"
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g75d1-url-control-results.json",
+      "sha256": "26031911f191724075e26caf5ba76acdc5fbb89fccff32437982f6d31f5c2abd"
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g75d1-decision.json",
+      "sha256": "c416f9b2c5a133b0dcff655191f2ea0207fbed13afb879a1fee14191c98ebe9e"
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g75d1-closing-hashes.json",
+      "sha256": "fe2f5c82a06b886f5ac2d61934187b19c57dcb64c45f9cdaf9196dcf81d3a14d"
+    },
+    {
+      "repositoryPath": "checkpoints/local2039g75d1-cleanup.json",
+      "sha256": "78c6c072920786381c62f4e0172d460615a3c37c664b0ba456ceafc81bb82137"
+    }
+  ],
+  "offlineCrosswalkAndSourceProofComplete": true,
+  "originalASitesAccounted": 10739,
+  "allC2ElisionsAccounted": 1268,
+  "exactC1C2Bridge": true,
+  "rawMapsOutsideGit": {
+    "functions": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g75-crosswalk-url-y5s4_64z/e1-map-functions.json",
+      "sha256": "dbb93661ef413893c4c95960c9f66d26a6548eca313e18e66c6dc8f70b0e46a8",
+      "bytes": 22590142
+    },
+    "A-sites": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g75-crosswalk-url-y5s4_64z/e1-map-A-sites.json",
+      "sha256": "b383ea478eb71da017e6f4ee0478326a7a8dd91b320939ae127483d7adde8f19",
+      "bytes": 7987351
+    },
+    "C2-sites": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g75-crosswalk-url-y5s4_64z/e1-map-C2-sites.json",
+      "sha256": "95a28b3f88ce61968d8807a16a85c12ac0be09fcd1880dae14dbf9bae87e5f85",
+      "bytes": 583302
+    },
+    "leaves": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g75-crosswalk-url-y5s4_64z/e1-map-leaves.json",
+      "sha256": "0c0442e357561d0a5b94d0d193c8291bd4c8799bb52513295cae2b8bba62728f",
+      "bytes": 402262
+    },
+    "aliases": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g75-crosswalk-url-y5s4_64z/e1-map-aliases.json",
+      "sha256": "1c444994333365d0a766ffa8f23a9fa74d622f642add1504934e5837e616ffd8",
+      "bytes": 1007398
+    },
+    "owners": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g75-crosswalk-url-y5s4_64z/e1-map-owners.json",
+      "sha256": "a837ac6de40cf4f293eca21e700326bbeb9852cda3a968ed62fa6c5099a83307",
+      "bytes": 681336
+    },
+    "top-gaps": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g75-crosswalk-url-y5s4_64z/e1-map-top-gaps.json",
+      "sha256": "db39d44173e1f4e8320bc23ac53ce2fcaade520df666fad75c44f464349cf2fd",
+      "bytes": 191028
+    },
+    "unmatched-owner-rows": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g75-crosswalk-url-y5s4_64z/e1-map-unmatched-owner-rows.json",
+      "sha256": "c50b5ce71d3ad6a8edaa4b51cea6e2b61b70abf8ba92e98869c2d5546d3bed10",
+      "bytes": 475377
+    },
+    "obligations": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g75-crosswalk-url-y5s4_64z/e1-map-obligations.json",
+      "sha256": "a8398238f201143fb2666508f2fb6994bcc5fa253df65da96d4a2f25b2e15771",
+      "bytes": 4560942
+    },
+    "C1-sites-accounting": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g75-crosswalk-url-y5s4_64z/e1-map-C1-sites-accounting.json",
+      "sha256": "1dca0abdbb8285e137a2605568ebffda641e6b1407bbf3792f7a06086f8fe5d5",
+      "bytes": 2377032
+    }
+  },
+  "allOriginalInputsImagesAndMappedArtifactsVerified": true,
+  "analysisFinalizerGuard": {
+    "identity": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793895174130-76dbb0707a937d57.json",
+      "sha256": "d047eeb195b18879bf89e20c0d327ea6e947cc1fa49c66e2cb639c685c8fe2f8"
+    },
+    "report": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 502267904,
+      "peakFootprintBytes": 493006712,
+      "elapsedMs": 720,
+      "timeoutMs": 120000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 0,
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "--max-old-space-size=6144",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g75-crosswalk-url-y5s4_64z/e1-map-finalize.mjs",
+        "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g75-crosswalk-url-y5s4_64z/repository/checkpoints/local2039g75d1-protocol.json"
+      ],
+      "label": "heavy command",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793895174130-76dbb0707a937d57.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    }
+  },
+  "actualRuntimeCostRows": 4,
+  "allFourRuntimeRowsPassed": true,
+  "runtimeStabilityTriggerFired": true,
+  "sourceCompilerUnchanged": true,
+  "defaultCutover": false,
+  "acceptedOptimization": false,
+  "oldG73G74DecisionsUnchanged": true,
+  "nextDecision": "Requirecontent-by-fixed-URL-slotdiscriminatorbeforeattributingnewsmallperformancechanges;staticclosedlexicalread/Booleanclasscandidatesarenotruntime/performancequalification.",
+  "ownedScriptsRemoved": 7,
+  "exactOwnedScriptSourcesPreservedIn": "checkpoints/local2039g75d1-cleanup.json",
+  "scope": "CompleteE1/E2assignmentwithrealguardedofflineanalysisandactualruntimecontrols;alloriginalrows/developmentfailuresretained;fullimages/ASTmaps/logsoutsideGit,noextraexperimentalstageorsourcepromotion."
+}

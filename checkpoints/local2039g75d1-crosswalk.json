@@ -1,0 +1,2447 @@
+{
+  "schemaVersion": 1,
+  "version": "local2039g75d1",
+  "status": "COMPLETE_EXECUTED_OFFLINE_SOURCE_AND_SITE_CROSSWALK",
+  "protocolCheckpoint": "87e77b0f",
+  "agent": "G75Crosswalk",
+  "fullResult": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g75-crosswalk-url-y5s4_64z/e1-crosswalk.json",
+    "sha256": "678854599fc9567549a20b7750abaf00e36329dcbff46eab905a2bf67293a797"
+  },
+  "report": "local://g75-e1-crosswalk.md",
+  "accounting": {
+    "baselineIdentity": "10739 = 1263 proved-elided + 8909 proved-retained lexical-region shapes + 1 proved-retained lazy-symbol shape + 566 unmatched/ambiguous",
+    "candidateIdentity": "1268 = 1263 proved A site matches + 5 explicit unmatched A sites; all 1268 are in C1 original G72 predicate",
+    "sameInputBookIdentity": "10777 C1 G72 sites = 1268 actually elided + 9509 retained; 38 more diagnostic sites than A",
+    "c1FullClassification": {
+      "retained :: lexical-region-emission": 9508,
+      "elided :: no-region-or-symbol": 1268,
+      "retained :: lazy-symbol-getter": 1
+    },
+    "baselineUnknownReasons": [
+      {
+        "reasons": {
+          "owner": "non-bijective-reference-proposals",
+          "callee": null,
+          "continuation": "non-bijective-reference-proposals"
+        },
+        "sites": 10
+      },
+      {
+        "reasons": {
+          "owner": "conflicting-reference-proposals",
+          "callee": null,
+          "continuation": "conflicting-reference-proposals"
+        },
+        "sites": 12
+      },
+      {
+        "reasons": {
+          "owner": "unproved-transitive-private-dependency",
+          "callee": null,
+          "continuation": "unproved-transitive-private-dependency"
+        },
+        "sites": 380
+      },
+      {
+        "reasons": {
+          "owner": "unproved-transitive-private-dependency",
+          "callee": null,
+          "continuation": null
+        },
+        "sites": 4
+      },
+      {
+        "reasons": {
+          "owner": "non-bijective-reference-proposals",
+          "callee": null,
+          "continuation": null
+        },
+        "sites": 2
+      },
+      {
+        "reasons": {
+          "owner": "conflicting-reference-proposals",
+          "callee": null,
+          "continuation": null
+        },
+        "sites": 2
+      },
+      {
+        "reasons": {
+          "owner": "ambiguous-unanchored-normalized-body",
+          "callee": null,
+          "continuation": "ambiguous-unanchored-normalized-body"
+        },
+        "sites": 98
+      },
+      {
+        "reasons": {
+          "owner": "ambiguous-unanchored-normalized-body",
+          "callee": null,
+          "continuation": null
+        },
+        "sites": 9
+      },
+      {
+        "reasons": {
+          "owner": "ambiguous-unanchored-normalized-body",
+          "callee": null,
+          "continuation": "no-equal-normalized-body"
+        },
+        "sites": 34
+      },
+      {
+        "reasons": {
+          "owner": "unproved-transitive-private-dependency",
+          "callee": "no-equal-normalized-body",
+          "continuation": null
+        },
+        "sites": 3
+      },
+      {
+        "reasons": {
+          "owner": "ambiguous-unanchored-normalized-body",
+          "callee": null,
+          "continuation": "unproved-transitive-private-dependency"
+        },
+        "sites": 2
+      },
+      {
+        "reasons": {
+          "owner": "no-equal-normalized-body",
+          "callee": null,
+          "continuation": "no-equal-normalized-body"
+        },
+        "sites": 3
+      },
+      {
+        "reasons": {
+          "owner": "unproved-transitive-private-dependency",
+          "callee": null,
+          "continuation": "no-equal-normalized-body"
+        },
+        "sites": 6
+      },
+      {
+        "reasons": {
+          "owner": "unproved-transitive-private-dependency",
+          "callee": "no-equal-normalized-body",
+          "continuation": "unproved-transitive-private-dependency"
+        },
+        "sites": 1
+      }
+    ],
+    "baselineUnknownFeatureClasses": {
+      "lexical-region-emission/G73-Region-exclusion-inferred-origin": 561,
+      "no-observed-region-or-symbol/exclusion-unresolved": 5
+    },
+    "unmatchedC2Sites": [
+      {
+        "id": "C2:20732466",
+        "owner": "$b24079",
+        "callee": "$b494",
+        "continuation": "$k210952",
+        "spillCount": 4,
+        "line1": 47225,
+        "frameRange": [
+          20732466,
+          20732470
+        ],
+        "returnRange": [
+          20732475,
+          20732539
+        ],
+        "mode": "elided",
+        "a": null,
+        "status": "unmatched-or-ambiguous-A-site",
+        "aBody": "$b494",
+        "calleeFeatures": {
+          "caseLabels": 0,
+          "caseBreaks": 0,
+          "switches": 0,
+          "primitiveCalls": [
+            "$p_u32_and"
+          ],
+          "otherCalls": [],
+          "objectLiterals": 0,
+          "arrayLiterals": 0,
+          "computedWrites": 0,
+          "symbolReads": 0
+        },
+        "c1OriginalCensus": true
+      },
+      {
+        "id": "C2:20740737",
+        "owner": "$b24085",
+        "callee": "$b494",
+        "continuation": "$k211037",
+        "spillCount": 4,
+        "line1": 47246,
+        "frameRange": [
+          20740737,
+          20740741
+        ],
+        "returnRange": [
+          20740746,
+          20740810
+        ],
+        "mode": "elided",
+        "a": null,
+        "status": "unmatched-or-ambiguous-A-site",
+        "aBody": "$b494",
+        "calleeFeatures": {
+          "caseLabels": 0,
+          "caseBreaks": 0,
+          "switches": 0,
+          "primitiveCalls": [
+            "$p_u32_and"
+          ],
+          "otherCalls": [],
+          "objectLiterals": 0,
+          "arrayLiterals": 0,
+          "computedWrites": 0,
+          "symbolReads": 0
+        },
+        "c1OriginalCensus": true
+      },
+      {
+        "id": "C2:20861674",
+        "owner": "$b24201",
+        "callee": "$b494",
+        "continuation": "$k212650",
+        "spillCount": 4,
+        "line1": 47498,
+        "frameRange": [
+          20861674,
+          20861678
+        ],
+        "returnRange": [
+          20861683,
+          20861747
+        ],
+        "mode": "elided",
+        "a": null,
+        "status": "unmatched-or-ambiguous-A-site",
+        "aBody": "$b494",
+        "calleeFeatures": {
+          "caseLabels": 0,
+          "caseBreaks": 0,
+          "switches": 0,
+          "primitiveCalls": [
+            "$p_u32_and"
+          ],
+          "otherCalls": [],
+          "objectLiterals": 0,
+          "arrayLiterals": 0,
+          "computedWrites": 0,
+          "symbolReads": 0
+        },
+        "c1OriginalCensus": true
+      },
+      {
+        "id": "C2:20873842",
+        "owner": "$b24211",
+        "callee": "$b494",
+        "continuation": "$k212795",
+        "spillCount": 5,
+        "line1": 47529,
+        "frameRange": [
+          20873842,
+          20873846
+        ],
+        "returnRange": [
+          20873851,
+          20873915
+        ],
+        "mode": "elided",
+        "a": null,
+        "status": "unmatched-or-ambiguous-A-site",
+        "aBody": "$b494",
+        "calleeFeatures": {
+          "caseLabels": 0,
+          "caseBreaks": 0,
+          "switches": 0,
+          "primitiveCalls": [
+            "$p_u32_and"
+          ],
+          "otherCalls": [],
+          "objectLiterals": 0,
+          "arrayLiterals": 0,
+          "computedWrites": 0,
+          "symbolReads": 0
+        },
+        "c1OriginalCensus": true
+      },
+      {
+        "id": "C2:21259175",
+        "owner": "$b24298",
+        "callee": "$b494",
+        "continuation": "$k218977",
+        "spillCount": 6,
+        "line1": 47771,
+        "frameRange": [
+          21259175,
+          21259179
+        ],
+        "returnRange": [
+          21259184,
+          21259248
+        ],
+        "mode": "elided",
+        "a": null,
+        "status": "unmatched-or-ambiguous-A-site",
+        "aBody": "$b494",
+        "calleeFeatures": {
+          "caseLabels": 0,
+          "caseBreaks": 0,
+          "switches": 0,
+          "primitiveCalls": [
+            "$p_u32_and"
+          ],
+          "otherCalls": [],
+          "objectLiterals": 0,
+          "arrayLiterals": 0,
+          "computedWrites": 0,
+          "symbolReads": 0
+        },
+        "c1OriginalCensus": true
+      }
+    ],
+    "siteWeightUnions": {
+      "allA": {
+        "distinctParentOrContinuationFunctions": 20155,
+        "priorASelfShare": 0.19521483423723515,
+        "sourceBoundPriorASelfShare": 0.07349584969018313,
+        "caveat": "Union, not sum of category shares; still semantic self time, not removable overhead."
+      },
+      "provedA": {
+        "distinctParentOrContinuationFunctions": 19044,
+        "priorASelfShare": 0.19521483423723515,
+        "sourceBoundPriorASelfShare": 0.07349584969018313,
+        "caveat": "Union, not sum of category shares; still semantic self time, not removable overhead."
+      },
+      "retainedRegions": {
+        "distinctParentOrContinuationFunctions": 17019,
+        "priorASelfShare": 0.11421772438392658,
+        "sourceBoundPriorASelfShare": 0.011426741345739571,
+        "caveat": "Union, not sum of category shares; still semantic self time, not removable overhead."
+      },
+      "elided": {
+        "distinctParentOrContinuationFunctions": 2217,
+        "priorASelfShare": 0.08733269600945273,
+        "sourceBoundPriorASelfShare": 0.06338075787301473,
+        "caveat": "Union, not sum of category shares; still semantic self time, not removable overhead."
+      }
+    },
+    "sourceOwnerAnonymousOrNontoplevelExcluded": {
+      "rows": 1623,
+      "priorASelfShare": 0.17735697472092157
+    },
+    "note": "Feature classification proves observed emitted shape and observed G73 non-elision. Source rules prove Region is rejected, but emitted labels alone are not uniquely authenticated BIR origins.",
+    "lexicalAndArgumentObligations": {
+      "counts": {
+        "retained :: closed-lexical-emission :: plain-argument-atoms": 9503,
+        "retained :: closed-lexical-emission :: argument-exclusion": 5,
+        "elided :: other :: plain-argument-atoms": 1268,
+        "retained :: symbol-read :: plain-argument-atoms": 1
+      },
+      "provedAMappedSiteCounts": {
+        "proved-match/retained-generic :: plain-argument-atoms": 8905,
+        "proved-match/retained-generic :: additional-site-argument-exclusion": 5,
+        "proved-match/elided :: plain-argument-atoms": 1263
+      },
+      "argumentExclusionSites": [
+        {
+          "owner": "$k1283",
+          "callee": "$b86",
+          "continuation": "$k1289",
+          "frameRange": [
+            3746246,
+            3746270
+          ],
+          "guardTd64": true,
+          "arity": 3,
+          "args": [
+            {
+              "name": "$a0",
+              "initializer": "$v1287",
+              "nodeType": "Identifier",
+              "symbolReads": 0,
+              "floatBitsCalls": 0,
+              "otherCalls": 0,
+              "plainAtomShape": true
+            },
+            {
+              "name": "$a1",
+              "initializer": "f32_from_bits(1904214016)",
+              "nodeType": "CallExpression",
+              "symbolReads": 0,
+              "floatBitsCalls": 1,
+              "otherCalls": 0,
+              "plainAtomShape": false
+            },
+            {
+              "name": "$a2",
+              "initializer": "f32_from_bits(1065353216)",
+              "nodeType": "CallExpression",
+              "symbolReads": 0,
+              "floatBitsCalls": 1,
+              "otherCalls": 0,
+              "plainAtomShape": false
+            }
+          ],
+          "allArgumentsPlainAtoms": false,
+          "argumentExclusionsObserved": true
+        },
+        {
+          "owner": "$k1289",
+          "callee": "$b86",
+          "continuation": "$k1290",
+          "frameRange": [
+            3746795,
+            3746819
+          ],
+          "guardTd64": true,
+          "arity": 3,
+          "args": [
+            {
+              "name": "$a0",
+              "initializer": "$v1285",
+              "nodeType": "Identifier",
+              "symbolReads": 0,
+              "floatBitsCalls": 0,
+              "otherCalls": 0,
+              "plainAtomShape": true
+            },
+            {
+              "name": "$a1",
+              "initializer": "f32_from_bits(478150656)",
+              "nodeType": "CallExpression",
+              "symbolReads": 0,
+              "floatBitsCalls": 1,
+              "otherCalls": 0,
+              "plainAtomShape": false
+            },
+            {
+              "name": "$a2",
+              "initializer": "$v1289",
+              "nodeType": "Identifier",
+              "symbolReads": 0,
+              "floatBitsCalls": 0,
+              "otherCalls": 0,
+              "plainAtomShape": true
+            }
+          ],
+          "allArgumentsPlainAtoms": false,
+          "argumentExclusionsObserved": true
+        },
+        {
+          "owner": "$k1290",
+          "callee": "$b86",
+          "continuation": "$k1292",
+          "frameRange": [
+            3747363,
+            3747387
+          ],
+          "guardTd64": true,
+          "arity": 3,
+          "args": [
+            {
+              "name": "$a0",
+              "initializer": "$v1287",
+              "nodeType": "Identifier",
+              "symbolReads": 0,
+              "floatBitsCalls": 0,
+              "otherCalls": 0,
+              "plainAtomShape": true
+            },
+            {
+              "name": "$a1",
+              "initializer": "f32_from_bits(226492416)",
+              "nodeType": "CallExpression",
+              "symbolReads": 0,
+              "floatBitsCalls": 1,
+              "otherCalls": 0,
+              "plainAtomShape": false
+            },
+            {
+              "name": "$a2",
+              "initializer": "f32_from_bits(1065353216)",
+              "nodeType": "CallExpression",
+              "symbolReads": 0,
+              "floatBitsCalls": 1,
+              "otherCalls": 0,
+              "plainAtomShape": false
+            }
+          ],
+          "allArgumentsPlainAtoms": false,
+          "argumentExclusionsObserved": true
+        },
+        {
+          "owner": "$k1292",
+          "callee": "$b86",
+          "continuation": "$k1293",
+          "frameRange": [
+            3747891,
+            3747915
+          ],
+          "guardTd64": true,
+          "arity": 3,
+          "args": [
+            {
+              "name": "$a0",
+              "initializer": "$v1285",
+              "nodeType": "Identifier",
+              "symbolReads": 0,
+              "floatBitsCalls": 0,
+              "otherCalls": 0,
+              "plainAtomShape": true
+            },
+            {
+              "name": "$a1",
+              "initializer": "f32_from_bits(1652555776)",
+              "nodeType": "CallExpression",
+              "symbolReads": 0,
+              "floatBitsCalls": 1,
+              "otherCalls": 0,
+              "plainAtomShape": false
+            },
+            {
+              "name": "$a2",
+              "initializer": "$v1292",
+              "nodeType": "Identifier",
+              "symbolReads": 0,
+              "floatBitsCalls": 0,
+              "otherCalls": 0,
+              "plainAtomShape": true
+            }
+          ],
+          "allArgumentsPlainAtoms": false,
+          "argumentExclusionsObserved": true
+        },
+        {
+          "owner": "$b261",
+          "callee": "$b86",
+          "continuation": "$k1318",
+          "frameRange": [
+            3749229,
+            3749253
+          ],
+          "guardTd64": true,
+          "arity": 3,
+          "args": [
+            {
+              "name": "$a0",
+              "initializer": "$v1317",
+              "nodeType": "Identifier",
+              "symbolReads": 0,
+              "floatBitsCalls": 0,
+              "otherCalls": 0,
+              "plainAtomShape": true
+            },
+            {
+              "name": "$a1",
+              "initializer": "f32_from_bits(1065353216)",
+              "nodeType": "CallExpression",
+              "symbolReads": 0,
+              "floatBitsCalls": 1,
+              "otherCalls": 0,
+              "plainAtomShape": false
+            },
+            {
+              "name": "$a2",
+              "initializer": "f32_from_bits(0)",
+              "nodeType": "CallExpression",
+              "symbolReads": 0,
+              "floatBitsCalls": 1,
+              "otherCalls": 0,
+              "plainAtomShape": false
+            }
+          ],
+          "allArgumentsPlainAtoms": false,
+          "argumentExclusionsObserved": true
+        }
+      ],
+      "proofScope": "Exact source-span AST analysis; no target execution or source rewriting. Candidate status is emitted-shape proof, not authenticated scalarized-BIR membership."
+    }
+  },
+  "bridge": {
+    "reverseEdits": 2536,
+    "reconstructedC1Sha256": "43e50f4f5cc90f0f674e437ecd7479ce6853d032546267d8a7b46dca85df2896",
+    "expectedC1Sha256": "43e50f4f5cc90f0f674e437ecd7479ce6853d032546267d8a7b46dca85df2896",
+    "exactWholeImageEquality": true
+  },
+  "mapping": {
+    "normalization": "AST field-preserving normalization, alpha-renamed $v/$case identifiers and private-reference slots; literal values and property names retained; bijective unique/alias seeds and corresponding references; reject conflicts then fixed-point prune every unproved private dependency; all named runtime and primitive declaration bytes identical",
+    "numericNamesAloneUsed": false,
+    "aliasSeeds": 10631,
+    "aliasChanged": 788,
+    "proposals": 39345,
+    "provedFunctions": 37667,
+    "prunedForDependencies": 1509,
+    "pruningRounds": 24,
+    "statuses": {
+      "proved-normalized-body-and-closed-private-dependency-graph": 37667,
+      "no-equal-normalized-body": 113,
+      "non-bijective-reference-proposals": 49,
+      "conflicting-reference-proposals": 60,
+      "unproved-transitive-private-dependency": 1509,
+      "ambiguous-unanchored-normalized-body": 306
+    },
+    "runtimeChanges": [],
+    "primitiveChanges": []
+  },
+  "sourceOwnerWeights": {
+    "binding": {
+      "metadata": {
+        "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/checker-core-steps-v1.json",
+        "sha256": "cd973ad57134f08587515330c65e44a9fb864f41470a4edf32e5c8f48fb767d6"
+      },
+      "metadataGeneratedOutputSha256": "e4c1197d63129394551d5643ef2934be84af82eaeacfa3da1e4e660c6ff603a4",
+      "actualSelfStage2Report": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json",
+        "sha256": "32b9d93cf4de5a8918b61dc9ae21ef2232beb27879b6629ec26f981626da248f"
+      },
+      "actualSelfStage2Request": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2-request.json",
+        "sha256": "adcfb651972fa148392fc438f9c63ec6c1bec1dde9cba4d48c115d9c7de96c28"
+      },
+      "inputCheckerPath": "/Users/ilyagulya/Projects/My/bend/checkpoints/checker_core_steps_v1.bend",
+      "actualCompilerInputSha256": "e4c1197d63129394551d5643ef2934be84af82eaeacfa3da1e4e660c6ff603a4",
+      "image": {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs",
+        "sha256": "4636c05aa8c75e72212cb03949937e25561942bc00da250f876f37f001b9fc18"
+      },
+      "allOutputAndInputHashesEqual": true,
+      "scope": "Generatedhelperownertableboundbyexactemittedchecker-sourcehashtotheactualAself-stage2requestandoutput; not claiming metadata produced inside A build or source-line ownership."
+    },
+    "existingABoundShare": 0.39782539667864264,
+    "provedMappedBoundShare": 0.22046842195771377,
+    "mappedFunctions": 2553,
+    "topOwners": [
+      {
+        "owner": "arena_get_node",
+        "priorASelfShare": 0.02660923108784528,
+        "functions": 233
+      },
+      {
+        "owner": "arena_words_view",
+        "priorASelfShare": 0.016551357888177368,
+        "functions": 274
+      },
+      {
+        "owner": "arena_get_word_region",
+        "priorASelfShare": 0.00818113804842059,
+        "functions": 3
+      },
+      {
+        "owner": "arena_name_text",
+        "priorASelfShare": 0.006853512277113849,
+        "functions": 84
+      },
+      {
+        "owner": "arena_names_view",
+        "priorASelfShare": 0.005308875875318739,
+        "functions": 47
+      },
+      {
+        "owner": "arena_get_node_region",
+        "priorASelfShare": 0.004374280468118705,
+        "functions": 3
+      },
+      {
+        "owner": "arena_get_word",
+        "priorASelfShare": 0.004053942008457795,
+        "functions": 22
+      },
+      {
+        "owner": "arena_node_bound",
+        "priorASelfShare": 0.0037752009511781556,
+        "functions": 6
+      },
+      {
+        "owner": "arena_get_pattern",
+        "priorASelfShare": 0.003745674487752471,
+        "functions": 56
+      },
+      {
+        "owner": "whnf",
+        "priorASelfShare": 0.0036655417961808643,
+        "functions": 7
+      },
+      {
+        "owner": "arena_copy_word_range",
+        "priorASelfShare": 0.0031557961032020903,
+        "functions": 4
+      },
+      {
+        "owner": "arena_put_node_bound",
+        "priorASelfShare": 0.002502441739413428,
+        "functions": 3
+      },
+      {
+        "owner": "arena_bound_node",
+        "priorASelfShare": 0.002446983467177512,
+        "functions": 7
+      },
+      {
+        "owner": "equal_raw_ordinary",
+        "priorASelfShare": 0.0024167617413364943,
+        "functions": 29
+      },
+      {
+        "owner": "term_usage_map",
+        "priorASelfShare": 0.0023766436206899733,
+        "functions": 15
+      },
+      {
+        "owner": "arena_put_word",
+        "priorASelfShare": 0.002036482785783363,
+        "functions": 5
+      },
+      {
+        "owner": "arena_publish_term_view",
+        "priorASelfShare": 0.00202413078329817,
+        "functions": 26
+      },
+      {
+        "owner": "check_term_raw",
+        "priorASelfShare": 0.001977296723575868,
+        "functions": 14
+      },
+      {
+        "owner": "arena_name",
+        "priorASelfShare": 0.001938421199586541,
+        "functions": 24
+      },
+      {
+        "owner": "arena_bound_read_region",
+        "priorASelfShare": 0.0018916906895856717,
+        "functions": 3
+      }
+    ],
+    "caveat": "A-only prior self weight. Includes semantic work; not observed C2 cost, savings, or removable scheduler overhead."
+  },
+  "topActionableRows": [
+    {
+      "aCallee": "$b1210",
+      "c2Callee": "$b1210",
+      "featureClass": "lexical-region-emission/G73-Region-exclusion-inferred-origin",
+      "sites": 2588,
+      "features": {
+        "caseLabels": 1,
+        "caseBreaks": 1,
+        "switches": 0,
+        "primitiveCalls": [],
+        "otherCalls": [],
+        "objectLiterals": 0,
+        "arrayLiterals": 0,
+        "computedWrites": 0,
+        "symbolReads": 0
+      },
+      "sourceOwner": null,
+      "calleePriorASelf": {
+        "functionName": "$b1210",
+        "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs",
+        "lineNumber": 15350,
+        "columnNumber": 15,
+        "selfSamples": 23,
+        "inclusiveSamples": 23,
+        "selfSampledMs": 32.585,
+        "inclusiveSampledMs": 32.585,
+        "selfShare": 0.00048202395326948997,
+        "inclusiveShare": 0.00048202395326948997
+      },
+      "parents": {
+        "distinctFunctions": 2588,
+        "sampledFunctions": 1156,
+        "priorASelfShare": 0.026443329641292628,
+        "sourceOwnerBoundFunctions": 0,
+        "sourceOwnerBoundPriorASelfShare": 0
+      },
+      "continuations": {
+        "distinctFunctions": 2588,
+        "sampledFunctions": 988,
+        "priorASelfShare": 0.05292597859109513,
+        "sourceOwnerBoundFunctions": 0,
+        "sourceOwnerBoundPriorASelfShare": 0
+      },
+      "provedSourceAliases": [
+        "checker_core_steps_v1.checker_unbox"
+      ],
+      "emittedLexicalObligations": {
+        "name": "$b1210",
+        "sourceRange": [
+          5381036,
+          5381250
+        ],
+        "sourceSha256": "5cded1a3c8938d0387d70bd14e3fe35919f5da9c17bae1bfde3d1d58281f9664",
+        "labels": [
+          "$case24575"
+        ],
+        "unboundLabeledBreaks": [],
+        "loopOrContinueNodes": [],
+        "nonterminalCalls": [],
+        "symbolReads": [],
+        "closedLexicalEmissionCandidate": true,
+        "proofScope": "Observed emitted lexical closure and actual G72 call-free helper boundary. Not reconstructed scalarized BIR, independent ownership checking or arbitrary-JS value safety."
+      }
+    },
+    {
+      "aCallee": "$b81",
+      "c2Callee": "$b81",
+      "featureClass": "lexical-region-emission/G73-Region-exclusion-inferred-origin",
+      "sites": 287,
+      "features": {
+        "caseLabels": 2,
+        "caseBreaks": 2,
+        "switches": 0,
+        "primitiveCalls": [
+          "$p_is_false",
+          "$p_is_true"
+        ],
+        "otherCalls": [],
+        "objectLiterals": 0,
+        "arrayLiterals": 0,
+        "computedWrites": 0,
+        "symbolReads": 0
+      },
+      "sourceOwner": null,
+      "calleePriorASelf": {
+        "functionName": "$b81",
+        "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs",
+        "lineNumber": 11941,
+        "columnNumber": 13,
+        "selfSamples": 10,
+        "inclusiveSamples": 10,
+        "selfSampledMs": 13.875,
+        "inclusiveSampledMs": 13.875,
+        "selfShare": 0.00020525034069707453,
+        "inclusiveShare": 0.00020525034069707453
+      },
+      "parents": {
+        "distinctFunctions": 287,
+        "sampledFunctions": 97,
+        "priorASelfShare": 0.007183850681301695,
+        "sourceOwnerBoundFunctions": 13,
+        "sourceOwnerBoundPriorASelfShare": 0.0009578053376183194
+      },
+      "continuations": {
+        "distinctFunctions": 287,
+        "sampledFunctions": 77,
+        "priorASelfShare": 0.006172924336588371,
+        "sourceOwnerBoundFunctions": 11,
+        "sourceOwnerBoundPriorASelfShare": 0.0007988269295843404
+      },
+      "provedSourceAliases": [
+        "Bool.and"
+      ],
+      "emittedLexicalObligations": {
+        "name": "$b81",
+        "sourceRange": [
+          3682638,
+          3682867
+        ],
+        "sourceSha256": "90ee04767d34fddcc188bfd5654e172adcfd24cea52b6b719015cc14736022d2",
+        "labels": [
+          "$case119",
+          "$case121"
+        ],
+        "unboundLabeledBreaks": [],
+        "loopOrContinueNodes": [],
+        "nonterminalCalls": [],
+        "symbolReads": [],
+        "closedLexicalEmissionCandidate": true,
+        "proofScope": "Observed emitted lexical closure and actual G72 call-free helper boundary. Not reconstructed scalarized BIR, independent ownership checking or arbitrary-JS value safety."
+      }
+    },
+    {
+      "aCallee": "$b1254",
+      "c2Callee": "$b1254",
+      "featureClass": "lexical-region-emission/G73-Region-exclusion-inferred-origin",
+      "sites": 92,
+      "features": {
+        "caseLabels": 1,
+        "caseBreaks": 1,
+        "switches": 0,
+        "primitiveCalls": [],
+        "otherCalls": [],
+        "objectLiterals": 0,
+        "arrayLiterals": 0,
+        "computedWrites": 0,
+        "symbolReads": 0
+      },
+      "sourceOwner": {
+        "functionName": "$b1254",
+        "line1": 15395,
+        "owner": "arena_words_count",
+        "exclusiveShare": 4.868316189074395e-05,
+        "evidence": [
+          {
+            "alias": "checker_core_steps_v1.checker_pure_arena_words_count",
+            "kind": "pure-source-body",
+            "owner": "arena_words_count"
+          }
+        ]
+      },
+      "calleePriorASelf": {
+        "functionName": "$b1254",
+        "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs",
+        "lineNumber": 15394,
+        "columnNumber": 15,
+        "selfSamples": 4,
+        "inclusiveSamples": 4,
+        "selfSampledMs": 3.291,
+        "inclusiveSampledMs": 3.291,
+        "selfShare": 4.868316189074395e-05,
+        "inclusiveShare": 4.868316189074395e-05
+      },
+      "parents": {
+        "distinctFunctions": 92,
+        "sampledFunctions": 48,
+        "priorASelfShare": 0.0026299706177665434,
+        "sourceOwnerBoundFunctions": 23,
+        "sourceOwnerBoundPriorASelfShare": 0.0018102266444527855
+      },
+      "continuations": {
+        "distinctFunctions": 92,
+        "sampledFunctions": 43,
+        "priorASelfShare": 0.002985101783828862,
+        "sourceOwnerBoundFunctions": 2,
+        "sourceOwnerBoundPriorASelfShare": 0.0003007675623101203
+      },
+      "provedSourceAliases": [
+        "checker_core_steps_v1.checker_pure_arena_words_count"
+      ],
+      "emittedLexicalObligations": {
+        "name": "$b1254",
+        "sourceRange": [
+          5397769,
+          5398007
+        ],
+        "sourceSha256": "244c7f390cc057005b6e9debc1fcb9479dd57fe9b8442df9886dacb176a12910",
+        "labels": [
+          "$case25002"
+        ],
+        "unboundLabeledBreaks": [],
+        "loopOrContinueNodes": [],
+        "nonterminalCalls": [],
+        "symbolReads": [],
+        "closedLexicalEmissionCandidate": true,
+        "proofScope": "Observed emitted lexical closure and actual G72 call-free helper boundary. Not reconstructed scalarized BIR, independent ownership checking or arbitrary-JS value safety."
+      }
+    },
+    {
+      "aCallee": "$b1211",
+      "c2Callee": "$b1211",
+      "featureClass": "lexical-region-emission/G73-Region-exclusion-inferred-origin",
+      "sites": 28,
+      "features": {
+        "caseLabels": 6,
+        "caseBreaks": 0,
+        "switches": 1,
+        "primitiveCalls": [],
+        "otherCalls": [],
+        "objectLiterals": 0,
+        "arrayLiterals": 0,
+        "computedWrites": 0,
+        "symbolReads": 0
+      },
+      "sourceOwner": {
+        "functionName": "$b1211",
+        "line1": 15352,
+        "owner": "occurrence_term",
+        "exclusiveShare": 8.569479089428128e-05,
+        "evidence": [
+          {
+            "alias": "checker_core_steps_v1.checker_pure_occurrence_term",
+            "kind": "pure-source-body",
+            "owner": "occurrence_term"
+          }
+        ]
+      },
+      "calleePriorASelf": {
+        "functionName": "$b1211",
+        "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs",
+        "lineNumber": 15351,
+        "columnNumber": 15,
+        "selfSamples": 6,
+        "inclusiveSamples": 6,
+        "selfSampledMs": 5.793,
+        "inclusiveSampledMs": 5.793,
+        "selfShare": 8.569479089428128e-05,
+        "inclusiveShare": 8.569479089428128e-05
+      },
+      "parents": {
+        "distinctFunctions": 18,
+        "sampledFunctions": 11,
+        "priorASelfShare": 0.0017276679308361827,
+        "sourceOwnerBoundFunctions": 8,
+        "sourceOwnerBoundPriorASelfShare": 0.0016728013712941682
+      },
+      "continuations": {
+        "distinctFunctions": 28,
+        "sampledFunctions": 14,
+        "priorASelfShare": 0.0005578371421756167,
+        "sourceOwnerBoundFunctions": 8,
+        "sourceOwnerBoundPriorASelfShare": 0.000424686993230437
+      },
+      "provedSourceAliases": [
+        "checker_core_steps_v1.checker_pure_occurrence_term"
+      ],
+      "emittedLexicalObligations": {
+        "name": "$b1211",
+        "sourceRange": [
+          5381251,
+          5382646
+        ],
+        "sourceSha256": "435cb2bf188af439ec596cc6e39de3bad0c36415118ebd544a79b0653fe97f0c",
+        "labels": [
+          "$case24579",
+          "$case24589",
+          "$case24603",
+          "$case24615",
+          "$case24625",
+          "$case24635"
+        ],
+        "unboundLabeledBreaks": [],
+        "loopOrContinueNodes": [],
+        "nonterminalCalls": [],
+        "symbolReads": [],
+        "closedLexicalEmissionCandidate": true,
+        "proofScope": "Observed emitted lexical closure and actual G72 call-free helper boundary. Not reconstructed scalarized BIR, independent ownership checking or arbitrary-JS value safety."
+      }
+    },
+    {
+      "aCallee": "$b1215",
+      "c2Callee": "$b1215",
+      "featureClass": "lexical-region-emission/G73-Region-exclusion-inferred-origin",
+      "sites": 51,
+      "features": {
+        "caseLabels": 1,
+        "caseBreaks": 1,
+        "switches": 0,
+        "primitiveCalls": [],
+        "otherCalls": [],
+        "objectLiterals": 0,
+        "arrayLiterals": 0,
+        "computedWrites": 0,
+        "symbolReads": 0
+      },
+      "sourceOwner": {
+        "functionName": "$b1215",
+        "line1": 15356,
+        "owner": "span_file",
+        "exclusiveShare": 2.650872868678613e-05,
+        "evidence": [
+          {
+            "alias": "checker_core_steps_v1.checker_pure_span_file",
+            "kind": "pure-source-body",
+            "owner": "span_file"
+          }
+        ]
+      },
+      "calleePriorASelf": {
+        "functionName": "$b1215",
+        "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs",
+        "lineNumber": 15355,
+        "columnNumber": 15,
+        "selfSamples": 1,
+        "inclusiveSamples": 1,
+        "selfSampledMs": 1.792,
+        "inclusiveSampledMs": 1.792,
+        "selfShare": 2.650872868678613e-05,
+        "inclusiveShare": 2.650872868678613e-05
+      },
+      "parents": {
+        "distinctFunctions": 51,
+        "sampledFunctions": 20,
+        "priorASelfShare": 0.0017103455417222168,
+        "sourceOwnerBoundFunctions": 18,
+        "sourceOwnerBoundPriorASelfShare": 0.0017103455417222168
+      },
+      "continuations": {
+        "distinctFunctions": 51,
+        "sampledFunctions": 0,
+        "priorASelfShare": 0,
+        "sourceOwnerBoundFunctions": 0,
+        "sourceOwnerBoundPriorASelfShare": 0
+      },
+      "provedSourceAliases": [
+        "checker_core_steps_v1.checker_pure_span_file"
+      ],
+      "emittedLexicalObligations": {
+        "name": "$b1215",
+        "sourceRange": [
+          5384994,
+          5385245
+        ],
+        "sourceSha256": "017dfc9166978ee1c283780df3a94d9644451fd013d46b830daabf94d9ed0b46",
+        "labels": [
+          "$case24730"
+        ],
+        "unboundLabeledBreaks": [],
+        "loopOrContinueNodes": [],
+        "nonterminalCalls": [],
+        "symbolReads": [],
+        "closedLexicalEmissionCandidate": true,
+        "proofScope": "Observed emitted lexical closure and actual G72 call-free helper boundary. Not reconstructed scalarized BIR, independent ownership checking or arbitrary-JS value safety."
+      }
+    },
+    {
+      "aCallee": "$b1253",
+      "c2Callee": "$b1253",
+      "featureClass": "lexical-region-emission/G73-Region-exclusion-inferred-origin",
+      "sites": 91,
+      "features": {
+        "caseLabels": 1,
+        "caseBreaks": 1,
+        "switches": 0,
+        "primitiveCalls": [],
+        "otherCalls": [],
+        "objectLiterals": 0,
+        "arrayLiterals": 0,
+        "computedWrites": 0,
+        "symbolReads": 0
+      },
+      "sourceOwner": {
+        "functionName": "$b1253",
+        "line1": 15394,
+        "owner": "arena_words_start",
+        "exclusiveShare": 8.01326915716074e-05,
+        "evidence": [
+          {
+            "alias": "checker_core_steps_v1.checker_pure_arena_words_start",
+            "kind": "pure-source-body",
+            "owner": "arena_words_start"
+          }
+        ]
+      },
+      "calleePriorASelf": {
+        "functionName": "$b1253",
+        "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs",
+        "lineNumber": 15393,
+        "columnNumber": 15,
+        "selfSamples": 4,
+        "inclusiveSamples": 4,
+        "selfSampledMs": 5.417,
+        "inclusiveSampledMs": 5.417,
+        "selfShare": 8.01326915716074e-05,
+        "inclusiveShare": 8.01326915716074e-05
+      },
+      "parents": {
+        "distinctFunctions": 90,
+        "sampledFunctions": 49,
+        "priorASelfShare": 0.001569222064226715,
+        "sourceOwnerBoundFunctions": 20,
+        "sourceOwnerBoundPriorASelfShare": 0.0009072730735591333
+      },
+      "continuations": {
+        "distinctFunctions": 91,
+        "sampledFunctions": 47,
+        "priorASelfShare": 0.0024721904279377148,
+        "sourceOwnerBoundFunctions": 22,
+        "sourceOwnerBoundPriorASelfShare": 0.0016758634844851082
+      },
+      "provedSourceAliases": [
+        "checker_core_steps_v1.checker_pure_arena_words_start"
+      ],
+      "emittedLexicalObligations": {
+        "name": "$b1253",
+        "sourceRange": [
+          5397530,
+          5397768
+        ],
+        "sourceSha256": "2ee1b2b998d4241e938dc189cb07bbcec97f69620323ca33e2a05161111f4166",
+        "labels": [
+          "$case24996"
+        ],
+        "unboundLabeledBreaks": [],
+        "loopOrContinueNodes": [],
+        "nonterminalCalls": [],
+        "symbolReads": [],
+        "closedLexicalEmissionCandidate": true,
+        "proofScope": "Observed emitted lexical closure and actual G72 call-free helper boundary. Not reconstructed scalarized BIR, independent ownership checking or arbitrary-JS value safety."
+      }
+    },
+    {
+      "aCallee": "$b680",
+      "c2Callee": "$b680",
+      "featureClass": "lexical-region-emission/G73-Region-exclusion-inferred-origin",
+      "sites": 7,
+      "features": {
+        "caseLabels": 1,
+        "caseBreaks": 1,
+        "switches": 0,
+        "primitiveCalls": [
+          "$p_array_set"
+        ],
+        "otherCalls": [],
+        "objectLiterals": 1,
+        "arrayLiterals": 0,
+        "computedWrites": 0,
+        "symbolReads": 0
+      },
+      "sourceOwner": null,
+      "calleePriorASelf": {
+        "functionName": "$b680",
+        "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs",
+        "lineNumber": 12956,
+        "columnNumber": 14,
+        "selfSamples": 1,
+        "inclusiveSamples": 1,
+        "selfSampledMs": 1.25,
+        "inclusiveSampledMs": 1.25,
+        "selfShare": 1.8491021684421128e-05,
+        "inclusiveShare": 1.8491021684421128e-05
+      },
+      "parents": {
+        "distinctFunctions": 7,
+        "sampledFunctions": 5,
+        "priorASelfShare": 0.0013628030909591847,
+        "sourceOwnerBoundFunctions": 4,
+        "sourceOwnerBoundPriorASelfShare": 0.0013628030909591847
+      },
+      "continuations": {
+        "distinctFunctions": 7,
+        "sampledFunctions": 4,
+        "priorASelfShare": 0.00024041286753216976,
+        "sourceOwnerBoundFunctions": 1,
+        "sourceOwnerBoundPriorASelfShare": 1.8491021684421128e-05
+      },
+      "provedSourceAliases": [
+        "../bend2/selfhost/checker_arena.set_word"
+      ],
+      "emittedLexicalObligations": {
+        "name": "$b680",
+        "sourceRange": [
+          4170197,
+          4171115
+        ],
+        "sourceSha256": "747335a2fbab243e3aeb8a152c705f4e9bea20f7b00e33237c4e9f1e8c27d773",
+        "labels": [
+          "$case7693"
+        ],
+        "unboundLabeledBreaks": [],
+        "loopOrContinueNodes": [],
+        "nonterminalCalls": [],
+        "symbolReads": [],
+        "closedLexicalEmissionCandidate": true,
+        "proofScope": "Observed emitted lexical closure and actual G72 call-free helper boundary. Not reconstructed scalarized BIR, independent ownership checking or arbitrary-JS value safety."
+      }
+    },
+    {
+      "aCallee": "$b702",
+      "c2Callee": "$b702",
+      "featureClass": "lexical-region-emission/G73-Region-exclusion-inferred-origin",
+      "sites": 1,
+      "features": {
+        "caseLabels": 1,
+        "caseBreaks": 1,
+        "switches": 0,
+        "primitiveCalls": [
+          "$p_array_set",
+          "$p_u32_add"
+        ],
+        "otherCalls": [],
+        "objectLiterals": 1,
+        "arrayLiterals": 0,
+        "computedWrites": 0,
+        "symbolReads": 0
+      },
+      "sourceOwner": null,
+      "calleePriorASelf": {
+        "functionName": "$b702",
+        "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs",
+        "lineNumber": 12990,
+        "columnNumber": 14,
+        "selfSamples": 1,
+        "inclusiveSamples": 1,
+        "selfSampledMs": 1.333,
+        "inclusiveSampledMs": 1.333,
+        "selfShare": 1.9718825524266692e-05,
+        "inclusiveShare": 1.9718825524266692e-05
+      },
+      "parents": {
+        "distinctFunctions": 1,
+        "sampledFunctions": 1,
+        "priorASelfShare": 0.0012882768771622938,
+        "sourceOwnerBoundFunctions": 0,
+        "sourceOwnerBoundPriorASelfShare": 0
+      },
+      "continuations": {
+        "distinctFunctions": 1,
+        "sampledFunctions": 1,
+        "priorASelfShare": 0.00036181751950340515,
+        "sourceOwnerBoundFunctions": 0,
+        "sourceOwnerBoundPriorASelfShare": 0
+      },
+      "provedSourceAliases": [
+        "../bend2/selfhost/checker_arena.word_pool.reserve.zero"
+      ],
+      "emittedLexicalObligations": {
+        "name": "$b702",
+        "sourceRange": [
+          4195222,
+          4195707
+        ],
+        "sourceSha256": "573ab040597525c0d33bb81f7e05b6591ede1bd9a8ca165b4c7db23db87f88b8",
+        "labels": [
+          "$case8156"
+        ],
+        "unboundLabeledBreaks": [],
+        "loopOrContinueNodes": [],
+        "nonterminalCalls": [],
+        "symbolReads": [],
+        "closedLexicalEmissionCandidate": true,
+        "proofScope": "Observed emitted lexical closure and actual G72 call-free helper boundary. Not reconstructed scalarized BIR, independent ownership checking or arbitrary-JS value safety."
+      }
+    },
+    {
+      "aCallee": "$b80",
+      "c2Callee": "$b80",
+      "featureClass": "lexical-region-emission/G73-Region-exclusion-inferred-origin",
+      "sites": 36,
+      "features": {
+        "caseLabels": 2,
+        "caseBreaks": 2,
+        "switches": 0,
+        "primitiveCalls": [
+          "$p_is_false",
+          "$p_is_true"
+        ],
+        "otherCalls": [],
+        "objectLiterals": 0,
+        "arrayLiterals": 0,
+        "computedWrites": 0,
+        "symbolReads": 0
+      },
+      "sourceOwner": null,
+      "calleePriorASelf": {
+        "functionName": "$b80",
+        "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs",
+        "lineNumber": 11940,
+        "columnNumber": 13,
+        "selfSamples": 1,
+        "inclusiveSamples": 2,
+        "selfSampledMs": 1.083,
+        "inclusiveSampledMs": 2.333,
+        "selfShare": 1.6020621187382466e-05,
+        "inclusiveShare": 3.45116428718036e-05
+      },
+      "parents": {
+        "distinctFunctions": 36,
+        "sampledFunctions": 10,
+        "priorASelfShare": 0.0008820069415295403,
+        "sourceOwnerBoundFunctions": 0,
+        "sourceOwnerBoundPriorASelfShare": 0
+      },
+      "continuations": {
+        "distinctFunctions": 36,
+        "sampledFunctions": 10,
+        "priorASelfShare": 0.0009146842750502493,
+        "sourceOwnerBoundFunctions": 1,
+        "sourceOwnerBoundPriorASelfShare": 3.760334169743881e-05
+      },
+      "provedSourceAliases": [
+        "Bool.not"
+      ],
+      "emittedLexicalObligations": {
+        "name": "$b80",
+        "sourceRange": [
+          3682411,
+          3682637
+        ],
+        "sourceSha256": "ec423c91eb1e4eb89b9db4a998d6aa3ec2277a7b93a0bb06274ab80f753ac7fd",
+        "labels": [
+          "$case115",
+          "$case117"
+        ],
+        "unboundLabeledBreaks": [],
+        "loopOrContinueNodes": [],
+        "nonterminalCalls": [],
+        "symbolReads": [],
+        "closedLexicalEmissionCandidate": true,
+        "proofScope": "Observed emitted lexical closure and actual G72 call-free helper boundary. Not reconstructed scalarized BIR, independent ownership checking or arbitrary-JS value safety."
+      }
+    },
+    {
+      "aCallee": "$b517",
+      "c2Callee": "$b517",
+      "featureClass": "lexical-region-emission/G73-Region-exclusion-inferred-origin",
+      "sites": 6,
+      "features": {
+        "caseLabels": 1,
+        "caseBreaks": 1,
+        "switches": 0,
+        "primitiveCalls": [],
+        "otherCalls": [],
+        "objectLiterals": 0,
+        "arrayLiterals": 0,
+        "computedWrites": 0,
+        "symbolReads": 0
+      },
+      "sourceOwner": null,
+      "calleePriorASelf": null,
+      "parents": {
+        "distinctFunctions": 6,
+        "sampledFunctions": 4,
+        "priorASelfShare": 0.0005497898495385565,
+        "sourceOwnerBoundFunctions": 0,
+        "sourceOwnerBoundPriorASelfShare": 0
+      },
+      "continuations": {
+        "distinctFunctions": 6,
+        "sampledFunctions": 4,
+        "priorASelfShare": 0.00036183231232075257,
+        "sourceOwnerBoundFunctions": 0,
+        "sourceOwnerBoundPriorASelfShare": 0
+      },
+      "provedSourceAliases": [
+        "../bend2/selfhost/scope_lookup.resolved_text"
+      ],
+      "emittedLexicalObligations": {
+        "name": "$b517",
+        "sourceRange": [
+          4042174,
+          4042413
+        ],
+        "sourceSha256": "245a7c4a88748ee10c7ae3d584cce1bcac883e2bad549867787d38179750aede",
+        "labels": [
+          "$case5364"
+        ],
+        "unboundLabeledBreaks": [],
+        "loopOrContinueNodes": [],
+        "nonterminalCalls": [],
+        "symbolReads": [],
+        "closedLexicalEmissionCandidate": true,
+        "proofScope": "Observed emitted lexical closure and actual G72 call-free helper boundary. Not reconstructed scalarized BIR, independent ownership checking or arbitrary-JS value safety."
+      }
+    },
+    {
+      "aCallee": "$b1306",
+      "c2Callee": "$b1306",
+      "featureClass": "lexical-region-emission/G73-Region-exclusion-inferred-origin",
+      "sites": 3,
+      "features": {
+        "caseLabels": 1,
+        "caseBreaks": 1,
+        "switches": 0,
+        "primitiveCalls": [],
+        "otherCalls": [],
+        "objectLiterals": 2,
+        "arrayLiterals": 0,
+        "computedWrites": 0,
+        "symbolReads": 0
+      },
+      "sourceOwner": null,
+      "calleePriorASelf": null,
+      "parents": {
+        "distinctFunctions": 3,
+        "sampledFunctions": 2,
+        "priorASelfShare": 0.00044379931324345465,
+        "sourceOwnerBoundFunctions": 1,
+        "sourceOwnerBoundPriorASelfShare": 1.8491021684421128e-05
+      },
+      "continuations": {
+        "distinctFunctions": 3,
+        "sampledFunctions": 2,
+        "priorASelfShare": 0.00024350456635780497,
+        "sourceOwnerBoundFunctions": 0,
+        "sourceOwnerBoundPriorASelfShare": 0
+      },
+      "provedSourceAliases": [
+        "checker_core_steps_v1.checker_pure_arena_bound_source"
+      ],
+      "emittedLexicalObligations": {
+        "name": "$b1306",
+        "sourceRange": [
+          5431862,
+          5432247
+        ],
+        "sourceSha256": "e045225806b337367d71dd119ed3c2af298fb2a4e2ca665eb15243ed54657c9c",
+        "labels": [
+          "$case25396"
+        ],
+        "unboundLabeledBreaks": [],
+        "loopOrContinueNodes": [],
+        "nonterminalCalls": [],
+        "symbolReads": [],
+        "closedLexicalEmissionCandidate": true,
+        "proofScope": "Observed emitted lexical closure and actual G72 call-free helper boundary. Not reconstructed scalarized BIR, independent ownership checking or arbitrary-JS value safety."
+      }
+    },
+    {
+      "aCallee": "$b1250",
+      "c2Callee": "$b1250",
+      "featureClass": "lexical-region-emission/G73-Region-exclusion-inferred-origin",
+      "sites": 3,
+      "features": {
+        "caseLabels": 2,
+        "caseBreaks": 2,
+        "switches": 0,
+        "primitiveCalls": [],
+        "otherCalls": [],
+        "objectLiterals": 1,
+        "arrayLiterals": 0,
+        "computedWrites": 0,
+        "symbolReads": 0
+      },
+      "sourceOwner": null,
+      "calleePriorASelf": null,
+      "parents": {
+        "distinctFunctions": 3,
+        "sampledFunctions": 2,
+        "priorASelfShare": 0.0004031338583550757,
+        "sourceOwnerBoundFunctions": 0,
+        "sourceOwnerBoundPriorASelfShare": 0
+      },
+      "continuations": {
+        "distinctFunctions": 3,
+        "sampledFunctions": 2,
+        "priorASelfShare": 0.0003907966486872299,
+        "sourceOwnerBoundFunctions": 0,
+        "sourceOwnerBoundPriorASelfShare": 0
+      },
+      "provedSourceAliases": [
+        "checker_core_steps_v1.checker_pure_pattern_row_index_ranks"
+      ],
+      "emittedLexicalObligations": {
+        "name": "$b1250",
+        "sourceRange": [
+          5396709,
+          5397019
+        ],
+        "sourceSha256": "21420003d3b2ab412efa25849acbd78819690a8a34803ce1ab7e2bec5e34b1b5",
+        "labels": [
+          "$case24975",
+          "$case24978"
+        ],
+        "unboundLabeledBreaks": [],
+        "loopOrContinueNodes": [],
+        "nonterminalCalls": [],
+        "symbolReads": [],
+        "closedLexicalEmissionCandidate": true,
+        "proofScope": "Observed emitted lexical closure and actual G72 call-free helper boundary. Not reconstructed scalarized BIR, independent ownership checking or arbitrary-JS value safety."
+      }
+    },
+    {
+      "aCallee": "$b1249",
+      "c2Callee": "$b1249",
+      "featureClass": "lexical-region-emission/G73-Region-exclusion-inferred-origin",
+      "sites": 3,
+      "features": {
+        "caseLabels": 2,
+        "caseBreaks": 2,
+        "switches": 0,
+        "primitiveCalls": [],
+        "otherCalls": [],
+        "objectLiterals": 1,
+        "arrayLiterals": 0,
+        "computedWrites": 0,
+        "symbolReads": 0
+      },
+      "sourceOwner": null,
+      "calleePriorASelf": null,
+      "parents": {
+        "distinctFunctions": 3,
+        "sampledFunctions": 2,
+        "priorASelfShare": 0.00039572265686395975,
+        "sourceOwnerBoundFunctions": 2,
+        "sourceOwnerBoundPriorASelfShare": 0.00039572265686395975
+      },
+      "continuations": {
+        "distinctFunctions": 3,
+        "sampledFunctions": 2,
+        "priorASelfShare": 0.0005153373779361431,
+        "sourceOwnerBoundFunctions": 0,
+        "sourceOwnerBoundPriorASelfShare": 0
+      },
+      "provedSourceAliases": [
+        "checker_core_steps_v1.checker_pure_pattern_row_index_bucket"
+      ],
+      "emittedLexicalObligations": {
+        "name": "$b1249",
+        "sourceRange": [
+          5396398,
+          5396708
+        ],
+        "sourceSha256": "423ac150caac896858bcb77d62ecc7f98fbc1a1d72bf4fc2c9c9da955ee82252",
+        "labels": [
+          "$case24968",
+          "$case24971"
+        ],
+        "unboundLabeledBreaks": [],
+        "loopOrContinueNodes": [],
+        "nonterminalCalls": [],
+        "symbolReads": [],
+        "closedLexicalEmissionCandidate": true,
+        "proofScope": "Observed emitted lexical closure and actual G72 call-free helper boundary. Not reconstructed scalarized BIR, independent ownership checking or arbitrary-JS value safety."
+      }
+    },
+    {
+      "aCallee": "$b1255",
+      "c2Callee": "$b1255",
+      "featureClass": "lexical-region-emission/G73-Region-exclusion-inferred-origin",
+      "sites": 18,
+      "features": {
+        "caseLabels": 1,
+        "caseBreaks": 1,
+        "switches": 0,
+        "primitiveCalls": [],
+        "otherCalls": [],
+        "objectLiterals": 0,
+        "arrayLiterals": 0,
+        "computedWrites": 0,
+        "symbolReads": 0
+      },
+      "sourceOwner": {
+        "functionName": "$b1255",
+        "line1": 15396,
+        "owner": "arena_names_start",
+        "exclusiveShare": 1.786972335582458e-05,
+        "evidence": [
+          {
+            "alias": "checker_core_steps_v1.checker_pure_arena_names_start",
+            "kind": "pure-source-body",
+            "owner": "arena_names_start"
+          }
+        ]
+      },
+      "calleePriorASelf": {
+        "functionName": "$b1255",
+        "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs",
+        "lineNumber": 15395,
+        "columnNumber": 15,
+        "selfSamples": 1,
+        "inclusiveSamples": 1,
+        "selfSampledMs": 1.208,
+        "inclusiveSampledMs": 1.208,
+        "selfShare": 1.786972335582458e-05,
+        "inclusiveShare": 1.786972335582458e-05
+      },
+      "parents": {
+        "distinctFunctions": 18,
+        "sampledFunctions": 6,
+        "priorASelfShare": 0.000366166607803581,
+        "sourceOwnerBoundFunctions": 0,
+        "sourceOwnerBoundPriorASelfShare": 0
+      },
+      "continuations": {
+        "distinctFunctions": 18,
+        "sampledFunctions": 6,
+        "priorASelfShare": 0.00019106402886078666,
+        "sourceOwnerBoundFunctions": 0,
+        "sourceOwnerBoundPriorASelfShare": 0
+      },
+      "provedSourceAliases": [
+        "checker_core_steps_v1.checker_pure_arena_names_start"
+      ],
+      "emittedLexicalObligations": {
+        "name": "$b1255",
+        "sourceRange": [
+          5398008,
+          5398246
+        ],
+        "sourceSha256": "792ebbc59b666e8ad991d38887fd39a26d482f441465d0e0c2cf82798496ff28",
+        "labels": [
+          "$case25008"
+        ],
+        "unboundLabeledBreaks": [],
+        "loopOrContinueNodes": [],
+        "nonterminalCalls": [],
+        "symbolReads": [],
+        "closedLexicalEmissionCandidate": true,
+        "proofScope": "Observed emitted lexical closure and actual G72 call-free helper boundary. Not reconstructed scalarized BIR, independent ownership checking or arbitrary-JS value safety."
+      }
+    },
+    {
+      "aCallee": "$b1298",
+      "c2Callee": "$b1298",
+      "featureClass": "lexical-region-emission/G73-Region-exclusion-inferred-origin",
+      "sites": 2,
+      "features": {
+        "caseLabels": 2,
+        "caseBreaks": 2,
+        "switches": 0,
+        "primitiveCalls": [
+          "$p_is_false",
+          "$p_is_true"
+        ],
+        "otherCalls": [],
+        "objectLiterals": 2,
+        "arrayLiterals": 0,
+        "computedWrites": 0,
+        "symbolReads": 0
+      },
+      "sourceOwner": null,
+      "calleePriorASelf": null,
+      "parents": {
+        "distinctFunctions": 2,
+        "sampledFunctions": 1,
+        "priorASelfShare": 0.00026566420674441524,
+        "sourceOwnerBoundFunctions": 0,
+        "sourceOwnerBoundPriorASelfShare": 0
+      },
+      "continuations": {
+        "distinctFunctions": 2,
+        "sampledFunctions": 1,
+        "priorASelfShare": 1.8491021684421128e-05,
+        "sourceOwnerBoundFunctions": 0,
+        "sourceOwnerBoundPriorASelfShare": 0
+      },
+      "provedSourceAliases": [
+        "checker_core_steps_v1.checker_pure_arena_subst_memo_exact"
+      ],
+      "emittedLexicalObligations": {
+        "name": "$b1298",
+        "sourceRange": [
+          5424080,
+          5424399
+        ],
+        "sourceSha256": "aecc52651368f59a7be4b9b17a4264dc8f5d2a8af1097cc8da2f8aa3687fc084",
+        "labels": [
+          "$case25326",
+          "$case25329"
+        ],
+        "unboundLabeledBreaks": [],
+        "loopOrContinueNodes": [],
+        "nonterminalCalls": [],
+        "symbolReads": [],
+        "closedLexicalEmissionCandidate": true,
+        "proofScope": "Observed emitted lexical closure and actual G72 call-free helper boundary. Not reconstructed scalarized BIR, independent ownership checking or arbitrary-JS value safety."
+      }
+    },
+    {
+      "aCallee": "$b1256",
+      "c2Callee": "$b1256",
+      "featureClass": "lexical-region-emission/G73-Region-exclusion-inferred-origin",
+      "sites": 20,
+      "features": {
+        "caseLabels": 1,
+        "caseBreaks": 1,
+        "switches": 0,
+        "primitiveCalls": [],
+        "otherCalls": [],
+        "objectLiterals": 0,
+        "arrayLiterals": 0,
+        "computedWrites": 0,
+        "symbolReads": 0
+      },
+      "sourceOwner": null,
+      "calleePriorASelf": null,
+      "parents": {
+        "distinctFunctions": 20,
+        "sampledFunctions": 6,
+        "priorASelfShare": 0.00019106402886078666,
+        "sourceOwnerBoundFunctions": 0,
+        "sourceOwnerBoundPriorASelfShare": 0
+      },
+      "continuations": {
+        "distinctFunctions": 20,
+        "sampledFunctions": 6,
+        "priorASelfShare": 0.00035070811367540495,
+        "sourceOwnerBoundFunctions": 0,
+        "sourceOwnerBoundPriorASelfShare": 0
+      },
+      "provedSourceAliases": [
+        "checker_core_steps_v1.checker_pure_arena_names_count"
+      ],
+      "emittedLexicalObligations": {
+        "name": "$b1256",
+        "sourceRange": [
+          5398247,
+          5398485
+        ],
+        "sourceSha256": "64df82f9306dc8849679be5a8e5ca616354b3934070ad3fb8b16881e78f87218",
+        "labels": [
+          "$case25014"
+        ],
+        "unboundLabeledBreaks": [],
+        "loopOrContinueNodes": [],
+        "nonterminalCalls": [],
+        "symbolReads": [],
+        "closedLexicalEmissionCandidate": true,
+        "proofScope": "Observed emitted lexical closure and actual G72 call-free helper boundary. Not reconstructed scalarized BIR, independent ownership checking or arbitrary-JS value safety."
+      }
+    },
+    {
+      "aCallee": "$b1233",
+      "c2Callee": "$b1233",
+      "featureClass": "lexical-region-emission/G73-Region-exclusion-inferred-origin",
+      "sites": 4,
+      "features": {
+        "caseLabels": 2,
+        "caseBreaks": 2,
+        "switches": 0,
+        "primitiveCalls": [],
+        "otherCalls": [],
+        "objectLiterals": 1,
+        "arrayLiterals": 0,
+        "computedWrites": 0,
+        "symbolReads": 0
+      },
+      "sourceOwner": null,
+      "calleePriorASelf": null,
+      "parents": {
+        "distinctFunctions": 4,
+        "sampledFunctions": 3,
+        "priorASelfShare": 0.00018986581065563618,
+        "sourceOwnerBoundFunctions": 2,
+        "sourceOwnerBoundPriorASelfShare": 0.00016459967862604314
+      },
+      "continuations": {
+        "distinctFunctions": 4,
+        "sampledFunctions": 2,
+        "priorASelfShare": 0.00012820934795110234,
+        "sourceOwnerBoundFunctions": 1,
+        "sourceOwnerBoundPriorASelfShare": 0.00010294321592150932
+      },
+      "provedSourceAliases": [
+        "checker_core_steps_v1.checker_pure_visible_bucket_first"
+      ],
+      "emittedLexicalObligations": {
+        "name": "$b1233",
+        "sourceRange": [
+          5391283,
+          5391610
+        ],
+        "sourceSha256": "2e6dac71b769b94253635d76a7b59cad1c8bb34a89f227012ddfc1e2a9e30361",
+        "labels": [
+          "$case24850",
+          "$case24855"
+        ],
+        "unboundLabeledBreaks": [],
+        "loopOrContinueNodes": [],
+        "nonterminalCalls": [],
+        "symbolReads": [],
+        "closedLexicalEmissionCandidate": true,
+        "proofScope": "Observed emitted lexical closure and actual G72 call-free helper boundary. Not reconstructed scalarized BIR, independent ownership checking or arbitrary-JS value safety."
+      }
+    },
+    {
+      "aCallee": "$b1214",
+      "c2Callee": "$b1214",
+      "featureClass": "lexical-region-emission/G73-Region-exclusion-inferred-origin",
+      "sites": 2,
+      "features": {
+        "caseLabels": 3,
+        "caseBreaks": 0,
+        "switches": 1,
+        "primitiveCalls": [],
+        "otherCalls": [],
+        "objectLiterals": 3,
+        "arrayLiterals": 0,
+        "computedWrites": 0,
+        "symbolReads": 0
+      },
+      "sourceOwner": {
+        "functionName": "$b1214",
+        "line1": 15355,
+        "owner": "checked_symbol_kind",
+        "exclusiveShare": 2.2810524349901904e-05,
+        "evidence": [
+          {
+            "alias": "checker_core_steps_v1.checker_pure_checked_symbol_kind",
+            "kind": "pure-source-body",
+            "owner": "checked_symbol_kind"
+          }
+        ]
+      },
+      "calleePriorASelf": {
+        "functionName": "$b1214",
+        "url": "file:///private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g62-native-hotpaths-2v9gz818/baseline-self-stage2.json.output.mjs",
+        "lineNumber": 15354,
+        "columnNumber": 15,
+        "selfSamples": 1,
+        "inclusiveSamples": 1,
+        "selfSampledMs": 1.542,
+        "inclusiveSampledMs": 1.542,
+        "selfShare": 2.2810524349901904e-05,
+        "inclusiveShare": 2.2810524349901904e-05
+      },
+      "parents": {
+        "distinctFunctions": 2,
+        "sampledFunctions": 1,
+        "priorASelfShare": 0.00015161158499490572,
+        "sourceOwnerBoundFunctions": 1,
+        "sourceOwnerBoundPriorASelfShare": 0.00015161158499490572
+      },
+      "continuations": {
+        "distinctFunctions": 2,
+        "sampledFunctions": 1,
+        "priorASelfShare": 0.0001707239050079234,
+        "sourceOwnerBoundFunctions": 1,
+        "sourceOwnerBoundPriorASelfShare": 0.0001707239050079234
+      },
+      "provedSourceAliases": [
+        "checker_core_steps_v1.checker_pure_checked_symbol_kind"
+      ],
+      "emittedLexicalObligations": {
+        "name": "$b1214",
+        "sourceRange": [
+          5384389,
+          5384993
+        ],
+        "sourceSha256": "199d71aaf41e799d4389a991e673ff1c985b100167898c9e7369382a9fbd5cfd",
+        "labels": [
+          "$case24721",
+          "$case24724",
+          "$case24727"
+        ],
+        "unboundLabeledBreaks": [],
+        "loopOrContinueNodes": [],
+        "nonterminalCalls": [],
+        "symbolReads": [],
+        "closedLexicalEmissionCandidate": true,
+        "proofScope": "Observed emitted lexical closure and actual G72 call-free helper boundary. Not reconstructed scalarized BIR, independent ownership checking or arbitrary-JS value safety."
+      }
+    },
+    {
+      "aCallee": "$b1245",
+      "c2Callee": "$b1245",
+      "featureClass": "lexical-region-emission/G73-Region-exclusion-inferred-origin",
+      "sites": 2,
+      "features": {
+        "caseLabels": 1,
+        "caseBreaks": 1,
+        "switches": 0,
+        "primitiveCalls": [],
+        "otherCalls": [],
+        "objectLiterals": 0,
+        "arrayLiterals": 0,
+        "computedWrites": 0,
+        "symbolReads": 0
+      },
+      "sourceOwner": null,
+      "calleePriorASelf": null,
+      "parents": {
+        "distinctFunctions": 2,
+        "sampledFunctions": 1,
+        "priorASelfShare": 0.00014051697198425305,
+        "sourceOwnerBoundFunctions": 0,
+        "sourceOwnerBoundPriorASelfShare": 0
+      },
+      "continuations": {
+        "distinctFunctions": 2,
+        "sampledFunctions": 1,
+        "priorASelfShare": 3.57542395289967e-05,
+        "sourceOwnerBoundFunctions": 0,
+        "sourceOwnerBoundPriorASelfShare": 0
+      },
+      "provedSourceAliases": [
+        "checker_core_steps_v1.checker_pure_definition_self_telescope"
+      ],
+      "emittedLexicalObligations": {
+        "name": "$b1245",
+        "sourceRange": [
+          5395309,
+          5395558
+        ],
+        "sourceSha256": "4bdb5f64c8971880c33a1e3b3885800109c1ef5fb351196781c2f5d471928fd2",
+        "labels": [
+          "$case24936"
+        ],
+        "unboundLabeledBreaks": [],
+        "loopOrContinueNodes": [],
+        "nonterminalCalls": [],
+        "symbolReads": [],
+        "closedLexicalEmissionCandidate": true,
+        "proofScope": "Observed emitted lexical closure and actual G72 call-free helper boundary. Not reconstructed scalarized BIR, independent ownership checking or arbitrary-JS value safety."
+      }
+    },
+    {
+      "aCallee": "$b764",
+      "c2Callee": "$b764",
+      "featureClass": "lexical-region-emission/G73-Region-exclusion-inferred-origin",
+      "sites": 1,
+      "features": {
+        "caseLabels": 2,
+        "caseBreaks": 1,
+        "switches": 0,
+        "primitiveCalls": [],
+        "otherCalls": [],
+        "objectLiterals": 2,
+        "arrayLiterals": 0,
+        "computedWrites": 0,
+        "symbolReads": 0
+      },
+      "sourceOwner": null,
+      "calleePriorASelf": null,
+      "parents": {
+        "distinctFunctions": 1,
+        "sampledFunctions": 1,
+        "priorASelfShare": 9.306161393335466e-05,
+        "sourceOwnerBoundFunctions": 0,
+        "sourceOwnerBoundPriorASelfShare": 0
+      },
+      "continuations": {
+        "distinctFunctions": 1,
+        "sampledFunctions": 1,
+        "priorASelfShare": 0.00013251405779923558,
+        "sourceOwnerBoundFunctions": 0,
+        "sourceOwnerBoundPriorASelfShare": 0
+      },
+      "provedSourceAliases": [
+        "../bend2/selfhost/checker_arena.resolution_frame_read"
+      ],
+      "emittedLexicalObligations": {
+        "name": "$b764",
+        "sourceRange": [
+          4266294,
+          4266635
+        ],
+        "sourceSha256": "6f5b41afee8f3a346b919882ca0a85e83ab70c0408a1ceb8e35d6d635a124f8e",
+        "labels": [
+          "$case9166",
+          "$case9173"
+        ],
+        "unboundLabeledBreaks": [],
+        "loopOrContinueNodes": [],
+        "nonterminalCalls": [],
+        "symbolReads": [],
+        "closedLexicalEmissionCandidate": true,
+        "proofScope": "Observed emitted lexical closure and actual G72 call-free helper boundary. Not reconstructed scalarized BIR, independent ownership checking or arbitrary-JS value safety."
+      }
+    }
+  ],
+  "unknowns": [
+    "Original BIR origin cannot be uniquely recovered from emitted JS labels, getters or switches alone.",
+    "Dependency-closed matching is conservative: changed or ambiguous callers remain explicit even when a callee matches.",
+    "No C2 execution profile is observed; A weights do not measure C2 hotness or removable overhead.",
+    "No non-suspension/ownership claim is inferred from label syntax alone.",
+    "Anonymous/nontoplevel source-owner profile rows remain explicitly untransferred.",
+    "Stable source aliases identify checker_unbox and Bool.and, but checker_unbox has no semantic-owner entry in the existing bound G72 metadata; its source alias is reported separately, not invented as an old semantic owner.",
+    "Cross-image normalized-body correspondence is not a whole-program semantic-equivalence assertion: lazy $D symbol dependencies are not followed; such sites are separately excluded from safety claims."
+  ],
+  "recommendation": "Earn a separately authorized narrow semantic/activation diagnostic for source-connected tag-guarded projections and Boolean selection (checker_unbox, Bool.and), under the existing typed-value/ownership premise and unchanged eager/capture/depth/catch machinery. Their actual mapped bodies and site arguments discharge emitted lexical/terminal obligations, and existing A profile shows hot caller/continuation contexts. This is not authenticated captured-BIR membership, proof of C2 hotness, expected savings, a general G72 whitelist, a new performance experiment or source promotion. Keep Symbol/LoadSymbol/FloatBits/opaque/suspending exclusions and certify the complete scalarized Code in any future source classifier. The other observed region shapes are not automatically admitted by name.",
+  "execution": {
+    "guard": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+      "--memory-mib=8192",
+      "--rss-mib=8192",
+      "--poll-ms=10",
+      "--timeout-ms=120000",
+      "--"
+    ],
+    "commands": [
+      {
+        "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793894414114-25563e0536324ae4.json",
+        "sha256": "d9b8d72b772cb110c5f679176934b733f6a2f2dfb5ec0e1114392e5675401cd4",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--max-old-space-size=6144",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g75-crosswalk-url-y5s4_64z/e1-map-analyze.mjs",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g75-crosswalk-url-y5s4_64z/repository/checkpoints/local2039g75d1-protocol.json",
+          "A"
+        ],
+        "receipt": {
+          "status": "FAIL",
+          "reason": "command_exit",
+          "commandExitCode": 1,
+          "commandSignal": 0,
+          "peakRssBytes": 1756348416,
+          "peakFootprintBytes": 1841898312,
+          "elapsedMs": 9145,
+          "timeoutMs": 120000,
+          "reportPhase": "complete",
+          "ownedTreeStopped": true,
+          "supervisorExitCode": 1,
+          "command": [
+            "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+            "--max-old-space-size=6144",
+            "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g75-crosswalk-url-y5s4_64z/e1-map-analyze.mjs",
+            "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g75-crosswalk-url-y5s4_64z/repository/checkpoints/local2039g75d1-protocol.json",
+            "A"
+          ],
+          "label": "heavy command",
+          "exitCode": 1,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793894414114-25563e0536324ae4.json",
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592
+        }
+      },
+      {
+        "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793894466341-241b7dad84d80a91.json",
+        "sha256": "23656293998c320f89073483184abb823bdf41f017c93319eb12d77d64ad13d0",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--max-old-space-size=6144",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g75-crosswalk-url-y5s4_64z/e1-map-analyze.mjs",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g75-crosswalk-url-y5s4_64z/repository/checkpoints/local2039g75d1-protocol.json",
+          "A"
+        ],
+        "receipt": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "commandExitCode": 0,
+          "commandSignal": 0,
+          "peakRssBytes": 1928445952,
+          "peakFootprintBytes": 2028107200,
+          "elapsedMs": 16886,
+          "timeoutMs": 120000,
+          "reportPhase": "complete",
+          "ownedTreeStopped": true,
+          "supervisorExitCode": 0,
+          "command": [
+            "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+            "--max-old-space-size=6144",
+            "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g75-crosswalk-url-y5s4_64z/e1-map-analyze.mjs",
+            "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g75-crosswalk-url-y5s4_64z/repository/checkpoints/local2039g75d1-protocol.json",
+            "A"
+          ],
+          "label": "heavy command",
+          "exitCode": 0,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793894466341-241b7dad84d80a91.json",
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592
+        }
+      },
+      {
+        "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793894498922-1adf5bd37539f5f8.json",
+        "sha256": "ba004b5fb93f9016c6b8eaaafbdc27d2acbaf8602003ee5d90bc1464d2244a0b",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--max-old-space-size=6144",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g75-crosswalk-url-y5s4_64z/e1-map-analyze.mjs",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g75-crosswalk-url-y5s4_64z/repository/checkpoints/local2039g75d1-protocol.json",
+          "C1"
+        ],
+        "receipt": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "commandExitCode": 0,
+          "commandSignal": 0,
+          "peakRssBytes": 1919664128,
+          "peakFootprintBytes": 2012410752,
+          "elapsedMs": 16046,
+          "timeoutMs": 120000,
+          "reportPhase": "complete",
+          "ownedTreeStopped": true,
+          "supervisorExitCode": 0,
+          "command": [
+            "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+            "--max-old-space-size=6144",
+            "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g75-crosswalk-url-y5s4_64z/e1-map-analyze.mjs",
+            "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g75-crosswalk-url-y5s4_64z/repository/checkpoints/local2039g75d1-protocol.json",
+            "C1"
+          ],
+          "label": "heavy command",
+          "exitCode": 0,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793894498922-1adf5bd37539f5f8.json",
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592
+        }
+      },
+      {
+        "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793894527116-9545193ebb9a64f1.json",
+        "sha256": "cf4f363ab0067603de3541b382b9c7837a6e64b866e37cde3860fe7dcdfda98c",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--max-old-space-size=6144",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g75-crosswalk-url-y5s4_64z/e1-map-analyze.mjs",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g75-crosswalk-url-y5s4_64z/repository/checkpoints/local2039g75d1-protocol.json",
+          "C2"
+        ],
+        "receipt": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "commandExitCode": 0,
+          "commandSignal": 0,
+          "peakRssBytes": 1919041536,
+          "peakFootprintBytes": 2020192744,
+          "elapsedMs": 16587,
+          "timeoutMs": 120000,
+          "reportPhase": "complete",
+          "ownedTreeStopped": true,
+          "supervisorExitCode": 0,
+          "command": [
+            "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+            "--max-old-space-size=6144",
+            "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g75-crosswalk-url-y5s4_64z/e1-map-analyze.mjs",
+            "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g75-crosswalk-url-y5s4_64z/repository/checkpoints/local2039g75d1-protocol.json",
+            "C2"
+          ],
+          "label": "heavy command",
+          "exitCode": 0,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793894527116-9545193ebb9a64f1.json",
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592
+        }
+      },
+      {
+        "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793894704251-1a725ba1e6a171ef.json",
+        "sha256": "10ac2cf6883be86cb9fd7bca04b29da278596e8e01023ed0785ac8c12113e4d7",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--max-old-space-size=6144",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g75-crosswalk-url-y5s4_64z/e1-map-join.mjs",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g75-crosswalk-url-y5s4_64z/repository/checkpoints/local2039g75d1-protocol.json"
+        ],
+        "receipt": {
+          "status": "FAIL",
+          "reason": "command_exit",
+          "commandExitCode": 1,
+          "commandSignal": 0,
+          "peakRssBytes": 422641664,
+          "peakFootprintBytes": 407685392,
+          "elapsedMs": 1055,
+          "timeoutMs": 120000,
+          "reportPhase": "complete",
+          "ownedTreeStopped": true,
+          "supervisorExitCode": 1,
+          "command": [
+            "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+            "--max-old-space-size=6144",
+            "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g75-crosswalk-url-y5s4_64z/e1-map-join.mjs",
+            "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g75-crosswalk-url-y5s4_64z/repository/checkpoints/local2039g75d1-protocol.json"
+          ],
+          "label": "heavy command",
+          "exitCode": 1,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793894704251-1a725ba1e6a171ef.json",
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592
+        }
+      },
+      {
+        "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793894766464-dd6bdba699bde412.json",
+        "sha256": "e8e35020665b8e8397e7a58d10ae9f7479dad10880ac667f94c66f623b068c41",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--max-old-space-size=6144",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g75-crosswalk-url-y5s4_64z/e1-map-join.mjs",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g75-crosswalk-url-y5s4_64z/repository/checkpoints/local2039g75d1-protocol.json"
+        ],
+        "receipt": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "commandExitCode": 0,
+          "commandSignal": 0,
+          "peakRssBytes": 512491520,
+          "peakFootprintBytes": 502992704,
+          "elapsedMs": 1217,
+          "timeoutMs": 120000,
+          "reportPhase": "complete",
+          "ownedTreeStopped": true,
+          "supervisorExitCode": 0,
+          "command": [
+            "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+            "--max-old-space-size=6144",
+            "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g75-crosswalk-url-y5s4_64z/e1-map-join.mjs",
+            "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g75-crosswalk-url-y5s4_64z/repository/checkpoints/local2039g75d1-protocol.json"
+          ],
+          "label": "heavy command",
+          "exitCode": 0,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793894766464-dd6bdba699bde412.json",
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592
+        }
+      },
+      {
+        "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793895092087-bb2bc85b389b832d.json",
+        "sha256": "eb262a940644e98ba64d9c716c67957df6b1bc77a07cd424e2ab1dddbbd0598d",
+        "command": [
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+          "--smol",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+          "--memory-mib=8192",
+          "--rss-mib=8192",
+          "--poll-ms=10",
+          "--timeout-ms=120000",
+          "--",
+          "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+          "--max-old-space-size=6144",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g75-crosswalk-url-y5s4_64z/e1-map-obligations.mjs",
+          "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g75-crosswalk-url-y5s4_64z/repository/checkpoints/local2039g75d1-protocol.json"
+        ],
+        "receipt": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "commandExitCode": 0,
+          "commandSignal": 0,
+          "peakRssBytes": 414842880,
+          "peakFootprintBytes": 390417944,
+          "elapsedMs": 1181,
+          "timeoutMs": 120000,
+          "reportPhase": "complete",
+          "ownedTreeStopped": true,
+          "supervisorExitCode": 0,
+          "command": [
+            "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+            "--max-old-space-size=6144",
+            "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g75-crosswalk-url-y5s4_64z/e1-map-obligations.mjs",
+            "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g75-crosswalk-url-y5s4_64z/repository/checkpoints/local2039g75d1-protocol.json"
+          ],
+          "label": "heavy command",
+          "exitCode": 0,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793895092087-bb2bc85b389b832d.json",
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592
+        }
+      }
+    ],
+    "failedAttempts": [
+      "Initial analyzer normalization rejected BigInt JSON; fixed by typed BigInt serialization before any successful output.",
+      "Initial owner join rejected anonymous function rows; fixed by retaining them as explicitly unmatched instead of guessing names."
+    ],
+    "pins": [
+      {
+        "path": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "sha256": "28c7dd0a06916aba284d570ef44a2d70e9c538eaf2ba58dfe0910525563b3f79"
+      },
+      {
+        "path": "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+        "sha256": "ead5889f15f4e17b37f941c7d9e92b624396786bd74d8155ef470f6381f032c5"
+      },
+      {
+        "path": "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+        "sha256": "e72f2b81970be76734df918e35b1a4289d0fb194039e5ca20e9785e5ac0ee015"
+      },
+      {
+        "path": "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate_native.c",
+        "sha256": "1ff233edacdbf13c6ffd4a8bf38cbf153629e8c76be4860deec8a5b591d3fa8b"
+      }
+    ],
+    "preservedSources": [
+      {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g75-crosswalk-url-y5s4_64z/e1-map-analyze.mjs",
+        "sha256": "4628b1189b5a4b56b366685220e72853949fd426d4619a701687c00764e88a6e"
+      },
+      {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g75-crosswalk-url-y5s4_64z/e1-map-join.mjs",
+        "sha256": "e15d9c56bb63b6c602fcb2c22c569cfa3351f97d9fa2a99d04480db96b9d1fcd"
+      },
+      {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g75-crosswalk-url-y5s4_64z/e1-map-finalize.mjs",
+        "sha256": "8985cecc76e3b4b3efbb1f017507005c89f0baded4bc19aa32788d58575c6196"
+      },
+      {
+        "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g75-crosswalk-url-y5s4_64z/e1-map-obligations.mjs",
+        "sha256": "974ab8d9c0abda639c1146ed303ecf15e76c66636d116e7fde68b19a2829c525"
+      }
+    ],
+    "finalizerCommand": [
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+      "--smol",
+      "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+      "--memory-mib=8192",
+      "--rss-mib=8192",
+      "--poll-ms=10",
+      "--timeout-ms=120000",
+      "--",
+      "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/node",
+      "--max-old-space-size=6144",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g75-crosswalk-url-y5s4_64z/e1-map-finalize.mjs",
+      "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g75-crosswalk-url-y5s4_64z/repository/checkpoints/local2039g75d1-protocol.json"
+    ],
+    "scope": "Offline parsing/data joining only. No compiler/image execution, candidate generation, performance measurement, tests, build, lint, formatting or Git commands."
+  },
+  "fullTables": {
+    "functions": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g75-crosswalk-url-y5s4_64z/e1-map-functions.json",
+      "sha256": "dbb93661ef413893c4c95960c9f66d26a6548eca313e18e66c6dc8f70b0e46a8",
+      "bytes": 22590142
+    },
+    "A-sites": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g75-crosswalk-url-y5s4_64z/e1-map-A-sites.json",
+      "sha256": "b383ea478eb71da017e6f4ee0478326a7a8dd91b320939ae127483d7adde8f19",
+      "bytes": 7987351
+    },
+    "C2-sites": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g75-crosswalk-url-y5s4_64z/e1-map-C2-sites.json",
+      "sha256": "95a28b3f88ce61968d8807a16a85c12ac0be09fcd1880dae14dbf9bae87e5f85",
+      "bytes": 583302
+    },
+    "leaves": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g75-crosswalk-url-y5s4_64z/e1-map-leaves.json",
+      "sha256": "0c0442e357561d0a5b94d0d193c8291bd4c8799bb52513295cae2b8bba62728f",
+      "bytes": 402262
+    },
+    "aliases": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g75-crosswalk-url-y5s4_64z/e1-map-aliases.json",
+      "sha256": "1c444994333365d0a766ffa8f23a9fa74d622f642add1504934e5837e616ffd8",
+      "bytes": 1007398
+    },
+    "owners": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g75-crosswalk-url-y5s4_64z/e1-map-owners.json",
+      "sha256": "a837ac6de40cf4f293eca21e700326bbeb9852cda3a968ed62fa6c5099a83307",
+      "bytes": 681336
+    },
+    "top-gaps": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g75-crosswalk-url-y5s4_64z/e1-map-top-gaps.json",
+      "sha256": "db39d44173e1f4e8320bc23ac53ce2fcaade520df666fad75c44f464349cf2fd",
+      "bytes": 191028
+    },
+    "unmatched-owner-rows": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g75-crosswalk-url-y5s4_64z/e1-map-unmatched-owner-rows.json",
+      "sha256": "c50b5ce71d3ad6a8edaa4b51cea6e2b61b70abf8ba92e98869c2d5546d3bed10",
+      "bytes": 475377
+    },
+    "obligations": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g75-crosswalk-url-y5s4_64z/e1-map-obligations.json",
+      "sha256": "a8398238f201143fb2666508f2fb6994bcc5fa253df65da96d4a2f25b2e15771",
+      "bytes": 4560942
+    },
+    "C1-sites-accounting": {
+      "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g75-crosswalk-url-y5s4_64z/e1-map-C1-sites-accounting.json",
+      "sha256": "1dca0abdbb8285e137a2605568ebffda641e6b1407bbf3792f7a06086f8fe5d5",
+      "bytes": 2377032
+    }
+  },
+  "sourceProofReceipt": {
+    "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g75-crosswalk-url-y5s4_64z/repository/checkpoints/local2039g75d1-source-proof.json",
+    "sha256": "c0bf19b6c3b3f8ec94b12df5380dc0e63743c7b9f56c5b882e651ffaa1105a18"
+  },
+  "scope": "Realguardedofflineanalysis,notcompilerexecutionornewcost. Source/helper/dependencyproofnotnumeric-IDjoin. ExactC1reversehashprovesoutside-windowidentitywithoutwritingreconstructedimage. AweightedselfpriorsarenotC2hotnessorremovableoverhead. Developmentfailuresretained;costmatrixseparateandunmodified."
+}
