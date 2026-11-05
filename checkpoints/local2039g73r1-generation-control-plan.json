@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "version": "G73R1",
+  "status": "PROSPECTIVE_UNCHANGED_CANONICAL_GENERATOR_CONTROL",
+  "protocolCheckpoint": "31b8911c",
+  "repository": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/baseline-repository",
+  "commandCells": [
+    {
+      "id": "baseline-generator-owned",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+        "--memory-mib=8192",
+        "--rss-mib=8192",
+        "--poll-ms=10",
+        "--timeout-ms=120000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/baseline-repository/evals/checker_core_owned_source.ts"
+      ],
+      "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/baseline-repository"
+    },
+    {
+      "id": "baseline-generator-steps",
+      "command": [
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts",
+        "--memory-mib=8192",
+        "--rss-mib=8192",
+        "--poll-ms=10",
+        "--timeout-ms=120000",
+        "--",
+        "/Users/ilyagulya/bend-g12-borrow-7782b78a-1e88-4ffd-9889-14cb52c6a5b9/.tools/bun",
+        "--smol",
+        "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/baseline-repository/evals/emitter_step_lower.ts"
+      ],
+      "cwd": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-build-acceleration-3cg3qjns/g73-real-leaf-frames-3fvdekrb/baseline-repository"
+    }
+  ],
+  "expectedByteIdentity": {
+    "checkpoints/emitter_owned_v1.bend": "8d82537fa6e02f07e88eb1cbd378223e7d3f75599df34265dc9fb24358e05fac",
+    "checkpoints/emitter_steps_v1.bend": "7f7c8d2e57a3fcd3925b4286a8300668ae91b7e11a26317cea6da2df5c9ea425",
+    "checkpoints/emitter_steps_component_v1.bend": "e6bd090dc9b2a0b381e4a896922c91869571445b194a60898d893e1f2ce3b3c8"
+  },
+  "baselineInputs": {
+    "bend2/selfhost/js_backend.bend": "9ad0e83cafd243745d7d1b256d3e053258a801350fc5d0e16dd65fec89a35aa0",
+    "evals/checker_core_owned_source.ts": "7b9fc4fb80aa87ef0ce44310031e5bfe909f8abd9672f16609c435daa87eb450",
+    "evals/checker_core_step_lower.ts": "d40a4cb7102b160c86efe69b1bf0fd5413e30e4875c2252204f96635c9004201",
+    "evals/emitter_step_lower.ts": "7ddadd9cd2d8cd7c958d516baaba0833a94ddf0232b4caee51f49a8de4a966d8",
+    "checkpoints/checker-core-owned-source-v1.json": "3ecb7f9d98a61d58b383e489bbc6195ad0b56c053baebaa3184533d490c29425"
+  },
+  "scope": "No candidate source edits in this worktree. Coordinate-only metadata differences separated from Bend source bytes. Any unrelated baseline regenerated source delta must be resolved before candidate CPU attribution. No timing/gain/fixedpoint claim."
+}
